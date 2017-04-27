@@ -1,0 +1,334 @@
+<template>
+    <div id="table">
+      <div id="tableLeft">
+        <span id="subtitle1">{{subtitle1}}</span>
+        <ul>
+          <li id="li"><a href="#">基本信息</a></li>
+          <li><a href="#">教育管理</a></li>
+          <li><a href="#">证书管理</a></li>
+          <li><a href="#">一线工作经历</a></li>
+          <!--<li><a href="#">教学进修</a></li>-->
+          <li><a href="#">密码修改</a></li>
+        </ul>
+      </div>
+      <div id="tableRight">
+        <span id="subtitle2">{{subtitle2}}</span>
+        <div id="tableDiv">
+          <table>
+            <thead>
+              <tr>
+                <th width="%20">临床工作单位</th>
+                <th width="%20">工作岗位</th>
+                <th width="%20">开始时间</th>
+                <th width="%20">结束时间</th>
+                <th width="%20">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(data,index) in tableList" :key="data.startTime">
+                <td width="%20"><input readonly :id="'clinicWorkUnit'+index" type="text" v-model.lazy="data.clinicWorkUnit"></td>
+                <td width="%20"><input readonly :id="'workPost'+index" type="text" v-model.lazy="data.workPost"></td>
+                <td width="%20"><input readonly :id="'startTime'+index" type="text" v-model.lazy="data.startTime"></td>
+                <td width="%20"><input readonly :id="'endTime'+index" type="text" v-model.lazy="data.endTime"></td>
+                <td width="%20">
+                  <img @click="save(index)" class='img'style="display:none;" :src="imgSrc1" :id="'save'+index">
+                  <img @click="edit(index)" class='img'style="display:none;" :src="imgSrc2" :id="'edit'+index">
+                  <img @click="change(index)" class='img' style="display:inline;" :src="imgSrc3" :id="'change'+index">
+                  <img @click="del(index)" class='img' style="display:inline;" :src="imgSrc4" :id="'del'+index">
+                </td>
+              </tr>
+              <tr>
+               <td>  <img  @click="add" id='img5'  :src="imgSrc5" ></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+
+          </table>
+
+          </div>
+
+        <div>
+        </div>
+      </div>
+
+
+
+    </div>
+</template>
+
+<script>
+  import icon1 from'./right.png'
+  import icon2 from'./wrong.png'
+  import icon3 from'./change.png'
+  import icon4 from'./delete.png'
+  import icon5 from'./plus.png'
+    export default {
+        name: '',
+        data () {
+            return {
+              imgSrc1:icon1,
+              imgSrc2:icon2,
+              imgSrc3:icon3,
+              imgSrc4:icon4,
+              imgSrc5:icon5,
+              subtitle1:'个人信息',
+              subtitle2:'一线工作经历',
+              tableList:[]
+            }},
+      beforeMount:function(){
+//        this.$http.post('./teacherManage/getTeacherWorkInfo',{},
+          this.$http.post('../jsonphp/experience.php',{},
+          {"Content-Type":"application/json"}).then(function (response) {
+            console.log(response);
+            this.tableList = response.body.workexperienceList;
+           },
+          function(error){
+            console.log("获取error:");
+            console.log(error);
+          });
+      },
+        methods:{
+            add: function(){
+              this.tableList.push({clinicWorkUnit:'',workPost:'',startTime:'',endTime:'',workExperienceId:''});
+            },
+            save:function(index){
+              var unit = document.getElementById("clinicWorkUnit"+index);
+              if(unit.value!="")
+              {
+                if(confirm('确认保存？'))
+                {   this.$http.post('../jsonphp/experience.php',{
+//                  this.$http.post('./teacherManage/editTeacherWorkInfo',{
+                    "clinicWorkUnit":this.tableList[index].clinicWorkUnit,
+                    "workPost":this.tableList[index].workPost,
+                    "startTime":this.tableList[index].startTime,
+                    "endTime":this.tableList[index].endTime,
+                    "workExperienceId":this.tableList[index].workExperienceId
+                  },{"Content-Type":"application/json"}).then(function (response){
+                     if(response.body.result=='1')
+                     {alert("操作成功！")}
+                  }, function(error){
+                    console.log("传递error:");
+                    console.log(error);
+                  });
+                  var save=document.getElementById("save"+index);
+                  save.style.display='none';
+                  var edit=document.getElementById("edit"+index);
+                  edit.style.display='none';
+                  var change=document.getElementById("change"+index);
+                  change.style.display='inline';
+                  var del=document.getElementById("del"+index);
+                  del.style.display='inline';
+                  unit.readOnly=true;
+                  unit.style.border='none';
+                  var job = document.getElementById("workPost"+index);
+                  job.readOnly=true;
+                  job.style.border='none';
+                  var begin = document.getElementById("startTime"+index);
+                  begin.readOnly=true;
+                  begin.style.border='none';
+                  var last = document.getElementById("endTime"+index);
+                  last.readOnly=true;
+                  last.style.border='none';
+                }}
+              else{alert('请输入临床工作单位！');}
+            },
+          edit:function(index){
+            if(confirm('取消保存？')) {
+              var save=document.getElementById("save"+index);
+              save.style.display='none';
+              var edit=document.getElementById("edit"+index);
+              edit.style.display='none';
+              var change=document.getElementById("change"+index);
+              change.style.display='inline';
+              var del=document.getElementById("del"+index);
+              del.style.display='inline';
+              var unit = document.getElementById("clinicWorkUnit"+index);
+              unit.readOnly=true;
+              unit.style.border='none';
+              var job = document.getElementById("workPost"+index);
+              job.readOnly=true;
+              job.style.border='none';
+              var begin = document.getElementById("startTime"+index);
+              begin.readOnly=true;
+              begin.style.border='none';
+              var last = document.getElementById("endTime"+index);
+              last.readOnly=true;
+              last.style.border='none';
+//              取消保存时后台应返回之前的值
+            }
+          },
+          del:function(index){
+            if(confirm("您确定要删除该奖项吗？")){
+              console.log(this.tableList[index].workExperienceId);
+//              this.$http.post('./teacherManage/deleteTeacherWorkInfo',{
+              this.$http.post('../jsonphp/experience.php',{
+                "workExperienceId":this.tableList[index].workExperienceId
+              },{"Content-Type":"application/json"}).then(function (response){
+                if(response.body.result=='1')
+                { alert("操作成功！");
+                  this.tableList.splice(index,1);
+                }
+              }, function(error){
+                console.log("传递error:");
+                console.log(error);
+              });
+
+            }
+
+          },
+          change: function (index) {
+            var unit = document.getElementById("clinicWorkUnit"+index);
+            unit.readOnly=false;
+            unit.style.border=' 0.1rem solid #d4d4d9';
+            var job = document.getElementById("workPost"+index);
+            job.readOnly=false;
+            job.style.border=' 0.1rem solid #d4d4d9';
+            var begin = document.getElementById("startTime"+index);
+            begin.readOnly=false;
+            begin.style.border=' 0.1rem solid #d4d4d9';
+            var last = document.getElementById("endTime"+index);
+            last.readOnly=false;
+            last.style.border=' 0.1rem solid #d4d4d9';
+
+            var save=document.getElementById("save"+index);
+            save.style.display='inline';
+            var edit=document.getElementById("edit"+index);
+            edit.style.display='inline';
+            var change=document.getElementById("change"+index);
+            change.style.display='none';
+            var del=document.getElementById("del"+index);
+            del.style.display='none';
+          }
+
+
+
+    }}
+</script>
+
+<style lang="css" scoped>
+  @import '../../../../assets/css/external.css';
+  html{
+    font-size: 16px;
+  } /*整个页面的样式*/
+  #table{
+    position:relative;
+    display: flex;
+    height:30rem;
+    background-color: #f3f3f3;
+  }/*整个桌面的大小*/
+  #tableLeft{
+    position:relative;
+    top:2rem;
+    left:4rem;
+    height:30rem;
+    width:20%;
+    background-color: white;
+    text-align: center;
+    border:0.15rem solid lightgrey;
+  }/*左侧的CSS*/
+  #tableRight{
+    position: relative;
+    float:right;
+    top:2rem;
+    margin-left:7rem;
+    height:30rem;
+    width:65%;
+    background-color: white;
+    text-align: left;
+    border:0.15rem solid lightgrey;
+    padding-left:1rem;
+    padding-right:1rem;
+  }/*右侧的CSS*/
+  #tableDiv{
+    overflow: auto;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    border-top: 0.15rem solid #158064;
+    position: relative;
+    top:1rem;
+    height:25rem;
+  }/*表格的CSS*/
+  #subtitle1{
+    font-size: 1.3rem;
+    position: relative;
+    top:0.5rem;
+
+  }/*标题一*/
+  #subtitle2{
+    font-size: 1.3rem;
+    position: relative;
+    top:0.5rem;
+    left:2rem;
+  }/*标题二*/
+  ul{ list-style-type:none;}/*去点*/
+  li{
+    height:3rem;
+    border-bottom:0.15rem solid lightgrey ;
+    position: relative;
+    right: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }/*列表*/
+  #li{
+    border-top: 0.15rem solid #158064;
+  }/*左边绿色的那条线*/
+
+  button{
+    color: white;
+    background-color: mediumseagreen;
+    border: none;
+    border-radius: 0.2rem;
+    width: 5rem;
+    height: 2rem;
+    min-width: 5rem;
+  }
+  .img{
+    width:1.5rem;
+    height:1.5rem;
+  }
+  #img5{
+    width:1.5rem;
+    height:1.5rem;
+    position:relative;
+    left:1rem;
+  }
+  input{
+    border: 0.1rem solid #d4d4d9;
+    border-radius: 0.3rem;
+    outline: none;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+    width:6rem;
+    margin-left:2rem;
+  }
+  table{
+    margin-top: 0.5rem;
+    width: 100%;
+    table-layout: fixed;
+    border: thin solid #E3E3E3;
+    border-collapse: collapse;
+
+  }
+  tr{
+    height:2.5rem;
+
+  }
+  thead{
+    border-bottom: thin solid #E3E3E3;
+    height: 2.5rem;
+    text-align: center;
+
+  }
+  td{
+    border-bottom: thin solid #E3E3E3;
+    height: 2.5rem;
+    text-align: center;
+
+  }
+</style>

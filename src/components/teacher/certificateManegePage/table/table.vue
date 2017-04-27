@@ -1,0 +1,365 @@
+<template>
+    <div id="workExperience-teacher-tableDiv">
+            <div id="tableLeft">
+                <span id="subtitle1">{{subtitle1}}</span>
+           <ul>
+               <li id="li"><a href="#">基本信息</a></li>
+               <li><a href="#">教育管理</a></li>
+               <li><a href="#">证书管理</a></li>
+               <li><a href="#">一线工作经历</a></li>
+               <li><a href="#">密码修改</a></li>
+           </ul>
+            </div>
+            <div id="tableRight">
+                <span id="subtitle2">{{subtitle2}}</span>
+                <div id="tableDiv">
+                  <table id="certificateTable">
+                    <tr class="headTr">
+                      <td>证书类型</td>
+                      <td>证书编号</td>
+                      <td>证书名称</td>
+                      <td>证书等级</td>
+                      <td>评审机构</td>
+                      <td>评审时间</td>
+                      <td>操作</td>
+                    </tr>
+                    <!--循环生成信息，index作为data数组的下标索引，将index用作id的一部分，便于准确定位操作DOM，key用于绑定课程信息，保证索引不随着数组元素增删自动发生变化-->
+                    <tr v-for="(certificate,index) in certificates" :id="'InputTr'+index" :key="certificate.certificateNum">
+                      <td>
+                        <select :id="'certificateSelect'+index" v-model="certificate.certificateType" disabled="disabled">
+                          <option>请选择证书类型</option>
+                          <option v-for="certificateType in certificateTypes">{{ certificateType }}</option>
+                        </select>
+                      </td>
+                      <td><input :value="certificate.certificateNum" readonly></td>
+                      <td><input v-model.lazy="certificate.certificateName" readonly></td>
+                      <td><input v-model.lazy="certificate.certificateLevel" readonly></td>
+                      <td><input v-model.lazy="certificate.reviewIstitution" readonly></td>
+                      <td><input v-model.lazy="certificate.reviewTime" readonly></td>
+                      <td class="operationTd">
+                        <!--编辑功能，初始显示，编辑时隐藏-->
+                        <img :id="'EditImg'+index" src="./images/edit.png" @click="editClick(index)">
+                        <!--保存功能，初始隐藏，编辑时显示-->
+                        <img :id="'SaveImg'+index" class="saveImg" src="./images/save.png" @click="saveClick(index)">
+                        <!--取消编辑并重置，初始隐藏，编辑时显示-->
+                        <img :id="'RestoreImg'+index" class="restoreImg" src="./images/restore.png" @click="restoreClick(index)">
+                        <!--删除功能，初始显示，编辑时隐藏-->
+                        <img :id="'DeleteImg'+index" src="./images/delete.png" @click="deleteClick(index)">
+                      </td>
+                    </tr>
+                    <tr>
+                      <!--增加功能，通过vue增加循环数组元素，但input DOM不会即时创建，所以暂时无法增加的同时处于编辑状态-->
+                      <td><img src="./images/add.png" @click="addClick(certificates)"></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </table>
+                </div>
+            </div>
+      </div>
+</template>
+
+<script>
+    export default {
+        name:'workExperience-teacher-tableDiv',
+        data () {
+            return {
+                subtitle1:'个人信息',
+                subtitle2:'证书管理',
+                certificates:[],
+                certificateTypes:['教师资格证','护师职业资格证','医师职业资格证']
+            }
+        },
+      beforeMount:function(){
+        this.$http.post('./teacherManage/getTeacherCertInfo',{},
+          {"Content-Type":"application/json"}).then(function (response) {
+            console.log(response);
+            this.certificates = response.body.certificatemanage;
+            for(var i=0;i<response.body.certificatemanage.length;i++){
+              if(response.body.certificatemanage[i].certificateType=="1"){
+                this.certificates[i].certificateType="教师资格证"
+              }else if(response.body.certificatemanage[i].certificateType=="2"){
+                this.certificates[i].certificateType="护师职业资格证"
+              }else if(response.body.certificatemanage[i].certificateType=="3"){
+                this.certificates[i].certificateType="医师职业资格证"
+              }
+            }
+          },
+          function(error){
+            console.log("获取error:");
+            console.log(error);
+          });
+      },
+        methods: {
+//        编辑功能
+          editClick: function(index){
+            var inputTr = document.getElementById("InputTr"+index);
+            var input = inputTr.getElementsByTagName("input");
+            var select = document.getElementById("certificateSelect"+index);
+            var editImg = document.getElementById("EditImg"+index);
+            var saveImg = document.getElementById("SaveImg"+index);
+            var restoreImg = document.getElementById("RestoreImg"+index);
+            var deleteImg = document.getElementById("DeleteImg"+index);
+            var i = null;
+//          使课程信息的输入标签变为可输入，显示边框
+            for(i = 0;i<input.length;i++){
+              select.disabled = false;
+              input[i].readOnly = false;
+              input[i].style.border = "thin solid";
+            }
+//        隐藏编辑和删除功能图标,显示保存和重置功能图标
+            editImg.style.display = "none";
+            saveImg.style.display = "inline";
+            deleteImg.style.display = "none";
+            restoreImg.style.display = "inline";
+          },
+//        取消修改,重置数据,退出编辑
+          restoreClick: function(index){
+            if(confirm("您确定取消编辑并重置该课程信息吗？")){
+              var inputTr = document.getElementById("InputTr"+index);
+              var input = inputTr.getElementsByTagName("input");
+              var select = document.getElementById("certificateSelect"+index);
+              var editImg = document.getElementById("EditImg"+index);
+              var saveImg = document.getElementById("SaveImg"+index);
+              var restoreImg = document.getElementById("RestoreImg"+index);
+              var deleteImg = document.getElementById("DeleteImg"+index);
+              var i = null;
+//            重置数据到value，需要后端返回原始数据，处理回调
+
+//            使课程信息的输入标签变为不可输入，隐藏边框
+              for(i = 0;i<input.length;i++){
+                select.disabled = true;
+                input[i].readOnly = true;
+                input[i].style.border = "none";
+              }
+              editImg.style.display = "inline";
+              saveImg.style.display = "none";
+              deleteImg.style.display = "inline";
+              restoreImg  .style.display = "none";
+            }
+          },
+          deleteClick: function(index){
+//          从data中的课程信息数组中删除
+//          预留功能,将data提交到后端,实现删除数据,处理回调
+            if(confirm("您确定要删除该奖项吗？")){
+              console.log(this.certificates[index].certificateId);
+              this.$http.post('./teacherManage/deleteTeacherCertInfo',{
+                "certificateId":this.certificates[index].certificateId
+              },{"Content-Type":"application/json"}).then(function (response){
+                if(response.body.result=='1')
+                { alert("操作成功！");
+                  this.certificates.splice(index, 1);
+                }
+              }, function(error){
+                console.log("传递error:");
+                console.log(error);
+              });
+
+            }
+          },
+//        保存功能
+          saveClick: function(index){
+
+              if(this.certificates[index].certificateType=="教师资格证"){
+                this.certificates[index].certificateType="1"
+              }else if(this.certificates[index].certificateType=="护师职业资格证"){
+                this.certificates[index].certificateType="2"
+              }else if(this.certificates[index].certificateType=="医师职业资格证"){
+                this.certificates[index].certificateType="3"
+              }
+
+            if(confirm("您确定提交保存该课程吗？")){
+              this.$http.post('./teacherManage/editTeacherCertInfo',{
+                "certificateType":this.certificates[index].certificateType,
+                "certificateNum":this.certificates[index].certificateNum,
+                "certificateName":this.certificates[index].certificateName,
+                "certificateLevel":this.certificates[index].certificateLevel,
+                "reviewIstitution":this.certificates[index].reviewIstitution,
+                "reviewTime":this.certificates[index].reviewTime
+              },{"Content-Type":"application/json"}).then(function (response){
+                if(response.body.result=='1')
+                {alert("操作成功！")}
+              }, function(error){
+                console.log("传递error:");
+                console.log(error);
+              });
+              var inputTr = document.getElementById("InputTr"+index);
+              var input = inputTr.getElementsByTagName("input");
+              var select = document.getElementById("certificateSelect"+index);
+              var editImg = document.getElementById("EditImg"+index);
+              var saveImg = document.getElementById("SaveImg"+index);
+              var restoreImg = document.getElementById("RestoreImg"+index);
+              var deleteImg = document.getElementById("DeleteImg"+index);
+              var i = null;
+//            向后端发送需要保存的数据，并处理回调
+              this.certificates[index].certificateNum = input[0].value;
+              for(i = 0;i<input.length;i++){
+                select.disabled = true;
+                input[i].readOnly = true;
+                input[i].style.border = "none";
+              }
+
+//          预留功能,将data提交到后端,实现保存数据,处理回调
+              editImg.style.display = "inline";
+              saveImg.style.display = "none";
+              deleteImg.style.display = "inline";
+              restoreImg.style.display = "none";
+            }
+          },
+//        增加功能
+          addClick: function (courses){
+            courses.push(
+              { certificateType:'请选择证书类型', certificateNum:'请编辑后保存', certificateName:'请编辑后保存', certificateLevel:'请编辑后保存', reviewIstitution:'请编辑后保存', reviewTime:'请编辑后保存' }
+            );
+          }
+        }
+
+    }
+
+</script>
+
+<style lang="css" scoped>
+  @import '../../../../assets/css/external.css';
+    html{
+        font-size: 16px;
+    } /*整个页面的样式*/
+    #workExperience-teacher-tableDiv{
+       position:relative;
+        display: flex;
+        height:30rem;
+      background-color: #f3f3f3;
+    }/*整个桌面的大小*/
+    #tableLeft{
+        position:relative;
+        top:2rem;
+        left:4rem;
+        height:30rem;
+        width:20%;
+        background-color: white;
+        text-align: center;
+        border:0.15rem solid lightgrey;
+    }/*左侧的CSS*/
+    #tableRight{
+        position: relative;
+        float:right;
+        top:2rem;
+        margin-left:7rem;
+        height:30rem;
+        width:65%;
+        background-color: white;
+        text-align: left;
+        border:0.15rem solid lightgrey;
+        padding-left:1rem;
+        padding-right:1rem;
+    }/*右侧的CSS*/
+    #tableDiv{
+        border-top: 0.15rem solid #158064;
+        position: relative;
+        top:1rem;
+        height:85%;
+        overflow-y: auto;
+    }/*表格的CSS*/
+    #subtitle1{
+        font-size: 1.3rem;
+        position: relative;
+        top:0.5rem;
+
+    }/*标题一*/
+    #subtitle2{
+        font-size: 1.3rem;
+        position: relative;
+        top:0.5rem;
+        left:2rem;
+    }/*标题二*/
+    ul{ list-style-type:none;}/*去点*/
+    li{
+        height:3rem;
+        border-bottom:0.15rem solid lightgrey ;
+        position: relative;
+        right: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }/*列表*/
+    #li{
+        border-top: 0.15rem solid #158064;
+    }/*左边绿色的那条线*/
+    #certificateTable{
+        margin-top: 0.5rem;
+        width: 100%;
+        table-layout: fixed;
+        border: thin solid #E3E3E3;
+        border-collapse: collapse;
+    }
+    img{
+
+    }
+    #certificateTable td{
+        border-bottom: thin solid #E3E3E3;
+        height: 2.5rem;
+        text-align: center;
+
+    }
+    Select{
+        height: 1.5rem;
+        width: 9rem;
+        outline: none;
+    }
+    input{
+        outline:none;
+        border: none;
+        text-align: center;
+        width: 6rem;
+        font-size: 0.8rem;
+    }
+    img{
+        width: 2rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    img:hover{
+        cursor: pointer;
+    }
+    /*保存功能图标*/
+    .saveImg{
+        display: none;
+    }
+    /*重置功能图标*/
+    .restoreImg{
+        display: none;
+    }
+    /*功能图标*/
+    .operationTd{
+        width: 8.3rem;
+    }
+    button{
+        color: white;
+        background-color: mediumseagreen;
+        border: none;
+        border-radius: 0.2rem;
+        width: 5rem;
+        height: 2rem;
+        min-width: 5rem;
+    }
+    select{
+      border: 0.1rem solid #d4d4d9;
+      border-radius: 0.7rem;
+      outline: none;
+      /*padding: 0.3rem 0.5rem;*/
+     width:6rem;
+      font-size: 0.8rem;
+    }
+  /*  input{
+      border: 0.1rem solid #d4d4d9;
+      border-radius: 0.3rem;
+      outline: none;
+      padding: 0.3rem 0.5rem;
+      font-size: 0.8rem;
+      width:6rem;
+    }*/
+</style>

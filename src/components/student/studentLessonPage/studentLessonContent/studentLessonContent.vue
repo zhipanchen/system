@@ -1,0 +1,202 @@
+<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
+    <div id="myLessonContent">
+      <div class="blank">
+      <select class="selectStyle1" v-model="yearSelect">
+        <option value="选择学年" disabled selected>选择学年</option>
+        <option v-for="year in years" v-bind:value="year">{{year}}</option>
+      </select>
+
+      <select class="selectStyle2" v-model="termSelect">
+        <option value="选择学期" disabled selected>选择学期</option>
+        <option v-for="term in terms" v-bind:value="term">{{term}}</option>
+      </select>
+
+        <select class="selectStyle2" v-model="weekSelect">
+          <option value="选择周数" disabled selected>选择周数</option>
+          <option v-for="(week,index) in weeks" v-bind:value=(index+1)>{{week}}</option>
+        </select>
+
+      <button class="searchButton am-btn am-btn-success am-radius" @click="searchClick">查找</button>
+        </div>
+
+      <div id="checkCourse_tableDiv">
+        <table id="tableDiv" class="normalTable" border="1">
+          <tr  id="weekdayTr">
+            <th>节次/周次</th>
+            <th>星期一</th>
+            <th>星期二</th>
+            <th>星期三</th>
+            <th>星期四</th>
+            <th>星期五</th>
+          </tr>
+          <tr>
+            <td class="sectionTd">第一节 <br> 8:30-9:15</td>
+            <td rowspan="2">{{ course1.firstCourse }}</td>
+            <td rowspan="2">{{ course1.secondCourse }}</td>
+            <td rowspan="2">{{ course1.thirdCourse }}</td>
+            <td rowspan="2">{{ course1.fourthCourse }}</td>
+            <td rowspan="2">{{ course1.fifthCourse }}</td>
+          </tr>
+
+          <tr>
+            <td class="sectionTd">第二节 <br> 9:20-10:05</td>
+          </tr>
+
+          <tr>
+          <td class="sectionTd">第三节 <br> 10:20-11:05</td>
+          <td rowspan="2">{{ course1.sixthCourse }}</td>
+          <td rowspan="2">{{ course1.seventhCourse }}</td>
+          <td rowspan="2">{{ course1.eighthCourse }}</td>
+          <td rowspan="2">{{ course1.ninthCourse }}</td>
+          <td rowspan="2">{{ course1.tenthCourse }}</td>
+        </tr>
+
+          <tr>
+            <td class="sectionTd">第四节 <br> 11:10-11:55</td>
+          </tr>
+
+          <tr>
+            <td class="sectionTd">第五节 <br> 14:30-15:15</td>
+            <td rowspan="2">{{ course1.eleventhCourse }}</td>
+            <td rowspan="2">{{ course1.twelfthCourse }}</td>
+            <td rowspan="2">{{ course1.thirteenthCourse }}</td>
+            <td rowspan="2">{{ course1.fourteenthCourse}}</td>
+            <td rowspan="2">班会</td>
+          </tr>
+
+          <tr>
+            <td class="sectionTd">第六节 <br> 15:20-16:05</td>
+          </tr>
+
+        </table>
+      </div>
+      <div id="DivNext">
+        <table id="tableDivNext" class="normalTable" border="1">
+          <tr  id="weekdayTrs">
+            <th>课程编码</th>
+            <th>课程名称</th>
+            <th>课程序号</th>
+            <th>教师</th>
+          </tr>
+          <tr  v-for="course2 in courses2" id="courseTrs">
+            <td>{{ course2.courseSerial }} </td>
+            <td>{{ course2.courseName }}</td>
+            <td>{{ course2.courseSerialNumber }}</td>
+            <td>{{ course2.courseTeacher }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: 'myLessonContent',
+        data () {
+            return {
+              yearSelect:"选择学年",
+              termSelect:"选择学期",
+              weekSelect:'选择周数',
+              years:[
+                '2016-2017',
+                '2017-2018',
+                '2018-2019',
+                '2019-2020',
+              ],
+              terms:[
+                1,
+                2,
+              ],
+              weeks: [
+                '第一周',
+                '第二周',
+                '第三周',
+                '第四周',
+                '第五周',
+                '第六周',
+                '第七周',
+                '第八周',
+                '第九周',
+                '第十周',
+                '第十一周',
+                '第十二周',
+                '第十三周',
+                '第十四周',
+                '第十五周',
+                '第十六周',
+                '第十七周',
+                '第十八周',
+                '第十九周',
+                '第二十周'
+              ],
+              course1:{},
+              courses2:[]
+            }
+        },
+      methods:
+      {
+        searchClick:function(){
+          this.$http.post('./studentSeeCurriculum', {
+            year: this.yearSelect,
+            term: this.termSelect,
+            week: this.weekSelect
+          }, {"Content-Type": "application/json"}).then(function (response) {
+            this.course1 = response.body.studentCurriculum[0];
+            this.courses2 = response.body.studentDetailCurriculum;
+          });
+        }
+      }
+    }
+</script>
+
+<style scoped>
+    html {
+        font-size: 100%;
+    }
+    .selectStyle1{
+      margin-left:5rem;
+    }
+    .selectStyle2{
+      margin-left:5rem;
+    }
+    #myLessonContent{
+      height:2.2rem;
+    }
+    .searchButton{
+      float:right;
+      margin-right:5rem;
+      margin-top:0.5rem;
+      width:5.6rem;
+      outline: none;
+    }
+    #checkCourse_tableDiv{
+      padding:2rem 5rem;
+      background-color:#f3f3f3;
+    }
+    #tableDiv{
+      position: relative;
+      width: 100%;
+      border: 0 solid #d4d4d9;
+      border-collapse: collapse;
+      table-layout: fixed;
+      text-align: center;
+    }
+    #DivNext{
+      padding:0rem 5rem 4rem 5rem;
+      background-color:#f3f3f3;
+    }
+    #tableDivNext{
+      position: relative;
+      width: 100%;
+      border: 0 solid #d4d4d9;
+      border-collapse: collapse;
+      table-layout: fixed;
+      text-align: center;
+    }
+
+    @media screen and (max-width: 1023px) {
+        html {
+            font-size: 56%;
+        }
+    }
+</style>
