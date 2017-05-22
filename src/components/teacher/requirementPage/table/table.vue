@@ -7,7 +7,7 @@
           {{option2.text}}
         </option>
       </select>
-      <button @click="chooseDay(option2value)" class="am-btn am-btn-success am-radius">提交</button>
+      <button @click="chooseDia(option2value)" class="am-btn am-btn-success am-radius" >提交</button>
     </div>
     <div id="back">
     <div id="show">
@@ -34,6 +34,34 @@
     </table>
     </div>
    </div>
+    <Modal
+      v-model="modal1"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定提交该申请吗？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="chooseDay(ooption2value)">确定</button>
+        <button id="modalBtn" @click="modal1 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+      v-model="modal2"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>操作失败！</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <!--<button id="modalBtn" @click="chooseDay">确定</button>-->
+        <button id="modalBtn" @click="modal2 = false">确定</button>
+      </div>
+    </Modal>
     </div>
 </template>
 
@@ -51,11 +79,15 @@
                 {text:'星期四',value:'4'},
                 {text:'星期五',value:'5'}
               ],
-              tableList:[]
+              tableList:[],
+              modal1: false,
+              modal2: false,
+              ooption2value:''
             }
         },
       beforeMount:function(){
         this.$http.post('./teacherRestShowApply',{},
+//          this.$http.post('../jsonphp/requirement.php',{},
           {"Content-Type":"application/json"}).then(function(response){
             console.log(response.body);
             this.tableList = response.body.tableList;
@@ -73,22 +105,31 @@
         });
       },
       methods:{
+        chooseDia:function(option2value){
+          this.ooption2value=option2value;
+          this.modal1 = true;
+        },
         chooseDay:function(value){
-
+          this.modal1 = false;
           this.$http.post('./teacherRestApplyHandle',{
-            "appTeacherCommand": value
+//          this.$http.post('../jsonphp/requirement.php',{
+          "appTeacherCommand": value
           },{"Content-Type":"application/json"}).then(function (response) {
               console.log("结果");
               console.log(response.body);
             if(response.body.result=="1")
-            {alert("操作成功！")}
+            {this.$Message.success('操作成功！');
+              var t=setTimeout(" location.reload();",4000)
+            }
             else
-            {alert("操作失败！")}
+//            {this.$Message.error('操作失败！');}
+            { this.modal2 = true;}
             },
             function(error){
               console.log("结果error:");
               console.log(error);
             });
+//            location.reload();
         }
       }
     }
@@ -106,6 +147,7 @@
     background-color: white;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    /*justify-content:space-between;*/
  }
   #show{
       background-color: white;
@@ -130,8 +172,8 @@
 
     /*height: 2.5rem;*/
     min-width: 5rem;
-    position: absolute;
-    left:70rem;
+    /*position: absolute;*/
+    margin-left:3rem;
 
   }
   table{

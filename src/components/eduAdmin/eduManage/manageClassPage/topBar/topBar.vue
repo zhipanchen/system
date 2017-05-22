@@ -1,7 +1,10 @@
 <template>
   <div id="manageClassPageTopBar" class="topBarDiv am-btn-group">
     <!--导航栏-->
-    <button class="am-btn am-btn-success btn-active" style="margin-left: 5rem">异动详情</button>
+    <router-link to="/textbookMgmt"><button class="am-btn am-btn-success" style="margin-left: 5rem">教材管理</button></router-link>
+    <router-link to="/eduAdminManageGrade"><button class="am-btn am-btn-success">年级管理</button></router-link>
+    <button class="am-btn am-btn-success btn-active">班级管理</button>
+    <router-link to="/classroomMgmt"><button class="am-btn am-btn-success">教室管理</button></router-link>
   </div>
 </template>
 

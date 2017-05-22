@@ -1,24 +1,37 @@
 <template>
   <div id="tchingPlan" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
-    <div v-for="(yearAndCourse,yearTypeIndex) in yearAndCourseList">
-      <div :id="yearTypeIndex + 'YearsTypeDiv'" class="yearsTypeDiv">
-        <!--年制模块下拉菜单-->
-        <!--<span><img :id="yearType.English + 'Arrow'" class="yearsTypeImg" :src="arrowright"></span>-->
-        <span :id="yearTypeIndex + 'P'" class="yearsTypeP">{{yearAndCourse.yearType}}年制</span>
-        <span><button id="yearTypeIndex + 'Module'" class="yearButton">下载模板</button></span>
+    <div>
+      <div class="yearsTypeDiv">
+        <span class="yearsTypeP">5年制培养方案</span>
+        <span><button class="yearButton" @click="downloadFormClick">下载模板</button></span>
       </div>
-
-      <div :id="yearTypeIndex + 'PlanMenu'">
-        <div v-for="(grade,gradeIndex) in yearAndCourse.gradeList">
-          <div :id="yearTypeIndex + 'GradePlanDiv' + gradeIndex" class="gradePlanDiv">
-            <!--年级教学进程下拉菜单-->
-            <span><img :id="yearTypeIndex + 'Arrow' + gradeIndex" class="gradePlanImg" @click="tableSlideToggle(yearTypeIndex,gradeIndex)" :src="arrowright"></span>
-            <span :id="yearTypeIndex + 'P' + gradeIndex" class="gradePlanP" @click="tableSlideToggle(yearTypeIndex,gradeIndex)">{{grade.gradeName}}级</span>
-            <span><button class="gradeButton">导入</button></span>
-            <span><button class="gradeButton">导出</button></span>
+      <!--年制栏-->
+      <div>
+        <div v-for="(grade,gradeIndex) in gradeIdArr">
+          <div v-if="grade.yearType==='5'" :id="'5GradePlanDiv' + gradeIndex" class="gradePlanDiv">
+            <span><img :id="'5Arrow' + gradeIndex" class="gradePlanImg" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)" :src="arrowright"></span>
+            <span :id="'5P' + gradeIndex" class="gradePlanP" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)">{{grade.gradeName}}级</span>
+            <span><button class="gradeButton" @click="downloadClick(gradeIdList[gradeIndex])">下载</button></span>
+            <span style="display: inline-block;float: right;margin-bottom: 0.3rem">
+              <Upload
+                ref="upload"
+                :data="{'gradeId':gradeIdList[gradeIndex]}"
+                :show-upload-list = false
+                :format="['xls','xlsx']"
+                :max-size="2048"
+                :on-format-error="handleFormatError"
+                :on-exceeded-size="handleSizeError"
+                :on-progress="handleProgress"
+                :on-success="handleSuccess"
+                :on-error="handleError"
+                action="./schoolCoursePlan/importExcel">
+                <button type="ghost" id="leadIn" class="gradeButton">上传</button>
+              </Upload>
+              <!--上传的data数据用对象传输-->
+            </span>
           </div>
-
-          <div :id="yearTypeIndex + 'Table' + gradeIndex" style="display: none">
+          <!--年级教学进程下拉菜单-->
+          <div :id="'5Table' + gradeIndex" style="display: none">
             <table class="normalTable" style="table-layout: fixed">
               <thead>
               <tr>
@@ -70,13 +83,13 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="course in grade.courseList">
+              <tr v-for="course in courseAllList[gradeIndexArr[gradeIndex]].courseList">
                 <td v-text="course.courseId"></td>
-                <td v-text="course.courseType"></td>
+                <td v-text="course.courseTypeName"></td>
                 <td v-text="course.courseName"></td>
-                <td v-text="course.studentTimeAdd"></td>
-                <td v-text="course.studentTimeTheory"></td>
-                <td v-text="course.studentTimePractice"></td>
+                <td v-text="course.totalHours"></td>
+                <td v-text="course.theoryHours"></td>
+                <td v-text="course.practice"></td>
                 <td v-text="course.term1st"></td>
                 <td v-text="course.term1nd"></td>
                 <td v-text="course.term2st"></td>
@@ -97,8 +110,130 @@
                 <td v-text="course.term9nd"></td>
                 <td v-text="course.term10st"></td>
                 <td v-text="course.term10nd"></td>
-                <td v-text="course.inspect"></td>
-                <td v-text="course.exam"></td>
+                <td v-text="course.checkSemesters"></td>
+                <td v-text="course.examSemesters"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <!--课程信息table-->
+        </div>
+      </div>
+    </div>
+    <!--5年制培养方案-->
+    <div>
+      <div class="yearsTypeDiv">
+        <!--年制模块下拉菜单-->
+        <!--<span><img :id="yearType.English + 'Arrow'" class="yearsTypeImg" :src="arrowright"></span>-->
+        <span class="yearsTypeP">3年制培养方案</span>
+        <span><button class="yearButton" @click="downloadFormClick">下载模板</button></span>
+      </div>
+
+      <div>
+        <div v-for="(grade,gradeIndex) in gradeIdArr">
+          <div v-if="grade.yearType==='3'" :id="'3GradePlanDiv' + gradeIndex" class="gradePlanDiv">
+            <!--年级教学进程下拉菜单-->
+            <span><img :id="'3Arrow' + gradeIndex" class="gradePlanImg" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)" :src="arrowright"></span>
+            <span :id="'3P' + gradeIndex" class="gradePlanP" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)">{{grade.gradeName}}级</span>
+            <span><button class="gradeButton" @click="downloadClick(gradeIdList[gradeIndex])">下载</button></span>
+            <span style="display: inline-block;float: right;margin-bottom: 0.3rem">
+              <Upload
+                ref="upload"
+                :data="{'gradeId':gradeIdList[gradeIndex]}"
+                :show-upload-list = false
+                :format="['xls','xlsx']"
+                :max-size="2048"
+                :on-format-error="handleFormatError"
+                :on-exceeded-size="handleSizeError"
+                :on-progress="handleProgress"
+                :on-success="handleSuccess"
+                :on-error="handleError"
+                action="./schoolCoursePlan/importExcel">
+                <button type="ghost" id="leadIn" class="gradeButton">上传</button>
+              </Upload>
+            </span>
+          </div>
+          <div :id="'3Table' + gradeIndex" style="display: none">
+            <table class="normalTable" style="table-layout: fixed">
+              <thead>
+              <tr>
+                <th width="6%" rowspan="3">课程编号</th>
+                <th width="6%" rowspan="3">课程类别</th>
+                <th width="6%" rowspan="3">课程名称</th>
+                <th width="12%" rowspan="2" colspan="3">学时</th>
+                <th width="64%" colspan="20">执行学期</th>
+                <th width="6%" rowspan="2" colspan="2">考核学期</th>
+              </tr>
+              <tr>
+                <td colspan="2">1</td>
+                <td colspan="2">2</td>
+                <td colspan="2">3</td>
+                <td colspan="2">4</td>
+                <td colspan="2">5</td>
+                <td colspan="2">6</td>
+                <td colspan="2">7</td>
+                <td colspan="2">8</td>
+                <td colspan="2">9</td>
+                <td colspan="2">10</td>
+              </tr>
+              <tr>
+                <td>总计</td>
+                <td>理论</td>
+                <td>实践</td>
+                <td>前9周</td>
+                <td>后9周</td>
+                <td>前9周</td>
+                <td>后9周</td>
+                <td>前9周</td>
+                <td>后9周</td>
+                <td>前9周</td>
+                <td>后9周</td>
+                <td>前9周</td>
+                <td>后9周</td>
+                <td>前9周</td>
+                <td>后9周</td>
+                <td>前9周</td>
+                <td>后9周</td>
+                <td>前9周</td>
+                <td>后9周</td>
+                <td>前9周</td>
+                <td>后9周</td>
+                <td>前9周</td>
+                <td>后9周</td>
+                <td>考察</td>
+                <td>考试</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="course in courseAllList[gradeIndexArr[gradeIndex]].courseList">
+                <td v-text="course.courseId"></td>
+                <td v-text="course.courseTypeName"></td>
+                <td v-text="course.courseName"></td>
+                <td v-text="course.totalHours"></td>
+                <td v-text="course.theoryHours"></td>
+                <td v-text="course.practice"></td>
+                <td v-text="course.term1st"></td>
+                <td v-text="course.term1nd"></td>
+                <td v-text="course.term2st"></td>
+                <td v-text="course.term2nd"></td>
+                <td v-text="course.term3st"></td>
+                <td v-text="course.term3nd"></td>
+                <td v-text="course.term4st"></td>
+                <td v-text="course.term4nd"></td>
+                <td v-text="course.term5st"></td>
+                <td v-text="course.term5nd"></td>
+                <td v-text="course.term6st"></td>
+                <td v-text="course.term6nd"></td>
+                <td v-text="course.term7st"></td>
+                <td v-text="course.term7nd"></td>
+                <td v-text="course.term8st"></td>
+                <td v-text="course.term8nd"></td>
+                <td v-text="course.term9st"></td>
+                <td v-text="course.term9nd"></td>
+                <td v-text="course.term10st"></td>
+                <td v-text="course.term10nd"></td>
+                <td v-text="course.checkSemesters"></td>
+                <td v-text="course.examSemesters"></td>
               </tr>
               </tbody>
             </table>
@@ -118,66 +253,68 @@
       return {
         arrowright:arrowright,
         arrowdown:arrowdown,
-        yearAndCourseList:[
+        indexBool:false,
+//        courseIndex:'0',
+        gradeIdList:[
+          '20145','20155','20133','20143'
+        ],
+        gradeIdArr:[
+//          {gradeName:'',yearType:''}
+        ],
+        gradeIndexArr:[
+          '0','0','0','0','0','0','0','0'
+        ],
+        courseAllList:[
           {
-            yearType:'3',
-            gradeList:[
-              {
-                gradeName:'2013',
-                courseList:[
-                  {courseId:'33345',courseType:'公共基础课',courseName:'职业生涯规划',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'1',exam:''},
-                  {courseId:'33346',courseType:'公共基础课',courseName:'哲学与人生',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'2',exam:''},
-                  {courseId:'33347',courseType:'公共基础课',courseName:'经济政治与社会',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'3',exam:''}
-                ]
-              },
-              {
-                gradeName:'2012',
-                courseList:[
-                  {courseId:'32345',courseType:'公共基础课',courseName:'职业生涯规划',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'1',exam:''},
-                  {courseId:'32346',courseType:'公共基础课',courseName:'哲学与人生',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'2',exam:''},
-                  {courseId:'32347',courseType:'公共基础课',courseName:'经济政治与社会',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'3',exam:''}
-                ]
-              }
-            ]
-          },
-          {
-            yearType:'5',
-            gradeList:[
-              {
-                gradeName:'2015',
-                courseList:[
-                  {courseId:'55345',courseType:'公共基础课',courseName:'职业生涯规划',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'1',exam:''},
-                  {courseId:'55346',courseType:'公共基础课',courseName:'哲学与人生',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'2',exam:''},
-                  {courseId:'55347',courseType:'公共基础课',courseName:'经济政治与社会',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'3',exam:''}
-                ]
-              },
-              {
-                gradeName:'2014',
-                courseList:[
-                  {courseId:'54345',courseType:'公共基础课',courseName:'职业生涯规划',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'1',exam:''},
-                  {courseId:'54346',courseType:'公共基础课',courseName:'哲学与人生',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'2',exam:''},
-                  {courseId:'54347',courseType:'公共基础课',courseName:'经济政治与社会',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',inspect:'3',exam:''}
-                ]
-              }
+            grade:'',
+            yearType:'',
+            courseList:[
+              {courseId:'55345',courseTypeName:'公共基础课',courseName:'职业生涯规划',totalHours:'36',theoryHours:'32',practice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',checkSemesters:'1',examSemesters:''},
+              {courseId:'55346',courseTypeName:'公共基础课',courseName:'哲学与人生',totalHours:'36',theoryHours:'32',practice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',checkSemesters:'2',examSemesters:''},
+              {courseId:'55347',courseTypeName:'公共基础课',courseName:'经济政治与社会',totalHours:'36',theoryHours:'32',practice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',checkSemesters:'3',examSemesters:''}
             ]
           }
         ]
       }
     },
     beforeMount:function() {
-      this.$http.post('../teachingPlanJson',{},{
+      this.$http.post('./schoolCoursePlan/showGrade',{},{
         "Content-Type":"application/json"
       }).then(function (response) {
         console.log(response);
-        this.yearAndCourseList = response.body.yearAndCourseList;
+        this.gradeIdList = response.body.gradeIdList;
+        for(var i=0;i<this.gradeIdList.length;i++){
+          this.gradeIdArr.push({gradeName:this.gradeIdList[i].slice(0,4),yearType:this.gradeIdList[i].slice(4,5)});
+        }
       },function(error){
         console.log("获取error");
       });
     },
     methods:{
-      tableSlideToggle:function(yearTypeIndex,gradeIndex){
-        var table = document.getElementById(yearTypeIndex + 'Table' + gradeIndex);
-        var arrow = document.getElementById(yearTypeIndex + 'Arrow' + gradeIndex);
+      tableSlideToggle:function(yearType,gradeIndex,gradeName){
+        var table = document.getElementById(yearType + 'Table' + gradeIndex);
+        var arrow = document.getElementById(yearType + 'Arrow' + gradeIndex);
+        this.indexBool = false;
+        for(var i=0;i<this.courseAllList.length;i++){
+          if(this.courseAllList[i].grade===gradeName && this.courseAllList[i].yearType===yearType){
+            this.gradeIndexArr[gradeIndex] = i;
+            this.indexBool = true;
+            break;
+          }
+        }
+        if(this.indexBool === false){
+          this.$http.post('./schoolCoursePlan/showPlan',{
+            "gradeId":this.gradeIdList[gradeIndex]
+          },{
+            "Content-Type":"application/json"
+          }).then(function (response) {
+            console.log(response);
+            this.courseAllList.push({grade:response.body.grade,yearType:response.body.yearType,courseList:response.body.schoolCoursePlanVoList});
+            this.gradeIndexArr[gradeIndex] = this.courseAllList.length - 1;
+          },function(error){
+            console.log("获取error");
+          });
+        }
         if (arrow.src === this.arrowright){
           table.style.display = "inline";
           arrow.src = this.arrowdown;
@@ -186,6 +323,39 @@
           table.style.display = "none";
           arrow.src = this.arrowright;
         }
+      },
+      handleFormatError:function(file){
+        this.$Notice.warning({
+          title: '文件格式不正确',
+          desc: '文件 ' + file.name + ' 格式不正确，请上传xls或xlsx表格。'
+        });
+      },
+      handleSizeError:function(file){
+        this.$Notice.warning({
+          title: '超出文件大小限制',
+          desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+        });
+      },
+      handleProgress:function(){
+        this.$Message.loading("正在上传中...");
+      },
+      handleSuccess:function(res){
+        if(res.result===1){
+          this.$Message.success("上传成功！");
+        }else{
+          var result = res.result;
+          this.$Message.error(result);
+        }
+      },
+//      从后台接收的数据必须先用变量接收后再应用
+      handleError:function(){
+        this.$Message.error("上传失败");
+      },
+      downloadFormClick:function(){
+        location.href="./schoolCoursePlan/downloadTemplet";
+      },
+      downloadClick:function(gradeId){
+        location.href="./schoolCoursePlan/exportExcel?gradeId="+gradeId;
       }
     }
   }

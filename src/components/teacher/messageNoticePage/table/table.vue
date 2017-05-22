@@ -155,7 +155,9 @@
               this.iconSrc6=icon2;
             }
           },
-            freshMes:function(){}
+            freshMes:function(){
+              this.$Message.success('刷新成功！');
+            }
 
         }
 

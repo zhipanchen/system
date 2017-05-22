@@ -28,16 +28,9 @@ export default {
 }
 </script>
 
-<style>
-.curSettings {
-  text-align: left;
-  margin: 0.5rem 1rem;
-}
-.curSettings div {
-  margin: 0.2rem 0;
-}
-.curSettings span {
-  margin-right: 4rem;
-  font-size: 0.9rem;
+<style scoped>
+@media screen and (max-width: 1023px) {
+  html {
+  }
 }
 </style>

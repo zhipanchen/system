@@ -28,7 +28,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 /*.tableSelect {
 	margin: 0.6rem 5rem;
@@ -40,5 +40,8 @@ export default {
 	font-size: 0.8rem;
 	outline: none;
 }*/
-
+@media screen and (max-width: 1023px) {
+  html {
+  }
+}
 </style>

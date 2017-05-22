@@ -1,11 +1,14 @@
 <template>
 <div>
 	<div class="tableSelect">
-      <input v-model="teacherName" placeholder="教师姓名" @change="inputSearch()">
-      <button class="am-btn am-btn-success am-radius" @click="searchBtn()">查询</button>
-      <button class="am-btn am-btn-success am-radius" @click="exportTemplateBtn()">下载模板</button>
-      <button class="am-btn am-btn-success am-radius buttonPart" @click="exportBtn()">导出</button>
-      <button class="am-btn am-btn-success am-radius buttonPart" @click="inportBtn()">导入</button>
+      	<select v-model="selTeacher">
+			<option disabled>选择教师</option>
+			<option v-for="teacherListOne in teacherInfo" :value="teacherListOne.teacherId">{{teacherListOne.teacherName}}</option>
+		</select>
+      	<button class="am-btn am-btn-success am-radius" @click="searchBtn()">查询</button>
+      	<!-- <button class="am-btn am-btn-success am-radius" @click="exportTemplateBtn()">下载模板</button> -->
+      	<button class="am-btn am-btn-success am-radius rightBtn" @click="exportBtn()">导出</button>
+      	<!-- <button class="am-btn am-btn-success am-radius buttonPart" @click="inportBtn()">导入</button> -->
     </div>
 
 	<div id="salaryBody">
@@ -23,20 +26,28 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="data in coursePay">
+					<tr v-for="data in teacherPayrollList">
 						<td v-text="data.teacherId"></td>
 						<td v-text="data.teacherName"></td>
-						<td v-text="data.jobName"></td>
-						<td v-text="data.courseName"></td>
+						<td>{{data.workUnit}}  {{data.workDuty}}</td>
+						<td>{{data.courseName}}({{data.courseId}})</td>
 						<td v-text="data.courseHours"></td>
 						<!-- <td class="textBtn"><a @click="periodBtn">{{data.period}}</a></td> -->
-						<td v-text="data.coursePayroll"></td>
-						<td v-text="data.totalCoursePay"></td>
+						<td v-text="data.payPerCourse"></td>
+						<td v-text="data.wage"></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
+	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
+		<div style="text-align:center; font-size:1.1rem;">
+		    <p>操作失败！请重试</p>
+		</div>
+	    <div slot="footer" style="text-align:center;">
+	        <Button id="modalBtn" @click="resultOk()">确认</Button>
+	    </div>
+	</Modal>
 </div>
 </template>
 
@@ -45,51 +56,45 @@ export default {
 	name: 'salaryBody',
 	data () {
 		return {
-			teacherName: '',
-			coursePay: [
-				{}
-			]
+			selTeacher: '选择教师',
+			teacherInfo: [],
+			teacherPayrollList: [],
+			modalResult: false
 		}
 	},
 	beforeMount: function() {
-        this.$http.post('../eduSalary.php',{
+        this.$http.post('./checkSalaryByEdu',{},{
             "Content-Type":"application/json"
         }).then(function(response){
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.coursePay = data.coursePay;
+            this.teacherPayrollList = data.allteacherPayrollList;
+        },function(error){
+            console.log("获取申请error:");
+            console.log(error);
+        });
+        // 获取下拉框教师列表
+        this.$http.post('./courseManage/getCourseAndClassInfo',{},{
+            "Content-Type":"application/json"
+        }).then(function(response){
+            console.log("获取申请:");
+            console.log(response.body);
+            var data = response.body;
+            this.teacherInfo = data.teacherInfo;
         },function(error){
             console.log("获取申请error:");
             console.log(error);
         });
     },
 	methods: {
-		// 输入教师姓名后，进行查找
-		inputSearch: function () {
-			// alert(this.teacherName);
-			this.$http.post('../eduSalary.php',{
-				"teacherName": this.teacherName
-			},{
-	            "Content-Type":"application/json"
-	        }).then(function(response){
-	            console.log("获取申请:");
-	            console.log(response.body);
-	            var data = response.body;
-	            if(data.result == "1") {
-                    this.coursePay = data.coursePay;
-                }else {
-                    alert("操作失败！请重试");
-                }
-	        },function(error){
-	            console.log("获取申请error:");
-	            console.log(error);
-	        });
-		},
 		// 查询按钮
 		searchBtn: function () {
-			this.$http.post('../eduSalary.php',{
-				"teacherName": this.teacherName
+    		if (this.selTeacher == "选择年制") {
+    			this.selTeacher = '';
+    		}
+			this.$http.post('./checkSalaryByTeacher',{
+				"teacherId": this.selTeacher
 			},{
 	            "Content-Type":"application/json"
 	        }).then(function(response){
@@ -97,34 +102,28 @@ export default {
 	            console.log(response.body);
 	            var data = response.body;
 	            if(data.result == "1") {
-                    this.coursePay = data.coursePay;
-                }else if (data.result == "2") {
-                    alert("操作失败！请重试");
-                }else if (data.result == "0") {
-                	alert("等待申请...");
+                    this.teacherPayrollList = data.teacherPayrollList;
+                }else {
+					this.modalResult = true;
+                    // this.$Message.error('操作失败！请重试');
                 }
 	        },function(error){
 	            console.log("获取申请error:");
 	            console.log(error);
 	        });
-	    }, 
-	    // 上传按钮
-	    inportBtn: function () {
-
 	    },
 	    // 下载按钮
 	    exportBtn: function () {
-
-	    }, 
-	    // 下载模板按钮
-	    exportTemplateBtn: function () {
-
-	    }  
+	    	location.href = "./downloadallSalaryList"
+	    },
+	    resultOk: function () {
+	    	this.modalResult = false;
+	    }
 	}
 }
 </script>
 
-<style>
+<style scoped>
 #salaryBody {
 	width: 100%;
 	background-color: #f3f3f3;
@@ -136,6 +135,12 @@ export default {
 	text-align: center;
 	background-color: white;
 	margin: 1rem 5rem;
+}
+#salary input {
+  margin-right: 1.4rem;
+}
+.buttonPart {
+  float: right;
 }
 
 </style>

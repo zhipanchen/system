@@ -17,7 +17,7 @@
          <!--<eduResGroupPerson v-for="(leader,index) in leaders" :key="leader" @remove="removePerson(index,leaders)" :person="leader"></eduResGroupPerson>-->
        <!--</div>-->
        <!--</p>-->
-       <span v-for="leader in leaders">{{leader}}、</span>
+       <span v-for="leader in leaders">{{leader}}    </span>
        <p id="memberP">
          组员：
          <select id="memberSelect" >
@@ -31,9 +31,51 @@
        </p>
 
       </div>
-      <button class="am-btn am-btn-success am-radius" @click="save">保存</button>
-      <button class="am-btn am-btn-success am-radius" @click="cancel">取消</button>
+      <button class="am-btn am-btn-success am-radius" @click="saveDia">保存</button>
+      <button class="am-btn am-btn-success am-radius" @click="cancelDia">取消</button>
     </div>
+    <Modal
+      v-model="modal1"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定保存操作吗？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="save()">确定</button>
+        <button id="modalBtn" @click="modal1 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+      v-model="modal2"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定取消操作吗？?</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="cancel()">确定</button>
+        <button id="modalBtn" @click="modal2 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+      v-model="modal3"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>保存失败！</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <!--<button id="modalBtn" @click="chooseDay">确定</button>-->
+        <button id="modalBtn" @click="modal3 = false">确定</button>
+      </div>
+    </Modal>
 </div>
 </template>
 
@@ -55,25 +97,31 @@
 
         teachers: [ "何平", "李雷", "韩梅梅", "王小明", "吴亦凡" , "鹿晗", "杨幂", "尚清华", "杜北大"],
 
-        teacherList: [{teacherName:"骊山",teacherId:"123"},{teacherName:"款的",teacherId:"1245"}]
+        teacherList: [{teacherName:"骊山",teacherId:"123"},{teacherName:"款的",teacherId:"1245"}],
+        modal1:false,
+        modal2:false,
+        modal3:false
       }
     },
     components: {
       eduResGroupPerson
     },
     beforeMount:function(){
-      this.$http.post('../jsonphp/research.php',{},
+      var thisURL = document.URL;
+      var result =thisURL.split("?")[1];
+      if(result=="0"){this.modal3=true;}else if(result=="1"){this.$Message.success('保存成功！');}
+//      this.$http.post('../jsonphp/research.php',{},
+        this.$http.post('./courseTeachPlan/setTARGroupInfo',{},
         {"Content-Type":"application/json"}).then(function (response) {
           console.log(response);
-          this.teacherList=response.body.teacherList;
           this.title=response.body.TARGroupName;
           this.num=response.body.TARGroupId;
           this.leaders = [];
           this.members = [];
           for(var i = 0;i < response.body.tableList.length;i++){
-            if(response.body.tableList[i].IsLeader == "true"){
+            if(response.body.tableList[i].isLeader){
               this.leaders.push(response.body.tableList[i].teacherName);
-            }else{
+            }else {
               this.members.push(response.body.tableList[i].teacherName);
             }
           }
@@ -82,33 +130,75 @@
           console.log("获取error:");
           console.log(error);
         });
+//      this.$http.post('../jsonphp/research.php',{},
+      this.$http.post('./courseTeachPlan/selectTeacherList',{},
+        {"Content-Type":"application/json"}).then(function (response) {
+          console.log(response);
+          this.teacherList=response.body.teacherList;
+        },
+        function(error){
+          console.log("获取error:");
+          console.log(error);
+        });
     },
     methods: {
+      saveDia:function(){
+        this.modal1 = true;
+      },
+      cancelDia:function(){
+        this.modal2 = true;
+      },
       addPerson: function(type,persons){
         var select = document.getElementById(type+"Select");
         if(select.value!="选择教师"&&select.value!=""){
-        persons.push(select.value);}
+          for(var x=0;x<this.members.length;x++){
+            if(select.value==this.members[x]){
+              this.$Message.error("该教师已存在于该教研组！");
+              select.value = "";
+              return;
+            }
+          }
+          for(var y=0;y<this.leaders.length;y++){
+            if(select.value==this.leaders[y]){
+              this.$Message.error("该教师已存在于该教研组！");
+              select.value = "";
+              return;
+            }
+          }
+          persons.push(select.value);}
         select.value = "";
       },
       removePerson: function(index,persons){
         persons.splice(index,1);
       },
       save:function(){
+        this.modal1=false;
         for(var i=0;i<this.members.length;i++){
-          for(var n=0;n<this.tableList.length;n++)
-          if(this.members[i]==this.tableList[n].teacherName)
+          for(var n=0;n<this.teacherList.length;n++)
+          if(this.members[i]==this.teacherList[n].teacherName)
           {
-            this.members[i]=this.tableList[n].teacherId
+            this.members[i]=this.teacherList[n].teacherId
           }
         }
-        this.$http.post('../jsonphp/research.php',{
-
+        console.log(this.members);
+        this.$http.post('./courseTeachPlan/updateTARGroupInfo',{
+//          this.$http.post('../jsonphp/research.php',{
           "teacherId":this.members
         //传？？？
-        },
-          {"Content-Type":"application/json"}).then(function (response) {
+        }, {"Content-Type":"application/json"}).then(function (response) {
           if(response.body.result=="1"){
-            alert("success!")
+            for(var i=0;i<this.members.length;i++){
+            for(var n=0;n<this.teacherList.length;n++)
+              if(this.members[i]==this.teacherList[n].teacherId)
+              {
+                this.members[i]=this.teacherList[n].teacherName
+              }
+          }
+//            this.$Message.success('操作成功！');
+//            var t=setTimeout(" location.reload();",2000);
+             location.reload();
+          }else{
+            location.reload();
           }
         },
           function(error){

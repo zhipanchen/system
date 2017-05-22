@@ -121,7 +121,7 @@ html {
   margin-top: 0;
   padding: 0.7rem 0;
   vertical-align: middle;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: normal;
   line-height: 1.2;
   white-space: nowrap;
@@ -156,12 +156,15 @@ html {
    Component: select
  ============================================================================ */
 .tableSelect {
-  margin: 0.6rem 5rem;
+  margin: 0.8rem 5rem;
+  /*height: 3.5rem;
+  line-height: 3.5rem;
+  overflow: hidden;*/
 }
 .tableSelect select {
   margin-right: 1.4rem;
   width: 10rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   outline: none;
 }
 .tableSelect button {
@@ -182,7 +185,7 @@ html {
     outline: none;
     padding: 0.3rem 0.5rem;
     padding-right: 1rem;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     cursor: pointer;
   }
 
@@ -195,7 +198,7 @@ html {
     outline: none;
     padding: 0.3rem 0.5rem;
     /*margin-left:3rem;*/
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 
 
@@ -227,7 +230,7 @@ html {
 .operationTable > tbody > tr > th,
 .operationTable > thead > tr > td,
 .operationTable > tbody > tr > td {
-  padding: 0.4rem 0rem;
+  padding: 0.2rem 0rem;
   line-height: 1.6rem;
 }
 .operationTable > thead > tr > th,
@@ -238,13 +241,17 @@ html {
   height: 2rem;
 }
 .operationTable td {
-  font-size: 0.5rem;
+  font-size: 0.9rem;
   height: 2rem;
 }
 .operationTable > thead > tr > th,
 .operationTable > thead > tr > td {
   border-bottom: 2px solid #ddd;
 }
+.operationTable > tbody > tr:hover > td {
+  background-color: #f3f3f3;
+}
+
 
 /************补课、调课申请表格applyTable************/
 .applyTable {
@@ -259,7 +266,7 @@ html {
   height: 2rem;
 }
 .applyTable td {
-  font-size: 0.5rem;
+  font-size: 0.9rem;
   background-color: white;
   height: 2rem;
 }
@@ -299,7 +306,7 @@ list-style-type: none;
     border:thin solid #d4d4d9;
     display: flex;
     align-items: center;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }/*内容*/
 .contentH{
     position:relative;

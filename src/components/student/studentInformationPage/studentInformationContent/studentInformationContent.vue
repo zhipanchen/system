@@ -59,7 +59,7 @@
             return {
               buttonShow:false,
               selected:'身份证照',
-              filePathRequest:'../updata1.php',
+              filePathRequest:'./studentManage/uploadStudentIDcardPhoto',
               path:'',//图片路径
               teacherMessage: {}
             }
@@ -83,26 +83,29 @@
             if(this.teacherMessage.iDcardPhoto!="") {
               this.path = this.teacherMessage.iDcardPhoto;
             }
-            this.filePathRequest='../updata1.php';
+            this.filePathRequest='./studentManage/uploadStudentIDcardPhoto';
           }else if(this.selected=="证件照"){
               if(this.teacherMessage.credentialsPhoto!="") {
               this.path = this.teacherMessage.credentialsPhoto;
             }
-            this.filePathRequest='../updata2.php';
+            this.filePathRequest='./studentManage/uploadStudentCredentialsPhoto';
           }else if(this.selected=="生活照"){
             if(this.teacherMessage.livePhoto!="") {
               this.path = this.teacherMessage.livePhoto;
             }
-            this.filePathRequest='../updata3.php';
+            this.filePathRequest='./studentManage/uploadStudentLivePhoto';
           }
         },
         updateImageClick:function(){
           if(this.selected=="身份证照"){
             this.path=this.teacherMessage.iDcardPhoto;
+            this.$Message.success('上传文件成功！');
           }else if(this.selected=="证件照"){
             this.path=this.teacherMessage.credentialsPhoto;
+            this.$Message.success('上传文件成功！');
           }else if(this.selected=="生活照"){
             this.path=this.teacherMessage.livePhoto;
+            this.$Message.success('上传文件成功！');
           }
         },
         updateInforClick:function(){
@@ -142,7 +145,7 @@
           }, {"Content-Type": "application/json"}).then(function (response) {
             var data=response.body;
             if(data.result==1){
-              alert("提交成功！");
+              this.$Message.success('提交成功！');
             }
           });
         },
@@ -187,7 +190,7 @@
           console.log(res);
           this.path=data.path;
           if(this.selected=="身份证照"){
-            this.teacherMessage.iDcardPhoto=this.path;;
+            this.teacherMessage.iDcardPhoto=this.path;
           }else if(this.selected=="证件照"){
             this.teacherMessage.credentialsPhoto=this.path;
           }else if(this.selected=="生活照"){

@@ -21,6 +21,7 @@
       }
     },
     mounted: function() {
+//      dom加载后调整页面高度
       var dom = document.getElementById("textbookManagement");
       dom.style.height = window.innerHeight *0.78 + "px";
     },

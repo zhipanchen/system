@@ -26,6 +26,7 @@
       classroomManagementDiv,
     },
     mounted: function() {
+//      dom加载后调整页面高度
       var dom = document.getElementById("classroomManagement");
       dom.style.minHeight = window.innerHeight *0.85 + "px";
     },

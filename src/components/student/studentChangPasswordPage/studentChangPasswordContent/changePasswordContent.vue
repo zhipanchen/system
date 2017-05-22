@@ -24,14 +24,14 @@
           <button class="confirmButton am-btn am-btn-success am-radius" @click="confirmClick">确定</button>
         </div>
       </div>
-      <Button @click="modal2=true" id="modalBtn">不带标题栏</Button>
-      <Model v-model="model2" id="modalBody" :styles="{top:'10rem'}">
-        <p stle="text-align:center;font-size:1.1rem;">你确定要删除该信息吗？</p>
-        <div solt="footer" style="text-align:center">
-          <Buton id="modalBtn" :loading=modal_loading" @click="ok2">取消</Buton>
-          <Buton id="modalBtn" :loading=modal_loading" @click="cancel2">取消</Buton>
+      <!--button class="am-btn am-btn-success am-radius" @click="modal2 = true">撤销申请</button>
+      <Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
+        <p style="text-align:center; font-size:1.1rem;">您确定要提交查看所有信息吗？</p>
+        <div slot="footer" style="text-align:center;">
+          <Button id="modalBtn" @click="ok2()">确定</Button>
+          <Button id="modalBtn" @click="cancel2()">取消</Button>
         </div>
-        </Model>
+      </Modal-->
     </div>
 </template>
 
@@ -49,23 +49,24 @@
             }
         },
         methods:{
-          ok2:function(){
-            this.modal_loading=true;
-            seTimeout(()=>{
-              this.modal_loading=false;
-
-            })
+          /*ok2 () {
+            this.modal2 = false;
+            //this.$Message.success('撤销所有学生补考申请！');
           },
+          cancel2(){
+            this.modal2=false;
+            //this.$Message.error('提交失败！');
+          },*/
           backClick: function(){
           alert("返回");
         },
           confirmClick:function() {
             if (this.nowPassword == '' || this.newPassword == '' || this.newPasswordAgain == '') {
-              alert('输入不能为空！');
+              this.$Message.error('输入不能为空！');
             }
             else {
               if (this.newPassword !=this.newPasswordAgain){
-                alert('新密码与确认密码不一致！');
+                this.$Message.error('新密码与确认密码不一致！');
                 }else {
                 var a = CryptoJS.MD5(this.nowPassword + "0402" + "护士学校");//MD5加密
                 alert(a);
@@ -91,12 +92,12 @@
                 }).then(function (response) {
                   console.log(response.body);
                   if(response.body.result == "1"){
-                    alert('密码修改成功！');
+                    this.$Message.success('密码修改成功！');
                   }else{
-                    alert("密码修改不成功！");
+                    this.$Message.error('密码修改不成功！');
                   }
                 }, function (error) {
-                  alert("连接失败,请确认重试！");
+                  this.$Message.error("连接失败,请确认重试！");
                   console.log(error);
                 });
               }

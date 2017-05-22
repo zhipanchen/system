@@ -2,6 +2,8 @@
   <div id="eduPlanPageTopBar" class="topBarDiv am-btn-group">
     <!--导航栏-->
     <button class="am-btn am-btn-success btn-active" style="margin-left: 5rem">培养方案</button>
+    <router-link to="/eduAdminTeachProcess"><button class="am-btn am-btn-success">教学进度</button></router-link>
+    <router-link to="/eduAdminSupervisorManage"><button class="am-btn am-btn-success">教务管理督导</button></router-link>
   </div>
 </template>
 

@@ -20,11 +20,11 @@
             <td class="operationTd">
               <img :id="'classroomEditImg'+index" src="../../../../../assets/images/edit.png" @click="editClick('classroom',index)">
               <!--编辑功能，初始显示，编辑时隐藏-->
-              <img :id="'classroomSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="saveClick('classroom',index)">
+              <img :id="'classroomSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="operationClick('classroom',index,'save')">
               <!--保存功能，初始隐藏，编辑时显示-->
-              <img :id="'classroomRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="restoreClick('classroom',index)">
+              <img :id="'classroomRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="operationClick('classroom',index,'restore')">
               <!--取消编辑重置，初始隐藏，编辑时显示-->
-              <img :id="'classroomDeleteImg'+index" src="../../../../../assets/images/delete.png"  @click="deleteClick('classroom',index)">
+              <img :id="'classroomDeleteImg'+index" src="../../../../../assets/images/delete.png"  @click="operationClick('classroom',index,'delete')">
               <!--删除功能，初始显示，编辑时隐藏-->
             </td>
           </tr>
@@ -52,9 +52,9 @@
             <td><input id="engineInput2" type="text" v-model="engineRoom.number" readonly="true"></td>
             <td class="operationTd">
               <img :id="'engineEditImg'+index" src="../../../../../assets/images/edit.png" @click="editClick('engine',index)">
-              <img :id="'engineSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="saveClick('engine',index)">
-              <img :id="'engineRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="restoreClick('engine',index)">
-              <img :id="'engineDeleteImg'+index" src="../../../../../assets/images/delete.png" @click="deleteClick('engine',index)">
+              <img :id="'engineSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="operationClick('engine',index,'save')">
+              <img :id="'engineRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="operationClick('engine',index,'restore')">
+              <img :id="'engineDeleteImg'+index" src="../../../../../assets/images/delete.png" @click="operationClick('engine',index,'delete')">
             </td>
           </tr>
           <tr>
@@ -66,6 +66,62 @@
         </table>
       </div>
     </div>
+    <!--对话框↓-->
+    <Modal
+        v-model="modal1"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定取消编辑并重置该教室信息吗？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="restoreClick(operationObj,operationIndex)">确定</button>
+        <button id="modalBtn" @click="modal1 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+        v-model="modal2"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定删除该教室吗？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="deleteClick(operationObj,operationIndex)">确定</button>
+        <button id="modalBtn" @click="modal2 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+        v-model="modal3"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定提交保存该教室信息吗？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="saveClick(operationObj,operationIndex)">确定</button>
+        <button id="modalBtn" @click="modal3 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+        v-model="modal4"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>{{ errorMessage }}</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="modal4 = false">确定</button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -75,6 +131,7 @@
     data () {
       return {
         icon1:require('../../../../../assets/images/icon1.png'),
+//        箭头符号
         icon2:require('../../../../../assets/images/icon2.png'),
         classroomArrow: true,
 //        普通教室下拉箭头，初始为下拉显示
@@ -107,12 +164,23 @@
         ],
 //        普通教室信息
         engineRooms: [
-//          { id:"", name:"第二教学楼402", number:"70" },
-//          { id:"", name:"第二教学楼403", number:"70" },
+          /*{ id:"", name:"第二教学楼402", number:"70" },
+          { id:"", name:"第二教学楼403", number:"70" },*/
         ],
 //        机房信息
         buffer_classrooms: [],
-        buffer_engineRooms: []
+//        用于缓存编辑前的数据，便于重置
+        buffer_engineRooms: [],
+        modal1: false,
+//        对话框显隐
+        modal2: false,
+        modal3: false,
+        modal4: false,
+        operationObj:null,
+//        对话框参数传递
+        operationIndex: 0,
+        errorMessage:""
+//        复用的对话框提示
       }
     },
     beforeMount: function() {
@@ -122,19 +190,7 @@
       }).then(function(response){
         console.log("获取教室:");
         console.log(response.body);
-        var isJson = null;
-        var data = null;
-        try {
-          json(response.body);
-          isJson = true;
-        }catch (e) {
-          isJson = false;
-        }
-        if(isJson){
-          data = json(response.body);
-        }else{
-          data = response.body;
-        }
+        var data = response.body;
         for(var i = 0;i < data.Classroom.length;i++){
           if(data.Classroom[i].classType == "机房"){
             this.engineRooms.push({ id:data.Classroom[i].classroomId, name:"第"+data.Classroom[i].classroomId.split("-")[0]+"教学楼"+data.Classroom[i].classroomId.split("-")[1], number:data.Classroom[i].classroomSize });
@@ -149,11 +205,23 @@
           this.buffer_engineRooms.push({ id:"", name:"", number:"" });
         }
       },function(error){
-        console.log("获取教室error:");
-        console.log(error);
+        this.$Message.error('连接失败，请重试！');
       });
     },
+//    页面dom加载前获取后端数据，修饰教室位置，缓存数据
     methods: {
+      operationClick: function(obj,operationIndex,operation){
+        this.operationObj = obj;
+        this.operationIndex = operationIndex;
+        if(operation == "restore"){
+          this.modal1 = true;
+        }else if(operation == "delete"){
+          this.modal2 = true;
+        }else if(operation == "save"){
+          this.modal3 = true;
+        }
+      },
+//      模拟对话框的参数传递，触发不同对话框
       classroomClick: function(){
 //        点击显示或隐藏下拉普通教室信息
         var classroomArrow = document.getElementById("classroomArrow");
@@ -202,48 +270,66 @@
           input[0].readOnly = false;
           input[0].style.border = "0.1rem solid #d4d4d9";
         }
+//        判断是否为新增未保存的教室，使ID可编辑
         if(type == "classroom"){
           this.buffer_classrooms.splice(index, 1, JSON.parse(JSON.stringify(this.classrooms[index])));
         }
         if(type == "engine"){
           this.buffer_engineRooms.splice(index, 1, JSON.parse(JSON.stringify(this.engineRooms[index])));
         }
+//        更新缓存数据，以便重置
         editImg.style.display = "none";
         deleteImg.style.display = "none";
         saveImg.style.display = "inline";
         restoreImg.style.display = "inline";
-//        隐藏编辑和删除功能图标,显示保存和重置功能图标
+//        进入编辑状态
+        if(type == "classroom"){
+          if(this.classrooms[index].id == "请编辑后保存" || this.classrooms[index].number == "请编辑后保存"){
+            this.classrooms[index].id = "";
+            this.classrooms[index].number = "";
+            input[0].value = "";
+            input[2].value = "";
+          }
+        }
+        if(type == "engine"){
+          if(this.engineRooms[index].id == "请编辑后保存" || this.engineRooms[index].number == "请编辑后保存"){
+            this.engineRooms[index].id = "";
+            this.engineRooms[index].number = "";
+            input[0].value = "";
+            input[2].value = "";
+          }
+        }
+//        如果为未保存的新增教室，清空提示
       },
       restoreClick: function(type,index){
 //        取消修改,重置数据,退出编辑
-        if(confirm("您确定取消编辑并重置该课程信息吗？")){
-          var inputTr = document.getElementById(type+"InputTr"+index);
-          var input = inputTr.getElementsByTagName("input");
-          var editImg = document.getElementById(type+"EditImg"+index);
-          var saveImg = document.getElementById(type+"SaveImg"+index);
-          var restoreImg = document.getElementById(type+"RestoreImg"+index);
-          var deleteImg = document.getElementById(type+"DeleteImg"+index);
-          var i = null;
-          console.log(this.buffer_classrooms[index]);
-          console.log(this.classrooms[index]);
-          if(type == "classroom"){
-            this.classrooms.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_classrooms[index])));
-          }
-          if(type == "engine"){
-            this.engineRooms.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_engineRooms[index])));
-          }
-          for(i = 0;i<input.length;i++){
-//          使教室信息的输入标签变为不可输入，隐藏边框
-            input[i].readOnly = true;
-            input[i].style.border = "none";
-          }
-          editImg.style.display = "inline";
-          deleteImg.style.display = "inline";
-          saveImg.style.display = "none";
-          restoreImg.style.display = "none";
+        var inputTr = document.getElementById(type+"InputTr"+index);
+        var input = inputTr.getElementsByTagName("input");
+        var editImg = document.getElementById(type+"EditImg"+index);
+        var saveImg = document.getElementById(type+"SaveImg"+index);
+        var restoreImg = document.getElementById(type+"RestoreImg"+index);
+        var deleteImg = document.getElementById(type+"DeleteImg"+index);
+        var i = null;
+        if(type == "classroom"){
+          this.classrooms.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_classrooms[index])));
         }
+        if(type == "engine"){
+          this.engineRooms.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_engineRooms[index])));
+        }
+//        从缓存数据中重置数据
+        for(i = 0;i<input.length;i++){
+//          使教室信息的输入标签变为不可输入，隐藏边框
+          input[i].readOnly = true;
+          input[i].style.border = "none";
+        }
+        editImg.style.display = "inline";
+        deleteImg.style.display = "inline";
+        saveImg.style.display = "none";
+        restoreImg.style.display = "none";
+        this.modal1 = false;
       },
       deleteClick: function(type,index){
+//        删除教室
         var classroom = null;
         if (type == "classroom") {
           classroom = this.classrooms;
@@ -251,17 +337,30 @@
         if (type == "engine") {
           classroom = this.engineRooms;
         }
-        if(confirm("您确定删除该课程吗？")){
-//          this.$http.post('../testPhp/classroomMgmtSave.php',{
-          this.$http.post('./classroomManage/deleteClassroom',{
+        if(classroom[index].name == ""){
+//          如果是未保存的新增教室，不需要前后端交互删除
+          if (type == "classroom") {
+            this.classrooms.splice(index, 1);
+            this.buffer_classrooms.splice(index, 1);
+          }
+          if (type == "engine") {
+            this.engineRooms.splice(index, 1);
+            this.buffer_engineRooms.splice(index, 1);
+          }
+          this.$Message.success('删除成功！');
+          this.modal2 = false;
+        }else {
+//        this.$http.post('../testPhp/classroomMgmtSave.php',{
+          this.$http.post('./classroomManage/deleteClassroom', {
             "classroomId": classroom[index].id
-          },{
-            "Content-Type":"application/json"
-          }).then(function(response){
+          }, {
+            "Content-Type": "application/json"
+          }).then(function (response) {
+            this.modal2 = false;
             console.log("删除教室:");
             console.log(response.body);
             var data = response.body;
-            if(data.result == "1"){
+            if (data.result == "1") {
               //          从data中的教室信息数组中删除
               if (type == "classroom") {
                 this.classrooms.splice(index, 1);
@@ -271,121 +370,141 @@
                 this.engineRooms.splice(index, 1);
                 this.buffer_engineRooms.splice(index, 1);
               }
-            }else{
-              alert("操作失败！请重试");
+              this.$Message.success('删除成功！');
+            } else {
+//              this.$Message.error("操作失败,请重试!");
+              this.errorMessage = "操作失败,请重试!";
+              this.modal4 = true;
             }
-          },function(error){
-            console.log("删除教室error:");
-            console.log(error);
+          }, function (error) {
+            this.modal2 = false;
+            this.$Message.error("连接失败,请重试!");
           });
         }
       },
       saveClick: function(type,index){
 //        保存功能
-        if(confirm("您确定提交保存该信息吗？")){
-          var inputTr = document.getElementById(type+"InputTr"+index);
-          var input = inputTr.getElementsByTagName("input");
-          var editImg = document.getElementById(type+"EditImg"+index);
-          var saveImg = document.getElementById(type+"SaveImg"+index);
-          var restoreImg = document.getElementById(type+"RestoreImg"+index);
-          var deleteImg = document.getElementById(type+"DeleteImg"+index);
-          var i = null;
-          var classType = null;
-          if(type == "classroom"){
-            classType = "普通教室";
-          }else if(type == "engine"){
-            classType = "机房";
-          }
-          if(input[0].readOnly = false){
-            if(isNaN(Number(input[2].value))){
-              alert("请确认教室容纳人数为合理数字！");
-            }else{
-//              this.$http.post('../testPhp/classroomMgmtSave.php', {
-            this.$http.post('./classroomManage/addClassroom', {
-                "classroomId": input[0].value,
-                "classType": classType,
-                "classroomSize": input[2].value
-              }, {
-                "Content-Type": "application/json"
-              }).then(function (response) {
-                console.log("添加教室:");
-                console.log(response.body);
-                var data = response.body;
-                if (data.result == "1") {
-                  if (type == "classroom") {
-                    var name = "第" + this.classrooms[index].id.split("-")[0] + "教学楼" + this.classrooms[index].id.split("-")[1];
-                    this.classrooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
-                  }
-                  if (type == "engine") {
-                    var name = "第" + this.engineRooms[index].id.split("-")[0] + "教学楼" + this.engineRooms[index].id.split("-")[1];
-                    this.engineRooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
-                  }
-//          预留功能,将data提交到后端,实现保存数据,处理回调
-                  for (i = 0; i < input.length; i++) {
-                    if (i != 1) {
-                      input[i].readOnly = true;
-                      input[i].style.border = "none";
-                    }
-                  }
-                  editImg.style.display = "inline";
-                  deleteImg.style.display = "inline";
-                  saveImg.style.display = "none";
-                  restoreImg.style.display = "none";
-                }
-              }, function (error) {
-                console.log("添加教室error:");
-                console.log(error);
-              });
-            }
+        var inputTr = document.getElementById(type+"InputTr"+index);
+        var input = inputTr.getElementsByTagName("input");
+        var editImg = document.getElementById(type+"EditImg"+index);
+        var saveImg = document.getElementById(type+"SaveImg"+index);
+        var restoreImg = document.getElementById(type+"RestoreImg"+index);
+        var deleteImg = document.getElementById(type+"DeleteImg"+index);
+        var i = null;
+        var classType = null;
+        if(type == "classroom"){
+          classType = "普通教室";
+        }else if(type == "engine"){
+          classType = "机房";
+        }
+        if(input[0].readOnly = false){
+//          如果为未保存的新增教室，保存触发新增接口
+          if(isNaN(Number(input[2].value)) || input[2].value == ""){
+//            this.$Message.warning("请确认教室容纳人数为合理数字！");
+            this.modal3 = false;
+            this.errorMessage = "请确认教室容纳人数为合理数字！";
+            this.modal4 = true;
           }else{
-            if(input[0].value.indexOf("-") < 0){
-              alert("教室ID输入格式有误！（正确如：1-101）");
-            }else if(isNaN(Number(input[0].value.split("-")[0])) || isNaN(Number(input[0].value.split("-")[1]))){
-              alert("教室ID输入格式有误！（正确如：1-101）");
-            }else if(isNaN(Number(input[2].value))){
-              alert("请确认教室容纳人数为合理数字！");
-            }else{
 //              this.$http.post('../testPhp/classroomMgmtSave.php', {
-            this.$http.post('./classroomManage/editClassroom', {
-                "classroomId": input[0].value,
-                "classType": classType,
-                "classroomSize": input[2].value
-              }, {
-                "Content-Type": "application/json"
-              }).then(function (response) {
-                console.log("保存教室:");
-                console.log(response.body);
-                var data = response.body;
-                if (data.result == "1") {
-                  if (type == "classroom") {
-                    var name = "第" + this.classrooms[index].id.split("-")[0] + "教学楼" + this.classrooms[index].id.split("-")[1];
-                    this.classrooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
-                  }
-                  if (type == "engine") {
-                    var name = "第" + this.engineRooms[index].id.split("-")[0] + "教学楼" + this.engineRooms[index].id.split("-")[1];
-                    this.engineRooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
-                  }
-//          预留功能,将data提交到后端,实现保存数据,处理回调
-                  for (i = 0; i < input.length; i++) {
-                    if (i != 1) {
-                      input[i].readOnly = true;
-                      input[i].style.border = "none";
-                    }
-                  }
-                  editImg.style.display = "inline";
-                  deleteImg.style.display = "inline";
-                  saveImg.style.display = "none";
-                  restoreImg.style.display = "none";
+          this.$http.post('./classroomManage/addClassroom', {
+              "classroomId": input[0].value,
+              "classType": classType,
+              "classroomSize": input[2].value
+            }, {
+              "Content-Type": "application/json"
+            }).then(function (response) {
+              this.modal3 = false;
+              console.log("添加教室:");
+              console.log(response.body);
+              var data = response.body;
+              if (data.result == "1") {
+                if (type == "classroom") {
+                  var name = "第" + this.classrooms[index].id.split("-")[0] + "教学楼" + this.classrooms[index].id.split("-")[1];
+                  this.classrooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
                 }
-              }, function (error) {
-                console.log("保存教室error:");
-                console.log(error);
-              });
-            }
+                if (type == "engine") {
+                  var name = "第" + this.engineRooms[index].id.split("-")[0] + "教学楼" + this.engineRooms[index].id.split("-")[1];
+                  this.engineRooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
+                }
+                for (i = 0; i < input.length; i++) {
+                  if (i != 1) {
+                    input[i].readOnly = true;
+                    input[i].style.border = "none";
+                  }
+                }
+                editImg.style.display = "inline";
+                deleteImg.style.display = "inline";
+                saveImg.style.display = "none";
+                restoreImg.style.display = "none";
+//                退出编辑状态
+              }
+            }, function (error) {
+            this.modal3 = false;
+            this.$Message.error("连接失败,请重试!");
+            });
+          }
+        }else{
+//          如果为已保存在数据库的教室信息，触发修改接口
+          if(input[0].value.indexOf("-") < 0){
+//            this.$Message.error("教室ID输入格式有误！（正确如：1-101）");
+            this.modal3 = false;
+            this.errorMessage = "教室ID输入格式有误！（正确如：1-101）";
+            this.modal4 = true;
+          }else if(isNaN(Number(input[0].value.split("-")[0])) || isNaN(Number(input[0].value.split("-")[1]))){
+//            this.$Message.error("教室ID输入格式有误！（正确如：1-101）");
+            this.modal3 = false;
+            this.errorMessage = "教室ID输入格式有误！（正确如：1-101）";
+            this.modal4 = true;
+          }else if(isNaN(Number(input[2].value)) || input[2].value == ""){
+//            this.$Message.warning("请确认教室容纳人数为合理数字！");
+            this.modal3 = false;
+            this.errorMessage = "请确认教室容纳人数为合理数字！";
+            this.modal4 = true;
+          }else{
+//              this.$http.post('../testPhp/classroomMgmtSave.php', {
+          this.$http.post('./classroomManage/editClassroom', {
+              "classroomId": input[0].value,
+              "classType": classType,
+              "classroomSize": input[2].value
+            }, {
+              "Content-Type": "application/json"
+            }).then(function (response) {
+              this.modal3 = false;
+              console.log("保存教室:");
+              console.log(response.body);
+              var data = response.body;
+              if (data.result == "1") {
+                this.$Message.success('保存成功！');
+                if (type == "classroom") {
+                  var name = "第" + this.classrooms[index].id.split("-")[0] + "教学楼" + this.classrooms[index].id.split("-")[1];
+                  this.classrooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
+                }
+                if (type == "engine") {
+                  var name = "第" + this.engineRooms[index].id.split("-")[0] + "教学楼" + this.engineRooms[index].id.split("-")[1];
+                  this.engineRooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
+                }
+//          预留功能,将data提交到后端,实现保存数据,处理回调
+                for (i = 0; i < input.length; i++) {
+                  if (i != 1) {
+                    input[i].readOnly = true;
+                    input[i].style.border = "none";
+                  }
+                }
+                editImg.style.display = "inline";
+                deleteImg.style.display = "inline";
+                saveImg.style.display = "none";
+                restoreImg.style.display = "none";
+//                退出编辑状态
+              }
+            }, function (error) {
+              this.modal3 = false;
+              this.$Message.error("连接失败,请重试!");
+            });
           }
         }
       },
       addClick: function (classroom,type){
+//        新增未保存的教室，新增对应缓存数据
 //        if(classroom[classroom.length - 1].id != "请编辑后保存"){
           classroom.push(
               { id:"请编辑后保存", name:"", number:"请编辑后保存" }
@@ -402,7 +521,7 @@
             );
           }
 //        }else{
-//          alert("请勿重复添加未编辑保存教室信息！");
+//          this.$Message.warning("请勿重复添加未编辑保存教室信息！");
 //        }
       }
     }
@@ -417,6 +536,7 @@
     min-height: 39rem;
   }
   .dropDown{
+    /*页面主要内容*/
     margin: 0.5rem 5rem;
   }
   /*.classroomButton{
@@ -435,12 +555,14 @@
     cursor: pointer;
   }*/
   img{
+    /*操作图标*/
     position: relative;
     margin: 0.5rem 0.2rem;
     width: 1.5rem;
     height: 1.5rem;
   }
   table{
+    /*教研组信息*/
     width: 100%;
     margin: 0 auto;
     border-collapse: collapse;

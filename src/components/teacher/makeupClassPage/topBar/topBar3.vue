@@ -1,7 +1,16 @@
 <template>
   <div class="topBarDiv am-btn-group">
-    <a :href="checkCouUrl">
-      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" @click="checkCouClick">{{ checkCouButton }}</button>
+    <a href="#/teacher/course/makeupClass">
+      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" @click="checkCouClick">补课申请</button>
+    </a>
+    <a href="#/teacher/course/tchManuadjCl">
+      <button  class="topBarButton am-btn am-btn-success " >调课申请</button>
+    </a>
+    <a href="#/teacher/course/stopClass">
+      <button  class="topBarButton am-btn am-btn-success " >停课申请</button>
+    </a>
+    <a href="#/teacher/course/requirement">
+      <button  class="topBarButton am-btn am-btn-success " >禁排申请</button>
     </a>
   </div>
 </template>
@@ -12,7 +21,7 @@
     data () {
       return {
 
-        checkCouButton: '补课申请',
+
         arrInfoNum: '2',
         adjInfoNum: '0',
         manualCouUrl: '/teacher/tchManuAdjCl',

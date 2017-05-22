@@ -11,7 +11,7 @@
 
 <script>
   import topTitle from './../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/student/studentEvaluationPage/topBar6/topBar6.vue'
+  import topBar from '../../../components/public/studentInfoSettingBar/studentInfoSettingBar.vue'
   import tableDiv from '../../../components/student/studentEvaluationPage/studentEvaluationContent/studentEvaluationContent.vue'
   export default {
     name: 'studentEval',

@@ -2,6 +2,7 @@
     <div id="eduResearchGroupPerson">
       {{ person }}<button @click="remove">×</button>
     </div>
+  <!--组员组件-->
 </template>
 
 <script>

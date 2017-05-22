@@ -2,9 +2,9 @@
   <div id="educationMessage">
     <div class="contentTitle">
       <select class="selectStyle" v-model="selected">
-        <option value="选择状态" disabled selected>选择状态</option>
+        <option value="选择状态" disabled>选择状态</option>
         <option value="已读">已读</option>
-        <option value="未读">未读</option>
+        <option value="未读" selected>未读</option>
         <option value="全部">全部</option>
       </select>
       <button id="refreshButton" class="am-btn am-btn-success am-radius" @click="refreshClick">刷新</button>
@@ -13,14 +13,14 @@
       <table class="normalTable">
       <tr>
         <th>发件人</th>
-        <th>标题</th>
+        <th>内容</th>
         <th>时间</th>
 
       </tr>
       <!--表头-->
       <tr v-for="(information,index) in informations" :id="information.id">
         <td>{{ information.poster }}</td>
-        <td>{{ information.title }}</td>
+        <td>{{ information.content }}</td>
         <td>{{ information.time }}</td>
       </tr>
     </table>
@@ -37,14 +37,26 @@
         informations: [],
       }
     },
-    beforeMount:function(){
+    beforeMount:function(){//默认未读
       this.$http.post('../educationMessage.php').then(function(response) {
         this.informations=response.body.informations;
         });
     },
     methods:{
       refreshClick:function() {
-        window.location.reload();//刷新页面
+        if(this.selected=="已读"){
+          this.$http.post('../educationMessage.php').then(function(response) {
+            this.informations=response.body.informations;
+          });
+        }else if(this.selected=="未读"){
+          this.$http.post('../educationMessage.php').then(function(response) {
+            this.informations=response.body.informations;
+          });
+        }else if(this.selected=="全部"){
+          this.$http.post('../educationMessage.php').then(function(response) {
+            this.informations=response.body.informations;
+          });
+        }
       }
     }
   }
@@ -56,7 +68,6 @@
   }
   .selectStyle{
     margin-top: 1rem;
-    display: none;
   }
   #refreshButton{
     display: block;

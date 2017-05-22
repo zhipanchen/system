@@ -3,12 +3,15 @@ import Router from 'vue-router'
 
 //陈志攀（start）
 //***********************************学生*************************************************
-import changPassword from '../views/student/changPasswordPage/changPasswordPage.vue'
+import studentChangPassword from '../views/student/studentChangPasswordPage/studentChangPasswordPage.vue'
 import studentLesson from '../views/student/studentLessonPage/studentLessonPage.vue'
 import studentTeacher from '../views/student/studentTeacherPage/studentTeacherPage.vue'
-import educationMessage from '../views/student/educationMessagePage/educationMessagePage.vue'
+import educationMessage from '../views/student/studentEducationMessagePage/studentEducationMessagePage.vue'
 import studentInformation from '../views/student/studentInformationPage/studentInformationPage.vue'
 import studentEvaluation from '../views/student/studentEvaluationPage/studentEvaluationPage.vue'
+import studentTestInfo from '../views/student/studentTestInfoPage/studentTeacherPage.vue'
+//***********************************教师*************************************************
+import teacherTestInfo from '../views/teacher/teacherTestInfoPage/teacherTestInfoPage.vue'
 //***********************************教务*************************************************
 import eduAdminManager from '../views/eduAdmin/eduAdminManagerPage/eduAdminManagerPage.vue'
 //陈志攀（end）
@@ -29,6 +32,9 @@ import eduAdminManageGrade from '../views/eduAdmin/basicSettings/manageGradePage
 
 //李西炜（start）
 import login from '../views/main/loginPage/loginPage.vue'
+import eduAdminHome from '../views/main/eduAdminHomePage/eduAdminHomePage.vue'
+import teacherHome from '../views/main/teacherHomePage/teacherHomePage.vue'
+import studentHome from '../views/main/studentHomePage/studentHomePage.vue'
 import forgetPassword from '../views/main/forgetPwPage/forgetPwPage.vue'
 import resetForgetPassword from '../views/main/resetForgetPwPage/resetForgetPwPage.vue'
 import combineCoursePage from '../views/eduAdmin/smartArrangeCourse/combineCoursePage/combineCoursePage.vue'
@@ -36,11 +42,13 @@ import checkCoursePage from '../views/eduAdmin/smartArrangeCourse/checkCoursePag
 import adjustCouApplyPage from '../views/eduAdmin/smartArrangeCourse/adjustCouApplyPage/adjustCouApplyPage.vue'
 import banCouApplyPage from '../views/eduAdmin/smartArrangeCourse/banCouApplyPage/banCouApplyPage.vue'
 import couArrangeSettingPage from '../views/eduAdmin/smartArrangeCourse/couArrangeSettingPage/couArrangeSettingPage.vue'
+import couArrangeTablePage from '../views/eduAdmin/smartArrangeCourse/couArrangeTablePage/couArrangeTablePage.vue'
 import textbookMgmtPage from '../views/eduAdmin/basicSettings/textbookMgmtPage/textbookMgmtPage.vue'
 import classroomMgmtPage from '../views/eduAdmin/basicSettings/classroomMgmtPage/classroomMgmtPage.vue'
 import eduResGroupMgmtPage from '../views/eduAdmin/basicSettings/eduResGroupMgmtPage/eduResGroupMgmtPage.vue'
 import suspendCouApplyPage from '../views/eduAdmin/smartArrangeCourse/suspendCouApplyPage/suspendCouApplyPage.vue'
 import makeupCouApplyPage from '../views/eduAdmin/smartArrangeCourse/makeupCouApplyPage/makeupCouApplyPage.vue'
+import notifyInformationPage from '../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'
 //李西炜（end）
 
 //易倩（start）
@@ -56,149 +64,209 @@ import experience from'../views/teacher/experiencePage/experiencePage.vue'
 import educationManege from'../views/teacher/educationManegePage/educationManegePage.vue'
 import director from'../views/teacher/directorPage/directorPage.vue'
 import directorResult from'../views/teacher/directorResultPage/directorResultPage.vue'
+//import directorResultList from'../views/teacher/directorResultListPage/directorResultListPage.vue'
 import classManege from'../views/teacher/classManegePage/classManegePage.vue'
 import classList from '../views/teacher/classListPage/classListPage.vue'
 import certificateManege from '../views/teacher/certificateManegePage/certificateManegePage.vue'
 import basicMessage from'../views/teacher/basicMessagePage/basicMessagePage.vue'
+import studentMessage from'../views/teacher/studentMessagePage/stopClassPage.vue'
+import checkStudentInfo from'../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'
 //易倩（end）
 
 //蔡玲双（strat）
+// *******************eduAdmin***********************************
+// markManage
 import adminCancelGrade from '../views/eduAdmin/markManage/adminCancelGradePage/adminCancelGradePage.vue'
 import gradeQuery from '../views/eduAdmin/markManage/gradeQueryPage/gradeQueryPage.vue'
 import gradeStat from '../views/eduAdmin/markManage/gradeStatPage/gradeStatPage.vue'
 import makeupExamAdmin from '../views/eduAdmin/markManage/makeupExamAdminPage/makeupExamAdminPage.vue'
-// tchSalary
+import makeupGradeInput from '../views/eduAdmin/markManage/makeupGradeInputPage/makeupGradeInputPage.vue'
 import salary from '../views/eduAdmin/tchSalary/salaryPage/salaryPage.vue'
 import setPrice from '../views/eduAdmin/tchSalary/setPricePage/setPricePage.vue'
-// userManage
 import authorityMgmt1 from '../views/eduAdmin/userManage/authorityMgmt1Page/authorityMgmt1Page.vue'
-
-
-
+import noticeManage from '../views/eduAdmin/notice/noticeMgmtPage/noticeManage.vue'
+import noticeSetting from '../views/eduAdmin/notice/noticeSettingPage/noticeSetting.vue'
+import notifyInformation from '../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'
+// *******************main***********************************
+import eduAdminHomePage from '../views/main/eduAdminHomePage/eduAdminHomePage.vue'
 // *******************teacher***********************************
 import tchCheckTimetable from '../views/teacher/tchCheckTimetablePage/tchCheckTimetablePage.vue'
 import courseList from '../views/teacher/courseListPage/courseListPage.vue'
 import gradesInput from '../views/teacher/gradesInputPage/gradesInputPage.vue'
-import normalSchedule from '../views/teacher/normalSchedulePage/normalSchedulePage.vue'	// *******不要
+import normalSchedule from '../views/teacher/normalSchedulePage/normalSchedulePage.vue'
 import tchGradesInput from '../views/teacher/tchGradesInputPage/tchGradesInputPage.vue'
 import tchManuAdjCl from '../views/teacher/tchManuAdjClPage/tchManuAdjClPage.vue'
+import tchCheckSalary from '../views/teacher/tchCheckSalaryPage/tchCheckSalaryPage.vue'
 //蔡玲双（end）
 Vue.use(Router)
 
 export default new Router({   //将routes里的参数导出
-  routes: [
 
+  routes: [
     {
       path: '/',   //这里只用'/'，即为默认路径
       name: '',
-      component: studentInformation
+      component: login
     },
     //*******************************************************************（陈志攀start）
-    //*******************************************************************学生（陈志攀）
     {
-      path: '/student/setting/changPassword',
-      name: 'changPassword',
-      component: changPassword
+      //学生密码修改
+      path: '/studentTestInfoContent/setting/changPassword',
+      name: 'studentChangPassword',
+      component: studentChangPassword
     },
+    /*
     {
-      path: '/student/query/educationMessage',
+      //学生通知信息
+      path: '/studentTestInfoContent/query/educationMessage',
       name: 'educationMessage',
       component: educationMessage
     },
+    */
     {
-      path: '/student/query/studentLesson',
+      //学生课表查询
+      path: '/studentTestInfoContent/query/studentLesson',
       name: 'studentLesson',
       component: studentLesson
     },
     {
-      path: '/student/query/studentTeacher',
+      //学生查看教师
+      path: '/studentTestInfoContent/query/studentTeacher',
       name: 'studentTeacher',
       component: studentTeacher
     },
     {
-      path: '/student/setting/studentInformation',
+      //学生个人信息
+      path: '/studentTestInfoContent/setting/studentInformation',
       name: 'studentInformation',
       component: studentInformation
     },
     {
-      path: '/student/setting/studentEvaluation',
+      //学生评教界面
+      path: '/studentTestInfoContent/setting/studentEvaluation',
       name: 'studentEvaluation',
       component: studentEvaluation
     },
-    //*******************************************************************教务（陈志攀）
     {
-      path: '/eduAdmin/test/eduAdminManager',
+      //学生考场查询
+      path: '/studentTestInfoContent/query/studentTestInfo',
+      name: 'studentTestInfo',
+      component: studentTestInfo
+    },
+    {
+      //教师查看考场
+      path: '/teacher/classInfo/teacherTestInfo',
+      name: 'teacherTestInfo',
+      component: teacherTestInfo
+    },
+    {
+      //考务管理界面
+      path: '/eduAdmin/eduAdminManage',
       name: 'eduAdminManager',
       component: eduAdminManager
     },
     //*******************************************************************（陈志攀end）
     //*******************************************************************（吴坚start）
     {
-      path: '/stInquireGrade',
+      //学生查询成绩界面
+      path: '/studentTestInfoContent/query/stInquireGrade',
       name: 'stInquireGrade',
       component: stInquireGrade
     },
     {
-      path: '/eduAdminManageStd',
+      //学生管理界面
+      path: '/eduAdmin/baseSetting/person/eduAdminManageStd',
       name: 'eduAdminManageStd',
       component: eduAdminManageStd
     },
     {
-      path: '/eduAdminManageTch',
+      //教师管理界面
+      path: '/eduAdmin/baseSetting/person/eduAdminManageTch',
       name: 'eduAdminManageTch',
       component: eduAdminManageTch
     },
     {
-      path: '/eduAdminEduPlan',
+      //培养方案界面
+      path: '/eduAdmin/manage/plan/eduAdminEduPlan',
       name: 'eduAdminEduPlan',
       component: eduAdminEduPlan
     },
     {
-      path: '/eduAdminTeachProcess',
+      //教学进程界面
+      path: '/eduAdmin/manage/plan/eduAdminTeachProcess',
       name: 'eduAdminTeachProcess',
       component: eduAdminTeachProcess
     },
     {
-      path: '/eduAdminTchTeachingPlan',
+      //教师授课计划界面
+      path: '/eduAdmin/manage/examination/eduAdminTchTeachingPlan',
       name: 'eduAdminTchTeachingPlan',
       component: eduAdminTchTeachingPlan
     },
     {
-      path: '/eduAdminManageClass',
+      //班级管理界面
+      path: '/eduAdmin/baseSetting/resource/eduAdminManageClass',
       name: 'eduAdminManageClass',
       component: eduAdminManageClass
     },
     {
-      path: '/eduAdminEvaTeachingResult',
+      //评教结果界面
+      path: '/eduAdmin/manage/examination/eduAdminEvaTeachingResult',
       name: 'eduAdminEvaTeachingResult',
       component: eduAdminEvaTeachingResult
     },
     {
-      path: '/eduAdminSupervisorManage',
+      //教务管理督导界面
+      path: '/eduAdmin/manage/plan/eduAdminSupervisorManage',
       name: 'eduAdminSupervisorManage',
       component: eduAdminSupervisorManage
     },
     {
-      path: '/eduAdminAuthorityManage2',
+      //权限管理2界面
+      path: '/eduAdmin/role/eduAdminAuthorityManage2',
       name: 'eduAdminAuthorityManage2',
       component: eduAdminAuthorityManage2
     },
     {
-      path: '/eduAdminManageGrade',
+      //年级管理界面
+      path: '/eduAdmin/baseSetting/resource/eduAdminManageGrade',
       name: 'eduAdminManageGrade',
       component: eduAdminManageGrade
     },
+    /*
+    {
+      //公告信息通知界面
+      path: '/Systeminfo/eduAdminNotifyInformation',
+      name: 'eduAdminNotifyInformation',
+      component: eduAdminNotifyInformation
+    },
+    */
     //*******************************************************************（吴坚end）
     //*******************************************************************（李西炜start）
     {
-      path: '/eduAdmin/course/courseInfor/checkCourse',
-      name: '/eduAdmin/course/courseInfor/checkCourse',
+      path: '/login/main/eduAdminHome',
+      name: '/eduAdminHome',
+      component: eduAdminHome
+    },
+    {
+      path: '/login/main/teacherHome',
+      name: '/teacherHome',
+      component: teacherHome
+    },
+    {
+      path: '/login/main/studentHome',
+      name: '/studentHome',
+      component: studentHome
+    },
+    {
+      path: '/eduAdmin/course/courseInfo/checkCourse',
+      name: '/eduAdmin/course/courseInfo/checkCourse',
       component: checkCoursePage
       //  教务查看课表页面
     },
     {
-      path: '/eduAdmin/course/courseInfor/adjustCouApply',
-      name: '/eduAdmin/course/courseInfor/adjustCouApply',
+      path: '/eduAdmin/course/courseInfo/adjustCouApply',
+      name: '/eduAdmin/course/courseInfo/adjustCouApply',
       component: adjustCouApplyPage
       //  教务员调课申请处理页面
     },
@@ -209,13 +277,13 @@ export default new Router({   //将routes里的参数导出
       //  登录页面
     },
     {
-      path: '/forgetPassword',
+      path: '/login/operation/forgetPassword',
       name: 'forgetPassword',
       component: forgetPassword
       //  忘记密码找回页面
     },
     {
-      path: '/resetForgetPassword',
+      path: '/login/operation/resetForgetPassword',
       name: 'resetForgetPassword',
       component: resetForgetPassword
       //  忘记密码重置页面
@@ -239,6 +307,12 @@ export default new Router({   //将routes里的参数导出
       //  排课课程管理页面
     },
     {
+      path: '/eduAdmin/course/courseOperation/couArrangeTable',
+      name: '/eduAdmin/course/courseOperation/couArrangeTable',
+      component: couArrangeTablePage
+      //  排课结果课表页面
+    },
+    {
       path: '/eduAdmin/baseSetting/resource/textbookMgmt',
       name: '/eduAdmin/baseSetting/resource/textbookMgmt',
       component: textbookMgmtPage
@@ -257,155 +331,228 @@ export default new Router({   //将routes里的参数导出
       //  教研组信息管理页面
     },
     {
-      path: '/eduAdmin/course/courseInfor/suspendCouApply',
-      name: '/eduAdmin/course/courseInfor/suspendCouApply',
+      path: '/eduAdmin/course/courseInfo/suspendCouApply',
+      name: '/eduAdmin/course/courseInfo/suspendCouApply',
       component: suspendCouApplyPage
       //  停课申请处理页面
     },
     {
-      path: '/eduAdmin/course/courseInfor/makeupCouApply',
-      name: '/eduAdmin/course/courseInfor/makeupCouApply',
+      path: '/eduAdmin/course/courseInfo/makeupCouApply',
+      name: '/eduAdmin/course/courseInfo/makeupCouApply',
       component: makeupCouApplyPage
       //  补课申请处理页面
+    },
+    {
+      path: '/eduAdmin/information/notifyInformation',
+      name: '/eduAdmin/information/notifyInformation',
+      component: notifyInformationPage
     },
     //*******************************************************************（李西炜end）
 
     //*******************************************************************（易倩start）
     {
-      path: '/teacher/teachingPlan',
-      component: teachingPlan
-    },
-    {
-      path: '/teacher/teachingEvaluate',
-      component: teachingEvaluate
-    },
-    {
-      path: '/teacher/stopClass',
-      component:stopClass
-    },
-    {
-      path: '/teacher/research',
+      //管理教研组
+      path: '/teacher/group/research',
       component: research
     },
     {
-      path: '/teacher/requirement',
-      component:requirement
+      //审批教学计划
+      path: '/teacher/group/eduAdminTchTeachingPlan',
+      component: teachingPlan
     },
-    {
-      path: '/teacher/passwdChange',
-      component:   passwdChange
-    },
-    {
-      path: '/teacher/messageNotice',
-      component:  messageNotice
-    },
-    {
-      path: '/teacher/makeupClass',
+    {//申请补课
+      path: '/teacher/course/makeupClass',
       component:  makeupClass
     },
     {
-      path: '/teacher/experience',
-      component:experience
+      //停课申请
+      path: '/teacher/course/stopClass',
+      component:stopClass
     },
     {
-      path: '/teacher/educationManege',
-      component:educationManege
+      //禁排申请
+      path: '/teacher/course/requirement',
+      component:requirement
     },
-    {
-      path: '/teacher/director',
+    {//督导反馈
+      path: '/teacher/teach/director',
       component:director
     },
-    {
+    {//督导结果
       path:'/teacher/directorResult',
       component:directorResult
     },
     {
+      //查看评教
+      path: '/teacher/class/teachingEvaluate',
+      component: teachingEvaluate
+    },
+    {//班级列表
+      path: '/teacher/class/classList',
+      component:classList
+    },
+    {//班主任查看学生个人信息
+      path: '/teacher/class/checkStudentInfo',
+      component:checkStudentInfo
+    },
+    {
+      //密码修改
+      path: '/teacher/info/passwdChange',
+      component:passwdChange
+    },
+    /*
+    {
+      path: '/teacher/teach/messageNotice',
+      component:  messageNotice
+    },
+    {//教务发布通知
+      path: '/eduAdmin/noticeManage',
+      component:  noticeManages
+    },
+    */
+    {//教师基本信息
+      path: '/teacher/personInfo/basicMessage',
+      component:basicMessage
+    },
+    {//教师经历
+      path: '/teacher/info/experience',
+      component:experience
+    },
+    {//教育管理
+      path: '/teacher/info/educationManege',
+      component:educationManege
+    },
+    /*
+    {
+      path:'/teacher/directorResultList',
+      component:directorResultList
+    },
+    {//废弃
       path: '/teacher/classManege',
       component:classManege
     },
-    {
-      path: '/teacher/classList',
-      component:classList
-    },
-    {
-      path: '/teacher/certificateManege',
+    */
+    {//证书管理
+      path: '/teacher/info/certificateManege',
       component:certificateManege
-    },
-    {
-      path: '/teacher/basicMessage',
-      component:basicMessage
     },
     //******************************************************************（易倩end)
 
     //******************************************************************（蔡玲双start）
+    //eduAdmin
     {
-      path: '/eduAdmin/markManage/adminCancelGrade',
+      // 教务-管理员撤销成绩
+      path: '/eduAdmin/gradeManage/grade/adminCancelGrade',
       name: 'adminCancelGrade',
       component: adminCancelGrade
     },
     {
-      path: '/eduAdmin/markManage/gradeQuery',
+      // 教务-成绩查询（学号查询）
+      path: '/eduAdmin/gradeManage/grade/gradeQuery',
       name: 'gradeQuery',
       component: gradeQuery
     },
     {
-      path: '/eduAdmin/markManage/gradeStat',
+      // 教务-成绩统计（分数段查询）
+      path: '/eduAdmin/gradeManage/grade/gradeStat',
       name: 'gradeStat',
       component: gradeStat
     },
     {
-      path: '/eduAdmin/markManage/makeupExamAdmin',
+      // 教务-补考成绩管理
+      path: '/eduAdmin/gradeManage/makeupExam/makeupExamAdmin',
       name: 'makeupExamAdmin',
       component: makeupExamAdmin
     },
     {
-      path: '/eduAdmin/tchSalary/salary',
+      // 教务-补考成绩输入
+      path: '/eduAdmin/gradeManage/makeupExam/makeupGradeInput',
+      name: 'makeupGradeInput',
+      component: makeupGradeInput
+    },
+    {
+      // 教务-薪酬单
+      path: '/eduAdmin/emolument/salary',
       name: 'salary',
       component: salary
     },
     {
-      path: '/eduAdmin/tchSalary/setPrice',
+      // 教务-设置单价
+      path: '/eduAdmin/emolument/setPrice',
       name: 'setPrice',
       component: setPrice
     },
     {
-      path: '/eduAdmin/userManage/authorityMgmt1',
+      // 教务-权限管理1（角色管理）
+      path: '/eduAdmin/role/authorityMgmt1',
       name: 'authorityMgmt1',
       component: authorityMgmt1
     },
+    {
+      // 教务-公告管理
+      path: '/eduAdmin/information/noticeManage',
+      name: 'noticeManage',
+      component: noticeManage
+    },
+    {
+      // 教务-公告编辑
+      path: '/eduAdmin/information/noticeSetting',
+      name: 'noticeSetting',
+      component: noticeSetting
+    },
+    {
+      // 教务-公告详细
+      path: '/eduAdmin/information/notifyInformation',
+      name: 'notifyInformation',
+      component: notifyInformation
+    },
+
 
 
     // teacher
     {
-      path: '/teacher/tchCheckTimetable',
+      // 教师-查看教师课表
+      path: '/teacher/classInfo/tchCheckTimetable',
       name: 'tchCheckTimetable',
       component: tchCheckTimetable
     },
     {
-      path: '/teacher/courseList',
+      // 教师-查看个人薪酬单
+      path: '/teacher/classInfo/tchCheckSalary',
+      name: 'tchCheckSalary',
+      component: tchCheckSalary
+    },
+    {
+      // 教师-教学计划
+      path: '/teacher/teach/courseList',
       name: 'courseList',
       component: courseList
     },
     {
-      path: '/teacher/gradesInput',
+      // 教师-上课签到
+      path: '/teacher/teach/normalSchedule',
+      name: 'normalSchedule',
+      component: normalSchedule
+    },
+    {
+      // 教师-正考成绩输入
+      path: '/teacher/class/gradesInput',
       name: 'gradesInput',
       component: gradesInput
     },
     {
-      path: '/teacher/normalSchedule',
-      name: 'normalSchedule',
-      component: normalSchedule	// **************不要
-    },
-    {
-      path: '/teacher/tchGradesInput',
+      // 教师-成绩录入
+      path: '/teacher/class/tchGradesInput',
       name: 'tchGradesInput',
       component: tchGradesInput
     },
     {
-      path: '/teacher/tchManuAdjCl',
+      // 教师-调课申请
+      path: '/teacher/course/tchManuAdjCl',
       name: 'tchManuAdjCl',
       component: tchManuAdjCl
     }
+
     //******************************************************************（蔡玲双end）
   ]
 })

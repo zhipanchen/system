@@ -3,9 +3,9 @@
 	<div class="tableSelect">
 		<select v-model="selSemester">
 			<option disabled>选择学期</option>
-			<option v-for="semesterOpt in semesterOpts" v-model="semesterOpt.text">
-				{{ semesterOpt.year }}第{{ semesterOpt.term }}学期
-				<!-- <option>{{ semesterOpt.year }}第{{ semesterOpt.term }}学期</option> -->
+			<option v-for="semesterOpt in yearSemester" :value="semesterOpt">
+				{{semesterOpt}}
+				<!-- {{ semesterOpt.year }}第{{ semesterOpt.term }}学期 -->
 			</option>
 		</select>
 		<select v-model="selWeek">
@@ -87,6 +87,15 @@
 				</tbody>
 			</table>
 		</div>
+
+		<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
+			<div style="text-align:center; font-size:1.1rem;">
+			    <p>操作失败！请重试</p>
+			</div>
+		    <div slot="footer" style="text-align:center;">
+		        <Button id="modalBtn" @click="resultOk()">确认</Button>
+		    </div>
+		</Modal>
 	</div>
 </div>
 </template>
@@ -98,11 +107,11 @@ export default {
 			// year: '',
 			// term: '',
 			selSemester: '选择学期',
-			semesterOpts: [
-				// {year: '2016-2017', term: '1'}
+			yearSemester: [
+				// 12456
 			],
 			selWeek: '选择周数',
-			week: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+			week: ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],
 			firstCourse: '',
 			secondCourse: '',
 			thirdCourse: '',
@@ -120,7 +129,8 @@ export default {
 			classmeeting: '班会',
 			teacherDetailCurriculum: [
 				// {courseSerial: 'A1600620', courseName: '护理学', courseSerialNumber: 'A1600620.01', courseTeacher: '何平'}
-			]
+			],
+			modalResult: false
 		}
 	},
 	beforeMount: function () {
@@ -130,9 +140,8 @@ export default {
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.year = data.year;
-            this.term = data.term;
-            this.week = data.week;
+            this.yearSemester = data.yearSemester;
+            // this.week = data.week;
             this.firstCourse = data.teacherCurriculum[0].firstCourse;
             this.secondCourse = data.teacherCurriculum[0].secondCourse;
             this.thirdCourse = data.teacherCurriculum[0].thirdCourse;
@@ -156,9 +165,8 @@ export default {
 	methods: {
 		checkTableBtn: function () {	// 查询课表
 			this.$http.post('./teacherSeeCurriculum',{
-	        	"year": this.year,
-	        	"term": this.term,
-	        	"week": this.week
+	        	"yearSemester": this.selSemester,
+	        	"week": this.selWeek
 	        },{    
 	            "Content-Type":"application/json"
 	        }).then(function(response){
@@ -181,10 +189,9 @@ export default {
 		            this.thirteenthCourse = data.teacherCurriculum[0].thirteenthCourse;
 		            this.fourteenthCourse = data.teacherCurriculum[0].fourteenthCourse;
 		            this.teacherDetailCurriculum = data.teacherDetailCurriculum;
-	            }else if (data.result == "2") {
-			        alert("操作失败！请重试");
-			    }else if (data.result == "0") {
-			    	alert("等待申请...");
+	            }else {
+			        // this.$Message.error("操作失败！请重试");
+			        this.modalResult = true;
 			    }
 	        },function(error){
 	            console.log("获取申请error:");
@@ -193,12 +200,15 @@ export default {
 			// var tableInfo = document.getElementById('tableInfo');
 			// tableInfo.action = 'index.php';
 			// tableInfo.method = 'get';
-		}
+		},
+    	resultOk: function () {
+    		this.modalResult = false;
+    	}
 	}
 }
 </script>
 
-<style>
+<style scoped>
 #timetable {
 	background-color: #f3f3f3;
 	width: 100%;

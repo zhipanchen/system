@@ -1,13 +1,13 @@
 <template>
     <div id="checkCourse_tableDiv">
-        <button id="exchangeButton" @click="exchangeClick" class="am-btn am-btn-success am-radius">确认调课</button>
+        <!--<button id="exchangeButton" @click="exchangeClick" class="am-btn am-btn-success am-radius">确认调课</button>-->
         <table id="checkCourseTable">
             <tr class="headTr">
                 <td id="headTdTime">时间</td>
-                <td class="weekTd" colspan="4">星期一</td>
-                <td class="weekTd" colspan="4">星期二</td>
-                <td class="weekTd" colspan="4">星期三</td>
-                <td class="weekTd" colspan="4">星期四</td>
+                <td class="weekTd" colspan="3">星期一</td>
+                <td class="weekTd" colspan="3">星期二</td>
+                <td class="weekTd" colspan="3">星期三</td>
+                <td class="weekTd" colspan="3">星期四</td>
                 <td class="weekTd" colspan="3">星期五</td>
                 <td rowspan="3">教室安排</td>
                 <td rowspan="3">班主任</td>
@@ -15,13 +15,13 @@
             <tr class="headTr">
                 <td id="headTdCourse">科目</td>
                 <td class="" colspan="2">上午</td>
-                <td class="" colspan="2">下午</td>
+                <td class="">下午</td>
                 <td class="" colspan="2">上午</td>
-                <td class="" colspan="2">下午</td>
+                <td class="">下午</td>
                 <td class="" colspan="2">上午</td>
-                <td class="" colspan="2">下午</td>
+                <td class="">下午</td>
                 <td class="" colspan="2">上午</td>
-                <td class="" colspan="2">下午</td>
+                <td class="">下午</td>
                 <td class="" colspan="2">上午</td>
                 <td class="">下午</td>
             </tr>
@@ -30,19 +30,15 @@
                 <td>1-2</td>
                 <td>3-4</td>
                 <td>5-6</td>
-                <td>7</td>
                 <td>1-2</td>
                 <td>3-4</td>
                 <td>5-6</td>
-                <td>7</td>
                 <td>1-2</td>
                 <td>3-4</td>
                 <td>5-6</td>
-                <td>7</td>
                 <td>1-2</td>
                 <td>3-4</td>
                 <td>5-6</td>
-                <td>7</td>
                 <td>1-2</td>
                 <td>3-4</td>
                 <td>5-6</td>
@@ -52,28 +48,28 @@
                 <td :id="'first'+index" @click="courseClick('first',index)">{{ item.firstCourse }}</td>
                 <td :id="'second'+index" @click="courseClick('second',index)">{{ item.secondCourse }}</td>
                 <td :id="'third'+index" @click="courseClick('third',index)">{{ item.thirdCourse }}</td>
-                <td :id="index" @click="courseClick('third',index)"></td>
+                <!--<td :id="index" @click="courseClick('third',index)"></td>-->
                 <td :id="'fourth'+index" @click="courseClick('fourth',index)">{{ item.fourthCourse }}</td>
                 <td :id="'fifth'+index" @click="courseClick('fifth',index)">{{ item.fifthCourse }}</td>
                 <td :id="'sixth'+index" @click="courseClick('sixth',index)">{{ item.sixthCourse }}</td>
-                <td :id="index" @click="courseClick('third',index)"></td>
+                <!--<td :id="index" @click="courseClick('third',index)"></td>-->
                 <td :id="'seventh'+index" @click="courseClick('seventh',index)">{{ item.seventhCourse }}</td>
                 <td :id="'eighth'+index" @click="courseClick('eighth',index)">{{ item.eighthCourse }}</td>
                 <td :id="'ninth'+index" @click="courseClick('ninth',index)">{{ item.ninthCourse }}</td>
-                <td :id="index" @click="courseClick('third',index)"></td>
+                <!--<td :id="index" @click="courseClick('third',index)"></td>-->
                 <td :id="'tenth'+index" @click="courseClick('tenth',index)">{{ item.tenthCourse }}</td>
                 <td :id="'eleventh'+index" @click="courseClick('eleventh',index)">{{ item.eleventhCourse }}</td>
                 <td :id="'twelfth'+index" @click="courseClick('twelfth',index)">{{ item.twelfthCourse }}</td>
-                <td :id="index" @click="courseClick('third',index)"></td>
+                <!--<td :id="index" @click="courseClick('third',index)"></td>-->
                 <td :id="'thirteenth'+index" @click="courseClick('thirteenth',index)">{{ item.thirteenthCourse }}</td>
                 <td :id="'fourteenth'+index" @click="courseClick('fourteenth',index)">{{ item.fourteenthCourse }}</td>
-                <td :id="'fifteenth'+index" @click="courseClick('fifteenth',index)">{{ item.fifteenthCourse }}</td>
+                <td :id="'fifteenth'+index" @click="courseClick('fifteenth',index)">班会</td>
                 <td :id="'classroomName'+index" >{{ item.classroomName }}</td>
                 <td :id="'classHeadmaster'+index">{{ item.classHeadmaster }}</td>
             </tr>
         </table>
         <table id="courseDetailTable" class="normalTable">
-            <thead>
+           <!--<thead>
                 <tr>
                     <td></td>
                     <td></td>
@@ -100,7 +96,7 @@
                     <td></td>
                     <td></td>
                 </tr>
-            </tbody>
+            </tbody>-->
         </table>
     </div>
 
@@ -113,7 +109,7 @@
             return {
                 checked: 0,
                 items:[
-                    {   "className": '高职2013级1班（45人）', "firstCourse":'语文+教师姓名+（教室）+（时间）',
+                    /*{   "className": '高职2013级1班（45人）', "firstCourse":'语文+教师姓名+（教室）+（时间）',
                         "secondCourse": "数学",
                         "thirdCourse": "英语",
                         "fourthCourse": "英语",
@@ -402,34 +398,20 @@
                         "fourteenthCourse": "英语",
                         "fifteenthCourse": "英语",
                         "classroomName": "C105",
-                        "classHeadmaster": "张三"}
+                        "classHeadmaster": "张三"}*/
                 ]
+//                课表信息
             }
         },
         props:['queryCourse'],
+//        父组件传递查找结果课表
         watch: {
             queryCourse: function () {
                 this.items = this.queryCourse;
+//                查找课表替换
             }
-        },
-        beforeMount: function() {
-            this.$http.post('./acdeminSeeCurriculum',{
-//            this.$http.post('../testPhp/checkCourse.php',{
-                "year": "",
-                "term": "",
-                "week": ""
-            },{
-                "Content-Type":"application/json"
-            }).then(function(response){
-                console.log("获取课表:");
-                console.log(response.body);
-                this.items = response.body;
-            },function(error){
-                console.log("获取课表error:");
-                console.log(error);
-            });
-        },
-        methods: {
+        }
+        /*methods: {
             exchangeClick: function(){
                 var td = document.getElementsByTagName("td");
                 var td1 = null;
@@ -454,7 +436,7 @@
                 this.checked = 0;
             },
             courseClick: function(name,index){
-                /*console.log(this.queryCourse);
+                console.log(this.queryCourse);
                 var td = document.getElementById(name+index);
                 if (td.style.background == "lightskyblue") {
                     td.style.background = "white";
@@ -466,9 +448,9 @@
                     }else{
                         alert("已选择了需要调换的两门课程！");
                     }
-                }*/
+                }
             },
-        }
+        }*/
     }
 </script>
 
@@ -483,6 +465,7 @@
         display: none;
     }
     #checkCourseTable{
+        /*课表*/
         position: relative;
         margin: 0.5rem auto;
         width: 97%;
@@ -495,6 +478,7 @@
         max-width: 3rem;
     }
     .headTr td{
+        /*表头单元格*/
         height: 1rem;
     }
     td input{
@@ -510,19 +494,23 @@
         cursor: pointer;
     }
     #headTdTime{
+        /*表头时间*/
         text-align: right;
         border: none;
         width: 8.3rem;
     }
     #headTdCourse{
+        /*表头科目*/
         border: none;
     }
     #headTdClass{
+        /*表头班级*/
         padding-left: 0.5rem;
         text-align: left;
         border: none;
     }
     #headTdTime:after{
+        /*表头分割线*/
         content: "";
         position: absolute;
         width: 0.05rem;
@@ -539,6 +527,7 @@
         transform-origin: top;
     }
     #headTdClass:before{
+        /*表头分割线*/
         content: "";
         position: absolute;
         width: 0.05rem;
@@ -555,6 +544,7 @@
         transform-origin: top;
     }
     #courseDetailTable{
+        /*课程详细信息表格*/
         position: relative;
         margin: 0.5rem auto;
         width: 97%;

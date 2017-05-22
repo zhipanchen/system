@@ -14,7 +14,7 @@
   import topBar from '../../../components/eduAdmin/eduAdminManagerPage/topBar1/topBar1.vue'
   import eduAdminManagerContent from '../../../components/eduAdmin/eduAdminManagerPage/eduAdminManagerContent/eduAdminManagerContent.vue'
   export default {
-    name: 'changPasswordPage',
+    name: 'studentChangPasswordPage',
     data () {
       return {
       }

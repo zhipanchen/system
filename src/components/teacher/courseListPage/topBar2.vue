@@ -1,7 +1,7 @@
 <template>
   <div class="topBarDiv am-btn-group">
-    <a :href="tchJournalUrl"><button id="tchJournalBtn" class="topBarButton am-btn am-btn-success btn-active" @click="tchJournalClick">{{ tchJournalBtn }}</button></a>
-    <a :href="gradesInputUrl"><button id="gradesInputBtn" class="topBarButton am-btn am-btn-success" @click="gradesInputClick">{{ gradesInputBtn }}</button></a>
+    <a :href="teachPlanUrl"><button id="teachPlanBtn" class="topBarButton am-btn am-btn-success btn-active">{{ teachPlanBtn }}</button></a>
+    <a :href="superviseUrl"><button id="superviseBtn" class="topBarButton am-btn am-btn-success">{{ superviseBtn }}</button></a>
   </div>
 </template>
 
@@ -9,10 +9,10 @@
   export default {
     data () {
       return {
-        tchJournalBtn: '教师日志',
-        gradesInputBtn: '成绩输入',
-        tchJournalUrl: '',
-        gradesInputUrl: '/teacher/tchGradesInput',
+        teachPlanBtn: '教学计划',
+        superviseBtn: '督导反馈',
+        teachPlanUrl: '#/teacher/teach/courseList',
+        superviseUrl: '#/teacher/teach/director',
       }
     },
     methods: {
@@ -21,8 +21,8 @@
   }
 </script>
 
-<style>
-  #tchJournalBtn {
+<style scoped>
+  #teachPlanBtn {
     margin-left: 5rem;
   }
 

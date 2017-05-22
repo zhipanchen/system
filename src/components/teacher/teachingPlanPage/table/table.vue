@@ -13,10 +13,13 @@
       <table class="operationTable">
         <thead>
         <tr>
-          <th width="25%">上传教师</th>
-          <th width="25%">上传时间</th>
-          <th width="25%">导出</th>
-          <th width="25%">操作</th>
+          <th>上传教师</th>
+          <th>教师ID</th>
+          <th>课程名称</th>
+          <th>类别</th>
+          <th>上传时间</th>
+          <th>导出</th>
+          <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -24,18 +27,18 @@
         <tr  v-for="(data,index) in tableList" :key="data.teacherName">
           <td v-text="data.teacherName"></td>
           <td v-text="data.teacherId"></td>
+          <td v-text="data.courseName"></td>
+          <td v-text="data.coursewareType"></td>
           <td v-text="data.uploadTime"></td>
-          <td><span :id="'down'+index" @click="download(index)">下载</span></td>
-          <td ><button :id="'buttonOne'+index" @click="success(index)"  class="circle" >√</button>
-              <button :id="'buttonTwo'+index" @click="fail(index)"  class="circle" >×</button>
+          <td><form action="./courseTeachPlan/leaderDownloadTeachPlan" method="get"><input v-model="data.teacherId" name="teacherId" readonly style="display: none"><input v-model="data.courseId" name="courseId" readonly style="display: none"><button class="am-btn am-btn-success am-radius" :id="'down'+index" type="submit">下载</button></form></td>
+          <td ><button :id="'buttonOne'+index" @click="successDia(index)"  class="circle" >√</button>
+              <button :id="'buttonTwo'+index" @click="failDia(index)"  class="circle" >×</button>
               <!--<img  height="30" width="30"  :src="Src1">-->
               <!--<img height="30" width="30"   :src="Src2">-->
           </td>
         </tr>
-
         </tbody>
       </table>
-
         <!--<Upload-->
         <!--ref="upload"-->
         <!--:show-upload-list="false"-->
@@ -51,6 +54,34 @@
         <!--</Upload>-->
     </div>
     </div>
+    <Modal
+      v-model="modal1"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>确认审核通过？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="success(oindex)">确定</button>
+        <button id="modalBtn" @click="modal1 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+      v-model="modal2"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>确认审核不通过？?</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="fail(oindex)">确定</button>
+        <button id="modalBtn" @click="modal2 = false">取消</button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -63,34 +94,129 @@
             return {
               Src1:icon1,
               Src2:icon2,
-              option2:'',
+              option2:'2016.1',
               semesterList: [
               ],
-              tableList:[
-              ]
+              tableList:[],
+              modal1:false,
+              modal2:false,
+              oindex:''
+//              tableList:[{teacherId:"1"},{teacherId:"2"}]
             }
       },
-      beforeMount:function(){
-//        this.$http.post('../jsonphp/teachingPlan.php',{},{"Content-Type":"application/json"}).then(function (response) {
-            this.$http.post('./courseTeachPlan/showTeachPlan',{},{"Content-Type":"application/json"}).then(function (response) {
-          console.log(response);
+      mounted:function(){
+////        this.$http.post('../jsonphp/teachingPlan.php',{},{"Content-Type":"application/json"}).then(function (response) {
+//            this.$http.post('./courseTeachPlan/showTeachPlan',{},{"Content-Type":"application/json"}).then(function (response) {
+//            this.tableList = response.body.tableList;
+//            this.semesterList = response.body.semesterList;
+//            this.option2 = response.body.currentSemester;
+//            for( var i=0;i<this.tableList.length;i++){
+//              console.log(this.tableList[i]);
+//              if(this.tableList[i].auditStatus =="0")
+//              {
+//                var buttonTwo = document.getElementById("buttonTwo"+i);
+//                buttonTwo.style.display = "none";
+//                var buttonOne = document.getElementById("buttonOne"+i);
+//                buttonOne.disabled = "true";
+//                buttonOne.style.backgroundColor="white";
+//                buttonOne.style.border="grey solid thin";
+//                buttonOne.style.color="grey";
+//              }else if(this.tableList[i].auditStatus =="1"){
+//                var buttonTwoo = document.getElementById("buttonTwo"+i);
+//                buttonTwoo.style.display = "none";
+//                var buttonOnee = document.getElementById("buttonOne"+i);
+//                buttonOnee.disabled = "true";
+//                buttonOnee.style.backgroundColor="white";
+//                buttonOnee.style.border="grey solid thin";
+//                buttonOnee.style.color="grey";
+//              }
+//            }
+//        },
+//        this.$http.post('../testPhp/teachingPlan.php',{},{"Content-Type":"application/json"}).then(function (response) {
+//        this.$http.post('../jsonphp/teachingPlan.php',
+        this.$http.post('./courseTeachPlan/showTeachPlan',
+          {},{"Content-Type":"application/json"}).then(function (response) {
+            console.log(response.body.tableList);
             this.tableList = response.body.tableList;
+            for(var i=0;i<response.body.tableList.length;i++){
+              if(response.body.tableList[i].coursewareType=="0"){
+                this.tableList[i].coursewareType="教学计划";
+              }else if(response.body.tableList[i].coursewareType=="1"){
+                this.tableList[i].coursewareType="课件（教案）";
+              }
+            }
+            this.$nextTick(function () {
+              for (var i = 0; i < this.tableList.length; i++) {
+                console.log(this.tableList[i]);
+                if (this.tableList[i].auditStatus == "0") {
+                  var buttonOne = document.getElementById("buttonOne"+i);
+                  buttonOne.style.display = "none";
+                  var buttonTwo = document.getElementById("buttonTwo"+i);
+                  buttonTwo.disabled = "true";
+                  buttonTwo.style.backgroundColor="white";
+                  buttonTwo.style.border="grey solid thin";
+                  buttonTwo.style.color="grey";
+                } else if (this.tableList[i].auditStatus == "1") {
+                  var buttonTwoo = document.getElementById("buttonTwo" + i);
+                  buttonTwoo.style.display = "none";
+                  var buttonOnee = document.getElementById("buttonOne" + i);
+                  buttonOnee.disabled = "true";
+                  buttonOnee.style.backgroundColor = "white";
+                  buttonOnee.style.border = "grey solid thin";
+                  buttonOnee.style.color = "grey";
+                }
+              }
+            });
             this.semesterList = response.body.semesterList;
             this.option2 = response.body.currentSemester;
-        },
+          },
           function(error){
             console.log("获取教学计划error:");
             console.log(error);
           });
       },
+//      mounted:function(){
+//        for( var i=0;i<this.tableList.length;i++){
+//          console.log(this.tableList[i]);
+//          if(this.tableList[i].auditStatus =="0")
+//          {alert(i);
+//            var buttonTwo = document.getElementById("buttonTwo"+i);
+//            buttonTwo.style.display = "none";
+//            var buttonOne = document.getElementById("buttonOne"+i);
+//            buttonOne.disabled = "true";
+//            buttonOne.style.backgroundColor="white";
+//            buttonOne.style.border="grey solid thin";
+//            buttonOne.style.color="grey";
+//          }else if(this.tableList[i].auditStatus =="1"){
+//            var buttonTwoo = document.getElementById("buttonTwo"+i);
+//            buttonTwoo.style.display = "none";
+//            var buttonOnee = document.getElementById("buttonOne"+i);
+//            buttonOnee.disabled = "true";
+//            buttonOnee.style.backgroundColor="white";
+//            buttonOnee.style.border="grey solid thin";
+//            buttonOnee.style.color="grey";
+//          }
+//        }
+//      },
       methods:{
+        successDia:function(index){
+          this.oindex=index;
+          this.modal1 = true;
+        },
+        failDia:function(index){
+          this.oindex=index;
+          this.modal2 = true;
+        },
       success:function(index){
-        if(confirm("确认审核通过？")){
-          alert(this.tableList[index].teacherId);
+//          alert(this.tableList[index].teacherId);
 //          this.$http.post('../jsonphp/teachingPlan.php',{
-          this.$http.post('./courseTeachPlan/doCheckTeachPlan',{
+          this.modal1 = false;
+          this.$http.post('./courseTeachPlan/doCheckTeachPlan',
+//            this.$http.post('../jsonphp/teachingPlan.php',
+            {
             "teacherId": this.tableList[index].teacherId,
-            "msg": "success"
+            "courseId": this.tableList[index].courseId,
+            "msg": "1"
           },{"Content-Type":"application/json"}).then(function(response){
               console.log("审核通过:");
               console.log(response.body);
@@ -106,15 +232,15 @@
               console.log("审核通过error:");
               console.log(error);
             });
-
-        }
       },
         fail:function(index){
-          if(confirm("确认审核不通过？")){
-//            this.$http.post('../jsonphp/teachingPlan.php',{
-              this.$http.post('./courseTeachPlan/doCheckTeachPlan',{
+              this.modal2=false;
+//            this.$http.post('../jsonphp/teachingPlan.php',
+              this.$http.post('./courseTeachPlan/doCheckTeachPlan',
+                {
               "teacherId": this.tableList[index].teacherId,
-              "msg": "fail"
+                "courseId": this.tableList[index].courseId,
+              "msg": "0"
             },{"Content-Type":"application/json"}).then(function(response){
               console.log("审核不通过:");
               console.log(response.body);
@@ -130,7 +256,7 @@
                 console.log("审核不通过error:");
                 console.log(error);
               });
-        }
+
 //        handleFormatError:function(){
 //          this.$Message.error('文件格式错误！限制格式为'+this.$refs.upload.format,3);
 //        },
@@ -159,27 +285,56 @@
 //          console.log(res);
 //        }
       },
-       download:function(index){
-         this.$http.post('../jsonphp/teachingPlan.php',{
+       /*download:function(index){
+         //待修改
+         this.$http.post('./courseTeachPlan/leaderDownloadTeachPlan',{
            "teacherId": this.tableList[index].teacherId
          },{"Content-Type":"application/json"}).then(function (response) {
-             console.log("下载:");
-             console.log(response.body);
+             var url=response.body.;
+             location.href=''
          },
          function(error){
            console.log("下载error:");
            console.log(error);
          });
-       },
+       },*/
         chooseTerm:function(value){
+//          this.$http.post('./jsonphp/teachingPlan.php',{
           this.$http.post('./courseTeachPlan/showTeachPlan',{
             "semester":value
           },{"Content-Type":"application/json"}).then(function (response) {
+//              this.tableList = response.body.tableList;
+//              this.semesterList = response.body.semesterList;
+//              this.option2 = value;
+              this.tableList = response.body.tableList;
+              this.$nextTick(function () {
+                for (var i = 0; i < this.tableList.length; i++) {
+                  console.log(this.tableList[i]);
+                  if (this.tableList[i].auditStatus == "0") {
+                    var buttonOne = document.getElementById("buttonOne"+i);
+                    buttonOne.style.display = "none";
+                    var buttonTwo = document.getElementById("buttonTwo"+i);
+                    buttonTwo.disabled = "true";
+                    buttonTwo.style.backgroundColor="white";
+                    buttonTwo.style.border="grey solid thin";
+                    buttonTwo.style.color="grey";
+                  } else if (this.tableList[i].auditStatus == "1") {
+                    var buttonTwoo = document.getElementById("buttonTwo" + i);
+                    buttonTwoo.style.display = "none";
+                    var buttonOnee = document.getElementById("buttonOne" + i);
+                    buttonOnee.disabled = "true";
+                    buttonOnee.style.backgroundColor = "white";
+                    buttonOnee.style.border = "grey solid thin";
+                    buttonOnee.style.color = "grey";
+                  }
+                }
+              });
+              this.semesterList = response.body.semesterList;
               console.log("选择:");
               console.log(response.body);
             },
             function(error){
-              console.log("下载error:");
+              console.log("error:");
               console.log(error);
             });
         }

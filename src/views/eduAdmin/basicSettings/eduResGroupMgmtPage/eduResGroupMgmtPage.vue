@@ -26,6 +26,7 @@
       eduResearchGroupManagementDiv,
     },
     mounted: function() {
+//      dom加载后调整页面高度
       var dom = document.getElementById("eduResearchGroupManagementPage");
       dom.style.height = window.innerHeight *0.85 + "px";
     },

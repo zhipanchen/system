@@ -17,15 +17,56 @@
             <td>{{ application.appContent }}</td>
             <td>{{ application.appTime }}</td>
             <td>
-              <button @click="setTrue(applications,index,application.forbiddentimeId)">√</button>
+              <button class="operationButton" @click="operation(application.forbiddentimeId,'true',index)">√</button>
               <!--申请通过批准-->
-              <button @click="setFalse(applications,index,application.forbiddentimeId)">×</button>
+              <button class="operationButton" @click="operation(application.forbiddentimeId,'false',index)">×</button>
               <!--申请拒绝-->
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <Modal
+        v-model="modal1"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :style="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定通过该申请吗?</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="setTrue(applications,operationId,operationIndex)">确定</button>
+        <button id="modalBtn" @click="modal1 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+        v-model="modal2"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定拒绝该申请吗?</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="setFalse(applications,operationId,operationIndex)">确定</button>
+        <button id="modalBtn" @click="modal2 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+        v-model="modal3"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>{{ errorMessage }}</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="modal3 = false">确定</button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -35,11 +76,20 @@
     data () {
       return {
         applications: [
-          /*{ applicationId:'1', teacherName: '张三', appContent: '每周三上午不上课', appTime: '2016.08.01' },
-          { applicationId:'2', teacherName: '李四', appContent: '每周四下午不上课', appTime: '2016.08.03' },
-          { applicationId:'3', teacherName: '王五', appContent: '每周一下午不上课', appTime: '2016.08.02' },
-          { applicationId:'4', teacherName: '李小红', appContent: '每周五上午不上课', appTime: '2016.08.05' }*/
+          /*{ forbiddentimeId:'1', teacherName: '张三', appContent: '每周三上午不上课', appTime: '2016.08.01' },
+          { forbiddentimeId:'2', teacherName: '李四', appContent: '每周四下午不上课', appTime: '2016.08.03' },
+          { forbiddentimeId:'3', teacherName: '王五', appContent: '每周一下午不上课', appTime: '2016.08.02' },
+          { forbiddentimeId:'4', teacherName: '李小红', appContent: '每周五上午不上课', appTime: '2016.08.05' }*/
         ],
+//                申请信息
+        operationIndex: null,
+        operationId: null,
+//        对话框参数传递
+        modal1: false,
+//        对话框显隐
+        modal2: false,
+        modal3: false,
+        errorMessage: ""
       }
     },
     beforeMount: function() {
@@ -52,14 +102,23 @@
         var data = response.body;
         this.applications = data;
       },function(error){
-        console.log("获取申请error:");
-        console.log(error);
+        this.$Message.error('连接失败，请重试！');
       });
     },
     methods: {
-      setTrue: function(applications,index,id){
-        //预留功能，需要后端返回处理确认
-        if(confirm("您确定通过该申请吗？")){
+      operation: function(operationId,type,operationIndex){
+        this.operationId = operationId;
+        this.operationIndex = operationIndex;
+        console.log(type);
+        if(type == "true"){
+          this.modal1 = true;
+        }else{
+          this.modal2 = true;
+        }
+      },
+//    页面dom加载前获取后端数据
+      setTrue: function(applications,id,index){
+//        if(confirm("您确定通过该申请吗？")){
           this.$http.post('./forbiddenTimeApplyHandle',{
 //          this.$http.post('../testPhp/adjustCouApplySetTrue.php',{
             "forbiddentimeId": id,
@@ -67,23 +126,25 @@
           },{
             "Content-Type":"application/json"
           }).then(function(response){
+            this.modal1 = false;
             console.log("通过申请:");
             console.log(response.body);
             var data = response.body;
             if(data.result == "1") {
               applications.splice(index, 1);
             }else{
-              alert("操作失败！请重试");
+              this.$Message.error("操作失败,请重试!");
+              this.errorMessage = "操作失败,请重试!";
+              this.modal3 = true;
             }
           },function(error){
-            console.log("通过申请error:");
-            console.log(error);
+            this.modal1 = false;
+            this.$Message.error('连接失败，请重试！');
           });
-        }
+//        }
       },
-      setFalse: function(applications,index,id){
-        //预留功能，需要后端返回处理确认
-        if(confirm("您确定拒绝该申请吗？")){
+      setFalse: function(applications,id,index){
+//        if(confirm("您确定拒绝该申请吗？")){
           this.$http.post('./forbiddenTimeApplyHandle',{
 //          this.$http.post('../testPhp/adjustCouApplySetFalse.php',{
             "forbiddentimeId": id,
@@ -91,19 +152,22 @@
           },{
             "Content-Type":"application/json"
           }).then(function(response){
+            this.modal2 = false;
             console.log("拒绝申请:");
             console.log(response.body);
             var data = response.body;
             if(data.result == "1") {
               applications.splice(index, 1);
             }else{
-              alert("操作失败！请重试");
+              this.$Message.error("操作失败,请重试!");
+              this.errorMessage = "操作失败,请重试!";
+              this.modal3 = true;
             }
           },function(error){
-            console.log("拒绝申请error:");
-            console.log(error);
+            this.modal2 = false;
+            this.$Message.error('连接失败，请重试！');
           });
-        }
+//        }
       }
     }
   }
@@ -124,7 +188,8 @@
   #tableDiv{
     margin: 0 5rem;
   }
-  button{
+  .operationButton{
+    /*操作图标*/
     outline: none;
     border: thin solid #A6A6A6;
     background-color: white;
@@ -133,7 +198,7 @@
     font-size: 1rem;
     width: 1.45rem;
   }
-  button:hover{
+  .operationButton:hover{
     background-color: red;
     color: white;
     border: red;

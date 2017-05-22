@@ -1,27 +1,30 @@
 <template>
     <div id="table">
       <div id="show">
-        <button>一键提交</button>
+        <!--<button>一键提交</button>-->
         <table class="operationTable">
           <thead>
           <tr>
-            <th>课程代码</th>
+            <!--<th>课程代码</th>-->
             <th>课程名称</th>
-            <th>上课时间</th>
+            <th>班级名称</th>
+            <th>授课教师</th>
+            <!--<th>上课时间</th>-->
             <th>确认已读</th>
             <th>督导结果</th>
-            <th>督导结果</th>
-
+            <!--<th>操作</th>-->
           </tr>
           </thead>
           <tbody>
           <tr v-for="(data,index) in tableList">
-            <td v-text="data.courseId"></td>
+            <!--<td v-text="data.courseId"></td>-->
             <td v-text="data.courseName"></td>
-            <td v-text="data.courseTime"></td>
-            <td v-text="data.status" :id="'confirm'+index" @click="confirm(index)"></td>
-            <td ><a href="#/teacher/directorResult">在线填写</a></td>
-            <td v-text="data.status" ><span @click="up(index)">提交</span></td>
+            <td v-text="data.className"></td>
+            <td v-text="data.teacherName"></td>
+            <!--<td v-text="data.courseTime"></td>-->
+            <td v-text="data.status" style="text-decoration:underline;cursor: pointer;" :id="'confirm'+index" @click="confirm(index)"></td>
+            <td ><span style="text-decoration: underline; cursor: pointer" @click="directorResult(index)" >在线填写</span></td>
+            <!--<td v-text="data.statuss" :id="'up'+index" @click="up(index)"></td>-->
           </tr>
           </tbody>
         </table>
@@ -34,22 +37,28 @@
         name: 'table',
         data () {
             return {
-              tableList:[]
+              tableList:[{courseName:"护理",className:"101",teacherName:"李华",courseTime:"201-01-02",status:"1"}]
             }
         },
       beforeMount:function(){
-        this.$http.post('../jsonphp/director.php',{},
+//        this.$http.post('../jsonphp/director.php',{},
+        this.$http.post('./teachingSupervision/showTeachingSupervision',{},
           {"Content-Type":"application/json"}).then(function (response) {
             console.log(response);
             this.tableList = response.body.teacherSupervision;
             for(var i = 0;i < response.body.teacherSupervision.length;i++){
               if(response.body.teacherSupervision[i].status == "0"){
-                this.tableList[i].status="确认已读";
-              }else{
+                this.tableList[i].status="未读";
+//                this.tableList[i].statuss="提交";
+              }else  if(response.body.teacherSupervision[i].status == "1"){
                 this.tableList[i].status="已读";
+//                this.tableList[i].statuss="提交";
               }
-            }
-          },
+//              else if(response.body.teacherSupervision[i].status == "2"){
+//                this.tableList[i].status="已读";
+//                this.tableList[i].statuss="已提交";}
+          }
+        },
           function(error){
             console.log("获取error:");
             console.log(error);
@@ -59,9 +68,12 @@
           confirm:function(index){
             console.log(index);
             console.log(this.tableList[index].status);
-          if(this.tableList[index].status=="确认已读")
-          this.$http.post('../jsonphp/director.php',{
-            "superviseId":"this.tableList[index].superviseId"
+          if(this.tableList[index].status=="未读")
+//          this.$http.post('../jsonphp/director.php',{
+              this.$http.post('./teachingSupervision/updateSupervision',{
+                "courseId": this.tableList[index].courseId,
+                "classId":this.tableList[index].classId,
+                "teacherId":this.tableList[index].teacherId
           },{"Content-Type":"application/json"}).then(function (response) {
               if(response.body.result=="1")
               {
@@ -75,25 +87,36 @@
               console.log(error);
             });
         },
-        up:function(index){
-          console.log(index);
-          console.log(this.tableList[index].status);
-          if(this.tableList[index].status=="确认已读")
-            this.$http.post('../jsonphp/director.php',{
-              "superviseId":"this.tableList[index].superviseId"
-            },{"Content-Type":"application/json"}).then(function (response) {
-                if(response.body.result=="1")
-                {
-                  this.tableList[index].status="已读"}
-                console.log( this.tableList[index].status);
-                console.log("保存:");
-                console.log(response.body);
-              },
-              function(error){
-                console.log("保存error:");
-                console.log(error);
-              });
+        directorResult:function(index){
+          var courseId=this.tableList[index].courseId;
+          var classId=this.tableList[index].classId;
+          var teacherId=this.tableList[index].teacherId;
+          console.log(courseId);
+          console.log("1");
+          console.log(classId);
+          console.log("2");
+          console.log(teacherId);
+          location.href='#/teacher/directorResult?'+courseId+'&'+classId+'&'+teacherId;
         }
+//        up:function(index){
+//          console.log(index);
+//          console.log(this.tableList[index].status);
+//          if(this.tableList[index].status=="已读"&&this.tableList[index].statuss=="提交")
+//            this.$http.post('./teachingSupervision/submitSupervision',{
+//              "superviseId":"this.tableList[index].superviseId"
+//            },{"Content-Type":"application/json"}).then(function (response) {
+//                if(response.body.result=="1")
+//                {
+//                  this.tableList[index].statuss="已提交"}
+//                console.log( this.tableList[index].statuss);
+//                console.log("保存:");
+//                console.log(response.body);
+//              },
+//              function(error){
+//                console.log("保存error:");
+//                console.log(error);
+//              });
+//        }
       }
     }
 </script>

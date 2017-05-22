@@ -2,13 +2,8 @@
     <div id="myLessonContent">
       <div class="blank">
       <select class="selectStyle1" v-model="yearSelect">
-        <option value="选择学年" disabled selected>选择学年</option>
-        <option v-for="year in years" v-bind:value="year">{{year}}</option>
-      </select>
-
-      <select class="selectStyle2" v-model="termSelect">
         <option value="选择学期" disabled selected>选择学期</option>
-        <option v-for="term in terms" v-bind:value="term">{{term}}</option>
+        <option v-for="year in years" v-bind:value="year">{{year}}</option>
       </select>
 
         <select class="selectStyle2" v-model="weekSelect">
@@ -94,18 +89,17 @@
         name: 'myLessonContent',
         data () {
             return {
-              yearSelect:"选择学年",
-              termSelect:"选择学期",
+              yearSelect:"选择学期",
               weekSelect:'选择周数',
               years:[
-                '2016-2017',
-                '2017-2018',
-                '2018-2019',
-                '2019-2020',
-              ],
-              terms:[
-                1,
-                2,
+                '2016-2017.1',
+                '2016-2017.2',
+                '2017-2018.1',
+                '2017-2018.2',
+                '2018-2019.1',
+                '2018-2019.2',
+                '2019-2020.1',
+                '2019-2020.2',
               ],
               weeks: [
                 '第一周',
@@ -133,12 +127,20 @@
               courses2:[]
             }
         },
+      beforeMount:function(){
+        this.$http.post('./studentSeeCurriculum', {
+          yearSemester: '',
+          week: ''
+        }, {"Content-Type": "application/json"}).then(function(response) {
+          this.tests=response.body.examArrangement;
+          this.years=response.body.term;
+        });
+      },
       methods:
       {
         searchClick:function(){
           this.$http.post('./studentSeeCurriculum', {
-            year: this.yearSelect,
-            term: this.termSelect,
+            yearSemester: this.yearSelect,
             week: this.weekSelect
           }, {"Content-Type": "application/json"}).then(function (response) {
             this.course1 = response.body.studentCurriculum[0];

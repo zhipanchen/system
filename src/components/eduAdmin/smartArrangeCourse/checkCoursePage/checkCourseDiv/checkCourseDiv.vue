@@ -28,11 +28,13 @@
         name: 'checkCourseDiv',
         data () {
             return {
-                term: '',//预想显示搜索后的课表信息标题
+                term: '',//显示搜索后的课表信息标题
                 week: '',
                 termSelect: '请选择学期',
                 weekSelect: '请选择周数',
+//                选择值绑定
                 queryCourse: [],
+//                查找结果课表
                 weeks:[
                     { "name":"第一周", "value":"1" },
                     { "name":"第二周", "value":"2" },
@@ -43,7 +45,7 @@
                     { "name":"第七周", "value":"7" },
                     { "name":"第八周", "value":"8" },
                     { "name":"第九周", "value":"9" },
-                    { "name":"第十周", "value":"10" },
+//                    { "name":"第十周", "value":"10" },
                     { "name":"第十一周", "value":"11" },
                     { "name":"第十二周", "value":"12" },
                     { "name":"第十三周", "value":"13" },
@@ -52,9 +54,10 @@
                     { "name":"第十六周", "value":"16" },
                     { "name":"第十七周", "value":"17" },
                     { "name":"第十八周", "value":"18" },
-                    { "name":"第十九周", "value":"19" },
-                    { "name":"第二十周", "value":"20" }
+                    { "name":"第十九周", "value":"19" }
+//                    { "name":"第二十周", "value":"20" }
                 ],
+//                周数选择
                 terms:[
                     { "name":"2015-2016 第1学期", "value":"2015-2016.1" },
                     { "name":"2015-2016 第2学期", "value":"2015-2016.2" },
@@ -63,41 +66,49 @@
                     { "name":"2017-2018 第1学期", "value":"2017-2018.1" },
                     { "name":"2017-2018 第2学期", "value":"2017-2018.2" }
                 ]
+//                学期选择
             }
         },
         components: {
             tableDiv
         },
         beforeMount: function() {
-            this.$http.post('./alternateLessionHandle.action',{},{
-//            this.$http.post('../testPhp/adjustCouApply.php',{},{
+            this.$http.post('./acdeminSeeCurriculum',{
+//            this.$http.post('../testPhp/checkCourse.php',{
+                "yearSemester": "",
+                "week": ""
+            },{
                 "Content-Type":"application/json"
             }).then(function(response){
-                console.log("获取申请:");
+                console.log("获取课表:");
                 console.log(response.body);
-                var data = response.body;
-                this.applications = data.applicationsList;
+                this.queryCourse = response.body.acdeminCurriculum;
+                this.terms = [];
+                for (var i = 0; i < response.body.yearSemester.length; i++) {
+                    this.terms.push({"name":response.body.yearSemester[i].split(".")[0] + " 第" + response.body.yearSemester[i].split(".")[1] + "学期", "value":response.body.yearSemester[i]});
+                }
             },function(error){
-                console.log("获取申请error:");
-                console.log(error);
+                this.$Message.error('连接失败，请重试！');
             });
         },
+//    页面dom加载前获取后端数据
         methods: {
             queryCourseClick: function(){
+//                查找课表
                 this.$http.post('./acdeminSeeCurriculum',{
 //                this.$http.post('../testPhp/checkCourseQuery.php',{
-                    "year": this.termSelect.split(".")[0],
-                    "term": this.termSelect.split(".")[1],
+                    "yearSemester": this.termSelect,
                     "week": this.weekSelect
                 },{
                     "Content-Type":"application/json"
                 }).then(function(response){
                     console.log("查找课表:");
                     console.log(response.body);
-                    this.queryCourse = response.body.course;
+                    this.queryCourse = response.body.acdeminCurriculum;
+                    this.term = this.termSelect;
+                    this.week = this.weekSelect;
                 },function(error){
-                    console.log("查找课表error:");
-                    console.log(error);
+                    this.$Message.error('连接失败，请重试！');
                 });
             }
         }
@@ -118,10 +129,12 @@
         margin-right: 1.4rem;
     }
     #operationDiv{
+        /*查找区域*/
         background-color: white;
         margin: 0 0 0.6rem;
     }
     #selectDiv{
+        /*选择框区域*/
         padding: 0.6rem 5rem;
     }
     #tableTipP{

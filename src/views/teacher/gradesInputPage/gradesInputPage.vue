@@ -28,16 +28,9 @@ export default {
 }
 </script>
 
-<style>
-.lpart span {
-	margin-right: 1rem;
-}
-.lpart {
-  margin: 0 5rem;
-  float: left;
-}
-.rpart {
-  margin: 0 5rem;
-  float: right;
+<style scoped>
+@media screen and (max-width: 1023px) {
+  html {
+  }
 }
 </style>

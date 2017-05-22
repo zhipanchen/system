@@ -56,32 +56,21 @@
             </select>
           </td>
           <td class="designation" width="8%">
-            <span>星期：</span>
-          </td>
-          <td class="choice" width="24%">
-            <select  v-model="selected2">
-              <option>选择星期</option>
-              <option v-for="option2 in options2" >
-                {{ option2}}
-              </option>
-            </select>
-          </td>
-          <td class="designation" width="8%">
             <span>补课时段：</span>
           </td>
           <td class="choice" width="24%">
             <select v-model="selected3" >
               <option>选择时段</option>
-              <option v-for="option3 in options3" >
-                {{ option3 }}
+              <option v-for="option3 in options3" :value="option3.weekday+'-'+option3.lessonNum">
+                第{{option3.weekday}}天-第{{option3.lessonNum}}节
               </option>
             </select>
           </td>
             </tr>
-            <tr>
+          <tr>
           <td class="designation" width="8%">
             <span>教室：</span>
-          </td>
+            </td>
           <td class="choice" width="24%">
             <select v-model="selected4" @change="choose(selected1,selected4)" >
               <option>选择教室</option>
@@ -100,7 +89,7 @@
             </tr>
           </tbody>
       </table>
-      <button  class="am-btn am-btn-success am-radius" @click="saveSel(selected1,selected2,selected3,selected4,message2)">保存</button>
+      <button  class="am-btn am-btn-success am-radius" @click="saveDia(selected1,selected3,selected4,message2)">保存</button>
       <button class="am-btn am-btn-success am-radius" @click="cancel">取消</button>
     </div>
     <div class="adjShowDiv">
@@ -132,7 +121,21 @@
       </table>
     </div>
 	<!--</div>-->
-    </div>
+    <Modal
+      v-model="modal1"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定提交该申请？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="saveSel(oselected1,oselected3,oselected4,omessage2)">确定</button>
+        <button id="modalBtn" @click="modal1 = false">取消</button>
+      </div>
+    </Modal>
+  </div>
 </template>
 
 <script>
@@ -153,11 +156,17 @@ export default {
       selected2: '选择星期',
       selected3: '选择时段',
       selected4: '选择教室',
+      message2:'',
 			options1: [],
 			options2: [],
 			options3: [],
 			options4: [],
-      change:''
+      change:'',
+      modal1:false,
+      oselected1:'',
+      oselected3:'',
+      oselected4:'',
+      omessage2:''
 		}
 	},
   beforeMount:function(){
@@ -172,7 +181,7 @@ export default {
         this.tableList = response.body.lessonList;
         this.applicationList = response.body.applicationList;
         for(var i=0;i<response.body.applicationList.length;i++){
-          if(response.body.applicationList[i].auditType=="0"){
+          if(response.body.applicationList[i].auditType=="2"){
             this.applicationList[i].auditType="审核中";
           }else if(response.body.applicationList[i].auditType=="1"){
             this.applicationList[i].auditType="审核通过";
@@ -187,6 +196,13 @@ export default {
       });
   },
     methods:{
+      saveDia:function(selected1,selected3,selected4,message2){
+        this.oselected1=selected1;
+        this.oselected3=selected3;
+        this.oselected4=selected4;
+        this.omessage2=message2;
+        this.modal1 = true;
+      },
       show:function(index){
         this.seenS=true;
         this.change=index;
@@ -234,19 +250,24 @@ export default {
            "selectedWeek":sel1,
            "selectedClassroom":sel4
          },{"Content-Type":"application/json"}).then(function(response){
-           for(var i=0;i<response.body.selectiveList.length;i++){
-             this.options2.push(response.body.selectiveList[i][0]);
-             this.options3.push(response.body.selectiveList[i][1]);
-           }
+//           for(var i=0;i<response.body.selectiveList.length;i++){
+//             this.options3.push(response.body.selectiveList[i][0]);
+//             this.options3.s.push(response.body.selectiveList[i]);
+//           }
+           this.options3=response.body.selectiveList;
          },function(error){
            console.log("获取error:");
            console.log(error);
          })
         }
       },
-      saveSel:function(sele1,sele2,sele3,sele4,message){
+      saveSel:function(sele1,sele3,sele4,message){
+        console.log(sele3);
+        this.modal1=false;
+        var weekday = sele3.split("-")[0];
+        var lessonNum = sele3.split("-")[1];
 //        this.$http.post('../jsonphp/makeup.php',{
-          this.$http.post('./makeUpLessionApplication/application-submit.action',{
+        this.$http.post('./makeUpLessionApplication/application-submit.action',{
             "teacherName": this.tableList[this.change].teacherName,
             "courseId":this.tableList[this.change].courseId,
             "className":this.tableList[this.change].className,
@@ -260,12 +281,14 @@ export default {
             "teacherId":this.tableList[this.change].teacherId,
             "mediationReason":message,
             "selectedWeek":sele1,
-            "selectedWeekday":sele2,
-            "selectedLessonNum":sele3,
+            "selectedWeekday":weekday,
+            "selectedLessonNum":lessonNum,
             "selectedClassroom":sele4
         },{"Content-Type":"application/json"}).then(function (response) {
-            if(response.result=="1")
-            {alert("success!")}
+            if(response.body.result=="1")
+            {this.$Message.success('操作成功！');
+              var t=setTimeout(" location.reload();",3000)
+            }
             console.log("保存:");
             console.log(response.body);
           },

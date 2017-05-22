@@ -4,28 +4,31 @@
 	<div class="roles">
 		<div class="selectCheck">
 			<select v-model="role" style="width:8rem;" @change="selRoleListClick()">
-				<option disabled>基础角色选择</option>
+				<option disabled>基础角色</option>
 		    	<option v-for="selRole in selRoleList" :value="selRole.value">{{ selRole.text }}</option>
 		    </select>
-			<input v-model="userIdOrName" placeholder="输入姓名或编码" style="width:6rem;" @change="inputUser()">
+			<input v-model="userIdOrName" placeholder="输入姓名或ID" style="width:6rem;" @change="inputUser()">
 		</div>
 		<!-- 选择基本角色后，从后台返回角色列表 -->
-		<table class="roleTable tableRowClick">
-			<tbody>
-				<tr v-for="(person, index) in userList" :key="person">
-<!-- 					<td>
-						<input type="checkbox" v-model="personUserId[index]" @on-change="checkUser(index)">
-						<Checkbox v-model="personUserId[index]" @on-change="checkUser(index)"></Checkbox>
-					</td> -->
-					<td @click="checkUser(index)">{{person.userName}}</td>
-					<td @click="checkUser(index)">{{person.userId}}</td>
-				</tr>
-			</tbody>
-		</table>
+		<div style="overflow:auto; height:27rem;">
+			<table class="roleTable tableRowClick">
+				<tbody>
+					<tr v-for="(person, index) in userList" :key="person">
+	<!-- 					<td>
+							<input type="checkbox" v-model="personUserId[index]" @on-change="checkUser(index)">
+							<Checkbox v-model="personUserId[index]" @on-change="checkUser(index)"></Checkbox>
+						</td> -->
+						<td @click="checkUser(index)">{{person.userName}}</td>
+						<td @click="checkUser(index)">{{person.userId}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
 	</div>
 	<div class="authorities">
 		<div class="changed">
-			<span v-model="userIdGet">当前选择：{{userNameShow}}</span>
+			<span :value="userIdGet">当前选择：{{userNameShow}}</span>
 			<!-- <button class="am-btn am-btn-su-ccess am-radius" @click="changeBtn">修改权限</button> -->
 		</div>
 		<div class="changedTable">
@@ -60,6 +63,17 @@
 				</div>
 			</Modal>
 		</div>
+
+		<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
+			<div style="text-align:center; font-size:1.1rem;">
+			    <p v-if="remindResult === '1'">操作失败！请重试</p>
+			    <p v-else-if= "remindResult === '2'">保存成功！</p>
+			    <p v-else-if= "remindResult === '3'">保存失败！</p>
+			</div>
+		    <div slot="footer" style="text-align:center;">
+		        <Button id="modalBtn" @click="resultOk()">确认</Button>
+		    </div>
+		</Modal>
 	</div>
 </div>
 </template>
@@ -68,7 +82,7 @@
 export default {
 	data () {
 		return {
-			role: '基础角色选择',	// 选择角色
+			role: '基础角色',	// 选择角色
 			selRoleList: [
 				{text: '教师', value: '2'},
 				{text: '管理员', value: '3'}
@@ -77,8 +91,17 @@ export default {
 			userNameShow: '',
 			userIdGet: '',
 			userList: [		// 角色下的人
-				// {userName: '李华', userId: '123546'},
-				// {userName: '李华', userId: '123465'}
+				{userName: '李华', userId: '123546'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'}
 			],
 			roleList: [		// 一人的全部角色数据
 				// {roleName: '教师', roleId: '1'},
@@ -88,7 +111,9 @@ export default {
 			personUserId: [],
 			authorityRoleId: [],		// 多选框数组
 			modal1: false,		// 保存弹出框
-			modal2: false		// 取消弹出框
+			modal2: false,		// 取消弹出框
+			modalResult: false,
+			remindResult: ''
 		}
 	},
 	beforeMount: function() {
@@ -108,6 +133,9 @@ export default {
 	methods: {
 		// 下拉框-基础角色选择
 		selRoleListClick: function () {
+    		if (this.role == "选择年制") {
+    			this.role = '';
+    		}
 			this.$http.post('./getRoleUser',{
 	        	"roleId": this.role
 	        },{    
@@ -135,7 +163,9 @@ export default {
 	            if (data.result == "1") {
 	            	this.userList = data.userList;
 	            }else{
-			        alert("操作失败！请重试");
+			        // alert("操作失败！请重试");
+			        this.modalResult = true;
+			        this.remindResult = '1';
 			    }
 	        },function(error){
 	            console.log("获取申请error:");
@@ -159,7 +189,9 @@ export default {
 	            if (data.result == 1) {
 	            	this.authorityRoleId = data.roleIdList;
 	            }else{
-	            	alert("操作失败！请重试");
+	            	// alert("操作失败！请重试");
+	            	this.modalResult = true;
+			        this.remindResult = '1';
 	            }
 	        },function(error){
 	            console.log("获取申请error:");
@@ -199,11 +231,12 @@ export default {
 	            console.log(response.body);
 	            var data = response.body;
 	            if (data.result == "1") {
-	            	// alert("保存成功！");
 		            this.$Message.success('角色设置保存成功！');
+			        // this.remindResult = '2';
 	            }else{
-			        // alert("操作失败！请重试");
-			        this.$Message.error('操作失败！请重试');
+			        // this.$Message.error('操作失败！请重试');
+	            	this.modalResult = true;
+			        this.remindResult = '1';
 			    }
 	        },function(error){
 	            console.log("获取申请error:");
@@ -212,6 +245,8 @@ export default {
         },
         cancel1 () {
             this.modal1 = false;
+	        this.modalResult = true;
+	        this.remindResult = '3';
             this.$http.post('./getUserRole',{
 	        	"userId": this.userIdGet
 	        },{    
@@ -222,35 +257,20 @@ export default {
 	            var data = response.body;
 	            if (data.result == 1) {
 	            	this.authorityRoleId = data.roleIdList;
-                	this.$Message.error('保存失败！');
+                	// this.$Message.success('保存失败！');
+	            	this.modalResult = true;
+	            	this.remindResult = '3';
+                	// this.remindResult = '3';
 	            }else{
-	            	alert("操作失败！请重试");
+	            	// alert("操作失败！请重试");
+	            	this.modalResult = true;
+	            	this.remindResult = '1';
 	            }
 	        },function(error){
 	            console.log("获取申请error:");
 	            console.log(error);
         	});
         },
-		// 取消角色修改********************************************************
-		// cancelBtn: function () {
-  //       	this.$http.post('./getUserRole',{
-	 //        	"userId": this.userNameShow
-	 //        },{    
-	 //            "Content-Type":"application/json"
-	 //        }).then(function(response){
-	 //            console.log("获取申请:");
-	 //            console.log(response.body);
-	 //            var data = response.body;
-	 //            if (data.result == 1) {
-	 //            	this.authorityRoleId = data.roleIdList;
-	 //            }else{
-	 //            	alert("操作失败！请重试");
-	 //            }
-	 //        },function(error){
-	 //            console.log("获取申请error:");
-	 //            console.log(error);
-  //       	});
-		// }
 		ok2 () {
             this.modal2 = false;
             this.$http.post('./getUserRole',{
@@ -261,11 +281,13 @@ export default {
 	            console.log("获取申请:");
 	            console.log(response.body);
 	            var data = response.body;
+	            this.modalResult = true;
 	            if (data.result == 1) {
 	            	this.authorityRoleId = data.roleIdList;
                		this.$Message.success('取消成功！');
 	            }else{
-	            	alert("操作失败！请重试");
+	            	// alert("操作失败！请重试");
+	            	this.remindResult = '1';
 	            }
 	        },function(error){
 	            console.log("获取申请error:");
@@ -274,12 +296,25 @@ export default {
         },
         cancel2 () {
             this.modal2 = false;
+        },
+        resultOk: function () {
+        	this.modalResult = false;
         }
 	}
 }
 </script>
 
-<style>
+<style scoped>
+#main {
+  /*width: 80%;*/
+  margin: 2.7rem 5rem;
+  display: flex;
+  justify-content: center;
+}
+.lPart, .rPart {
+  margin: 0 3rem;
+}
+
 #authorityMgmt {
 	padding: 3.5rem 5rem;
     display: flex;

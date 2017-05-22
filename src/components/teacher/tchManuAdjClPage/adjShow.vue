@@ -57,15 +57,15 @@
 							</select>
 						</td>
 						<td class="designation" width="8%">
-							<span>原星期：</span>
+							<span>原上课时间：</span>
 						</td>
 						<td class="choice" width="17%">
-							<select v-model="selPerDay">
-								<option disabled>选择星期</option>
-								<option v-for="preDay in weekdayset" :value="preDay">星期{{ preDay }}</option>
+							<select v-model="selCourseDay">
+								<option disabled>选择时间</option>
+								<option v-for="(preDay, index) in weekdayandlessonnum" :value="preDay">星期{{ preDay[0] }}第{{preDay[1] }}节</option>
 							</select>
 						</td>
-						<td class="designation" width="8%">
+						<!-- <td class="designation" width="8%">
 							<span>原节次：</span>
 						</td>
 						<td class="choice" width="17%">
@@ -73,7 +73,7 @@
 								<option disabled>选择节次</option>
 								<option v-for="preSection in lessonNumset" :value="preSection">第{{ preSection }}节</option>
 							</select>
-						</td>
+						</td> -->
 						<td class="designation" width="8%">
 							<span>上课教室：</span>
 						</td>
@@ -89,29 +89,29 @@
 							<span>调至周数：</span>
 						</td>
 						<td class="choice">
-							<select v-model="selAdjWeek">
+							<select v-model="selAdjWeek" @change="selectiveWeekSetChange()">
 								<option disabled>选择周数</option>
 								<option v-for="adjWeek in selectiveWeekSet" :value="adjWeek">第{{ adjWeek }}周</option>
 							</select>
 						</td>
 						<td class="designation">
-							<span>调至星期：</span>
+							<span>调至上课时间：</span>
 						</td>
 						<td class="choice">
-							<select v-model="selAdjDay" @click="selectiveWeekdayClick()">
-								<option disabled>选择星期</option>
-								<option v-for="adjDay in selectiveWeekday" :value="adjDay" @change="selectiveWeekdayChange()">星期{{ adjDay }}</option>
+							<select v-model="selAdjDay">
+								<option disabled>选择时间</option>
+								<option v-for="(adjDay, index) in allWeekdaysAndLessonNumsList" :value="adjDay">星期{{adjDay[0]}}第{{adjDay[1]}}节</option>
 							</select>
 						</td>
-						<td class="designation">
+						<!-- <td class="designation">
 							<span>调至节次：</span>
 						</td>
 						<td class="choice">
 							<select v-model="selAdjSection" @click="selectiveLessonNumClick()">
 								<option disabled>选择节次</option>
-								<option v-for="adjSection in selectiveLessonNum" :value="adjSection" @change="selectiveLessonNumChange()">第{{ adjSection }}节</option>
+								<option v-for="adjSection in selectiveLessonNum" :value="adjSection" @onchange="selectiveLessonNumChange()">第{{ adjSection }}节</option>
 							</select>
-						</td>
+						</td> -->
 						<td class="designation">
 							<span>申请理由：</span>	<!-- 50字 -->
 						</td>
@@ -160,7 +160,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="data in applicationList">
+					<tr v-for="(data, index) in applicationList">
 						<td v-text="index + 1"></td>
 						<td v-text="data.courseId"></td>
 						<td v-text="data.courseName"></td>
@@ -175,6 +175,19 @@
 			</table>
 		</div>
 	</div>
+
+	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
+		<div style="text-align:center; font-size:1.1rem;">
+		    <p v-if="remindResult === '1'">请选择原周数！（调至周数必须大于原周数）</p>
+		    <p v-else-if= "remindResult === '2'">提交失败！</p>
+		    <p v-else-if= "remindResult === '3'">保存失败！</p>
+		    <p v-else-if= "remindResult === '4'">请选择所有选项再提交！</p>
+		    <p v-else-if= "remindResult === '5'">请选择前面4个选项！</p>
+		</div>
+	    <div slot="footer" style="text-align:center;">
+	        <Button id="modalBtn" @click="resultOk()">确认</Button>
+	    </div>
+	</Modal>
 </div>
 </template>
  
@@ -207,31 +220,40 @@ export default {
 			],
 			// 输入框
 			message: '',
-			// adjSel下拉选项
+			// adjSel下拉选项******************************************************
 	        selPreWeek: '选择周数',	// 原周数
 	        weekset: [
 	          // { text: '选择周数', value: '0' },
 	          // { text: '第一周', value: '1' }
 	        ],
-	        selPerDay: '选择星期',		// 原星期
-	        weekdayset: [],
-	        selPreSection: '选择节次',		// 原节次
-	        lessonNumset: [],
+	        selCourseDay: '选择时间',		// 原星期和节次
+	        weekdayandlessonnum: [
+	        	// [1,2]
+	        ],
+	        // selPreSection: '选择节次',		// 原节次
+	        // lessonNumset: [],
 	        selClassroom: '选择上课教室',		// 上课教室
 	        selectiveClassroomSet: [],
 	        selAdjWeek: '选择周数',	// 调至周数
 	        selectiveWeekSet: [],
-	        selAdjDay: '选择星期',		// 调至星期
-	        selectiveWeekday: [],
-	        selAdjSection: '选择节次',		// 调至节次
-	        selectiveLessonNum: [],
-	        // allWeekdaysAndLessonNumsList: []	// 调至星期和节次
+	        selAdjDay: '选择时间',		// 调至星期和节次
+	        allWeekdaysAndLessonNumsList: [
+	        	// [1,2]
+	        ],
+	        // selAdjSection: '选择节次',		// 调至节次
+	        // selectiveLessonNum: [],
+	        preWeek: [],
+	        preSection: [],
+	        adjWeek: [],
+	        adjSection: [],
 	        modal1: false,		// 提交弹出框
 	        modal2: false,		// 取消弹出框
+	        modalResult: false,
+			remindResult: ''
 		}
 	},
   	beforeMount: function() {
-        this.$http.post('./alternateLessionApplication.action',{},{
+        this.$http.post('./alternateLessionApplication',{},{
             "Content-Type":"application/json"
         }).then(function(response){
             console.log("获取申请:");
@@ -253,7 +275,7 @@ export default {
 		// weekChange: function(){
 		// 	alert(this.selPreWeek);
 		// },
-		// 点击表格“申请调课”，显示选项内容
+		// 点击表格“申请调课”，显示选项内容****************************************************************************
 	    applyAdjBtn: function (index) {
 	    	this.teacherNameGet = this.courseList[index].teacherName;
     		this.courseIdGet = this.courseList[index].courseId;
@@ -264,7 +286,7 @@ export default {
 	    	this.classIdGet = this.courseList[index].classId;
     		if (this.isShow == false) {
     			this.isShow = true;
-    			this.$http.post('./alternateLessionApplication/application-button.action',{
+    			this.$http.post('./alternateLessionApplication/application-button',{
     				"teacherName": this.courseList[index].teacherName,
     				"courseId": this.courseList[index].courseId,
     				"courseName": this.courseList[index].courseName,
@@ -280,13 +302,16 @@ export default {
 		            var data = response.body;
 		            if (data.result == "1") {
 		            	this.weekset = data.weekset;
-			            this.weekdayset = data.weekdayset;
-			            this.lessonNumset = data.lessonNumset;
-			            this.selectiveWeekSet = data.selectiveWeekSet;
+			            this.weekdayandlessonnum = data.weekdayandlessonnum;
 			            this.selectiveClassroomSet = data.selectiveClassroomSet;
+			            this.selectiveWeekSet = data.selectiveWeekSet;
+			            // 从二维数组中获取原星期和原节次的数组数据
+			            // for (var i = 0; i < this.weekdayandlessonnum.length; i++) {
+			            // 	this.preWeek.push(this.weekdayandlessonnum[i][0]);
+			            // 	this.preSection.push(this.weekdayandlessonnum[i][1]);
+			            // }
 		            }else if (data.result == "0") {
-				        // alert("操作失败！请重试");
-				        this.$Message.success('操作失败！请重试');
+				        this.$Message.error('操作失败！请重试');
 				    }
 		        },function(error){
 		            console.log("获取申请error:");
@@ -297,213 +322,173 @@ export default {
     			this.isShow = true;
     		}
     	},
-		// 点击调至周数，申请获得下拉数据
-		selectiveWeekdayClick: function () {
-			// alert(this.teacherNameGet);
-			this.$http.post('./alternateLessionApplication/application-select.action',{
-	        	"originWeek": this.selPreWeek,
-	        	"originWeekday": this.selPerDay,
-	        	"originLessonNum": this.selPreSection,
-	        	"selectedClassroom": this.selClassroom,
-	        	"selectedWeek": this.selAdjWeek,
-	        	"teacherName": this.teacherNameGet,
-				"courseId": this.courseIdGet,
-				"courseName": this.courseNameGet,
-				"className": this.classNameGet,
-				"courseAssociationId": courseAssociationIdGet,
-				"teacherId": this.teacherIdGet,
-				"classId": this.classIdGet
-	        },{    
-	            "Content-Type":"application/json"
-	        }).then(function(response){
-	            console.log("获取申请:");
-	            console.log(response.body);
-	            var data = response.body;
-	            for (var i = 0; i < data.allWeekdaysAndLessonNumsList.length; i++) {
-	            	this.selectiveWeekday.push(data.allWeekdaysAndLessonNumsList[i][0]);
-	            }
-	            for (var j = 0; j < data.allWeekdaysAndLessonNumsList.length; j++) {
-	            	this.selectiveLessonNum.push(data.allWeekdaysAndLessonNumsList[j][1]);
-	            }
-	        },function(error){
-	            console.log("获取申请error:");
-	            console.log(error);
-        	});
-		},
-		selectiveWeekdayChange: function () {
-			this.$http.post('./alternateLessionApplication/application-select.action',{},{    
-	            "Content-Type":"application/json"
-	        }).then(function(response){
-	            console.log("获取申请:");
-	            console.log(response.body);
-	            var data = response.body;
-	            for (var i = 0; i < this.selectiveWeekday.length; i++) {
-	            	if (this.selAdjDay == this.selectiveWeekday[i].value) {
-	            		this.selAdjSection = this.selectiveLessonNum[i].value;
-	            	}
-	            }
-	        },function(error){
-	            console.log("获取申请error:");
-	            console.log(error);
-        	});
-		},
-		// 点击调至节次，申请获得下拉数据
-		selectiveLessonNumClick: function () {
-			this.$http.post('./alternateLessionApplication/application-select.action',{
-				"originWeek": this.selPreWeek,
-	        	"originWeekday": this.selPerDay,
-	        	"originLessonNum": this.selPreSection,
-	        	"selectedClassroom": this.selClassroom,
-	        	"selectedWeek": this.selAdjWeek,
-	        	"teacherName": this.teacherNameGet,
-				"courseId": this.courseIdGet,
-				"courseName": this.courseNameGet,
-				"className": this.classNameGet,
-				"courseAssociationId": courseAssociationIdGet,
-				"teacherId": this.teacherIdGet,
-				"classId": this.classIdGet
-	        },{
-	            "Content-Type":"application/json"
-	        }).then(function(response){
-	            console.log("获取申请:");
-	            console.log(response.body);
-	            var data = response.body;
-	            for (var i = 0; i < data.allWeekdaysAndLessonNumsList.length; i++) {
-	            	this.selectiveWeekday.push(data.allWeekdaysAndLessonNumsList[i][0]);
-	            }
-	            for (var j = 0; j < data.allWeekdaysAndLessonNumsList.length; j++) {
-	            	this.selectiveLessonNum.push(data.allWeekdaysAndLessonNumsList[j][1]);
-	            }
-	        },function(error){
-	            console.log("获取申请error:");
-	            console.log(error);
-        	});
-		},
-		selectiveLessonNumChange: function () {
-			this.$http.post('./alternateLessionApplication/application-select.action',{},{    
-	            "Content-Type":"application/json"
-	        }).then(function(response){
-	            console.log("获取申请:");
-	            console.log(response.body);
-	            var data = response.body;
-	            for (var j = 0; j < this.selectiveLessonNum.length; j++) {
-	            	if (this.selAdjSection == this.selectiveLessonNum[j].value) {
-	            		this.selAdjDay = this.selectiveWeekday[i].value;
-	            	}
-	            }
-	        },function(error){
-	            console.log("获取申请error:");
-	            console.log(error);
-        	});
-		},
-    	// 点击“提交”按钮，选项内容提交并隐藏*******************************************************
-    	// submitItBtn: function (index) {
-    	// 	if (this.isShow ==true) {
-    	// 		this.isShow = false;
-    	// 		this.$http.post('./alternateLessionApplication/application-submit.action',{
-					// "originWeek": this.selPreWeek,
-		   //      	"originWeekday": this.selPerDay,
-		   //      	"originLessonNum": this.selPreSection,
-		   //      	"selectedClassroom": this.selClassroom,
-		   //      	"selectedWeek": this.selAdjWeek,
-		   //      	"selectedWeekday": this.selAdjDay,
-		   //      	"selectedLessonNum": this.selAdjSection,
-		   //      	"mediationReason": this.message,
-		   //      	"courseId": this.courseList[index].courseId,
-		   //      	"courseName": this.courseList[index].courseName,
-		   //      	"className": this.courseList[index].className,
-		   //      	"teacherName": this.courseList[index].teacherName,
-    	// 			"courseAssociationId": this.courseList[index].courseAssociationId,
-    	// 			"teacherId": this.courseList[index].teacherId,
-    	// 			"classId": this.courseList[index].classId
-		   //      },{
-		   //          "Content-Type":"application/json"
-		   //      }).then(function(response){
-		   //          console.log("获取申请:");
-		   //          console.log(response.body);
-		   //          var data = response.body;
-		   //          if (data.result == "1") {
-		   //          	this.applicationList = data.applicationList
-		   //          }else if (data.result == "0") {
-				 //        alert("操作失败！请重试");
-				 //    }
-		   //      },function(error){
-		   //          console.log("获取申请error:");
-		   //          console.log(error);
-	    //     	});
-    	// 	}
-    	// 	else {
-    	// 		this.isShow = false;
-    	// 	}
-    	// },
-    	ok1 (index) {
-            this.modal1 = false;
-            if (this.isShow ==true) {
-    			this.isShow = false;
-    			this.$http.post('./alternateLessionApplication/application-submit.action',{
-					"originWeek": this.selPreWeek,
-		        	"originWeekday": this.selPerDay,
-		        	"originLessonNum": this.selPreSection,
-		        	"selectedClassroom": this.selClassroom,
-		        	"selectedWeek": this.selAdjWeek,
-		        	"selectedWeekday": this.selAdjDay,
-		        	"selectedLessonNum": this.selAdjSection,
-		        	"mediationReason": this.message,
-		        	"courseId": this.courseList[index].courseId,
-		        	"courseName": this.courseList[index].courseName,
-		        	"className": this.courseList[index].className,
-		        	"teacherName": this.courseList[index].teacherName,
-    				"courseAssociationId": this.courseList[index].courseAssociationId,
-    				"teacherId": this.courseList[index].teacherId,
-    				"classId": this.courseList[index].classId
-		        },{
-		            "Content-Type":"application/json"
-		        }).then(function(response){
-		            console.log("获取申请:");
-		            console.log(response.body);
-		            var data = response.body;
-		            if (data.result == "1") {
-		            	this.applicationList = data.applicationList;
-            			this.$Message.success('提交成功！请在下方表格中查看调课信息。');
-		            }else if (data.result == "0") {
-				        this.$Message.success('操作失败！请重试');
-				    }
-		        },function(error){
-		            console.log("获取申请error:");
-		            console.log(error);
-	        	});
+    	// 选择调制周数，判断所选周数是否比原周数大**********************************************************************
+    	// 选择成功之后，申请获得调至星期下拉数据**********
+    	selectiveWeekSetChange: function () {
+    		var preWeek = this.selPreWeek;
+    		if (this.selAdjWeek < preWeek) {
+    			// this.$Message.error('请在原周之后选择周数！');
+    			this.modalResult = true;
+    			this.remindResult = '1';
+    			this.selAdjWeek = '选择周数';
+    		}else {
+    			if (this.selPreWeek=="选择周数" || this.selCourseDay=="选择时间" || this.selClassroom=="选择上课教室" || this.selAdjWeek=="选择周数" ) {
+	    			this.modalResult = true;
+	    			this.remindResult = '5';
+	    		}else {
+					this.$http.post('./alternateLessionApplication/application-select',{
+			        	"originWeek": this.selPreWeek,
+			        	"originWeekday": this.selCourseDay[0],
+			        	"originLessonNum": this.selCourseDay[1],
+			        	// "originLessonNum": this.selPreSection,
+			        	"selectedClassroom": this.selClassroom,
+			        	"selectedWeek": this.selAdjWeek,
+			        	"teacherName": this.teacherNameGet,
+						"courseId": this.courseIdGet,
+						"courseName": this.courseNameGet,
+						"className": this.classNameGet,
+						"courseAssociationId": this.courseAssociationIdGet,
+						"teacherId": this.teacherIdGet,
+						"classId": this.classIdGet
+			        },{    
+			            "Content-Type":"application/json"
+			        }).then(function(response){
+			            console.log("获取申请:");
+			            console.log(response.body);
+			            var data = response.body;
+			            this.allWeekdaysAndLessonNumsList = data.allWeekdaysAndLessonNumsList;
+					    // 从二维数组中获取调至星期和调至节次的数组数据
+					    for (var i = 0; i < this.allWeekdaysAndLessonNumsList.length; i++) {
+					    	this.adjWeek.push(this.allWeekdaysAndLessonNumsList[i][0]);
+					    	this.adjSection.push(this.allWeekdaysAndLessonNumsList[i][1]);
+					    }
+
+
+			         //    if (this.selAdjDay == "选择星期" && this.selAdjSection == "选择节次") {
+			         //    	var a=[];
+			         //    	var b=[];
+			         //    	for (var i = 0; i < data.allWeekdaysAndLessonNumsList.length; i++) {
+			         //    		if(a.length==0){
+			         //    			a.push(data.allWeekdaysAndLessonNumsList[0][0]);
+			         //    		}
+			         //    		for(var j=0;j<a.length;j++){
+
+			         //    			if(a[j]!=data.allWeekdaysAndLessonNumsList[i][0]){
+			         //    				a.push(data.allWeekdaysAndLessonNumsList[i][0]);
+			         //    			}
+
+			         //    		}
+			         //    		if(b.length==0){
+			         //    			b.push(data.allWeekdaysAndLessonNumsList[0][1]);
+			         //    		}
+			         //    		for(var j=0;j<b.length;j++){
+			         //    			if(b[j]!=data.allWeekdaysAndLessonNumsList[i][1]){
+			         //    				b.push(data.allWeekdaysAndLessonNumsList[i][1]);
+			         //    			}
+			         //    		}
+			         //    	}
+			         //    	this.selectiveWeekday = a;
+			         //    	this.selectiveLessonNum = b;
+			        	// }
+			        },function(error){
+			            console.log("获取申请error:");
+			            console.log(error);
+		        	});
+		        }
     		}
-    		else {
-    			this.isShow = false;
+    	},
+    	// 点击“提交”按钮，选项内容提交并隐藏*****************************************************************************
+    	ok1 () {
+            this.modal1 = false;
+            // 判断选项是否为空
+    		if (this.selPreWeek=="选择周数" || this.selCourseDay=="选择时间" || this.selClassroom=="选择上课教室" || this.selAdjWeek=="选择周数" || this.selAdjDay=="选择时间" ) {
+    			this.modalResult = true;
+    			this.remindResult = '4';
+    		}else {
+
+    			if (this.isShow ==true) {
+	    			this.isShow = false;
+	    			this.$http.post('./alternateLessionApplication/application-submit',{
+						"originWeek": this.selPreWeek,
+			        	"originWeekday": this.selCourseDay[0],
+			        	"originLessonNum": this.selCourseDay[1],
+			        	// "originLessonNum": this.selPreSection,
+			        	"selectedClassroom": this.selClassroom,
+			        	"selectedWeek": this.selAdjWeek,
+			        	"selectedWeekday": this.selAdjDay[0],
+			        	"selectedLessonNum": this.selAdjDay[1],
+			        	// "selectedLessonNum": this.selAdjSection,
+			        	"mediationReason": this.message,
+			        	"teacherName": this.teacherNameGet,
+						"courseId": this.courseIdGet,
+						"courseName": this.courseNameGet,
+						"className": this.classNameGet,
+						"courseAssociationId": this.courseAssociationIdGet,
+						"teacherId": this.teacherIdGet,
+						"classId": this.classIdGet
+			        },{
+			            "Content-Type":"application/json"
+			        }).then(function(response){
+			            console.log("获取申请:");
+			            console.log(response.body);
+			            var data = response.body;
+			            if (data.result == "1") {
+			            	this.applicationList = data.applicationList;
+	            			this.$Message.success('提交成功！请在下方表格中查看调课信息。');
+	            			window.location.reload();	// 页面重新加载
+			            }else if (data.result == "0") {
+					        // this.$Message.error('操作失败！请重试');
+					        this.modalResult = true;
+					        this.remindResult = '2';
+					    }
+			        },function(error){
+			            console.log("获取申请error:");
+			            console.log(error);
+		        	});
+	    		}
+	    		else {
+	    			this.isShow = false;
+	    		}
     		}
         },
         cancel1 () {
-            setTimeout(() => {
-                this.modal1 = false;
+            this.modal1 = false;
                 // this.$Message.error('提交失败！请重新操作。');
-            }, 100);
         },
-    	// 取消并不保存*********************************************************
+    	// 取消并不保存***********************************************************************************************
     	// cancelBtn: function () {
     	// 	this.isShow = false;
     	// }
     	ok2 () {
-            setTimeout(() => {
-                this.modal2 = false;
-                this.$Message.success('取消修改并未保存！');
-            }, 100);
+            this.modal2 = false;
+            // this.$Message.error('取消修改并未保存！');
+            this.modalResult = true;
+            this.remindResult = '3';
             this.isShow = false;
         },
         cancel2 () {
-            setTimeout(() => {
-                this.modal2 = false;
-            }, 100);
+            this.modal2 = false;
         },
+    	resultOk: function () {
+    		this.modalResult = false;
+    	}
   	}
 }
 </script>
 
-<style>
+<style scoped>
+.curSettings {
+  text-align: left;
+  margin: 0.5rem 1rem;
+}
+.curSettings div {
+  margin: 0.2rem 0;
+}
+.curSettings span {
+  margin-right: 4rem;
+  font-size: 0.9rem;
+}
+
 #adjShow {
     text-align: center;
     margin: 1rem 0;

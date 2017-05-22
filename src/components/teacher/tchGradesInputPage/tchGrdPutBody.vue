@@ -29,11 +29,11 @@
 							</tr>
 						</thead>				
 						<tbody>
-							<tr v-for="(data, index) in info" >
-								<td class="textBtn"><a :value="courseAssociationId" @click="gradeInputBtn">成绩输入</a></td>
+							<tr v-for="(data, index) in scoreInputList" >
+								<td class="textBtn" :value="data.courseAssociationId"><a :href="'#/teacher/class/gradesInput?a='+data.courseAssociationId">成绩输入</a></td>
 								<td v-text="index + 1"></td>
-								<td v-text="data.semester"></td>
-								<td v-text="data.tchName"></td>
+								<td>{{preSemester}}</td>
+								<td v-text="data.teacherName"></td>
 								<td v-text="data.className"></td>
 								<td v-text="data.courseName"></td>
 								<td class="textBtn"><a @click="exportFormatBtn">下载</a></td>
@@ -44,6 +44,15 @@
 			</div>
 		</div>
 	</div>
+
+	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
+		<div style="text-align:center; font-size:1.1rem;">
+		    <p>操作失败！请重试</p>
+		</div>
+	    <div slot="footer" style="text-align:center;">
+	        <Button id="modalBtn" @click="resultOk()">确认</Button>
+	    </div>
+	</Modal>
 </div>
 </template>
 
@@ -54,59 +63,56 @@ export default {
 		return {
 			preSemester: '2016-2017年第一学期',
 			// warmPrompt: '按排课信息输入成绩（若单科成绩输入时间长，请15分钟保持一次）',
-			info: [
-				{semester: '2016-2017学年第一学期', tchName: '何平', className: '对口高职2015护理（9+3）1班+普通高中2015护理2班护理管理学多班拆分A班', courseName: '护理管理学'}
+			scoreInputList: [
+				{courseAssociationId: '1', semester: '2016-2017学年第一学期', teacherName: '何平', className: '对口高职2015护理（9+3）1班', courseName: '护理管理学'}
 			],
-			courseAssociationId: ''
+			modalResult: false
 		}
 	},
 	beforeMount: function() {
-        this.$http.post('../tchGradesInput.php',{},{
+        this.$http.post('./getTeachScoreList',{},{
             "Content-Type":"application/json"
         }).then(function(response){
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.preSemester = data.preSemester;
-			this.preWeek = data.preWeek;
-			this.info = data.info;
+            this.preSemester = data.preSemester;	// 返回当前学期
+			this.scoreInputList = data.scoreInputList;
         },function(error){
             console.log("获取申请error:");
             console.log(error);
         });
     },
 	methods: {
-		// 点击“成绩输入”，页面跳转
-		gradeInputBtn: function () {
-			this.$http.post('./saveScore',{
-				"courseAssociationId": this.courseAssociationId
-			},{    
-	            "Content-Type":"application/json"
-	        }).then(function(response){
-	            console.log("获取申请:");
-	            console.log(response.body);
-	            var data = response.body;
-	            window.location.href = "/teacher/gradesInput";
-	        },function(error){
-	            console.log("获取申请error:");
-	            console.log(error);
-        	});
-		},
 		// 导出功能--待完善
 		exportFormatBtn: function () {
-			var r = confirm("您确定将文件导出格式吗？");
-			if (r==true) {
-				alert("导出成功！");
-			}
-			else {
-				alert("导出失败。");
-			}
-		}
+			// var r = confirm("您确定将文件导出格式吗？");
+			// if (r==true) {
+			// 	this.$Message.success("导出成功！");
+			// }
+			// else {
+			// 	// this.$Message.error("导出失败。");
+			// 	this.modalResult = true;
+			// }
+			location.href = "./downloadallSalaryList"
+		},
+    	resultOk: function () {
+    		this.modalResult = false;
+    	}
 	}
 }
 </script>
 
-<style>
+<style scoped>
+.leftPart {
+	margin: 0 5rem;
+	float: left;
+}
+.rightPart {
+	margin: 0 5rem;
+	float: right;
+}
+
 #tchGrdPutBody {
 	background-color: #f3f3f3;
 }

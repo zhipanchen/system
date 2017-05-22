@@ -1,7 +1,10 @@
 <template>
   <div class="topBarDiv am-btn-group">
-    <a :href="checkCouUrl">
-      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" @click="checkCouClick">{{ checkCouButton }}</button>
+    <a href="#/teacher/group/research">
+      <button  class="topBarButton am-btn am-btn-success " @click="checkCouClick">教研组管理</button>
+    </a>
+    <a href="#/teacher/group/eduAdminTchTeachingPlan">
+      <button  class="topBarButton am-btn am-btn-success btn-active" @click="checkCouClick">授课计划</button>
     </a>
   </div>
 </template>

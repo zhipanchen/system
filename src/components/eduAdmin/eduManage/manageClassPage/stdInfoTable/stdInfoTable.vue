@@ -87,7 +87,12 @@
             "Content-Type":"application/json"
           }).then(function (response) {
             console.log(response);
-            this.statechangeinfoStrList = response.body.statechangeinfoStrList;
+            var result = response.body.result;
+            if(result === "0"){
+              alert("请输入正确的教师信息！");
+            }else{
+              this.statechangeinfoStrList = response.body.statechangeinfoStrList;
+            }
           },function(error){
             console.log("获取error");
           });

@@ -44,14 +44,10 @@
       return {
         termEle:'0',
         terms:[
-          '大一:第一学期',
-          '大一:第二学期',
-          '大二:第一学期',
-          '大二:第二学期',
-          '大三:第一学期',
-          '大三:第二学期',
-          '大四:第一学期',
-          '大四:第二学期'
+          '2014-2015.1',
+          '2014-2015.2',
+          '2015-2016.1',
+          '2015-2016.1'
         ],
         studentScoreList:[
           {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80'},
@@ -61,20 +57,21 @@
       }
     },
     beforeMount:function() {
-      this.$http.post('./studentFindScore',{},{
+      this.$http.post('./studentFindScore',{
+        "yearTerm":""
+      },{
         "Content-Type":"application/json"
       }).then(function (response) {
         console.log(response);
         this.studentScoreList = response.body.studentScoreList;
-        this.terms = response.body.terms;
       },function(error){
         console.log("获取error");
       });
     },
     methods:{
       changeTerm: function(){
-        this.$http.post('../changeTermJson',{
-          "termEle":this.termEle
+        this.$http.post('./studentFindScore',{
+          "yearTerm":this.termEle
         },{
           "Content-Type":"application/json"
         }).then(function (response) {
@@ -85,7 +82,9 @@
         });
       },
       allTerm: function(){
-        this.$http.post('./allTermJson',{},{
+        this.$http.post('./studentFindScore',{
+          "yearTerm":""
+        },{
           "Content-Type":"application/json"
         }).then(function (response) {
           console.log(response);
