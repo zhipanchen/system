@@ -1,5 +1,10 @@
 <template>
   <div id="table">
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>授课计划</span>
+    </div>
     <div id="sel">
       <select  @change="chooseTerm(option2)" v-model="option2">
         <option v-for="option2 in semesterList" :value="option2">
@@ -23,14 +28,13 @@
         </tr>
         </thead>
         <tbody>
-
-        <tr  v-for="(data,index) in tableList" :key="data.teacherName">
+        <tr  v-for="(data,index) in tableList" :key="data.uploadTime">
           <td v-text="data.teacherName"></td>
           <td v-text="data.teacherId"></td>
           <td v-text="data.courseName"></td>
           <td v-text="data.coursewareType"></td>
           <td v-text="data.uploadTime"></td>
-          <td><form action="./courseTeachPlan/leaderDownloadTeachPlan" method="get"><input v-model="data.teacherId" name="teacherId" readonly style="display: none"><input v-model="data.courseId" name="courseId" readonly style="display: none"><button class="am-btn am-btn-success am-radius" :id="'down'+index" type="submit">下载</button></form></td>
+          <td><form action="./courseTeachPlan/leaderDownloadTeachPlan" method="get"><input v-model="data.teacherId" name="teacherId" readonly style="display: none"><input v-model="data.courseId" name="courseId" readonly style="display: none"><input v-model="data.type" name="coursewareType" readonly style="display: none"><button class="am-btn am-btn-success am-radius" :id="'down'+index" type="submit">下载</button></form></td>
           <td ><button :id="'buttonOne'+index" @click="successDia(index)"  class="circle" >√</button>
               <button :id="'buttonTwo'+index" @click="failDia(index)"  class="circle" >×</button>
               <!--<img  height="30" width="30"  :src="Src1">-->
@@ -137,7 +141,12 @@
         this.$http.post('./courseTeachPlan/showTeachPlan',
           {},{"Content-Type":"application/json"}).then(function (response) {
             console.log(response.body.tableList);
-            this.tableList = response.body.tableList;
+//            this.tableList = response.body.tableList;
+            for(var n=0;n<response.body.tableList.length;n++){
+              this.tableList.push({"teacherName":response.body.tableList[n].teacherName,"teacherId":response.body.tableList[n].teacherId,"courseId":response.body.tableList[n].courseId,
+                "courseName":response.body.tableList[n].courseName,"coursewareType":response.body.tableList[n].coursewareType,"auditStatus":response.body.tableList[n].auditStatus,
+                "uploadTime":response.body.tableList[n].uploadTime,"type":response.body.tableList[n].coursewareType});
+            }
             for(var i=0;i<response.body.tableList.length;i++){
               if(response.body.tableList[i].coursewareType=="0"){
                 this.tableList[i].coursewareType="教学计划";
@@ -208,15 +217,23 @@
           this.modal2 = true;
         },
       success:function(index){
-//          alert(this.tableList[index].teacherId);
+        var type;
+         if(this.tableList[index].coursewareType=="教学计划"){
+           type=0;
+         }else if(this.tableList[index].coursewareType=="课件（教案）")
+         {
+           type=1;
+         }
+          alert(this.tableList[index].teacherId);
 //          this.$http.post('../jsonphp/teachingPlan.php',{
           this.modal1 = false;
           this.$http.post('./courseTeachPlan/doCheckTeachPlan',
 //            this.$http.post('../jsonphp/teachingPlan.php',
             {
-            "teacherId": this.tableList[index].teacherId,
-            "courseId": this.tableList[index].courseId,
-            "msg": "1"
+              "teacherId": this.tableList[index].teacherId,
+              "courseId": this.tableList[index].courseId,
+              "coursewareType":type,
+              "msg": "1"
           },{"Content-Type":"application/json"}).then(function(response){
               console.log("审核通过:");
               console.log(response.body);
@@ -235,12 +252,20 @@
       },
         fail:function(index){
               this.modal2=false;
+          var type;
+         if(this.tableList[index].coursewareType=="教学计划"){
+           type=0;
+         }else if(this.tableList[index].coursewareType=="课件（教案）")
+         {
+           type=1;
+         }
 //            this.$http.post('../jsonphp/teachingPlan.php',
               this.$http.post('./courseTeachPlan/doCheckTeachPlan',
                 {
-              "teacherId": this.tableList[index].teacherId,
-                "courseId": this.tableList[index].courseId,
-              "msg": "0"
+                  "teacherId": this.tableList[index].teacherId,
+                  "courseId": this.tableList[index].courseId,
+                  "coursewareType":type,
+                  "msg": "0"
             },{"Content-Type":"application/json"}).then(function(response){
               console.log("审核不通过:");
               console.log(response.body);
@@ -285,19 +310,27 @@
 //          console.log(res);
 //        }
       },
-       /*download:function(index){
-         //待修改
-         this.$http.post('./courseTeachPlan/leaderDownloadTeachPlan',{
-           "teacherId": this.tableList[index].teacherId
-         },{"Content-Type":"application/json"}).then(function (response) {
-             var url=response.body.;
-             location.href=''
-         },
-         function(error){
-           console.log("下载error:");
-           console.log(error);
-         });
-       },*/
+//       download:function(index){
+//         //待修改
+//         var type;
+//         if(this.tableList[index].coursewareType=="教学计划"){
+//           type="0";
+//         }else if(this.tableList[index].coursewareType=="课件（教案）")
+//         {
+//           type="1";
+//         }
+//         this.$http.post('./courseTeachPlan/leaderDownloadTeachPlan',{
+//           "teacherId": this.tableList[index].teacherId,
+//           "coursewareType":type
+//         },{"Content-Type":"application/json"}).then(function (response) {
+//             console.log("下载:");
+//             location.href='./'
+//         },
+//         function(error){
+//           console.log("下载error:");
+//           console.log(error);
+//         });
+//       },
         chooseTerm:function(value){
 //          this.$http.post('./jsonphp/teachingPlan.php',{
           this.$http.post('./courseTeachPlan/showTeachPlan',{

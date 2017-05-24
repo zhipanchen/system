@@ -1,5 +1,11 @@
 <template>
 <div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 教学管理</span>
+		<span> > 教学计划</span>
+	</div>
 	<div class="blank">
         <div class="lpart">
             <span class="textWeight">我的上课列表</span>
@@ -30,35 +36,35 @@
 						<td>{{data.takedHours}}</td>
 						<td class="textBtn">
 							<!-- 课件 -->
-							<span><a id="optCourseware" @click="optCoursewareClick(index)">操作</a></span>
-							<span v-show="optHide1">
+							<span><a :id="'optCourseware'+index" @click="optCoursewareClick(index)">操作</a></span>
+							<span v-show="optHide1" :id="'upload1'+index">
 								<Upload
 									ref="upload"
 									:data="{'courseId': data.courseId,
 										'coursewareType': '1'}"
 									:show-upload-list="false"
-									:format="['xls', 'xlsx']"
-									:max-size="2048"
+									:format="['zip', 'rar']"
+									:max-size="5120"
 									:on-format-error = "handleFormatError1"
 						            :on-exceeded-size="handleSizeError1"
 						            :on-success="handleSuccess1"
 						            :on-error="handleError1"
 									action="./courseTeachPlan/uploadCourseware">
 						            <!-- :on-progress="handleProgress1" -->
-									<a id="signIn1">上传</a>
+									<a :id="'signIn1'+index">上传</a>
 								</Upload>
 							</span>
-							<span v-show="optHide1">
-								<a @click="checkClick1(index)">下载</a>
+							<span v-show="optHide1" :id="'check1'+index">
+								<a @click="checkClick1(index)">查看</a>
 							</span>
-							<!-- <span v-show="optHide1">
-								<a id="submitTeachPlan" @click="submitClick1(index)">提交</a>
-							</span> -->
+							<span v-show="optHide1" :id="'submit1'+index">
+								<a @click="submitClick1(index)">提交</a>
+							</span>
 						</td>
 						<td class="textBtn">
 							<!-- 教学计划 -->
-							<span><a id="optTeachPlan" @click="optTeachPlanClick(index)">操作</a></span>
-							<span v-show="optHide2">
+							<span><a :id="'optTeachPlan'+index" @click="optTeachPlanClick(index)">操作</a></span>
+							<span v-show="optHide2" :id="'upload2'+index">
 								<Upload
 									ref="upload"
 									:data="{'courseId': data.courseId,
@@ -72,13 +78,13 @@
 						            :on-error="handleError2"
 							 		action="./courseTeachPlan/uploadTeachPlan">
 						            <!-- :on-progress="handleProgress2" -->
-									<a id="signIn2">上传</a>
+									<a :id="'signIn2'+index">上传</a>
 								</Upload>
 							</span>
-							<span v-show="optHide2">
+							<span v-show="optHide2" :id="'check2'+index">
 								<a @click="checkClick2(index)">查看</a>
 							</span>
-							<span v-show="optHide2">
+							<span v-show="optHide2" :id="'submit2'+index">
 								<a @click="submitClick2(index)">提交</a>
 							</span>
 						</td>
@@ -92,7 +98,7 @@
 			<Modal v-model="modal" id="modalBody" :styles="{top:'10rem'}">
 			    <div>
 			    	<!-- 查看课件列表，选择下载 -->
-			    	<p v-if="modalBool === '0'" style="text-align:center; font-size:0.8rem;">
+			    	<!-- <p v-if="modalBool === '0'" style="text-align:center; font-size:0.8rem;">
 			    		<table width="100%">
 			    			<tr v-for="(courseware, index) in uploadList">
 			    				<td :value="courseware.coursewareId" width="40%">{{courseware.coursewareName}}</td>
@@ -101,13 +107,14 @@
 			    					<button class="am-btn am-btn-success am-radius" style="padding: 0.3rem 1.1rem;">下载</button></td>
 			    			</tr>
 			    		</table>
-			    	</p>
+			    	</p> -->
 			    	<!-- 查看教学计划弹窗，返回申请状态，有下载功能按钮 -->
-			    	<p v-else-if="modalBool === '1'" style="text-align:center; font-size:1.8rem; height:3rem;">申请状态：{{uploadState}}</p>
+			    	<p style="text-align:center; font-size:1.8rem; height:3rem;">申请状态：{{uploadState}}</p>
 			    </div>
 			    <div slot="footer" style="text-align:center;">
-			        <Button v-if="modalBool === '1'" id="modalBtn" @click="ok()">下载</Button>
-			        <Button v-if="modalBool === '1'" id="modalBtn" @click="cancel()">取消</Button>
+			        <Button v-if="modalBool === '1'" id="modalBtn" @click="ok1()">下载</Button>
+			        <Button v-else-if="modalBool === '2'" id="modalBtn" @click="ok2()">下载</Button>
+			        <Button id="modalBtn" @click="cancel()">取消</Button>
 			    </div>
 			</Modal>
 			<!-- 提交弹窗 -->
@@ -115,7 +122,8 @@
 			    <p style="text-align:center; font-size:1.1rem;">您确定要提交吗？</p>
 			    <p style="text-align:center; font-size:0.9rem; color:red;">（提示：提交后将无法上传）</p>
 			    <div slot="footer" style="text-align:center;">
-			        <Button id="modalBtn" @click="submitOk()">确认</Button>
+			        <Button v-if="submitBool === '1'" id="modalBtn" @click="submitOk1()">确认</Button>
+			        <Button v-else-if="submitBool === '2'" id="modalBtn" @click="submitOk2()">确认</Button>
 			        <Button id="modalBtn" @click="submitCancel()">取消</Button>
 			    </div>
 			</Modal>
@@ -126,9 +134,11 @@
 				    <p v-else-if="remindResult === '1'">提交成功！</p>
 				    <p v-else-if= "remindResult === '2'">提交失败！</p>
 				    <p v-else-if= "remindResult === '3'">文件格式不正确</p>
-				    <p v-else-if= "remindResult === '3'">文件 {{fileName}} 格式不正确，请上传xls或xlsx表格。</p>
-				    <p v-else-if= "remindResult === '4'">超出文件大小限制</p>
-				    <p v-else-if= "remindResult === '4'">文件 {{fileName}} 太大，不能超过 2M。</p>
+				    <p v-else-if= "remindResult === '3'">文件 {{fileName}} 格式不正确，请上传xls/xlsx表格或doc/docx文档。</p>
+				    <p v-else-if= "remindResult === '4'">文件格式不正确</p>
+				    <p v-else-if= "remindResult === '4'">文件 {{fileName}} 格式不正确，请上传zip或rar压缩包。</p>
+				    <p v-else-if= "remindResult === '5'">超出文件大小限制</p>
+				    <p v-else-if= "remindResult === '5'">文件 {{fileName}} 太大，不能超过 2M。</p>
 				</div>
 			    <div slot="footer" style="text-align:center;">
 			        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -152,9 +162,11 @@ export default {
 			modalSubmit: false,
 			modalResult: false,
 			modalBool: '',
+			submitBool: '',
 			remindResult: '',
 			uploadResult: '',
 			teachJournalList: [
+				{courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
 				{courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
 			],
 			// 下载课件列表
@@ -183,30 +195,46 @@ export default {
 	methods: {
 		// 点击课件“操作”，显示相关操作按钮***********************************************
 		optCoursewareClick: function (index) {
-			document.getElementById("optCourseware").style.display = "none";
-			this.optHide1 = true;
-			// this.courseIdPost = this.teachJournalList[index].courseId;
-			// this.$http.post('./courseTeachPlan/operateTeachPlan',{
-			// 	"courseId": this.courseIdPost,
-			// 	"coursewareType": '1'
-			// },{
-	  //           "Content-Type":"application/json"
-	  //       }).then(function(response){
-	  //           console.log("获取申请:");
-	  //           console.log(response.body);
-	  //           var data = response.body;
-	  //           if (data.coursewareType == '1') {
-	  //           	document.getElementById("signIn1").style.display = "none";
-	  //           }
-	  //       },function(error){
-	  //           console.log("获取申请error:");
-	  //           console.log(error);
-	  //       });
+			var optCourseware = document.getElementById("optCourseware"+index);
+			var upload1 = document.getElementById("upload1"+index);
+			var check1 = document.getElementById("check1"+index);
+			var submit1 = document.getElementById("submit1"+index);
+			var signIn1 = document.getElementById("signIn1"+index);
+			optCourseware.style.display = "none";
+			// this.optHide1 = true;
+			upload1.style.display = "inline-block";
+			check1.style.display = "inline-block";
+			submit1.style.display = "inline-block";
+			this.courseIdPost = this.teachJournalList[index].courseId;
+			this.$http.post('./courseTeachPlan/operateTeachPlan',{
+				"courseId": this.courseIdPost,
+				"coursewareType": '1'
+			},{
+	            "Content-Type":"application/json"
+	        }).then(function(response){
+	            console.log("获取申请:");
+	            console.log(response.body);
+	            var data = response.body;
+	            if (data.uploadStatus == '1' && data.coursewareType == '1') {
+	            	signIn1.style.display = "none";
+	            }
+	        },function(error){
+	            console.log("获取申请error:");
+	            console.log(error);
+	        });
 		},
 		// 点击教学计划“操作”，显示相关操作按钮********************************************
 		optTeachPlanClick: function (index) {
-			document.getElementById("optTeachPlan").style.display = "none";
-			this.optHide2 = true;
+			var optTeachPlan = document.getElementById("optTeachPlan"+index);
+			var upload2 = document.getElementById("upload2"+index);
+			var check2 = document.getElementById("check2"+index);
+			var submit2 = document.getElementById("submit2"+index);
+			var signIn2 = document.getElementById("signIn2"+index);
+			optTeachPlan.style.display = "none";
+			// this.optHide2 = true;
+			upload2.style.display = "inline-block";
+			check2.style.display = "inline-block";
+			submit2.style.display = "inline-block";
 			this.courseIdPost = this.teachJournalList[index].courseId;
 			this.$http.post('./courseTeachPlan/operateTeachPlan',{
 				"courseId": this.courseIdPost,
@@ -218,7 +246,7 @@ export default {
 	            console.log(response.body);
 	            var data = response.body;
 	            if (data.uploadStatus == '1' && data.coursewareType == '0') {
-	            	document.getElementById("signIn2").style.display = "none";
+	            	signIn2.style.display = "none";
 	            }
 	        },function(error){
 	            console.log("获取申请error:");
@@ -230,43 +258,53 @@ export default {
 		// 下载课件***************************************************************************
 		checkClick1: function (index) {
 			this.modal = true;
-			this.modalBool = '0';
-			// 显示列表，选择性下载
-			this.$http.post('./courseTeachPlan/seeTeachPlan',{
-				"courseId": this.courseIdPost,
-				"coursewareType": '1'
+			this.modalBool = '1';
+			this.courseIdPost = this.teachJournalList[index].courseId;
+			this.$http.post('./courseTeachPlan/seeCourseware',{
+				"courseId": this.courseIdPost
+				// "coursewareType": '1'
 			},{
 	            "Content-Type":"application/json"
 	        }).then(function(response){
 	            console.log("获取申请:");
 	            console.log(response.body);
 	            var data = response.body;
-	            this.uploadList = data.uploadList;
+	            if (data.result == 0) {
+	            	this.uploadState = "待审核";
+	            }else if (data.result == 1) {
+	            	this.uploadState = "已通过";
+	            }else if (data.result == 2) {
+	            	this.uploadState = "未通过";
+	            }
 	        },function(error){
 	            console.log("获取申请error:");
 	            console.log(error);
 	        });
 		},
-		uploadClick: function (index) {
-			this.$http.post('./courseTeachPlan/seeTeachPlan',{
-				"courseId": this.courseIdPost,
-				"coursewareType": '1'
-			},{
-	            "Content-Type":"application/json"
-	        }).then(function(response){
-	            console.log("获取申请:");
-	            console.log(response.body);
-	            var data = response.body;
-	            location.href = "./courseTeachPlan/downloadCourseware"
-	        },function(error){
-	            console.log("获取申请error:");
-	            console.log(error);
-	        });
+		// uploadClick: function (index) {
+		// 	this.$http.post('./courseTeachPlan/seeTeachPlan',{
+		// 		"courseId": this.courseIdPost,
+		// 		"coursewareType": '1'
+		// 	},{
+	 //            "Content-Type":"application/json"
+	 //        }).then(function(response){
+	 //            console.log("获取申请:");
+	 //            console.log(response.body);
+	 //            var data = response.body;
+	 //            location.href = "./courseTeachPlan/downloadCourseware"
+	 //        },function(error){
+	 //            console.log("获取申请error:");
+	 //            console.log(error);
+	 //        });
+		// },
+		// 点击下载，下载课件
+		ok1 () {
+			location.href = "./courseTeachPlan/downloadCourseware?courseId="+this.courseIdPost;
 		},
 		// 查看教学计划，根据回调信息，返回上传状态和下载按钮*********************************
 		checkClick2: function (index) {
 			this.modal = true;
-			this.modalBool = '1';
+			this.modalBool = '2';
 			this.courseIdPost = this.teachJournalList[index].courseId;
 			var signIn = document.getElementById("signIn2");
 			this.$http.post('./courseTeachPlan/seeTeachPlan',{
@@ -291,7 +329,7 @@ export default {
 	        });
 		},
 		// 点击下载，下载教学计划
-		ok () {
+		ok2 () {
 			location.href = "./courseTeachPlan/downloadTeachPlan?courseId="+this.courseIdPost;
 		},
 		cancel () {
@@ -299,13 +337,46 @@ export default {
 		},
 
 		// ****************************************************************************************
-		// 提交上传教学计划***********************************************************************
-		submitClick2: function (index) {
+		// 提交课件
+		submitClick1: function (index) {
 			this.modalSubmit = true;
+			this.submitBool = '1';
 			this.index = index;
 		},
 		// 二次确认提交
-		submitOk: function () {
+		submitOk1: function () {
+			this.modalSubmit = false;
+			this.courseIdPost = this.teachJournalList[this.index].courseId;
+			this.$http.post('./courseTeachPlan/returnTeachPlanSubmit',{
+				"courseId": this.courseIdPost,
+				"coursewareType": '1'
+			},{
+	            "Content-Type":"application/json"
+	        }).then(function(response){
+	            console.log("获取申请:");
+	            console.log(response.body);
+	            var data = response.body;
+	            // this.modalResult = true;
+	            if (data.result == '1') {
+	            	this.$Message.success("提交成功！");
+					document.getElementById("signIn1").style.display = "none";
+	            }else {
+	            	this.modalResult = true;
+	            	this.remindResult = '2';
+		        }
+	        },function(error){
+	            console.log("获取申请error:");
+	            console.log(error);
+	        });
+		},
+		// 提交上传教学计划***********************************************************************
+		submitClick2: function (index) {
+			this.modalSubmit = true;
+			this.submitBool = '2';
+			this.index = index;
+		},
+		// 二次确认提交
+		submitOk2: function () {
 			this.modalSubmit = false;
 			this.courseIdPost = this.teachJournalList[this.index].courseId;
 			this.$http.post('./courseTeachPlan/returnTeachPlanSubmit',{
@@ -346,12 +417,12 @@ export default {
           //   desc: '文件 ' + file.name + ' 格式不正确，请上传xls或xlsx表格。'
           // });
           this.modalResult = true;
-          this.remindResult = '3';
+          this.remindResult = '4';
           this.fileName = file.name;
         },
         handleSizeError1:function(file){
           this.modalResult = true;
-          this.remindResult = '4';
+          this.remindResult = '5';
           this.fileName = file.name;
         },
         // handleProgress1:function(){
@@ -382,7 +453,7 @@ export default {
         },
         handleSizeError2:function(file){
           this.modalResult = true;
-          this.remindResult = '4';
+          this.remindResult = '5';
           this.fileName = file.name;
         },
         // handleProgress2:function(){

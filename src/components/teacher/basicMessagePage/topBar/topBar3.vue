@@ -1,7 +1,7 @@
 <template>
   <div class="topBarDiv am-btn-group">
     <a href="#/teacher/personInfo/basicMessage">
-      <button  class="topBarButton am-btn am-btn-success btn-active" >个人信息</button>
+      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" >个人信息</button>
     </a>
   </div>
 </template>
@@ -26,7 +26,7 @@
   }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 @import '../../../../assets/css/external.css';
 
   html {

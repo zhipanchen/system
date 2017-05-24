@@ -1,5 +1,10 @@
 <template>
   <div id="table">
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>禁排申请</span>
+    </div>
     <div id="sel">
       <span>请选择每周不上课的时间：</span>
       <select  v-model="option2value" >
@@ -145,8 +150,8 @@
     display: flex;
     padding-left:5rem;
     background-color: white;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     /*justify-content:space-between;*/
  }
   #show{

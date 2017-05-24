@@ -2,8 +2,8 @@
   <div id="classroomManagement_topBar" class="topBarDiv am-btn-group">
     <button id="topBarButton" class="am-btn am-btn-success" @click="hrefClick(1)">教材管理</button>
     <button class="am-btn am-btn-success" @click="hrefClick(2)">年级管理</button>
-    <button class="am-btn am-btn-success" @click="hrefClick(3)">班级管理</button>
-    <button class="am-btn am-btn-success btn-active" @click="hrefClick(4)">教室管理</button>
+    <button class="am-btn am-btn-success" @click="hrefClick(3)">课程类型管理</button>
+    <button class="am-btn am-btn-success btn-active" @click="hrefClick(3)">教室管理</button>
   </div>
 </template>
 
@@ -12,17 +12,38 @@
     name: 'classroomManagement_topBar',
     data () {
       return {
-        msg: ''
+        authorityList: ''
       }
+    },
+    mounted: function() {
+      try{
+        var buttons = document.getElementById("classroomManagement_topBar").getElementsByTagName("button");
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+//        console.log(this.authorityList);
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.display = "none";
+        }
+        for (var i = 0; i < this.authorityList.length; i++) {
+          if(this.authorityList[i] == "27"){
+            buttons[0].style.display = "block";
+          }else if(this.authorityList[i] == "21"){
+            buttons[1].style.display = "block";
+          }else if(this.authorityList[i] == "64"){
+            buttons[2].style.display = "block";
+          }else if(this.authorityList[i] == "20"){
+            buttons[3].style.display = "block";
+          }
+        }
+      }catch(e){}
     },
     methods: {
       hrefClick: function (num) {
         if (num == 1) {
           location.href = "#/eduAdmin/baseSetting/resource/textbookMgmt"
         } else if (num == 2) {
-          location.href = "#/"
+          location.href = "#/eduAdmin/baseSetting/resource/eduAdminManageGrade"
         } else if (num == 3) {
-          location.href = "#/"
+          location.href = "#/eduAdmin/baseSetting/resource/courseTypeMgmt"
         } else if (num == 4) {
           location.href = "#/eduAdmin/baseSetting/resource/classroomMgmt"
         }

@@ -1,5 +1,13 @@
 <template>
-  <div id="table">
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span><a href="#/teacher/teach/director" class="returnHome">>督导反馈</a></span>
+      <span>>督导结果</span>
+    </div>
+    <div id="table">
+
     <div id="show">
       <table class="normalTable">
         <thead>
@@ -32,9 +40,11 @@
         <!--</tr>-->
         </tbody>
       </table>
+      <div style="text-align: center">
       <button class="am-btn am-btn-success am-radius" @click="saveDia(SuperviseTime,AttendanceInfo,TeachContent,TeacherQualityScored,
       TeachGoalsScored,TeachContentScored,TeachMethodsScored,TeachRoutineScored,TeachEffectScored,CommentsInfo,ForwardInfo)">提交</button>
       <button class="am-btn am-btn-success am-radius" @click="cancel()">返回</button>
+      </div>
     </div>
     <div id="grey"></div>
     <div id="recordTable">
@@ -84,6 +94,7 @@
         <button id="modalBtn" @click="modal2 = false">取消</button>
       </div>
     </Modal>
+  </div>
   </div>
 </template>
 

@@ -11,8 +11,8 @@
     data () {
       return {
         teachingAssessBtn: '评教结果',
-        gradesInputBtn: '选班成绩录入',
-        classMgmtBtn: '班级列表',
+        gradesInputBtn: '成绩录入',
+        classMgmtBtn: '班级管理',
         teachingAssessUrl: '#/teacher/class/teachingEvaluate',
         gradesInputUrl: '#/teacher/class/tchGradesInput',
         classMgmtUrl: '#/teacher/class/classList',

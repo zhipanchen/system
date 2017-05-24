@@ -1,6 +1,12 @@
 <template>
   <div id="banCouApplyDiv">
-    <div class="blank"></div>
+    <div class="blank">
+      <div class="positionBar">
+        <span>您的当前位置：</span>
+        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+        <span> > <a href="#/login/main/eduAdminHome?course" class="returnHome">智能排课</a> > 排课操作 > 查看禁排申请</span>
+      </div>
+    </div>
     <div id="tableDiv">
       <table class="operationTable">
         <thead>
@@ -181,9 +187,6 @@
     margin: 0 auto;
     background-color: #f3f3f3;
     height: 100%;
-  }
-  .blank {
-    height: 2.9rem;
   }
   #tableDiv{
     margin: 0 5rem;

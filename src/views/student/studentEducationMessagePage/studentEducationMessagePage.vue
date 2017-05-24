@@ -11,7 +11,7 @@
 
 <script>
   import topTitle from './../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/public/studentInfoQueryBar/studentInfoQueryBar.vue'
+  import topBar from '../../../components/student/studentEducationMessagePage/topBar/topBar.vue'
   import messageDiv from '../../../components/student/studentEducationMessagePage/studentEducationMessageContent/studentEducationMessageContent.vue'
   export default {
     name: 'studentEducationMessagePage',

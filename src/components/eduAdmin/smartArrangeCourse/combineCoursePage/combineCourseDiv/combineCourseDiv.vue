@@ -1,6 +1,12 @@
 <template>
   <div id="combineCourseDiv">
-    <div id="termDiv" class="blank"></div>
+    <div id="termDiv" class="blank">
+      <div class="positionBar">
+        <span>您的当前位置：</span>
+        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+        <span> > <a href="#/login/main/eduAdminHome?course" class="returnHome">智能排课</a> > 排课操作 > 合课设置</span>
+      </div>
+    </div>
     <div id="tableDiv">
       <table id="t1" class="applyTable">
         <thead>
@@ -399,6 +405,10 @@
     /*页面*/
     background-color: white;
     text-align: left;
+  }
+  .positionBar{
+    /*首页导航*/
+    margin-left: 0;
   }
   table{
     text-align: center;

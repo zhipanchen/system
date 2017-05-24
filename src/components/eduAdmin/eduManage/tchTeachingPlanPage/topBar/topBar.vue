@@ -2,7 +2,7 @@
   <div id="tchTeachingPlanPageTopBar" class="topBarDiv am-btn-group">
     <!--导航栏-->
     <button class="am-btn am-btn-success btn-active" style="margin-left: 5rem">教师教学计划</button>
-    <router-link to="/eduAdminEvaTeachingResult"><button class="am-btn am-btn-success">教务查看评教</button></router-link>
+    <router-link to="/eduAdmin/manage/examination/eduAdminEvaTeachingResult"><button class="am-btn am-btn-success">教务查看评教</button></router-link>
   </div>
 </template>
 

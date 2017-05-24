@@ -1,5 +1,11 @@
 <template>
 <div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 课程信息维护</span>
+		<span> > 教师课表</span>
+	</div>
 	<div class="tableSelect">
 		<select v-model="selSemester">
 			<option disabled>选择学期</option>
@@ -18,6 +24,7 @@
 	</div>
 
 	<div id="timetable">
+		<!-- 教师课表 -->
 		<div class="timetableBody">
 			<table class="normalTable">
 				<thead>
@@ -67,6 +74,7 @@
 				</tbody>
 			</table>
 		</div>
+		<!-- 所有课程信息列表 -->
 		<div class="timetableList">
 			<table class="normalTable">
 				<thead>
@@ -163,7 +171,8 @@ export default {
         });
 	},
 	methods: {
-		checkTableBtn: function () {	// 查询课表
+		// 查询课表	
+		checkTableBtn: function () {
 			this.$http.post('./teacherSeeCurriculum',{
 	        	"yearSemester": this.selSemester,
 	        	"week": this.selWeek

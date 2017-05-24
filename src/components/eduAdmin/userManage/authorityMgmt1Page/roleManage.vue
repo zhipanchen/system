@@ -1,80 +1,88 @@
 <template>
-<div id="authorityMgmt">
-	<!-- 角色管理 -->
-	<div class="roles">
-		<div class="selectCheck">
-			<select v-model="role" style="width:8rem;" @change="selRoleListClick()">
-				<option disabled>基础角色</option>
-		    	<option v-for="selRole in selRoleList" :value="selRole.value">{{ selRole.text }}</option>
-		    </select>
-			<input v-model="userIdOrName" placeholder="输入姓名或ID" style="width:6rem;" @change="inputUser()">
-		</div>
-		<!-- 选择基本角色后，从后台返回角色列表 -->
-		<div style="overflow:auto; height:27rem;">
-			<table class="roleTable tableRowClick">
-				<tbody>
-					<tr v-for="(person, index) in userList" :key="person">
-	<!-- 					<td>
-							<input type="checkbox" v-model="personUserId[index]" @on-change="checkUser(index)">
-							<Checkbox v-model="personUserId[index]" @on-change="checkUser(index)"></Checkbox>
-						</td> -->
-						<td @click="checkUser(index)">{{person.userName}}</td>
-						<td @click="checkUser(index)">{{person.userId}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		
+<div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 权限管理</span>
+		<span> > 角色管理</span>
 	</div>
-	<div class="authorities">
-		<div class="changed">
-			<span :value="userIdGet">当前选择：{{userNameShow}}</span>
-			<!-- <button class="am-btn am-btn-su-ccess am-radius" @click="changeBtn">修改权限</button> -->
-		</div>
-		<div class="changedTable">
-			<table>
-				<tbody>
-					<tr v-for="(authority, index) in roleList" :key="authority">
-						<td>
-							<!-- <input type="checkbox" v-model="authorityRoleId[index]"> -->
-							<input type="checkbox" :value="authority.roleId" v-model="authorityRoleId">
-							<!-- <Checkbox v-model="authority.roleId[index]"></Checkbox> -->
-						</td>
-						<td :for="authority.roleId">{{authority.roleName}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="changedBtn">
-			<button class="am-btn am-btn-success am-radius" @click="modal1 = true">保存</button>
-			<Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
-				<p style="text-align:center; font-size:1.1rem;">您确定修改并保存吗？</p>
-				<div slot="footer" style="text-align:center;">
-					<Button id="modalBtn" @click="ok1()">确定</Button>
-					<Button id="modalBtn" @click="cancel1()">取消</Button>
-				</div>
-			</Modal>
-			<button class="am-btn am-btn-success am-radius" @click="modal2 = true">取消</button>
-			<Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
-				<p style="text-align:center; font-size:1.1rem;">您确定不保存吗？</p>
-				<div slot="footer" style="text-align:center;">
-					<Button id="modalBtn" @click="ok2()">确定</Button>
-					<Button id="modalBtn" @click="cancel2()">取消</Button>
-				</div>
-			</Modal>
-		</div>
-
-		<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
-			<div style="text-align:center; font-size:1.1rem;">
-			    <p v-if="remindResult === '1'">操作失败！请重试</p>
-			    <p v-else-if= "remindResult === '2'">保存成功！</p>
-			    <p v-else-if= "remindResult === '3'">保存失败！</p>
+	<div id="authorityMgmt">
+		<!-- 角色管理 -->
+		<div class="roles">
+			<div class="selectCheck">
+				<select v-model="role" style="width:8rem;" @change="selRoleListClick()">
+					<option disabled>基础角色</option>
+			    	<option v-for="selRole in selRoleList" :value="selRole.value">{{ selRole.text }}</option>
+			    </select>
+				<input v-model="userIdOrName" placeholder="输入姓名或ID" style="width:6rem;" @change="inputUser()">
 			</div>
-		    <div slot="footer" style="text-align:center;">
-		        <Button id="modalBtn" @click="resultOk()">确认</Button>
-		    </div>
-		</Modal>
-	</div>
+			<!-- 选择基本角色后，从后台返回角色列表 -->
+			<div style="overflow:auto; height:27rem;">
+				<table class="roleTable tableRowClick">
+					<tbody>
+						<tr v-for="(person, index) in userList" :key="person">
+		<!-- 					<td>
+								<input type="checkbox" v-model="personUserId[index]" @on-change="checkUser(index)">
+								<Checkbox v-model="personUserId[index]" @on-change="checkUser(index)"></Checkbox>
+							</td> -->
+							<td @click="checkUser(index)">{{person.userName}}</td>
+							<td @click="checkUser(index)">{{person.userId}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+		</div>
+		<div class="authorities">
+			<div class="changed">
+				<span :value="userIdGet">当前选择：{{userNameShow}}</span>
+				<!-- <button class="am-btn am-btn-su-ccess am-radius" @click="changeBtn">修改权限</button> -->
+			</div>
+			<div class="changedTable">
+				<table>
+					<tbody>
+						<tr v-for="(authority, index) in roleList" :key="authority">
+							<td>
+								<!-- <input type="checkbox" v-model="authorityRoleId[index]"> -->
+								<input type="checkbox" :value="authority.roleId" v-model="authorityRoleId">
+								<!-- <Checkbox v-model="authority.roleId[index]"></Checkbox> -->
+							</td>
+							<td :for="authority.roleId">{{authority.roleName}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="changedBtn">
+				<button class="am-btn am-btn-success am-radius" @click="modal1 = true">保存</button>
+				<Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
+					<p style="text-align:center; font-size:1.1rem;">您确定修改并保存吗？</p>
+					<div slot="footer" style="text-align:center;">
+						<Button id="modalBtn" @click="ok1()">确定</Button>
+						<Button id="modalBtn" @click="cancel1()">取消</Button>
+					</div>
+				</Modal>
+				<button class="am-btn am-btn-success am-radius" @click="modal2 = true">取消</button>
+				<Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
+					<p style="text-align:center; font-size:1.1rem;">您确定不保存吗？</p>
+					<div slot="footer" style="text-align:center;">
+						<Button id="modalBtn" @click="ok2()">确定</Button>
+						<Button id="modalBtn" @click="cancel2()">取消</Button>
+					</div>
+				</Modal>
+			</div>
+
+			<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
+				<div style="text-align:center; font-size:1.1rem;">
+				    <p v-if="remindResult === '1'">操作失败！请重试</p>
+				    <p v-else-if= "remindResult === '2'">保存成功！</p>
+				    <p v-else-if= "remindResult === '3'">保存失败！</p>
+				</div>
+			    <div slot="footer" style="text-align:center;">
+			        <Button id="modalBtn" @click="resultOk()">确认</Button>
+			    </div>
+			</Modal>
+		</div>
+	</div>	
 </div>
 </template>
 

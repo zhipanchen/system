@@ -1,7 +1,13 @@
 <template>
 <div>
-	<div class="blank">
-		<div class="semester">当前学年学期：{{currentSemester}}</div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="" class="returnHome">首页</a></span>
+		<span> > 课酬模块</span>
+		<span> > 薪酬管理</span>
+	</div>
+	<div class="tableSelect">
+		<span class="semester">当前学年学期：{{currentSemester}}</span>
 	</div>
 
 	<div id="setPriceBody">
@@ -145,7 +151,7 @@ export default {
         	nurArrow: false,
         	nurseTable: false,
 			currentSemester: '',
-			teacher: [{jobName: "aaa"}],
+			teacher: [],
 			doctor: [],
 			nurse: [],
 			jobtitleStrList: [],
@@ -233,7 +239,7 @@ export default {
         	for(i = 0;i<input.length;i++){
                 input[i].readOnly = false;
                 input[i].style.border = "0.1rem solid #d4d4d9";
-                input[i].value = "";
+                // input[i].value = "";
             }
 			// 隐藏编辑和删除功能图标,显示保存和重置功能图标
             editImg.style.display = "none";
@@ -390,13 +396,14 @@ export default {
 
 <style scoped>
 .semester {
-	margin: 0 5rem;
-	float: right;
+	/*margin: 0 5rem;
+	float: right;*/
+	width: 100%;
 }
 
 #setPriceBody {
 	width: 100%;
-	background-color: #ececec;
+	background-color: #f3f3f3;
 	position: relative;
 	display: inline-block;
 	overflow: auto;

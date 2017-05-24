@@ -1,4 +1,10 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>个人信息</span>
+    </div>
     <div id="table">
       <div id="tableLeft">
         <span id="subtitle1">{{subtitle1}}</span>
@@ -93,6 +99,7 @@
         </div>
       </Modal>
     </div>
+  </div>
 </template>
 
 <script>

@@ -1,0 +1,44 @@
+<template>
+  <div class="topBarDiv am-btn-group">
+    <a :href="teacherCourseUrl">
+      <button id="manualCouButton" class="topBarButton am-btn am-btn-success">{{ teacherCourse }}</button>
+    </a>
+    <a :href="teacherTestUrl">
+      <button class="topBarButton am-btn am-btn-success btn-active">{{ teacherTest }}</button>
+    </a>
+    <a :href="teacherRewardUrl">
+      <button class="topBarButton am-btn am-btn-success">{{ teacherReward }}</button>
+    </a>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'topBarDiv',
+    data () {
+      return {
+        teacherCourse: '教师课表',
+        teacherTest: '查看考场',
+        teacherReward: '查看课酬',
+        teacherCourseUrl: 'index.html#'+'teacher/classInfo/tchCheckTimetable',
+        teacherTestUrl: 'index.html#'+'teacher/classInfo/teacherTestInfo',
+        teacherRewardUrl: 'index.html#'+'teacher/classInfo/tchCheckSalary'
+      }
+    }
+  }
+</script>
+
+<style lang="css" scoped>
+
+  html {
+    font-size: 16px;
+  }
+  #manualCouButton {
+    margin-left: 5rem;
+  }
+  @media screen and (max-width:1023px) {
+    html {
+      font-size: 9px;
+    }
+  }
+</style>

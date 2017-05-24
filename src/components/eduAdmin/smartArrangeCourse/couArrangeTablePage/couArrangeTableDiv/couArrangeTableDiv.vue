@@ -5,7 +5,11 @@
         <button id="queryButton" @click="modal = true"  class="am-btn am-btn-success am-radius">智能排课</button>
       </div>
     </div>
-
+    <div class="positionBar">
+      <span>您的当前位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span> > <a href="#/login/main/eduAdminHome?course" class="returnHome">智能排课</a> > 排课操作 > 排课结果课表</span>
+    </div>
     <div id="mainDiv">
       <p id="tableTipP">显示当前智能排课结果生成的课表；支持调换选定的两门课程；重新排课之后可能会由于程序运行时间问题，需要等待并刷新页面。</p>
       <p id="tableInfoP">当前排课课表：</p>

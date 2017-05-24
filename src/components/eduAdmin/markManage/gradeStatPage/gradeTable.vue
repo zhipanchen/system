@@ -1,6 +1,14 @@
 <template>
 <div>	
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 成绩管理</span>
+		<span> > 成绩</span>
+		<span> > 成绩统计</span>
+	</div>
 	<div class="tableSelect">
+		<!-- 填选信息进行查询学生成绩 -->
 		<select v-model="selGradeType">
 			<option disabled>选择年制</option>
 			<option v-for="gradeTypeOne in gradeType" :value="gradeTypeOne.value">{{gradeTypeOne.text}}</option>
@@ -23,8 +31,10 @@
 	    </span>
         <button class="am-btn am-btn-success am-radius" @click="inquireBtn()">查询</button>
 		<button class="am-btn am-btn-success am-radius" @click="exportBtn()">导出</button>
+		<!-- <td class="textBtn"><form action="./exportScoreList" method="get"><button :value="data.courseAssociationId" name="courseAssociationId" type="submit" style="display:visibility;"><a>导出</a></button></form></td> -->
 	</div>
 
+	<!-- 成绩单列表 -->
 	<div id="gradeTable">
 		<div class="gradeTableBody">
 			<table class="normalTable">
@@ -54,13 +64,14 @@
 		</div>
 	</div>
 
+	<!-- 错误弹窗提示 -->
 	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 		<div style="text-align:center; font-size:1.1rem;">
-		    <p>未找到所查询内容！</p>
+		    <p v-if="resultBool === '1'">未找到所查询内容！</p>
+		    <p v-else-if="resultBool === '2'">未找到可下载的内容！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
-	        <!-- <Button id="modalBtn" @click="submitCancel()">取消</Button> -->
 	    </div>
 	</Modal>
 </div>
@@ -71,6 +82,7 @@ export default {
 	name: 'gradeTable',
 	data () {
 		return {
+			// 全局变量定义
 			selGradeType: '选择年制',
 			selYearTerm: '选择学期',
 			selSpeciality: '选择专业',
@@ -93,9 +105,11 @@ export default {
 				// {stuNum: '20142201010', stuName: '何平', stuGrade: '大二', stuMajor: '护理学', stuSemester: '2016-2017第一学期', stuCourse: '护理学', stuScore: '80'}
 				{},{},{}
 			],
-			modalResult: false
+			modalResult: false,
+			resultBool: ''
 		}
 	},
+	// 页面初始化，获取学期、专业、课程下拉数据
 	beforeMount: function() {
 		this.$http.post('./getYearTermList',{},{
             "Content-Type":"application/json"
@@ -169,6 +183,7 @@ export default {
 	            	this.scoreList = data.scoreList;
 	            }else{
 			        this.modalResult = true;
+			        this.resultBool = '1';
 			    }
 	        },function(error){
 	            console.log("获取申请error:");
@@ -177,8 +192,27 @@ export default {
     	},
     	// 导出按钮
 		exportBtn: function () {
-
+    		if (this.selGradeType == "选择年制") {
+    			this.selGradeType = '0';
+    		}
+    		if (this.selYearTerm == "选择学期") {
+    			this.selYearTerm = '';
+    		}
+    		if (this.selSpeciality == "选择专业") {
+    			this.selSpeciality = '';
+    		}
+    		if (this.selCourseName == "选择课程") {
+    			this.selCourseName = '';
+    		}
+    		if (this.minScore == '') {
+    			this.minScore = '0';
+    		}
+    		if (this.maxScore == '') {
+    			this.maxScore = '100';
+    		}
+			location.href = ".exportScoreListByMaxMinScore?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"specialityId="+this.selSpeciality+"&"+"courseId="+this.selCourseName+"&"+"minScore="+this.minScore+"&"+"maxScore="+this.maxScore;
   		},
+    	// 弹窗提示点击确定，弹窗消失
     	resultOk: function () {
     		this.modalResult = false;
     	}

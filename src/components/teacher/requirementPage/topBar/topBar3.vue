@@ -35,7 +35,7 @@
   }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 @import '../../../../assets/css/external.css';
 
   html {

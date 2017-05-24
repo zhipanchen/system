@@ -1,5 +1,11 @@
 <template>
 <div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 课程管理</span>
+		<span> > 调课申请</span>
+	</div>
 	<div class="curSettings">
       <div>
         <span>当前学年学期：{{year}}学年第{{semester}}学期</span>

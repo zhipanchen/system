@@ -1,5 +1,11 @@
 <template>
-  <div id="back">
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>教研组管理</span>
+      </div>
+    <div id="back">
     <div id="table">
      <div id="title"> <p id="groupName">{{title}}</p></div>
      <div id="show">
@@ -31,9 +37,11 @@
        </p>
 
       </div>
-      <button class="am-btn am-btn-success am-radius" @click="saveDia">保存</button>
+      <div style="text-align: center">
+      <button  class="am-btn am-btn-success am-radius" @click="saveDia">保存</button>
       <button class="am-btn am-btn-success am-radius" @click="cancelDia">取消</button>
-    </div>
+      </div>
+      </div>
     <Modal
       v-model="modal1"
       width="400"
@@ -77,6 +85,7 @@
       </div>
     </Modal>
 </div>
+  </div>
 </template>
 
 <script>
@@ -187,6 +196,7 @@
         //传？？？
         }, {"Content-Type":"application/json"}).then(function (response) {
           if(response.body.result=="1"){
+            location.reload();
             for(var i=0;i<this.members.length;i++){
             for(var n=0;n<this.teacherList.length;n++)
               if(this.members[i]==this.teacherList[n].teacherId)
@@ -196,7 +206,7 @@
           }
 //            this.$Message.success('操作成功！');
 //            var t=setTimeout(" location.reload();",2000);
-             location.reload();
+
           }else{
             location.reload();
           }

@@ -1,6 +1,11 @@
 <template>
 <div>
-	<div class="blank"></div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 教务公告</span>
+		<span> > 公告管理</span>
+	</div>
 	<div id="noticeMgmtBody">
 		<div class="noticeMgmtContent">
 			<table class="noticeTable" width="100%" cellspacing="0">
@@ -145,7 +150,7 @@ export default {
 <style scoped>
 #noticeMgmtBody {
 	width: 100%;
-	background-color: #ececec;
+	background-color: #f3f3f3;
 	position: relative;
 	display: inline-block;
 	overflow: auto;

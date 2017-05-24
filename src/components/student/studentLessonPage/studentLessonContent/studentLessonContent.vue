@@ -1,5 +1,10 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <div id="myLessonContent">
+      <div class="positionBar">
+        <span>你的当前位置：</span>
+        <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
+        <span> > 学生个人信息</span>
+      </div>
       <div class="blank">
       <select class="selectStyle1" v-model="yearSelect">
         <option value="选择学期" disabled selected>选择学期</option>
@@ -81,6 +86,13 @@
           </tr>
         </table>
       </div>
+      <Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
+        <p style="text-align:center; font-size:1.1rem;">{{ messageStr }}</p>
+        <div slot="footer" style="text-align:center;">
+          <Button id="modalBtn" @click="ok2()">确定</Button>
+          <Button id="modalBtn" @click="cancel2()">取消</Button>
+        </div>
+      </Modal>
     </div>
 </template>
 
@@ -89,6 +101,11 @@
         name: 'myLessonContent',
         data () {
             return {
+              modal1:false,
+              modal2:false,
+              okValue:0,//值为0无法执行，为1可以执行
+              messageStr:'',
+              studentPageUrl:'index.html#'+'login/main/studentHome',
               yearSelect:"选择学期",
               weekSelect:'选择周数',
               years:[
@@ -138,14 +155,32 @@
       },
       methods:
       {
+        ok2 () {
+          if(this.okValue==0){
+            this.modal2 = false;
+          }
+        },
+        cancel2(){
+          this.modal2=false;
+        },
         searchClick:function(){
-          this.$http.post('./studentSeeCurriculum', {
-            yearSemester: this.yearSelect,
-            week: this.weekSelect
-          }, {"Content-Type": "application/json"}).then(function (response) {
-            this.course1 = response.body.studentCurriculum[0];
-            this.courses2 = response.body.studentDetailCurriculum;
-          });
+          if(this.yearSelect=="选择学期"){
+            this.modal2=true;
+            this.messageStr="未选择学期！";
+            this.okValue=0;
+          }else if(this.weekSelect=='选择周数'){
+            this.modal2=true;
+            this.messageStr="未选择周数！";
+            this.okValue=0;
+          }else{
+            this.$http.post('./studentSeeCurriculum', {
+              yearSemester: this.yearSelect,
+              week: this.weekSelect
+            }, {"Content-Type": "application/json"}).then(function (response) {
+              this.course1 = response.body.studentCurriculum[0];
+              this.courses2 = response.body.studentDetailCurriculum;
+            });
+          }
         }
       }
     }

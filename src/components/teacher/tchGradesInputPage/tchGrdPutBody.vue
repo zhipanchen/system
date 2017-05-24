@@ -1,5 +1,11 @@
 <template>
 <div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 班级管理</span>
+		<span> > 成绩录入</span>
+	</div>
 	<div class="blank">
 		<div class="leftPart">
 			<span>当前学年学期：</span>
@@ -30,13 +36,14 @@
 						</thead>				
 						<tbody>
 							<tr v-for="(data, index) in scoreInputList" >
-								<td class="textBtn" :value="data.courseAssociationId"><a :href="'#/teacher/class/gradesInput?a='+data.courseAssociationId">成绩输入</a></td>
+								<td class="textBtn" :value="data.courseAssociationId"><a :href="'#/teacher/class/gradesInput?courseAssociationId='+data.courseAssociationId">成绩输入</a></td>
 								<td v-text="index + 1"></td>
 								<td>{{preSemester}}</td>
 								<td v-text="data.teacherName"></td>
 								<td v-text="data.className"></td>
 								<td v-text="data.courseName"></td>
-								<td class="textBtn"><a @click="exportFormatBtn">下载</a></td>
+								<td class="textBtn"><a @click="exportFormatBtn(index)">下载</a></td>
+								<!-- <td class="textBtn"><form action="./downloadScoreList" method="get"><button :value="data.courseAssociationId" name="courseAssociationId" type="submit" style="display:visibility;"><a>下载</a></button></form></td> -->
 							</tr>
 						</tbody>
 					</table>
@@ -47,7 +54,8 @@
 
 	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 		<div style="text-align:center; font-size:1.1rem;">
-		    <p>操作失败！请重试</p>
+		    <p v-if="remindResult === '1'">操作失败！请重试</p>
+			<p v-else-if= "remindResult === '2'">未找到可下载的内容！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -66,7 +74,8 @@ export default {
 			scoreInputList: [
 				{courseAssociationId: '1', semester: '2016-2017学年第一学期', teacherName: '何平', className: '对口高职2015护理（9+3）1班', courseName: '护理管理学'}
 			],
-			modalResult: false
+			modalResult: false,
+			remindResult: ''
 		}
 	},
 	beforeMount: function() {
@@ -84,20 +93,13 @@ export default {
         });
     },
 	methods: {
-		// 导出功能--待完善
-		exportFormatBtn: function () {
-			// var r = confirm("您确定将文件导出格式吗？");
-			// if (r==true) {
-			// 	this.$Message.success("导出成功！");
-			// }
-			// else {
-			// 	// this.$Message.error("导出失败。");
-			// 	this.modalResult = true;
-			// }
-			location.href = "./downloadallSalaryList"
+		// 导出功能
+		exportFormatBtn: function (index) {
+			location.href = ".downloadScoreList?courseAssociationId="+this.scoreInputList[index].courseAssociationId;
 		},
     	resultOk: function () {
     		this.modalResult = false;
+    		this.remindResult = '1';
     	}
 	}
 }

@@ -1,6 +1,14 @@
 <template>
 <div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 成绩管理</span>
+		<span> > 补考</span>
+		<span> > 补考成绩管理</span>
+	</div>
 	<div class="tableSelect">
+		<!-- 填选信息进行查询学生成绩 -->
         <select v-model="selGradeType" @change="gradeChange()">
 			<option disabled>选择年制</option>
 			<option v-for="gradeTypeOne in gradeType" :value="gradeTypeOne.value">{{gradeTypeOne.text}}</option>
@@ -19,10 +27,12 @@
 		</select>
         <button class="am-btn am-btn-success am-radius" @click="findBtn()">查询</button>
         <button class="am-btn am-btn-success am-radius" @click="exportBtn()">导出</button>
+        <!-- <td class="textBtn"><form action="./exportMakeUpList" method="get"><button :value="data.courseAssociationId" name="courseAssociationId" type="submit" style="display:visibility;"><a>导出</a></button></form></td> -->
       </div>
 
 	<div id="makeupList">
 		<div class="makeupListBody">
+    		<!-- 需要补考的学生名单 -->
 			<div class="needMakeupList">
 				<span>*以下是需要补考的名单</span>
 				<div class="list1">
@@ -53,6 +63,7 @@
 				</div>
 			</div>
 
+			<!-- 补考不通过需要申请的学生名单 -->
 			<div class="doubleFailList">
 				<span>*以下是补考不通过需要申请的同学</span>
 				<div class="list2">
@@ -71,8 +82,12 @@
 								<td :value="data.courseId">{{data.courseName}}</td>
 								<td>{{data.makeUpAskTime}}</td>
 								<td>
-									<img class="rightImg" width="25px" height="25px" @click="rightBtn(index)">
-									<img class="wrongImg" width="25px" height="25px" @click="wrongBtn(index)">
+									<!-- <img class="rightImg" width="25px" height="25px" @click="rightBtn(index)">
+									<img class="wrongImg" width="25px" height="25px" @click="wrongBtn(index)"> -->
+		                            <!--申请通过批准-->
+									<button class="operationBtn" @click="rightBtn(index)">√</button>
+		                            <!--申请拒绝-->
+									<button class="operationBtn" @click="wrongBtn(index)">×</button>
 								</td>
 							</tr>
 						</tbody>
@@ -107,6 +122,7 @@
 				</div>
 			</Modal>
 
+			<!-- 操作结果弹窗提示 -->
 			<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 				<div style="text-align:center; font-size:1.1rem;">
 				    <p v-if="remindResult === '1'">查询失败！请重试</p>
@@ -114,10 +130,10 @@
 				    <p v-else-if= "remindResult === '3'">申请成功！</p>
 				    <p v-else-if= "remindResult === '4'">申请失败！</p>
 				    <p v-else-if= "remindResult === '5'">操作失败！请重试</p>
+				    <p v-else-if= "remindResult === '6'">未找到可下载的内容！</p>
 				</div>
 			    <div slot="footer" style="text-align:center;">
 			        <Button id="modalBtn" @click="resultOk()">确定</Button>
-			        <!-- <Button id="modalBtn" @click="submitCancel()">取消</Button> -->
 			    </div>
 			</Modal>
 		</div>
@@ -157,6 +173,7 @@ export default {
 			index: ''
 		}
 	},
+	// 页面初始化，获取学期、课程下拉数据
 	beforeMount: function() {
         this.$http.post('./getYearTermList',{},{
             "Content-Type":"application/json"
@@ -176,7 +193,6 @@ export default {
             console.log(response.body);
             var data = response.body;
             this.courseInfo = data.courseInfo;
-            // this.classInfo = data.classInfo;
         },function(error){
             console.log("获取申请error:");
             console.log(error);
@@ -267,7 +283,19 @@ export default {
 	    },
 	    // 下载按钮********************************************************************
 	    exportBtn: function () {
-  			
+    		if (this.selGradeType == "选择年制") {
+    			this.selGradeType = '0';
+    		}
+    		if (this.selYearTerm == "选择学期") {
+    			this.selYearTerm = '';
+    		}
+    		if (this.selCourseName == "选择课程") {
+    			this.selCourseName = '';
+    		}
+    		if (this.selClassId == "选择班级") {
+    			this.selClassId = '';
+    		}
+	    	location.href = ".exportMakeUpList?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"courseId="+this.selCourseName+"&"+"classId="+this.selClassId;
 	    },
 	    // 单个批准补考申请********************************************************
   		rightBtn: function (index) {
@@ -275,6 +303,7 @@ export default {
   			this.yesOk = '1';
 			this.index = index;
   		},
+  		// 单个批准补考申请弹窗点击确定
   		okSingle1: function () {
   			this.modal1 = false;
   			var makeUpAskListPut = [];
@@ -307,6 +336,7 @@ export default {
   			this.noCancel = '1';
   			this.index = index;
   		},
+  		// 单个不同意补考申请弹窗点击确定
   		okSingle2: function () {
   			this.modal2 = false;
 			var makeUpAskListPut = [];
@@ -338,10 +368,11 @@ export default {
   			this.modal1 = true;
   			this.yesOk = '2';
   		},
+  		// 全部同意申请弹窗点击确定
   		okAll1 () {
   			var makeUpAskListPut = [];
   			for (var i = 0; i < this.makeUpAskList.length; i++) {
-  				makeUpAskListPut.push({studentName:this.makeUpAskList[i].studentName, courseName:this.makeUpAskList[i].courseName});
+  				makeUpAskListPut.push({studentId:this.makeUpAskList[i].studentId, courseId:this.makeUpAskList[i].courseId});
   			}
             this.modal1 = false;
             this.$http.post('./makeUpAskAgree',{
@@ -370,7 +401,7 @@ export default {
   		okAll2 () {
   			var makeUpAskListPut = [];
   			for (var i = 0; i < this.makeUpAskList.length; i++) {
-  				makeUpAskListPut.push({studentName:this.makeUpAskList[i].studentName, courseName:this.makeUpAskList[i].courseName});
+  				makeUpAskListPut.push({studentId:this.makeUpAskList[i].studentId, courseId:this.makeUpAskList[i].courseId});
   			}
             this.modal2 = false;
             this.$http.post('./makeUpAskDisagree',{
@@ -395,12 +426,15 @@ export default {
 	            console.log(error);
         	});
         },
+        // 同意申请弹窗取消
         cancel1 () {
             this.modal1 = false;
         },
+        // 撤销申请弹窗取消
         cancel2 () {
             this.modal2 = false;
         },
+        // 弹窗提示点击确定，弹窗消失
         resultOk () {
         	this.modalResult = false;
         }
@@ -409,12 +443,6 @@ export default {
 </script>
 
 <style scoped>
-/*#selectDiv {
-	display: flex;
-	text-align: center;
-	justify-content: center;
-}*/
-
 #makeupList {
 	background-color: #f3f3f3;
 	width: 100%;
@@ -438,9 +466,9 @@ export default {
 	padding-left: 2rem;
 }
 
-#required {
+/*#required {
 	background: url(../../../../components/public/images/star.png) 2% 50% no-repeat;
-}
+}*/
 
 .list1, .list2 {
 	padding: 2rem;
@@ -453,7 +481,7 @@ export default {
 	width: 100%;
 }
 
-ul {
+/*ul {
 	list-style: none;
 	text-align: center;
 	margin: 0;
@@ -484,8 +512,20 @@ li {
 }
 .wrongImg:hover {
 	background: url(./images/wrong-on.png) 50% no-repeat;
+}*/
+
+.operationBtn {
+	outline: none;
+    border: thin solid #666;
+    background-color: white;
+    color: #666;
+    border-radius: 50%;
+    font-size: 1rem;
+    width: 1.45rem;
 }
-
-
-
+.operationBtn:hover {
+	background-color: red;
+    color: white;
+    border: red;
+}
 </style>

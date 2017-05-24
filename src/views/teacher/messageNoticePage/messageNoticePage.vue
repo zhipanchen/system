@@ -28,7 +28,7 @@
 
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
   html{
     font-size: 16px;
   }

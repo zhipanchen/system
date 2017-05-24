@@ -7,6 +7,7 @@
           <span class="textBlue">（注：请在上课后五天内填写）</span>
       </div> -->
       <schedule-list></schedule-list>
+  </div>
 </template>
 
 <script>

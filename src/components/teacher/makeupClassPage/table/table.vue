@@ -1,7 +1,15 @@
 <template>
-	<div id="back">
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>补课申请</span>
+    </div>
+	 <div id="back">
     <!--<div class="applyTable">-->
+
     <div id="adjShow">
+
       <div id="adjTop1">
         <span>当前学年学期：{{year}}年第{{semester}}学期</span>
         <span>当前周数：{{week}}</span>
@@ -89,8 +97,10 @@
             </tr>
           </tbody>
       </table>
+      <div style="text-align: center">
       <button  class="am-btn am-btn-success am-radius" @click="saveDia(selected1,selected3,selected4,message2)">保存</button>
       <button class="am-btn am-btn-success am-radius" @click="cancel">取消</button>
+      </div>
     </div>
     <div class="adjShowDiv">
       <table class="table table-hover table-bordered" cellspacing="1">
@@ -135,6 +145,7 @@
         <button id="modalBtn" @click="modal1 = false">取消</button>
       </div>
     </Modal>
+  </div>
   </div>
 </template>
 

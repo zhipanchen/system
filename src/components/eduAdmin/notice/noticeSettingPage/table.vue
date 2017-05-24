@@ -1,72 +1,81 @@
 <template>
+<div>
+  <div class="positionBar">
+    <span>您的当前位置：</span>
+    <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+    <span> > 教务公告</span>
+    <span> > 公告发布</span>
+  </div>
   <div id="table">
     <div id="show">
-        <div id="top">
-          <div>
-            <span>*标题:</span>
-            <input id="title" v-model="announcementName" type="text">
-          </div>
-          <div>
-            <span>*发布类别:</span>
-            <select v-model="announcementType">
-              <option  v-for="data in options" :value="data.value">
+      <div id="top">
+        <div>
+          <span>*标题:</span>
+          <input id="title" v-model="announcementName" type="text">
+        </div>
+        <div>
+          <span>*发布类别:</span>
+          <select v-model="announcementType">
+            <option  v-for="data in options" :value="data.value">
               {{data.option}}
-              </option>
-            </select>
-          </div>
+            </option>
+          </select>
         </div>
-        <div id="middle">
-          <!--<span style="white-space:nowrap;">*内容:</span>-->
-         <textarea v-model="announcementContent" placeholder="请在此处输入正文..."></textarea>
-        </div>
-        <div id="bottom">
-           <!--<button class="am-btn am-btn-success am-radius" @click="up">上传</button>-->
-          <form action="./announcementManage/addAnnouncement" method="post" enctype="multipart/form-data">
-              <span>附件：</span>
-              <input type="file" name="file">
-              <input v-model="announcementName" name="announcementName" readonly style="display: none">
-              <input v-model="announcementType"  name="announcementType"  readonly style="display: none">
-              <input v-model="announcementContent"  name="announcementContent"  readonly style="display: none">
-              <span style="position: relative;" class="am-btn am-btn-success am-radius" @click="dia(announcementContent)">发布</span>
-              <Modal
-                v-model="modal1"
-                width="400"
-                :mask-closable="false"
-                id="modalBody"
-                :styles="{top:'10rem'}">
-                <div style="font-size: 1.1rem;text-align: center;">
-                  <p>您确定发布该信息吗?</p>
-                </div>
-                <div slot="footer" style="text-align: center">
-                  <button id="modalBtn" type="submit">确定</button>
-                  <span id="modalBtn" @click="modal1 = false">取消</span>
-                </div>
-              </Modal>
-          </form>
-          <!--<form enctype="multipart/form-data" id="tf">-->
-            <!--<span>附件：</span>-->
-            <!--<input type="file" name="file">-->
-            <!--<input v-model="announcementName" name="announcementName" readonly style="display: none">-->
-            <!--<input v-model="announcementType"  name="announcementType"  readonly style="display: none">-->
-            <!--<input v-model="announcementContent"  name="announcementContent"  readonly style="display: none">-->
-            <!--<input type="button" class="am-btn am-btn-success am-radius" value="发布" @click="publish">-->
-          <!--</form>-->
+      </div>
+      <div id="middle">
+        <!--<span style="white-space:nowrap;">*内容:</span>-->
+        <textarea v-model="announcementContent" placeholder="请在此处输入正文..."></textarea>
+      </div>
+      <div id="bottom">
+        <!--<button class="am-btn am-btn-success am-radius" @click="up">上传</button>-->
+        <form action="./announcementManage/addAnnouncement" method="post" enctype="multipart/form-data">
+          <span>附件：</span>
+          <input type="file" name="file">
+          <input v-model="announcementName" name="announcementName" readonly style="display: none">
+          <input v-model="announcementType"  name="announcementType"  readonly style="display: none">
+          <input v-model="announcementContent"  name="announcementContent"  readonly style="display: none">
+          <span style="position: relative;" class="am-btn am-btn-success am-radius" @click="dia(announcementContent)">发布</span>
+          <button id="sub" style="display: none" type="submit"></button>
+          <Modal
+                  v-model="modal1"
+                  width="400"
+                  :mask-closable="false"
+                  id="modalBody"
+                  :styles="{top:'10rem'}">
+            <div style="font-size: 1.1rem;text-align: center;">
+              <p>您确定发布该信息吗?</p>
+            </div>
+            <div slot="footer" style="text-align: center">
+              <button id="modalBtn" @click="subm()">确定</button>
+              <span id="modalBtn" @click="modal1 = false">取消</span>
+            </div>
+          </Modal>
+        </form>
+        <!--<form enctype="multipart/form-data" id="tf">-->
+        <!--<span>附件：</span>-->
+        <!--<input type="file" name="file">-->
+        <!--<input v-model="announcementName" name="announcementName" readonly style="display: none">-->
+        <!--<input v-model="announcementType"  name="announcementType"  readonly style="display: none">-->
+        <!--<input v-model="announcementContent"  name="announcementContent"  readonly style="display: none">-->
+        <!--<input type="button" class="am-btn am-btn-success am-radius" value="发布" @click="publish">-->
+        <!--</form>-->
 
 
-          <!--<form>-->
-            <!--<span>附件：</span>-->
-            <!--<input type="file" id="file" name="file">-->
-            <!--<input v-model="announcementName" name="announcementName" readonly style="display: none">-->
-            <!--<input v-model="announcementType"  name="announcementType"  readonly style="display: none">-->
-            <!--<input v-model="announcementContent"  name="announcementContent"  readonly style="display: none">-->
-            <!--<button type="submit" class="am-btn am-btn-success am-radius" @click="submit">发布</button>-->
-          <!--</form>-->
+        <!--<form>-->
+        <!--<span>附件：</span>-->
+        <!--<input type="file" id="file" name="file">-->
+        <!--<input v-model="announcementName" name="announcementName" readonly style="display: none">-->
+        <!--<input v-model="announcementType"  name="announcementType"  readonly style="display: none">-->
+        <!--<input v-model="announcementContent"  name="announcementContent"  readonly style="display: none">-->
+        <!--<button type="submit" class="am-btn am-btn-success am-radius" @click="submit">发布</button>-->
+        <!--</form>-->
 
 
-          <!--<button class="am-btn am-btn-success am-radius" @click="publish(announcementName,announcementType,announcementContent)">发布</button>-->
-        </div>
+        <!--<button class="am-btn am-btn-success am-radius" @click="publish(announcementName,announcementType,announcementContent)">发布</button>-->
+      </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -98,6 +107,9 @@
       dia: function (announcementContent) {
         this.modal1 = true;
         this.announcementContent=announcementContent.replace('<br />','/n');
+      },
+      subm:function(){
+        document.getElementById("sub").click();
       }
 //      publish: function () {
 //        var form = new FormData(document.getElementById("tf"));
@@ -122,8 +134,6 @@
 //      }
       }
     }
-
-
 
 </script>
 

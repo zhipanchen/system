@@ -1,6 +1,12 @@
 <template>
 <div>
-	<div class="spanButton">
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 课程信息维护</span>
+		<span> > 查看课酬</span>
+	</div>
+	<div class="tableSelect">
 		<!-- <select v-model="selYearTerm">
 			<option disabled>选择学期</option>
 			<option v-for="yearTermOne in yearTerm" :value="yearTermOne">{{yearTermOne}}</option>
@@ -110,7 +116,8 @@ export default {
     outline: none;
 }
 .rpart {
-  margin: 0 5rem;
+  margin: .8rem 0rem;
+  margin-top: 0;
   float: right;
 }
 

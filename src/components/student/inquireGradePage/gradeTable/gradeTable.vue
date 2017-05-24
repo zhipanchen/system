@@ -19,10 +19,11 @@
           <th>总评成绩</th>
           <th>补考成绩</th>
           <th>最终</th>
+          <th>补考申请</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="studentScore in studentScoreList">
+        <tr v-for="(studentScore,index) in studentScoreList">
           <td v-text="studentScore.term"></td>
           <td v-text="studentScore.courseId"></td>
           <td v-text="studentScore.courseName"></td>
@@ -30,10 +31,18 @@
           <td v-text="studentScore.grade"></td>
           <td v-text="studentScore.makeUpGrade"></td>
           <td v-text="studentScore.finalGrade"></td>
+          <td><a class="point" @click="applyClick(index)">{{studentScore.apply}}</a></td>
         </tr>
         </tbody>
       </table>
     </div>
+    <Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
+      <p style="text-align:center; font-size:1.1rem;">{{ messageStr }}</p>
+      <div slot="footer" style="text-align:center;">
+        <Button id="modalBtn" @click="ok2()">确定</Button>
+        <Button id="modalBtn" @click="cancel2()">取消</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -42,6 +51,10 @@
     name: 'stdInquireGradeTableSy',
     data () {
       return {
+        modal1:false,
+        modal2:false,
+        nowIndex:0,//值为0无法执行，为1可以执行
+        messageStr:'是否确定提交补考申请？',
         termEle:'0',
         terms:[
           '2014-2015.1',
@@ -50,9 +63,9 @@
           '2015-2016.1'
         ],
         studentScoreList:[
-          {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80'},
-          {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80'},
-          {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80'}
+          {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80',apply:'提交申请'},
+          {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80',apply:'--'},
+          {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80',apply:'提交申请'}
         ]
       }
     },
@@ -62,21 +75,75 @@
       },{
         "Content-Type":"application/json"
       }).then(function (response) {
-        console.log(response);
-        this.studentScoreList = response.body.studentScoreList;
+        var a= response.body.studentScoreList;
+        for(var i=0;i<a.length;i++){
+          if(a[i].grade<60) {
+            if(a[i].makeupExam>1) {
+              if(a[i].applyMakeup==0) {
+                a[i]['apply'] = '提交申请';
+              }else if(a[i].applyMakeup==1){
+                a[i]['apply'] = '审核中';
+              }else if(a[i].applyMakeup==2){
+                a[i]['apply'] = '审核通过';
+              }else if(a[i].applyMakeup==3){
+                a[i]['apply'] = '审核未通过';
+              }
+            }
+          }else{
+            a[i]['apply'] = '--';
+          }
+        }
+        this.studentScoreList=a;
       },function(error){
         console.log("获取error");
       });
     },
     methods:{
+      ok2 () {
+        this.modal2=false;
+        this.$http.post('./applyMakeUp',{
+          "courseId":this.studentScoreList[this.nowIndex].courseId
+        },{
+          "Content-Type":"application/json"
+        }).then(function (response) {
+          if (response.body.result == 1) {
+            this.$Message.success('申请成功！');
+            this.studentScoreList[this.nowIndex].apply="审核中";
+          } else if(response.body.result == 0){
+            this.$Message.error('申请失败！');
+          }
+        },function(error){
+          console.log("获取error");
+        });
+      },
+      cancel2(){
+        this.modal2=false;
+      },
       changeTerm: function(){
         this.$http.post('./studentFindScore',{
           "yearTerm":this.termEle
         },{
           "Content-Type":"application/json"
         }).then(function (response) {
-          console.log(response);
-          this.studentScoreList = response.body.studentScoreList;
+          var a= response.body.studentScoreList;
+          for(var i=0;i<a.length;i++){
+            if(a[i].grade<60) {
+              if(a[i].makeupExam>1) {
+                if(a[i].applyMakeup==0) {
+                  a[i]['apply'] = '提交申请';
+                }else if(a[i].applyMakeup==1){
+                  a[i]['apply'] = '审核中';
+                }else if(a[i].applyMakeup==2){
+                  a[i]['apply'] = '审核通过';
+                }else if(a[i].applyMakeup==3){
+                  a[i]['apply'] = '审核未通过';
+                }
+              }
+            }else{
+              a[i]['apply'] = '--';
+            }
+          }
+          this.studentScoreList=a;
         },function(error){
           console.log("获取error");
         });
@@ -87,11 +154,34 @@
         },{
           "Content-Type":"application/json"
         }).then(function (response) {
-          console.log(response);
-          this.studentScoreList = response.body.studentScoreList;
+          var a= response.body.studentScoreList;
+          for(var i=0;i<a.length;i++){
+            if(a[i].grade<60) {
+              if(a[i].makeupExam>1) {
+                if(a[i].applyMakeup==0) {
+                  a[i]['apply'] = '提交申请';
+                }else if(a[i].applyMakeup==1){
+                  a[i]['apply'] = '审核中';
+                }else if(a[i].applyMakeup==2){
+                  a[i]['apply'] = '审核通过';
+                }else if(a[i].applyMakeup==3){
+                  a[i]['apply'] = '审核未通过';
+                }
+              }
+            }else{
+              a[i]['apply'] = '--';
+            }
+          }
+          this.studentScoreList=a;
         },function(error){
           console.log("获取error");
         });
+      },
+      applyClick:function(index){
+        if(this.studentScoreList[index].apply=='提交申请') {
+          this.modal2 = true;
+          this.nowIndex = index;
+        }
       }
     }
   }
@@ -117,6 +207,10 @@
     .buttonWM{
       min-width: 5.6rem;
       margin: 0 0.7rem;
+    }
+    .point{
+      color: #5E96BA;
+      cursor: pointer;
     }
     @media screen and (max-width:1023px) {
         html {

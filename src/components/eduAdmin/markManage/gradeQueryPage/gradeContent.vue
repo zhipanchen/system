@@ -1,11 +1,14 @@
 <template>
 <div>
-	<div class="tableSelect">
-		<!-- <select id="required" @change="">
-			<option value="1" disabled selected>选择年制(必选项)</option>
-			<option value="2">五年制</option>
-			<option value="3">三年制</option>
-		</select> -->
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 成绩管理</span>
+		<span> > 成绩</span>
+		<span> > 成绩查询</span>
+	</div>
+	<div class="tableSelect addTableSelect">
+		<!-- 填选信息进行查询学生成绩 -->
 		<select v-model="selGradeType" @change="gradeChange()">
 			<option disabled>选择年制</option>
 			<option v-for="gradeTypeOne in gradeType" :value="gradeTypeOne.value">{{gradeTypeOne.text}}</option>
@@ -26,9 +29,13 @@
 			<input v-model="studentId" placeholder="输入学号">
 		</span>
 		<button class="am-btn am-btn-success am-radius" @click="inquireBtn()">查询</button>
+		<span>
 		<button class="am-btn am-btn-success am-radius" @click="exportBtn()">导出</button>
+		<!-- <form action="./exportScoreList" method="get"><button :value="this.scoreListByStuNo" name="scoreListByStuNo" type="submit" class="am-btn am-btn-success am-radius">导出</button></form> -->
+		</span>
 	</div>
 
+	<!-- 成绩单列表 -->
 	<div id="gradeContent">
 		<div class="gradeContentBody">
 			<table class="normalTable">
@@ -58,13 +65,14 @@
 		</div>
 	</div>
 
+	<!-- 错误弹窗提示 -->
 	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 		<div style="text-align:center; font-size:1.1rem;">
-		    <p>未找到所查询内容！</p>
+		    <p v-if="resultBool === '1'">未找到所查询内容！</p>
+		    <p v-else-if="resultBool === '2'">未找到可下载的内容！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
-	        <!-- <Button id="modalBtn" @click="submitCancel()">取消</Button> -->
 	    </div>
 	</Modal>
 </div>
@@ -75,6 +83,7 @@ export default {
 	name: 'gradeContent',
 	data () {
 		return {
+			// 全局变量定义
 			selGradeType: '选择年制',
 			selYearTerm: '选择学期',
 			selCourseName: '选择课程',
@@ -95,12 +104,14 @@ export default {
 			studentId: '',
 			// 返回学生成绩列表
 			scoreListByStuNo: [
-				// {stuNum: '20142201010', stuName: '何平', stuGrade: '大二', stuMajor: '护理学', stuSemester: '2016-2017第一学期', stuCourse: '护理学', stuScore: '80'}
+				{stuNum: '20142201010', stuName: '何平', stuGrade: '大二', stuMajor: '护理学', stuSemester: '2016-2017第一学期', stuCourse: '护理学', stuScore: '80'}
 				// {},{},{}
 			],
-			modalResult: false
+			modalResult: false,
+			resultBool: ''
 		}
 	},
+	// 页面初始化，获取学期、课程下拉数据
 	beforeMount: function() {
         this.$http.post('./getYearTermList',{},{
             "Content-Type":"application/json"
@@ -177,6 +188,7 @@ export default {
 	            	this.scoreListByStuNo = data.scoreListByStuNo;
 	            }else{
 			        this.modalResult = true;
+			        this.resultBool = '1';
 			    }
 	        },function(error){
 	            console.log("获取申请error:");
@@ -185,8 +197,21 @@ export default {
     	},
     	// 导出按钮
     	exportBtn: function() {
-
+    		if (this.selGradeType == "选择年制") {
+    			this.selGradeType = '0';
+    		}
+    		if (this.selYearTerm == "选择学期") {
+    			this.selYearTerm = '';
+    		}
+    		if (this.selCourseName == "选择课程") {
+    			this.selCourseName = '';
+    		}
+    		if (this.selClassId == "选择班级") {
+    			this.selClassId = '';
+    		}
+    		location.href = ".exportScoreListByStu?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"courseId="+this.selCourseName+"&"+"classId="+this.selClassId+"&"+"studentId="+this.studentId;
     	},
+    	// 弹窗提示点击确定，弹窗消失
     	resultOk: function () {
     		this.modalResult = false;
     	}
@@ -209,5 +234,8 @@ export default {
 /*.gradeContentBody table {
 	margin-bottom: 1.6rem;
 }*/
+.addTableSelect span {
+	display: inline-block;
+}
 
 </style>

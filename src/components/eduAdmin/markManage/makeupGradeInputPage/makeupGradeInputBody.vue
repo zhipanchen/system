@@ -1,6 +1,14 @@
 <template>
 <div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 成绩管理</span>
+		<span> > 补考</span>
+		<span> > 补考成绩录入</span>
+	</div>
 	<div class="tableSelect">
+		<!-- 填选信息进行查询学生补考成绩输入 -->
 		<select v-model="selGradeType">
 			<option disabled>选择年制</option>
 			<option v-for="gradeTypeOne in gradeType" :value="gradeTypeOne.value">{{gradeTypeOne.text}}</option>
@@ -43,6 +51,7 @@
 		</div>
 	</div>
 
+	<!-- 操作二次确认弹窗 -->
 	<Modal v-model="modalOperation" id="modalBody" :styles="{top:'10rem'}">
 		<div style="text-align:center; font-size:1.1rem;">
 			<p v-if="opertaionBool === '1'">您确定要保存所修改内容吗？</p>
@@ -56,6 +65,7 @@
 		</div>
 	</Modal>
 
+	<!-- 操作结果弹窗提示 -->
 	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 		<div style="text-align:center; font-size:1.1rem;">
 		    <p v-if="remindResult === '1'">操作失败！请重试</p>
@@ -77,7 +87,7 @@ export default {
 	data () {
 		return {
 			buttonShow: false,
-			submitShow: false,
+			submitShow: false,	// 初始化，编辑、保存、提交按钮不显示
 			selGradeType: '选择年制',
 			selYearTerm: '选择学期',
 			selCourseName: '选择课程',
@@ -97,6 +107,7 @@ export default {
 			remindResult: ''
 		}
 	},
+	// 页面初始化，获取学期、课程下拉数据
 	beforeMount: function() {
         this.$http.post('./getYearTermList',{},{
             "Content-Type":"application/json"
@@ -145,6 +156,7 @@ export default {
 	            var data = response.body;
 	            if(data.result == "1") {
                     this.makeUpGradeInputList = data.makeUpGradeInputList;
+                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
                     if (this.makeUpGradeInputList != []) {
                     	this.buttonShow = true;
                     	this.submitShow = true;

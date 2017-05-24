@@ -1,6 +1,12 @@
 <template>
   <div id="makeupCouApplyDiv">
-    <div class="blank"></div>
+    <div class="blank">
+      <div class="positionBar">
+        <span>您的当前位置：</span>
+        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+        <span> > <a href="#/login/main/eduAdminHome?course" class="returnHome">智能排课</a> > 排课信息 > 查看补课申请</span>
+      </div>
+    </div>
     <div id="tableDiv">
       <table class="operationTable">
         <thead>
@@ -100,7 +106,7 @@
     },
     beforeMount: function() {
 //    页面dom加载前获取后端数据
-      this.$http.post('./makeUpLessionHandle.action',{},{
+      this.$http.post('./makeUpLessionHandle',{},{
 //      this.$http.post('../testPhp/makeupCouApply.php',{},{
         "Content-Type":"application/json"
       }).then(function(response){
@@ -124,7 +130,7 @@
       },
       setTrue: function(applications,index){
 //        if(confirm("您确定通过该申请吗？")){
-          this.$http.post('./makeUpLessionHandle/result-button.action',{
+          this.$http.post('./makeUpLessionHandle/result-button',{
 //          this.$http.post('../testPhp/adjustCouApplySetTrue.php',{
             "teacherId": this.applications[index].teacherId,
             "teacherName": this.applications[index].teacherName,
@@ -158,7 +164,7 @@
       },
       setFalse: function(applications,index){
 //        if(confirm("您确定拒绝该申请吗？")){
-          this.$http.post('./makeUpLessionHandle/result-button.action',{
+          this.$http.post('./makeUpLessionHandle/result-button',{
 //          this.$http.post('../testPhp/adjustCouApplySetFalse.php',{
             "teacherId": this.applications[index].teacherId,
             "teacherName": this.applications[index].teacherName,

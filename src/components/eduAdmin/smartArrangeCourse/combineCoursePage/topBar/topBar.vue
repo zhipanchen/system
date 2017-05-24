@@ -1,8 +1,8 @@
 <template>
     <div id="combineCourse_topBar" class="topBarDiv am-btn-group">
         <button id="topBarButton" class="am-btn am-btn-success" @click="hrefClick(1)">查看禁排申请</button>
-        <button class="am-btn am-btn-success" @click="hrefClick(2)">排课课程管理</button>
-        <button class="am-btn am-btn-success btn-active" @click="hrefClick(3)">教务合课</button>
+        <button class="am-btn am-btn-success" @click="hrefClick(2)">排课课程设置</button>
+        <button class="am-btn am-btn-success btn-active" @click="hrefClick(3)">合课设置</button>
         <button class="am-btn am-btn-success" @click="hrefClick(4)">排课结果课表</button>
     </div>
 </template>

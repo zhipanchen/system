@@ -1,6 +1,12 @@
 <template>
   <div id="classroomManagementDiv">
-    <div class="blank"></div>
+    <div class="blank">
+      <div class="positionBar">
+        <span>您的当前位置：</span>
+        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+        <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 资源管理设置 > 教室管理</span>
+      </div>
+    </div>
     <div class="dropDown">
       <div id="classroomDiv">
         <button class="amButtom" @click="classroomClick"><img id="classroomArrow" class="iconImg" :src="icon2"><span class="subtitle">普通教室</span></button>

@@ -38,7 +38,6 @@
   html{
   }
   #banCouApply{
-    text-align: center;
   }
   @media screen and (max-width:1023px) {
     html {

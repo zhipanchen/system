@@ -1,7 +1,7 @@
 <template>
   <div class="topBarDiv am-btn-group">
     <a href="#/teacher/group/research">
-      <button  class="topBarButton am-btn am-btn-success btn-active" @click="checkCouClick">{{ checkCouButton }}</button>
+      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" @click="checkCouClick">{{ checkCouButton }}</button>
     </a>
     <a href="#/teacher/group/eduAdminTchTeachingPlan">
       <button  class="topBarButton am-btn am-btn-success" @click="checkCouClick">授课计划</button>
@@ -29,7 +29,7 @@
   }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 @import '../../../../assets/css/external.css';
 
   html {

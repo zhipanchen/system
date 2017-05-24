@@ -1,4 +1,10 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>评教结果</span>
+    </div>
     <div id="table">
       <div id="sel">
         <select @change="chooseTerm(option1)"  v-model="option1">
@@ -37,6 +43,7 @@
       </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -97,8 +104,8 @@
     display: flex;
     padding-left:5rem;
     background-color: white;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
    justify-content: space-between;
   }
   #back{    background-color: #f3f3f3;}

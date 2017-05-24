@@ -1,4 +1,11 @@
 <template>
+<div>
+  <div class="positionBar">
+    <span>您的当前位置：</span>
+    <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+    <span> > 教务公告</span>
+    <span> > 公告信息</span>
+  </div>
     <div id="notifyBoard" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
       <div style="padding: 0 2rem;background-color: white">
         <table class="operationTable" style="table-layout: fixed;">
@@ -21,6 +28,7 @@
         </table>
       </div>
     </div>
+</div>
 </template>
 
 <script>

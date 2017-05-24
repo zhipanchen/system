@@ -1,5 +1,10 @@
 <template>
   <div id="makeUp">
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>停课申请</span>
+    </div>
     <div id="adjShow">
       <div id="adjTop1">
         <span>当前学年学期：{{presentYear}}</span>
@@ -78,8 +83,9 @@
         </tr>
         </tbody>
       </table>
+      <div style="text-align: center">
       <button   class="am-btn am-btn-success am-radius"  @click="saveDia(selected1,message2)">保存</button>
-      <button class="am-btn am-btn-success am-radius" @click="cancel">取消</button>
+      <button class="am-btn am-btn-success am-radius" @click="cancel">取消</button></div>
     </div>
     <Modal
       v-model="modal1"

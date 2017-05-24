@@ -1,5 +1,12 @@
 <template>
 <div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 教学管理</span>
+		<span> > <a href="#/teacher/teach/courseList" class="returnHome">教学计划</a></span>
+		<span> > 上课签到</span>
+	</div>
 	<div class="spanButton">
 		<div class="lpart">
 			<span class="textWeight">【{{courseName}}】</span>
@@ -8,6 +15,7 @@
         <div class="rpart">
 			<button class="am-btn am-btn-success am-radius rightBtn" @click="signInBtn()">签到</button>
 			<button class="am-btn am-btn-success am-radius rightBtn" @click="returnBtn()">返回</button>
+			<!-- 弹窗签到 -->
 			<Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
 			    <div slot="header" style="font-size:1.6rem; text-align:center; padding:0.2rem 0;" id="modalHeader">
 		            <span>上课日志</span>
@@ -33,6 +41,7 @@
 			</Modal>
 		</div>
 
+		<!-- 二次确认提交 -->
 		<Modal v-model="modalSubmit" id="modalBody" :styles="{top:'10rem'}">
 		    <p style="text-align:center; font-size:1.1rem;">您确定要提交吗？</p>
 		    <div slot="footer" style="text-align:center;">
@@ -42,6 +51,7 @@
 		</Modal>
 	</div>
 
+	<!-- 已签到上课列表 -->
 	<div id="scheduleList">
 		<div class="classList">
 			<table class="normalTable">
@@ -63,13 +73,13 @@
 						<td>第 {{data.lessonNum}} 大节</td>
 						<td>{{data.classroomId}}</td>
 						<td class="textBtn" :value="data.teachJournalInFo">
+							<!-- 弹窗形式查看所编辑的上课日志 -->
 							<a id="affirmState" @click="tchJournal(index)">上课日志</a>
 							<Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
 							    <div slot="header" style="font-size:1.6rem; text-align:center; padding:0.2rem 0;" id="modalHeader">
 						            <span>上课日志</span>
 						        </div>
 							    <div style="text-align:center; font-size:1.1rem;">
-							    	<!-- <Input v-model="data.teachJournalInFo" type="textarea" :rows="7"></Input> -->
 							    	<span>{{checkTeachJournalInFo}}</span>
 							    </div>
 							    <div slot="footer" style="text-align:center;"></div>
@@ -81,6 +91,7 @@
 		</div>
 	</div>
 
+	<!-- 操作结果提示 -->
 	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 		<div style="text-align:center; font-size:1.1rem;">
 		    <p v-if="remindResult === '1'">签到失败！</p>
@@ -179,6 +190,7 @@ export default {
         },
         // 二次确认是否提交
         submitOk: function () {
+        	this.modal1 = false;
 			this.$http.post('./signInCourseByTeacher',{
             	"execWeek": this.selWeekList,
             	"giveLessonsDetailsId": this.selGiveLessonsDetailsList,
@@ -190,7 +202,7 @@ export default {
             	console.log(response.body);
             	var data = response.body;
             	var detail = response.body.teachJournalDetail;
-            	this.modal1 = false;
+            	this.modalSubmit = false;
             	if (data.result == 1) {
             		this.$Message.success('签到成功！')
             		var signDateOne = detail.signDate;
@@ -202,7 +214,7 @@ export default {
 		            this.teachJournalDetailList.push(
 	            		{ signDate: signDateOne, execWeek: execWeekOne, weekdays: weekdaysOne, lessonNum: lessonNumOne, classroomId: classroomIdOne, teachJournalInFo: teachJournalInFoOne });
 		            // console.log(signDateOne);
-		            window.location.reload();
+		            // window.location.reload();	// 页面刷新
             	}else {
             		// this.$Message.error(data.result);
             		this.modalResult = true;

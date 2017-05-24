@@ -1,9 +1,15 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>个人信息</span>
+    </div>
     <div id="selfMessage-teacher-tableDiv">
             <div id="tableLeft">
                 <span id="subtitle1">{{subtitle1}}</span>
            <ul>
-               <li id="li"><a href="#/teacher/info/basicMessage">基本信息</a></li>
+               <li id="li"><a href="#/teacher/personInfo/basicMessage">基本信息</a></li>
                <li><a href="#/teacher/info/educationManege">教育管理</a></li>
                <li><a href="#/teacher/info/certificateManege">证书管理</a></li>
                <li><a href="#/teacher/info/experience">一线工作经历</a></li>
@@ -129,6 +135,7 @@
       </Modal>
 
       </div>
+  </div>
 </template>
 
 <script>
@@ -271,6 +278,21 @@
 
 <style lang="css" scoped>
   @import '../../../../assets/css/external.css';
+  @media screen and (max-width:480px){
+    html {
+      font-size: 24px;
+    }
+  }
+  @media screen and (max-width:640px){
+    html {
+      font-size: 32px;
+    }
+  }
+  @media screen and (max-width:720px){
+    html {
+      font-size: 36px;
+    }
+  }
     html{
         font-size: 16px;
     } /*整个页面的样式*/

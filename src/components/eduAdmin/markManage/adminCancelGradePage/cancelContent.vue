@@ -1,6 +1,14 @@
 <template>
 <div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 成绩管理</span>
+		<span> > 成绩</span>
+		<span> > 成绩撤销</span>
+	</div>
 	<div class="tableSelect">
+		<!-- 选择课程、教师，进行查询可撤销成绩列表 -->
 	    <select v-model="course">
 			<option disabled>选择课程</option>
 			<option v-for="option1 in courseInfo" :value="option1.courseId">
@@ -14,14 +22,8 @@
 			</option>
 	    </select>
 		<button class="am-btn am-btn-success am-radius" @click="checkTableBtn()">查询</button>
-	    <!-- <Modal v-model="modal" id="modalBody" :styles="{top:'10rem'}">
-			<p style="text-align:center; font-size:1.1rem;">您确定要提交查看所有信息吗？</p>
-			<div slot="footer" style="text-align:center;">
-				<Button id="modalBtn" @click="ok()">确定</Button>
-				<Button id="modalBtn" @click="cancel()">取消</Button>
-			</div>
-		</Modal> -->
 	</div>
+	<!-- 可撤销成绩列表展示 -->
 	<div id="cancelContent">
 		<div class="cancelContentBody">
 			<table class="operationTable">
@@ -53,6 +55,18 @@
 		</div>
 	</div>
 
+	<!-- 撤销二次确认弹窗 -->
+	<Modal v-model="modalOperation" id="modalBody" :styles="{top:'10rem'}">
+		<div style="text-align:center; font-size:1.1rem;">
+			<p>您确定要撤销成绩提交？</p>
+		</div>
+		<div slot="footer" style="text-align:center;">
+			<Button id="modalBtn" @click="backoutOk()">确定</Button>
+			<Button id="modalBtn" @click="backoutCancel()">取消</Button>
+		</div>
+	</Modal>
+
+	<!-- 错误弹窗提示 -->
 	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 		<div style="text-align:center; font-size:1.1rem;">
 		    <p v-if="remindResult === '1'">操作失败！请重试</p>
@@ -72,17 +86,20 @@ export default {
 		return {
 			course: '选择课程',
 			teacher: '选择教师',
-			courseInfo: [],
-			teacherInfo: [],
+			courseInfo: [],		// 课程下拉信息数组
+			teacherInfo: [],	// 教师下拉信息数组
+			// 可撤销成绩列表定义
 			scoreCommitList: [
 				{courseId: '010203', courseName: '护理学', teacherId: '010203', teacherName: '何平', commitTime: '06.01.23 12:55', classId: '01020'},
 				{courseId: '010203', courseName: '基础护理学', teacherId: '010203', teacherName: '何平', commitTime: '06.01.23 12:55', classId: '未查看'}
 			],
-			// modal: false,		// 提交弹出框
 			modalResult: false,
-			remindResult: ''
+			remindResult: '',
+			modalOperation: false,
+			index: ''
 		}
 	},
+	// 页面初始化，获取下拉信息
 	beforeMount: function () {
 		this.$http.post('./courseManage/getCourseAndClassInfo',{
             "Content-Type":"application/json"
@@ -96,17 +113,6 @@ export default {
             console.log("获取申请error:");
             console.log(error);
         });
-		// this.$http.post('./getScoreCommitted',{
-  //           "Content-Type":"application/json"
-  //       }).then(function(response){
-  //           console.log("获取申请:");
-  //           console.log(response.body);
-  //           var data = response.body;
-  //           this.scoreUnloadList = data.scoreUnloadList;
-  //       },function(error){
-  //           console.log("获取申请error:");
-  //           console.log(error);
-  //       });
 	},
   	methods: {
   		// 点击查询，回调表单************************************************
@@ -135,21 +141,15 @@ export default {
                 }
   			});
   		},
-  		// 点击提交，列表所有数据已查看*************************************
-  		// ok () {
-    //         this.modal = false;
-    //         this.$Message.success('提交成功！所有成绩信息已查看。');
-    //         for (var i = 0; i < this.scoreCommitList.length; i++) {
-    //         	this.scoreCommitList[i].check = "已通过";
-    //         }
-    //     },
-    //     cancel () {
-    //         this.modal = false;
-    //         this.$Message.error('提交失败！请重新操作。');
-    //     },
-  		// 撤销该条信息，在列表中清除********************************************
+  		// 撤销该条信息，弹窗二次确认********************************************
   		backoutClick: function (index) {
   			// alert(this.scoreCommitList[index].courseId);
+  			this.modalOperation = true;
+  			this.index = index;
+  		},
+  		// 弹窗点击确定，在列表中清除该条信息
+  		backoutOk: function () {
+  			this.modalOperation = false;
   			this.$http.post('./cancelScoreCommitted', {
   				"courseId": this.scoreCommitList[index].courseId,
   				"teacherId": this.scoreCommitList[index].teacherId,
@@ -161,11 +161,8 @@ export default {
                 console.log(response);
                 var data = response.body;
                 if(data.result == "1") {
-                    var r = confirm("是否撤销成绩提交？")
-					if (r==true) {
-						this.$Message.success("已撤回！");
-						this.scoreCommitList.splice(index,1);
-					}
+					this.$Message.success("已撤回！");
+					this.scoreCommitList.splice(index,1);
                 }else{
                     // this.$Message.error("操作失败！请重试");
                     this.modalResult = true;
@@ -173,6 +170,11 @@ export default {
                 }
   			});
   		},
+  		// 弹窗点击取消
+  		backoutCancel: function () {
+  			this.modalOperation = false;
+  		},
+  		// 弹窗提示点击确定，弹窗消失
     	resultOk: function () {
     		this.modalResult = false;
     	}

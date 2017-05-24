@@ -6,17 +6,22 @@
       <div id="firstDiv" class="pageDiv">
         <span class="pageSpan">
           <ul>
-            <li><a href="#/">教师信息</a></li>
+            <a href="#/student/query/studentTeacher"><li>教师信息</li></a>
           </ul>
         </span>
         <span class="pageSpan">
           <ul>
-            <li><a href="#/">课表查询</a></li>
+            <a href="#/student/query/studentLesson"><li>课表查询</li></a>
           </ul>
         </span>
         <span class="pageSpan">
           <ul>
-            <li><a href="#/">信息通知</a></li>
+            <a href="#/student/query/studentTestInfo"><li>考场查询</li></a>
+          </ul>
+        </span>
+        <span class="pageSpan">
+          <ul>
+            <a href="#/student/query/stInquireGrade"><li>成绩查询</li></a>
           </ul>
         </span>
       </div>
@@ -24,22 +29,19 @@
       <div id="secondDiv" class="pageDiv">
         <span class="pageSpan">
           <ul>
-            <li><a href="#/">修改密码</a></li>
+            <a href="#/student/setting/changePassword"><li>修改密码</li></a>
           </ul>
         </span>
         <span class="pageSpan">
           <ul>
-            <li><a href="#/">个人信息维护</a></li>
+            <a href="#/student/setting/studentInformation"><li>个人信息维护</li></a>
           </ul>
         </span>
         <span class="pageSpan">
           <ul>
-            <li><a href="#/">学生评教</a></li>
+            <a href="#/student/setting/studentEvaluation"><li>学生评教</li></a>
           </ul>
         </span>
-      </div>
-      <div>
-
       </div>
     </div>
   </div>
@@ -87,18 +89,20 @@
     /*功能块区域*/
     display: flex;
     justify-content: space-around;
-    margin: 1rem 0;
+    margin: 3rem 0;
   }
   .pageSpan{
     /*功能块*/
+    width: 15%;
     font-weight: normal;
+    line-height: 6.5rem;
+    cursor: pointer;
     border: thick solid #E9ECF2;
-    width: 10rem;
+    /*width: 10rem;*/
     height: 7.5rem;
-    margin: 0.5rem;
+    margin: 0.7rem 2.5rem;
     background-color: transparent;
     text-align: center;
-    padding-top: 0.5rem;
     border-image:-webkit-linear-gradient(-45deg, #A7C8D9,#B2E9D5) 30 30;
     border-image:-moz-linear-gradient(-45deg,#A7C8D9,#B2E9D5) 30 30;
     border-image:linear-gradient(-45deg,#A7C8D9,#B2E9D5) 30 30;

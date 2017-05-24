@@ -1,4 +1,10 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>班级管理</span>
+    </div>
     <div id="back">
     <div id="table">
       <div id="top">
@@ -61,6 +67,7 @@
         </div>
       </Modal>
     </div>
+  </div>
 </template>
 
 <script>

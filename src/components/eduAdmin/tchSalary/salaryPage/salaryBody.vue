@@ -1,5 +1,11 @@
 <template>
 <div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 课酬模块</span>
+		<span> > 薪酬单</span>
+	</div>
 	<div class="tableSelect">
       	<select v-model="selTeacher">
 			<option disabled>选择教师</option>
@@ -75,13 +81,15 @@ export default {
             console.log(error);
         });
         // 获取下拉框教师列表
-        this.$http.post('./courseManage/getCourseAndClassInfo',{},{
+        this.$http.post('./teacherManage/getAllTeacherNameAndId',{},{
+        // this.$http.post('./courseManage/getCourseAndClassInfo',{},{
             "Content-Type":"application/json"
         }).then(function(response){
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.teacherInfo = data.teacherInfo;
+            this.teacherInfo = data;
+            // this.teacherInfo = data.teacherNameAndIdList;
         },function(error){
             console.log("获取申请error:");
             console.log(error);
@@ -90,7 +98,7 @@ export default {
 	methods: {
 		// 查询按钮
 		searchBtn: function () {
-    		if (this.selTeacher == "选择年制") {
+    		if (this.selTeacher == "选择教师") {
     			this.selTeacher = '';
     		}
 			this.$http.post('./checkSalaryByTeacher',{
@@ -101,12 +109,12 @@ export default {
 	            console.log("获取申请:");
 	            console.log(response.body);
 	            var data = response.body;
-	            if(data.result == "1") {
-                    this.teacherPayrollList = data.teacherPayrollList;
-                }else {
-					this.modalResult = true;
-                    // this.$Message.error('操作失败！请重试');
-                }
+                this.teacherPayrollList = data.teacherPayrollList;
+	    //         if(data.result == "1") {
+     //            }else {
+					// this.modalResult = true;
+     //                // this.$Message.error('操作失败！请重试');
+     //            }
 	        },function(error){
 	            console.log("获取申请error:");
 	            console.log(error);

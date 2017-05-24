@@ -14,10 +14,9 @@
       <div id="PasswordDiv" class="inputDiv">
         <span class="inputSpan">密码</span><br/>
         <input id="passwordInput" class="loginInput" type="password" v-model="passwordValue" @keyup.enter="loginClick()">
-      </div><br/>
-      <div>
-        <!--<input id="rememberCheckbox" type="checkbox"><label id="rememberLabel" for="rememberCheckbox">记住我</label>-->
-      </div><br/>
+      </div>
+      <p></p>
+      <p></p>
       <div>
         <button id="loginButton" @click="loginClick()" class="am-btn am-btn-success am-radius">登录</button>
         <span id="forgetSpan" @click="forgetPwClick">忘记密码？</span>
@@ -117,11 +116,11 @@
     }
     #login{
       /*页面*/
-      text-align: center;
+      /*text-align: center;*/
       font-family: 微软雅黑;
       background-repeat: no-repeat;
-      height: 46rem;
       display: flex;
+      min-height: 45.9rem;
       align-items: center;
       justify-content: center;
     }
@@ -140,7 +139,7 @@
     #schoolImg{
       /*学校图标*/
       width: 50%;
-      height: 15%;
+      /*height: 15%;*/
     }
     #hospitalMottoP{
       /*医训*/

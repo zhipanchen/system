@@ -1,4 +1,11 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span><a href="#/teacher/class/classList" class="returnHome">>班级管理</a></span>
+      <span>>学生个人信息</span>
+    </div>
     <div id="selfInformation">
       <div class="tableBox">
         <table id="tableDiv" class="normalTable" border="1">
@@ -29,6 +36,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>

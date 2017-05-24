@@ -1,4 +1,11 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span><a href="#/teacher/class/teachingEvaluate" class="returnHome">>评教结果</a></span>
+      <span>>学生留言</span>
+    </div>
     <div id="table">
       <div id="back">
        <table class="normalTable" id="recordTable">
@@ -15,8 +22,9 @@
            </tr>
          </tbody>
        </table>
-      <button id="turn" class="am-btn am-btn-success am-radius" @click="cancel()">返回</button>
+      <div style="text-align: center"><button id="turn" class="am-btn am-btn-success am-radius" @click="cancel()">返回</button></div>
       </div>
+    </div>
     </div>
 </template>
 

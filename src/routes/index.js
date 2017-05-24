@@ -45,6 +45,7 @@ import couArrangeSettingPage from '../views/eduAdmin/smartArrangeCourse/couArran
 import couArrangeTablePage from '../views/eduAdmin/smartArrangeCourse/couArrangeTablePage/couArrangeTablePage.vue'
 import textbookMgmtPage from '../views/eduAdmin/basicSettings/textbookMgmtPage/textbookMgmtPage.vue'
 import classroomMgmtPage from '../views/eduAdmin/basicSettings/classroomMgmtPage/classroomMgmtPage.vue'
+import courseTypeMgmtPage from '../views/eduAdmin/basicSettings/courseTypeMgmtPage/courseTypeMgmtPage.vue'
 import eduResGroupMgmtPage from '../views/eduAdmin/basicSettings/eduResGroupMgmtPage/eduResGroupMgmtPage.vue'
 import suspendCouApplyPage from '../views/eduAdmin/smartArrangeCourse/suspendCouApplyPage/suspendCouApplyPage.vue'
 import makeupCouApplyPage from '../views/eduAdmin/smartArrangeCourse/makeupCouApplyPage/makeupCouApplyPage.vue'
@@ -97,6 +98,9 @@ import normalSchedule from '../views/teacher/normalSchedulePage/normalSchedulePa
 import tchGradesInput from '../views/teacher/tchGradesInputPage/tchGradesInputPage.vue'
 import tchManuAdjCl from '../views/teacher/tchManuAdjClPage/tchManuAdjClPage.vue'
 import tchCheckSalary from '../views/teacher/tchCheckSalaryPage/tchCheckSalaryPage.vue'
+import scheduleList from '../views/eduAdmin/tchSalary/scheduleListPage/scheduleListPage.vue'		
+import seeSigninList from '../views/eduAdmin/tchSalary/seeSigninListPage/seeSigninListPage.vue'		
+
 //蔡玲双（end）
 Vue.use(Router)
 
@@ -111,45 +115,45 @@ export default new Router({   //将routes里的参数导出
     //*******************************************************************（陈志攀start）
     {
       //学生密码修改
-      path: '/studentTestInfoContent/setting/changPassword',
+      path: '/student/setting/changPassword',
       name: 'studentChangPassword',
       component: studentChangPassword
     },
     /*
     {
       //学生通知信息
-      path: '/studentTestInfoContent/query/educationMessage',
+      path: '/student/query/educationMessage',
       name: 'educationMessage',
       component: educationMessage
     },
     */
     {
       //学生课表查询
-      path: '/studentTestInfoContent/query/studentLesson',
+      path: '/student/query/studentLesson',
       name: 'studentLesson',
       component: studentLesson
     },
     {
       //学生查看教师
-      path: '/studentTestInfoContent/query/studentTeacher',
+      path: '/student/query/studentTeacher',
       name: 'studentTeacher',
       component: studentTeacher
     },
     {
       //学生个人信息
-      path: '/studentTestInfoContent/setting/studentInformation',
+      path: '/student/setting/studentInformation',
       name: 'studentInformation',
       component: studentInformation
     },
     {
       //学生评教界面
-      path: '/studentTestInfoContent/setting/studentEvaluation',
+      path: '/student/setting/studentEvaluation',
       name: 'studentEvaluation',
       component: studentEvaluation
     },
     {
       //学生考场查询
-      path: '/studentTestInfoContent/query/studentTestInfo',
+      path: '/student/query/studentTestInfo',
       name: 'studentTestInfo',
       component: studentTestInfo
     },
@@ -169,7 +173,7 @@ export default new Router({   //将routes里的参数导出
     //*******************************************************************（吴坚start）
     {
       //学生查询成绩界面
-      path: '/studentTestInfoContent/query/stInquireGrade',
+      path: '/student/query/stInquireGrade',
       name: 'stInquireGrade',
       component: stInquireGrade
     },
@@ -204,8 +208,8 @@ export default new Router({   //将routes里的参数导出
       component: eduAdminTchTeachingPlan
     },
     {
-      //班级管理界面
-      path: '/eduAdmin/baseSetting/resource/eduAdminManageClass',
+      //学生异动情况界面
+      path: '/eduAdmin/baseSetting/person/eduAdminManageClass',
       name: 'eduAdminManageClass',
       component: eduAdminManageClass
     },
@@ -323,6 +327,11 @@ export default new Router({   //将routes里的参数导出
       name: '/eduAdmin/baseSetting/resource/classroomMgmt',
       component: classroomMgmtPage
       //  教室信息管理页面
+    },
+	{
+      path: '/eduAdmin/baseSetting/resource/courseTypeMgmt',
+      name: '/eduAdmin/baseSetting/resource/courseTypeMgmt',
+      component: courseTypeMgmtPage
     },
     {
       path: '/eduAdmin/baseSetting/person/eduResGroupMgmt',
@@ -506,6 +515,18 @@ export default new Router({   //将routes里的参数导出
       name: 'notifyInformation',
       component: notifyInformation
     },
+	{
+		// 教务-管理教师上课列表
+		path: '/eduAdmin/emolument/scheduleList',
+		name: 'scheduleList',
+		component: scheduleList
+	},
+	{
+		// 教务-管理教师签到
+		path: '/eduAdmin/emolument/seeSigninList',
+		name: 'seeSigninList',
+		component: seeSigninList
+	},
 
 
 

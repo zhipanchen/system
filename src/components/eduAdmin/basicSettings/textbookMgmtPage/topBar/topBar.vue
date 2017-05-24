@@ -3,12 +3,17 @@
     <div class="topBarDiv am-btn-group">
       <button id="topBarButton" class="am-btn am-btn-success btn-active" @click="hrefClick(1)">教材管理</button>
       <button class="am-btn am-btn-success" @click="hrefClick(2)">年级管理</button>
-      <button class="am-btn am-btn-success" @click="hrefClick(3)">班级管理</button>
+      <button class="am-btn am-btn-success" @click="hrefClick(3)">课程类型管理</button>
       <button class="am-btn am-btn-success" @click="hrefClick(4)">教室管理</button>
+    </div>
+    <div class="positionBar">
+      <span>您的当前位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 资源管理设置 > 教室管理</span>
     </div>
     <div id="whiteDiv">
       <div id="buttonDiv">
-        <span class="operationSpan"><form action="./textbookManage/exportTextbookInfoTemplet" method="get"><button class="am-btn am-btn-success am-radius"  type="submit">下载模版</button></form></span>
+        <span class="operationSpan"><form action="./textbookManage/exportTextbookInfoTemplet" method="get"><button class="am-btn am-btn-success am-radius" type="submit">下载模版</button></form></span>
         <span id="uploadSpan" class="operationSpan">
           <!--<button id="uploadButton" class="am-btn am-btn-success am-radius" @click="uploadClick">导入</button>-->
           <Upload
@@ -84,9 +89,9 @@
         if (num == 1) {
           location.href = "#/eduAdmin/baseSetting/resource/textbookMgmt"
         } else if (num == 2) {
-          location.href = "#/"
+          location.href = "#/eduAdmin/baseSetting/resource/eduAdminManageGrade"
         } else if (num == 3) {
-          location.href = "#/"
+          location.href = "#/eduAdmin/baseSetting/resource/courseTypeMgmt"
         } else if (num == 4) {
           location.href = "#/eduAdmin/baseSetting/resource/classroomMgmt"
         }
@@ -172,10 +177,15 @@
     justify-content: center;
     padding-top: 0.3rem;
   }
+  .positionBar{
+    /*首页导航*/
+    position: absolute;
+  }
   #whiteDiv{
     /*按钮外层区域*/
     background-color: white;
     text-align: center;
+    padding-bottom: 0.5rem;
   }
   #uploadSpan{
     /*上传按钮外层*/

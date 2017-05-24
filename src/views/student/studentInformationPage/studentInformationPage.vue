@@ -10,7 +10,7 @@
 
 <script>
   import topTitle from './../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/public/studentInfoSettingBar/studentInfoSettingBar.vue'
+  import topBar from '../../../components/student/studentInformationPage/topBar/topBar.vue'
   import selfInformation from '../../../components/student/studentInformationPage/studentInformationContent/studentInformationContent.vue'
   export default {
     name: 'studentInformationPage',

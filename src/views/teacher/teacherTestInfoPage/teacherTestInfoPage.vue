@@ -11,8 +11,8 @@
 
 <script>
   import topTitle from './../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/public/studentInfoQueryBar/studentInfoQueryBar.vue'
-  import testInfo from '../../../components/teacher/teacherTestInfoContent/teacherTestInfoContent.vue'
+  import topBar from '../../../components/teacher/teacherTestInfoContent/topBar/topBar.vue'
+  import testInfo from '../../../components/teacher/teacherTestInfoContent/teacherTestInfoContent/teacherTestInfoContent.vue'
   export default {
     name: 'test',
     data () {

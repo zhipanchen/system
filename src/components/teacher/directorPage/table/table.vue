@@ -1,4 +1,10 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>督导反馈</span>
+    </div>
     <div id="table">
       <div id="show">
         <!--<button>一键提交</button>-->
@@ -30,6 +36,7 @@
         </table>
       </div>
     </div>
+  </div>
 </template>
 
 <script>

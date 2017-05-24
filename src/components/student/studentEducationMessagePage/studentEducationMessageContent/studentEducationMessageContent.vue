@@ -1,5 +1,10 @@
 <template>
   <div id="educationMessage">
+    <div class="positionBar">
+      <span>你的当前位置：</span>
+      <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
+      <span> > 教务信息</span>
+    </div>
     <div class="contentTitle">
       <select class="selectStyle" v-model="selected">
         <option value="选择状态" disabled>选择状态</option>
@@ -33,6 +38,7 @@
     name: 'educationMessage',
     data () {
       return {
+        studentPageUrl:'index.html#'+'login/main/studentHome',
         selected:'选择状态',
         informations: [],
       }

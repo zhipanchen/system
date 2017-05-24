@@ -19,6 +19,24 @@ html {
   color: blue;
 }
 
+/*导航返回首页跳转*/
+.positionBar {
+  font-size:0.8rem;
+  color: #999;
+  margin: .8rem 5rem;
+}
+.returnHome {
+  color: #158064;
+  cursor: pointer;
+}
+.returnHome:hover,
+.returnHome:focus {
+  color: #00a539;
+}
+.returnHome:active {
+  color: #429842;
+}
+
 /* ==========================================================================
    Component: topBar
  ============================================================================ */
@@ -177,6 +195,9 @@ html {
   height: 3.5rem;
   line-height: 3.5rem;
   overflow: hidden;
+  /*margin: .8rem 5rem;*/
+  /*display: flex;
+  justify-content: space-between;*/
 }
 
   select{

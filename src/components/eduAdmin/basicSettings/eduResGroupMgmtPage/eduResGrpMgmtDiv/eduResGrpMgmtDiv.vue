@@ -1,5 +1,10 @@
 <template>
     <div id="eduResearchGroupManagementDiv">
+      <div class="positionBar">
+        <span>您的当前位置：</span>
+        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+        <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 人员管理设置 > 教室管理</span>
+      </div>
       <div id="mainDiv">
         <div id="groupDiv">
           <p id="headP">教研组名称</p>
@@ -591,6 +596,10 @@
       margin: 0 auto;
       background-color: #f3f3f3;
       height: 100%;
+    }
+    .positionBar {
+      /*首页导航*/
+      margin: .8rem 5rem 0;
     }
     /*页面主要内容*/
     #mainDiv{

@@ -1,8 +1,8 @@
 <template>
   <div id="authorityManage2TopBar" class="topBarDiv am-btn-group">
     <!--导航栏-->
-    <router-link to="/authorityMgmt1"><button class="am-btn am-btn-success" style="margin-left: 5rem">权限管理1</button></router-link>
-    <button class="am-btn am-btn-success btn-active">权限管理2</button>
+    <router-link to="/eduAdmin/role/authorityMgmt1"><button class="am-btn am-btn-success" style="margin-left: 5rem">角色管理</button></router-link>
+    <button class="am-btn am-btn-success btn-active">权限设置</button>
   </div>
 </template>
 

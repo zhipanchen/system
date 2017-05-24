@@ -1,5 +1,10 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <div id="selectDiv">
+    <div class="positionBar">
+      <span>你的当前位置：</span>
+      <span><a :href="eduAdminPageUrl" class="returnHome">首页</a></span>
+      <span> > 考务管理</span>
+    </div>
     <div class="blank">
       <select class="selectStyle1"v-model="yearSelect" @change="yearClick">
         <option value="选择年制（必选项）" disabled selected>选择年制（必选项）</option>
@@ -70,11 +75,13 @@
             <div class="teacher">
               {{todo}}<button class="buttonStyle" @click="roomRemoveClick">X</button>
 
+              <!--label class="spanStyle">监考老师1:</label-->
               <select class="selectStyle1" v-model="teacherSelects[2*index]" @change="teacherClick1">
                 <option value="监考老师1（必选项）" disabled selected>监考老师1（必选项）</option>
                 <option v-for="teacher1 in teachers1" v-bind:value="teacher1">{{teacher1}}</option>
               </select>
 
+              <!--span class="spanStyle">监考老师2:</span-->
               <select class="selectStyle1" v-model="teacherSelects[2*index+1]" @change="teacherClick2">
                 <option value="监考老师2（必选项）" disabled selected>监考老师2（必选项）</option>
                 <option v-for="teacher2 in teachers2" v-bind:value="teacher2">{{teacher2}}</option>
@@ -119,6 +126,14 @@
       </table>
     </div>
 
+    <Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
+      <p style="text-align:center; font-size:1.1rem;">{{ messageStr }}</p>
+      <div slot="footer" style="text-align:center;">
+        <Button id="modalBtn" @click="ok2()">确定</Button>
+        <Button id="modalBtn" @click="cancel2()">取消</Button>
+      </div>
+    </Modal>
+
   </div>
 </template>
 
@@ -127,6 +142,11 @@
     name: '',
     data () {
       return {
+        modal1:false,
+        modal2:false,
+        okValue:0,//值为0无法执行，为1可以执行
+        messageStr:'',
+        eduAdminPageUrl:'index.html#'+'login/main/eduAdminHome',
         teacherSelects:[
           'teacherSelect1',
           'teacherSelect2',
@@ -135,7 +155,7 @@
           'teacherSelect5',
           'teacherSelect6',
           'teacherSelect7',
-          'teacherSelect8',
+          'teacherSelect8'
         ],
         setting:false,//编辑状态栏的显隐
         nowIndex:-1,//当前选中index
@@ -176,10 +196,10 @@
         ],
         informations: [
           //未完成课表
-          /*
+
           { courseAssociationId:'0',edit:'编辑',id:'1',courseName:'护理管理学',className: '护理二班', teacherName:'何平', classPersonNumber: '135', testTime: '2016.10.9{19:00-21:00}', testTeacherName:'李晓红',testRoom:'教学楼408,409'},
           { courseAssociationId:'1',edit:'编辑',id:'2',courseName:'护理管理学',className: '护理一班', teacherName:'何平', classPersonNumber: '135', testTime: '2016.10.9{19:00-21:00}', testTeacherName:'肖老师',testRoom:'教学楼408,409'},
-           /*
+
         ],
         informationsFinish: [
           /*完成课表
@@ -208,25 +228,25 @@
           {world:'下午 第一场（14:00-16:00）',number:'30'}
         ],
         teachers1:[
-          /*
+
           '老师1',
           '老师2',
           '老师3',
-          */
+
         ],
         teachers2:[
-          /*
+
           '老师1',
           '老师2',
           '老师3',
-          */
+
         ],
         rooms:[
-          /*
+
           '教室1',
           '教室2',
           '教室3',
-          */
+
         ],
         todos:[
           /*
@@ -239,6 +259,50 @@
     },
   methods:
   {
+    ok2 () {
+      if(this.okValue==0) {
+        this.modal2 = false;
+      }else if(this.okValue==1){
+        var year=0;
+        if(this.yearSelect=="三年制"){
+          year=3;
+        }else if(this.yearSelect=="五年制"){
+          year=5;
+        }
+        this.$http.post('./examManagementResetOne', {
+          courseAssociationId: this.informationsFinish[index].courseAssociationId,
+          schoolYear:year,
+          grade: this.gradeSelect,
+          courseId:this.courseSelect
+        }, {"Content-Type": "application/json"}).then(function(response) {
+          var data=response.body;
+          if(data.result.result==1) {
+            var info=response.body.gradeCourseDetail;
+            for(var i=0;i<info.length;i++) {
+              info[i]['edit'] = '编辑';
+              info[i]['id'] = i+1;
+              info[i]['testTime']='';
+              info[i]['testTeacherName']='';
+              info[i]['testRoom']='';
+            }
+            this.informations=info;//未完成表格
+
+            var finishInfo=response.body.alreadyGradeCourseDetail;
+            for(var i=0;i<finishInfo.length;i++) {
+              finishInfo[i]['remove'] = '删除';
+              finishInfo[i]['id'] = i+1;
+            }
+            this.informationsFinish=finishInfo;//完成表格
+          }else if(data.result.result==0){
+            this.$Message.error('删除失败！');
+          }
+        });
+
+      }
+    },
+    cancel2(){
+      this.modal2 = false;
+    },
     //重置考试信息
     restartClick:function(){
       this.$http.post('./examManagementReset').then(function(response) {
@@ -253,8 +317,8 @@
     //年制选择
     yearClick:function(){
       var year=0;
-      if(this.yearSelect=="三年制"){
-        year=3;
+      if(this.yearSelect=="三年制") {
+        year = 3;
       }else if(this.yearSelect=="五年制"){
         year=5;
       }
@@ -268,7 +332,13 @@
     //年级选择
     gradeClick:function(){
       var year=0;
-      if(this.yearSelect=="三年制"){
+      if(this.yearSelect=="选择年制（必选项）"){
+          this.modal2=true;
+          this.messageStr="未选择年制！";
+          this.okValue=0;
+        return;
+      }
+      else if(this.yearSelect=="三年制"){
         year=3;
       }else if(this.yearSelect=="五年制"){
         year=5;
@@ -282,6 +352,23 @@
     },
     //课程选择
     courseClick:function(){
+
+      if(this.yearSelect=="选择年制（必选项）"){
+        this.modal2=true;
+        this.messageStr="未选择年制！";
+        this.okValue=0;
+        this.courseSelect='选择课程（必选项）';
+        return;
+      }
+
+      if(this.gradeSelect='选择年级（必选项）'){
+        this.modal2=true;
+        this.messageStr="未选择年级！";
+        this.okValue=0;
+        this.courseSelect='选择课程（必选项）';
+        return;
+      }
+
       var year=0;
       if(this.yearSelect=="三年制"){
         year=3;
@@ -328,40 +415,9 @@
     },
     //删除
     removeClick:function(index){
-      var year=0;
-      if(this.yearSelect=="三年制"){
-        year=3;
-      }else if(this.yearSelect=="五年制"){
-        year=5;
-      }
-      this.$http.post('./examManagementResetOne', {
-        courseAssociationId: this.informationsFinish[index].courseAssociationId,
-        schoolYear:year,
-        grade: this.gradeSelect,
-        courseId:this.courseSelect
-      }, {"Content-Type": "application/json"}).then(function(response) {
-        var data=response.body;
-        if(data.result.result==1) {
-          var info=response.body.gradeCourseDetail;
-          for(var i=0;i<info.length;i++) {
-            info[i]['edit'] = '编辑';
-            info[i]['id'] = i+1;
-            info[i]['testTime']='';
-            info[i]['testTeacherName']='';
-            info[i]['testRoom']='';
-          }
-          this.informations=info;//未完成表格
-
-          var finishInfo=response.body.alreadyGradeCourseDetail;
-          for(var i=0;i<finishInfo.length;i++) {
-            finishInfo[i]['remove'] = '删除';
-            finishInfo[i]['id'] = i+1;
-          }
-          this.informationsFinish=finishInfo;//完成表格
-        }else if(data.result.result==0){
-          this.$Message.error('删除失败！');
-        }
-      });
+      this.modal2=true;
+      this.messageStr="确认删除信息？";
+      this.okValue=1;
     },
     //时间选择
     dateClick:function(){
@@ -369,6 +425,15 @@
     },
     //场次选择
     timesClick:function(){
+
+      if(this.dateSelect=='选择日期（必选项）'){
+        this.modal2=true;
+        this.messageStr="未选择时间！";
+        this.okValue=0;
+        this.timesSelect='选择场次（必选项）';
+        return;
+      }
+
       this.$http.post('./examManagementGetTeacherAndClassroom', {
         weekDays:this.dateSelect,
         sessionTimes:this.timesSelect,
@@ -393,64 +458,112 @@
     //删除教室
     roomRemoveClick:function(index){
       this.todos.splice(index,1);
+      if(this.todos.length==0){
+        this.roomSelect = '选择教室（必选项）';
+      }
     },//保存
-    confirm:function(){
-      var year=0;
-      if(this.yearSelect=="三年制"){
-        year=3;
-      }else if(this.yearSelect=="五年制"){
-        year=5;
+    confirm:function() {
+
+      var tcInfo = [];
+      for (var i = 0; i < this.todos.length; i++) {
+        tcInfo.push(this.todos[i] + this.teacherSelects[2 * i] + this.teacherSelects[2 * i + 1]);
       }
 
-      var tcInfo=[];
-      for(var i=0;i<this.todos.length;i++){
-        tcInfo.push(this.todos[i]+this.teacherSelects[2*i]+this.teacherSelects[2*i+1]);
+      if (this.dateSelect == '选择日期（必选项）') {
+        this.modal2 = true;
+        this.messageStr = "未选择日期！";
+        this.okValue = 0;
+        return;
+      }
+
+      if (this.timesSelect == '选择场次（必选项）') {
+        this.modal2 = true;
+        this.messageStr = "未选择场次！";
+        this.okValue = 0;
+        return;
+      }
+
+      if (tcInfo.length == 0) {
+        this.modal2 = true;
+        this.messageStr = "未选择教室！";
+        this.okValue = 0;
+        return;
+      }else{
+        var chooseTeacher=true;
+        for (var i = 0; i < this.todos.length; i++) {
+          var a=eval("this."+this.teacherSelects[2 * i])
+          if(a=='监考老师1（必选项）'){
+            chooseTeacher=false;
+          }
+        }
+
+        if(!chooseTeacher){//没选监考老师的情况
+          this.modal2 = true;
+          this.messageStr = "每个教室至少一个教师！";
+          this.okValue = 0;
+          return;
+        }
+      }
+
+      var year = 0;
+      if (this.yearSelect == "三年制") {
+        year = 3;
+      } else if (this.yearSelect == "五年制") {
+        year = 5;
       }
 
       this.$http.post('./examManagementArrangement', {
-        courseAssociationId:this.informations[this.number-1].courseAssociationId,
-        schoolYear:year,
+        courseAssociationId: this.informations[this.number - 1].courseAssociationId,
+        schoolYear: year,
         grade: this.gradeSelect,
-        courseId:this.courseSelect,
-        teacherClassroomInfo:tcInfo,
-        weekDays:this.dateSelect,
-        sessionTimes:this.timesSelect,
+        courseId: this.courseSelect,
+        teacherClassroomInfo: tcInfo,
+        weekDays: this.dateSelect,
+        sessionTimes: this.timesSelect,
       }, {"Content-Type": "application/json"}).then(function (response) {
-        var result=response.body.result;
-        if(result.result==1) {
-          this.$Message.success('保存成功！');
-            var info=response.body.gradeCourseDetail;
-            for(var i=0;i<info.length;i++) {
-              info[i]['edit'] = '编辑';
-              info[i]['id'] = i+1;
-              info[i]['testTime']='';
-              info[i]['testTeacherName']='';
-              info[i]['testRoom']='';
-            }
-            this.informations=info;//未完成表格
+        var result = response.body.result;
+        if (result.result == 1) {
 
-            var finishInfo=response.body.alreadyGradeCourseDetail;
-            for(var i=0;i<finishInfo.length;i++) {
-              finishInfo[i]['remove'] = '删除';
-              finishInfo[i]['id'] = i+1;
-            }
-            this.informationsFinish=finishInfo;//完成表格
+          //this.$Message.success('保存成功！');
+          this.modal2 = true;
+          this.messageStr = "保存成功！";
+          this.okValue = 0;
 
-          this.informationsFinish=finishInfo;//完成表格
+          var info = response.body.gradeCourseDetail;
+          for (var i = 0; i < info.length; i++) {
+            info[i]['edit'] = '编辑';
+            info[i]['id'] = i + 1;
+            info[i]['testTime'] = '';
+            info[i]['testTeacherName'] = '';
+            info[i]['testRoom'] = '';
+          }
+          this.informations = info;//未完成表格
 
-          this.setting=false;
-          for(var i=0;i<this.informations.length;i++) {
+          var finishInfo = response.body.alreadyGradeCourseDetail;
+          for (var i = 0; i < finishInfo.length; i++) {
+            finishInfo[i]['remove'] = '删除';
+            finishInfo[i]['id'] = i + 1;
+          }
+          this.informationsFinish = finishInfo;//完成表格
+
+          this.informationsFinish = finishInfo;//完成表格
+
+          this.setting = false;
+          for (var i = 0; i < this.informations.length; i++) {
             this.informations[i].edit = '编辑';
           }
-          this.nowIndex=-1;
-          this.dateSelect='选择日期（必选项）';//日期默认值
-          this.timesSelect='选择场次（必选项）';//场次默认值
-          this.teacherSelect1='监考老师1（必选项）';//监考老师1默认值
-          this.teacherSelect2='监考老师2（可选项）';//教考老师2默认值
-          this.roomSelect='选择教室（必选项）';//教室默认值
-          this.todos=[];
-        }else if(result.result==0){
-          this.$Message.error('保存失败！');
+          this.nowIndex = -1;
+          this.dateSelect = '选择日期（必选项）';//日期默认值
+          this.timesSelect = '选择场次（必选项）';//场次默认值
+          this.teacherSelect1 = '监考老师1（必选项）';//监考老师1默认值
+          this.teacherSelect2 = '监考老师2（可选项）';//教考老师2默认值
+          this.roomSelect = '选择教室（必选项）';//教室默认值
+          this.todos = [];
+        } else if (result.result == 0) {
+          //this.$Message.error('保存失败！');
+          this.modal2 = true;
+          this.messageStr = "保存失败！";
+          this.okValue = 0;
         }
       });
     },

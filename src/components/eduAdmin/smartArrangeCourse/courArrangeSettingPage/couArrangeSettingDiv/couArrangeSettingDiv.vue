@@ -1,6 +1,12 @@
 <template>
   <div id="courseArrangeSettingDiv">
-    <div class="blank"></div>
+    <div class="blank">
+      <div class="positionBar">
+        <span>您的当前位置：</span>
+        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+        <span> > <a href="#/login/main/eduAdminHome?course" class="returnHome">智能排课</a> > 排课操作 > 排课课程设置</span>
+      </div>
+    </div>
     <div class="dropDown">
       <div id="fiveYearDiv">
         <button class="amButtom" @click="fiveYearClick"><img id="fiveYearArrow" class="iconImg" :src="icon2"><span class="subtitle">五年制</span></button>
@@ -8,9 +14,9 @@
         <table id="fiveYearTable" v-show="fiveYearTable">
           <thead>
             <tr class="headTr">
-            <td>课程名称</td>
+            <td class="courseTd" style="cursor: pointer" @click="sortInfo('five','course')">课程名称<span class="sortSpan">↓</span></td>
             <td>课程编号</td>
-            <td>任课教师</td>
+            <td class="teacherTd" style="cursor: pointer" @click="sortInfo('five','teacher')">任课教师<span class="sortSpan">↓</span></td>
             <td>教师编号</td>
             <td>班级</td>
             <!--<td class="operationTd"><button class="importButton" @click="ImportClick('five')">导入</button></td>-->
@@ -28,7 +34,7 @@
                 :on-success="handleSuccess"
                 :on-progress="handleProgress"
                 :on-error="handleError"
-                action="./courseAssociationManege/import.action">
+                action="./courseAssociationManege/import">
               <i-button type="ghost" id="importButton1">导入</i-button>
               </Upload>
               <!--操作-->
@@ -89,10 +95,10 @@
         <table id="threeYearTable" v-show="threeYearTable">
           <thead>
             <tr class="headTr">
-            <td>课程名称</td>
+            <td class="courseTd" style="cursor: pointer" @click="sortInfo('three','course')">课程名称<span class="sortSpan">↓</span></td>
             <td>课程编号</td>
-            <td>任课教师</td>
-            <td>教师编号</td>
+            <td class="teacherTd" style="cursor: pointer" @click="sortInfo('three','teacher')">任课教师<span class="sortSpan">↓</span></td>
+            <td >教师编号</td>
             <td>班级</td>
             <td class="portTd">
               <button id="downloadButton3" class="am-btn am-btn-success am-radius" @click="downloadClick">下载模版</button>
@@ -108,7 +114,7 @@
                 :on-success="handleSuccess"
                 :on-progress="handleProgress"
                 :on-error="handleError"
-                action="./courseAssociationManege/import.action">
+                action="./courseAssociationManege/import">
                 <i-button type="ghost" id="importButton2">导入</i-button>
               </Upload>
               <!--操作-->
@@ -271,8 +277,8 @@
     },
     beforeMount: function() {
 //    页面dom加载前获取后端数据
-      this.$http.post('./courseAssociationManege.action',{},{
-//      this.$http.post('../testPhp/courseArrangeSetting.php',{},{
+//      this.$http.post('./courseAssociationManege',{},{
+      this.$http.post('../testPhp/courseArrangeSetting.php',{},{
         "Content-Type":"application/json"
       }).then(function(response){
         console.log("获取:");
@@ -329,6 +335,90 @@
       });
     },
     methods: {
+      sortInfo: function (year,type) {
+        var courses = null;
+        if(year == "five"){
+          courses = JSON.parse(JSON.stringify(this.fiveCourses));
+        }else if(year == "three"){
+          courses = JSON.parse(JSON.stringify(this.threeCourses));
+        }
+        try {
+          var saveImgs = document.getElementsByClassName("saveImg");
+          for (var i = 0; i < saveImgs.length; i++) {
+            if (saveImgs[i].style.display == "inline") {
+              this.errorMessage = "有处于编辑状态或新增未保存的数据，无法进行排序!";
+              this.modal4 = true;
+              return;
+            }
+          }
+          for (var i = 0; i < courses.length; i++) {
+            if(courses[i].id == ""){
+              this.errorMessage = "有处于编辑状态或新增未保存的数据，无法进行排序!";
+              this.modal4 = true;
+              return;
+            }
+          }
+        }catch (e){}
+
+        if (type == "course") {
+          var a = [];
+          var b = [];
+          for (var i = 0; i < courses.length; i++) {
+            var isExist = false;
+            for (var n = 0; n < a.length; n++) {
+              if(a[n] == courses[i].number){
+                isExist = true;
+              }
+            }
+            if(!isExist){
+              a.push(JSON.parse(JSON.stringify(courses[i].number)));
+            }
+          }
+          console.log(a);
+
+          for (var i = 0; i < a.length; i++) {
+            for (var n = 0; n < courses.length; n++) {
+              if(courses[n].number == a[i]){
+                b.push(JSON.parse(JSON.stringify(courses[n])));
+              }
+            }
+          }
+          if(year == "five"){
+            this.fiveCourses = JSON.parse(JSON.stringify(b));
+          }else if(year == "three"){
+            this.threeCourses = JSON.parse(JSON.stringify(b));
+          }
+        } else if (type == "teacher") {
+          var a = [];
+          var b = [];
+          for (var i = 0; i < courses.length; i++) {
+            var isExist = false;
+            for (var n = 0; n < a.length; n++) {
+              if(a[n] == courses[i].teacherId){
+                isExist = true;
+              }
+            }
+            if(!isExist){
+              a.push(JSON.parse(JSON.stringify(courses[i].teacherId)));
+            }
+          }
+          console.log(a);
+
+          for (var i = 0; i < a.length; i++) {
+            for (var n = 0; n < courses.length; n++) {
+              if(courses[n].teacherId == a[i]){
+                b.push(JSON.parse(JSON.stringify(courses[n])));
+              }
+            }
+          }
+          if(year == "five"){
+            this.fiveCourses = JSON.parse(JSON.stringify(b));
+          }else if(year == "three"){
+            this.threeCourses = JSON.parse(JSON.stringify(b));
+          }
+        }
+
+      },
       operationClick: function(year,operationIndex,operation){
 //                对话框参数传递，触发对应对话框
         this.operationYear = year;
@@ -343,7 +433,7 @@
       },
       downloadClick: function(){
 //        下载模版
-        location.href = "./courseAssociationManege/download.action";
+        location.href = "./courseAssociationManege/download";
       },
 //        点击显示或隐藏五年制下拉课程信息
       fiveYearClick: function(){
@@ -495,7 +585,7 @@
           this.modal2 = false;
         }else {
 //          this.$http.post('../testPhp/adjustCouApplySetTrue.php', {
-          this.$http.post('./courseAssociationManege/delete.action',{
+          this.$http.post('./courseAssociationManege/delete',{
             "courseAssociationId": courses[index].id
           }, {
             "Content-Type": "application/json"
@@ -599,9 +689,9 @@
             }
             if(courses[index].id == ""){
 //          判断是否为未保存的新增课程
-             url = "./courseAssociationManege/addOne.action"
+             url = "./courseAssociationManege/addOne"
              }else{
-             url = "./courseAssociationManege/update.action"
+             url = "./courseAssociationManege/update"
              }
             this.$http.post(url,{
 //            this.$http.post('../testPhp/adjustCouApplySetTrue.php',{
@@ -775,6 +865,12 @@
     /*三年制模版下载按钮*/
     height: 2.35rem;
     margin-right: 1.4rem;
+  }
+  .courseTd:hover > span{
+    color: red;
+  }
+  .teacherTd:hover > span{
+    color: red;
   }
   @media screen and (max-width: 1023px) {
     #downloadButton{

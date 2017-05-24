@@ -9,12 +9,13 @@
             <td><input class="gradeInput" type="text" :value="fiveGrade.studentNum" readonly="readonly"></td>
             <td class="checkGradeInfo" @click="checkGradeInfoClick(firstYearType,fiveGrade.gradeName)"><u>查看年级信息</u></td>
             <td>
-              <img :id="'fiveDeleteImg'+index" src="./images/delete.png" @click="deleteGradeClick(firstYearType,fiveGrades,index)">
+              <img :id="'fiveDeleteImg'+index" src="./images/delete.png" @click="deleteGradeClick(firstYearType,fiveGrades[index].gradeName,'1',index)">
             </td>
           </tr>
         </table>
       </div>
-      <!--3年制年级基本信息表格-->
+      <!--第一个年制年级基本信息表格-->
+      <!--由于年制数据由后台传输过来，所以并不知道5年制和3年制谁先谁后，代码中的fiveYearType,threeYearType不代表年制-->
       <div id="threeYearDiv" v-show="gradeManagement">
         <button class="amButtom" @click="threeYearClick"><img id="threeYearArrow" class="iconImg" :src="icon1"><span class="subtitle">{{secondYearType}}年制</span></button>
         <table id="threeYearTable" v-show="threeYearTable"  class="operationTable" style="table-layout: fixed;">
@@ -23,12 +24,33 @@
             <td><input class="gradeInput" type="text" :value="threeGrade.studentNum" readonly="readonly"></td>
             <td class="checkGradeInfo" @click="checkGradeInfoClick(secondYearType,threeGrade.gradeName)"><u>查看年级信息</u></td>
             <td>
-              <img :id="'threeDeleteImg'+index" src="./images/delete.png" @click="deleteGradeClick(secondYearType,threeGrades,index)">
+              <img :id="'threeDeleteImg'+index" src="./images/delete.png" @click="deleteGradeClick(secondYearType,threeGrades[index].gradeName,'2',index)">
             </td>
           </tr>
         </table>
       </div>
-      <!--5年制年级基本信息表格-->
+      <!--第二个年制年级基本信息表格-->
+      <div>
+        <modal v-model="modalOperateBool" width="400" id="modalBody">
+          <div style="text-align: center;font-size: 1.1rem;">
+            <p>是否确定删除</p>
+          </div>
+          <div slot="footer" style="text-align: center">
+            <button id="modalBtn" @click="deleteOk()">确定</button>
+            <button id="modalBtn" @click="operateCancel">取消</button>
+          </div>
+        </modal>
+        <!--确认删除操作弹窗-->
+        <modal v-model="modalResultBool" width="400" id="modalBody">
+          <div style="text-align: center;font-size: 1.1rem;">
+            <p>删除失败</p>
+          </div>
+          <div slot="footer" style="text-align: center">
+            <button id="modalBtn" @click="resultOk">确定</button>
+          </div>
+        </modal>
+        <!--确认删除失败弹窗-->
+      </div>
       <div v-show="gradeTable">
         <table id="gradeClassInfoDiv" class="operationTable" style="table-layout: fixed;">
           <thead>
@@ -109,8 +131,14 @@
         threeArrow: false,
         fiveYearTable: true,
         threeYearTable: false,
+        modalOperateBool:false,
+        modalResultBool:false,
         gradeTable: false,
         teacherIdEle:'0',
+        yearTypeEle:'',
+        gradeNameEle:'',
+        indexEle:'',
+        gradeNum:'',
         fiveGrades: [
           { gradeName:"2014", studentNum:"167" },
           { gradeName:"2013", studentNum:"167" },
@@ -178,24 +206,47 @@
         }
       },
 //      点击3年制下拉按钮时，展示或隐藏3年制年级表格
-      deleteGradeClick: function(yearType,grades,index){
-//          从data中的课程信息数组中删除
-//          预留功能,将data提交到后端,实现删除数据,处理回调
-        if(confirm("您确定删除该课程吗？")){
-          this.$http.post('./gradeManage/deleteGrade',{
-            "yearType":yearType,
-            "gradeName":grades[index].gradeName
-          },{
-            "Content-Type":"application/json"
-          }).then(function (response) {
-            console.log(response);
-          },function(error){
-            console.log("获取error");
-          });
-          grades.splice(index, 1);
-        }
+      deleteGradeClick: function (yearType,gradeName,gradeNum,index) {
+        this.yearTypeEle = yearType;
+        this.gradeNameEle = gradeName;
+        this.gradeNum = gradeNum;
+        this.indexEle = index;
+        this.modalOperateBool = true;
       },
-//      删除年级信息
+//      删除年级信息时，弹窗让用户确认
+      deleteOk: function(){
+        this.$http.post('./gradeManage/deleteGrade',{
+          "yearType":this.yearTypeEle,
+          "gradeName":this.gradeNameEle
+        },{
+          "Content-Type":"application/json"
+        }).then(function (response) {
+          console.log(response);
+          var resultMsg = response.body.result;
+          if(resultMsg === "1"){
+            if(this.gradeNum === "1"){
+              this.fiveGrades.splice(this.indexEle, 1);
+            }else{
+              this.threeGrades.splice(this.indexEle, 1);
+            }
+            this.$Message.success("删除成功！");
+          }else{
+            this.modalResultBool = true;
+          }
+        },function(error){
+          console.log("获取error");
+        });
+        this.modalOperateBool = false;
+      },
+//      确认删除年级信息
+      operateCancel:function(){
+        this.modalOperateBool = false;
+      },
+//        取消学生信息操作
+      resultOk: function(){
+        this.modalResultBool = false;
+      },
+//      确认删除年级信息操作结果
       checkGradeInfoClick: function(yearType,gradeName){
         this.$http.post('./gradeManage/getGradeDetail',{
           "yearType":yearType,

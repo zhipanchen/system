@@ -29,13 +29,13 @@
 
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
   html{
     font-size: 16px;
   }
   body{
     text-align: center;
-    background-color: #f3f3f3;
+    background-color:#f3f3f3;
     font-family: 微软雅黑;
   }
   @media screen and (max-width:1023px) {

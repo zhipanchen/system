@@ -13,9 +13,21 @@
                 <button id="queryButton" @click="queryCourseClick()"  class="am-btn am-btn-success am-radius">查找</button>
             </div>
         </div>
-
+        <div class="positionBar">
+            <span>您的当前位置：</span>
+            <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+            <span> > <a href="#/login/main/eduAdminHome?course" class="returnHome">智能排课</a> > 排课信息 > 查看当前课表</span>
+        </div>
         <div id="mainDiv">
-            <p id="tableTipP">支持分别以学期和周数为条件，对全校的课程表进行查询；支持调换选定的两门课程。</p>
+            <p id="tableTipP">
+                支持分别以学期和周数为条件，对全校的课程表进行查询；支持调换选定的两门课程。
+                <form action="./acdeminSeeCurriculumExcel" method="get">
+                    <!--<input type="text" v-model="termExport" name="yearSemester" style="display: none">-->
+                    <!--<input type="text" v-model="weekExport" name="week" style="display:none;">-->
+                    <div class="am-btn am-btn-success am-radius" style="position: absolute;right: 7rem;z-index: 10" @click="exportClick()">导出</div>
+                    <button id="exportButton" style="display: none" type="submit"></button>
+                </form>
+            </p>
             <p id="tableInfoP">当前课表：{{ term }} {{ week }} </p>
             <tableDiv :queryCourse="queryCourse"></tableDiv><!--表格组件-->
         </div>
@@ -34,6 +46,8 @@
                 weekSelect: '请选择周数',
 //                选择值绑定
                 queryCourse: [],
+                termExport: "",
+                weekExport: "",
 //                查找结果课表
                 weeks:[
                     { "name":"第一周", "value":"1" },
@@ -93,8 +107,27 @@
         },
 //    页面dom加载前获取后端数据
         methods: {
+            exportClick: function(){
+                if(this.termSelect == "请选择学期"){
+                    this.termExport = "";
+                }else{
+                    this.termExport = this.termSelect;
+                }
+                if(this.weekSelect == "请选择周数"){
+                    this.weekExport = "";
+                }else{
+                    this.weekExport = this.weekSelect;
+                }
+                document.getElementById("exportButton").click();
+            },
             queryCourseClick: function(){
 //                查找课表
+                if(this.termSelect == "请选择学期"){
+                    this.termSelect = "";
+                }
+                if(this.weekSelect == "请选择周数"){
+                    this.weekSelect = "";
+                }
                 this.$http.post('./acdeminSeeCurriculum',{
 //                this.$http.post('../testPhp/checkCourseQuery.php',{
                     "yearSemester": this.termSelect,
@@ -105,8 +138,8 @@
                     console.log("查找课表:");
                     console.log(response.body);
                     this.queryCourse = response.body.acdeminCurriculum;
-                    this.term = this.termSelect;
-                    this.week = this.weekSelect;
+                    this.term = this.termSelect.split(".")[0]+"年第"+this.termSelect.split(".")[1]+"学期";
+                    this.week = "第"+this.weekSelect+"周";
                 },function(error){
                     this.$Message.error('连接失败，请重试！');
                 });
