@@ -9,7 +9,7 @@
 
 <script>
   import topTitle from '../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/teacher/classManegePage/topBar/topBar3.vue'
+  import topBar from '../../../components/teacher/classListPage/topBar/topBar3.vue'
   import tableDiv from '../../../components/teacher/classListPage/table/table.vue'
   export default {
     name: 'classList',
@@ -28,13 +28,13 @@
 
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
   html{
     font-size: 16px;
   }
   body{
     text-align: center;
-    background-color: ghostwhite;
+    background-color: white;
     font-family: 微软雅黑;
   }
   @media screen and (max-width:1023px) {

@@ -1,18 +1,22 @@
 <template>
   <div class="topBarDiv am-btn-group">
-    <a :href="gradeCheckUrl"><button id="gradeCheckBtn" class="topBarButton am-btn am-btn-success">{{ gradeCheckBtn }}</button></a>
     <a :href="gradeCountUrl"><button id="gradeCountBtn" class="topBarButton am-btn am-btn-success btn-active">{{ gradeCountBtn }}</button></a>
+    <a :href="gradeCheckUrl"><button id="gradeCheckBtn" class="topBarButton am-btn am-btn-success">{{ gradeCheckBtn }}</button></a>
+    <a :href="gradeCancelUrl"><button id="gradeCancelBtn" class="topBarButton am-btn am-btn-success">{{ gradeCancelBtn }}</button></a>
   </div>
 </template>
 
 <script>
   export default {
+    name: 'topBarDiv',
     data () {
       return {
-        gradeCheckBtn: '成绩查询',
         gradeCountBtn: '成绩统计',
-        gradeCheckUrl: '/eduAdmin/markManage/gradeQuery',
-        gradeCountUrl: '',
+        gradeCheckBtn: '成绩查询',
+        gradeCancelBtn: '成绩撤销',
+        gradeCountUrl: '#/eduAdmin/gradeManage/grade/gradeStat',
+        gradeCheckUrl: '#/eduAdmin/gradeManage/grade/gradeQuery',
+        gradeCancelUrl: '#/eduAdmin/gradeManage/grade/adminCancelGrade'
       }
     },
     methods: {
@@ -21,9 +25,9 @@
   }
 </script>
 
-<style>
+<style scoped>
 
-  #gradeCheckBtn {
+  #gradeCountBtn {
     margin-left: 5rem;
   }
   @media screen and (max-width:1023px) {

@@ -9,7 +9,7 @@
 
 <script>
   import topTitle from './../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/student/studentLessonPage/topBar2/topBar2.vue'
+  import topBar from '../../../components/student/studentLessonPage/topBar/topBar.vue'
   import myLessonContent from '../../../components/student/studentLessonPage/studentLessonContent/studentLessonContent.vue'
   export default {
     name: 'myTeacherPage',

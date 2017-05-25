@@ -1,5 +1,10 @@
 <template>
   <div id="makeUp">
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>停课申请</span>
+    </div>
     <div id="adjShow">
       <div id="adjTop1">
         <span>当前学年学期：{{presentYear}}</span>
@@ -13,13 +18,13 @@
         <table class="table table-hover table-bordered" cellspacing="1">
           <thead>
           <tr>
-            <th width="7%">请选择</th>
-            <th width="5%">序号</th>
-            <th width="32%">班级名称</th>
-            <th width="14%">课程名称</th>
-            <th width="14%">课程编号</th>
-            <th width="14%">任课老师</th>
-            <th width="14%">课程详情</th>
+            <th width="9%">请选择</th>
+            <th width="8%">序号</th>
+            <th width="35%">班级名称</th>
+            <th width="16%">课程名称</th>
+            <th width="16%">课程编号</th>
+            <th width="16%">任课老师</th>
+            <!--<th width="14%">课程详情</th>-->
           </tr>
           </thead>
           <tbody>
@@ -32,7 +37,7 @@
             <td  v-text="data.courseName"></td>
             <td  v-text="data.courseSerial"></td>
             <td  v-text="data.teacherName+data.teacherSerial"></td>
-            <td  v-text="data.courseDetail"></td>
+            <!--<td  v-text="data.courseDetail"></td>-->
           </tr>
           </tbody>
           <!-- 			<tfoot>
@@ -47,7 +52,8 @@
                                 </td>
                             </tr>
                         </tfoot>
-             -->		</table>
+             -->
+        </table>
       </div>
     </div>
     <div v-show="seenS" id="adjSel">
@@ -77,9 +83,24 @@
         </tr>
         </tbody>
       </table>
-      <button   class="am-btn am-btn-success am-radius"  @click="saveSel(selected1,message2)">保存</button>
-      <button class="am-btn am-btn-success am-radius" @click="cancel">取消</button>
+      <div style="text-align: center">
+      <button   class="am-btn am-btn-success am-radius"  @click="saveDia(selected1,message2)">保存</button>
+      <button class="am-btn am-btn-success am-radius" @click="cancel">取消</button></div>
     </div>
+    <Modal
+      v-model="modal1"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定提交该申请？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="saveSel(oselected1,omessage2)">确定</button>
+        <button id="modalBtn" @click="modal1 = false">取消</button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -98,11 +119,15 @@
         message2:'',
         selected1:'选择天数',
         options1: [{},{}],
-        change:''
+        change:'',
+        modal1:false,
+        oselected1:'',
+        omessage2:''
       }
     },
     beforeMount:function(){
       this.$http.post('./teacherCloseCourseApplyShow',{},
+//        this.$http.post('../jsonphp/stopClass.php',{},
         {"Content-Type":"application/json"}).then(function (response) {
           console.log(response);
           this.presentYear = response.body.presentYear;
@@ -117,9 +142,15 @@
         });
     },
     methods:{
+      saveDia:function(selected1,message2){
+        this.oselected1=selected1;
+        this.omessage2=message2;
+        this.modal1 = true;
+      },
       show:function(index){
           this.seenS=true;
           this.change=index;
+//          this.$http.post('../jsonphp/stopClass.php',{
           this.$http.post('./teacherCloseCourseApplyReturn',{
             "classSerial": this.tableList[index].classSerial,
             "courseplanId":this.tableList[index].courseplanId,
@@ -128,7 +159,6 @@
             console.log("传递:");
             console.log(response.body);
             this.options1=response.body.options1;
-
 //            options1.originWeek=response.body.options1.originWeek;
 //            var list=[];
 //            list = options1.originWeek;
@@ -145,16 +175,19 @@
 //               options1.originWeek=list[n];
 //             }
 //            }
- },
+        },
           function(error){
             console.log("传递error:");
             console.log(error);
           });
       },
       saveSel:function(value,message){
+          console.log(message);
+          this.modal1=false;
           var originWeek = value.split("-")[0];
           var originWeekDay = value.split("-")[1];
           var originSection = value.split("-")[2];
+//          this.$http.post('../jsonphp/stopClass.php',{
           this.$http.post('./teacherCloseCourseApplyHandle',{
             "changeType":1,
             "className": this.tableList[this.change].className,
@@ -164,14 +197,15 @@
             "courseSerial": this.tableList[this.change].courseSerial,
             "teacherInfo": this.tableList[this.change].teacherInfo,
             "teacherSerial": this.tableList[this.change].teacherSerial,
-            "courseDetail": this.tableList[this.change].courseDetail,
+//            "courseDetail": this.tableList[this.change].courseDetail,
             "originWeek": originWeek,
             "originWeekDay":originWeekDay,
           "originSection":originSection,
             "appReason":message
           },{"Content-Type":"application/json"}).then(function (response) {
              if(response.body.result=="1")
-             {alert("success!")}
+             {this.$Message.success('操作成功！');
+               var t=setTimeout(" location.reload();",3000);}
               console.log("保存:");
               console.log(response.body);
             },

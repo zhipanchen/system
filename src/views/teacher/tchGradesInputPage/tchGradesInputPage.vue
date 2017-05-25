@@ -28,14 +28,9 @@ export default {
 }
 </script>
 
-<style>
-.leftPart {
-	margin: 0 5rem;
-	float: left;
+<style scoped>
+@media screen and (max-width: 1023px) {
+  html {
+  }
 }
-.rightPart {
-	margin: 0 5rem;
-	float: right;
-}
-
 </style>

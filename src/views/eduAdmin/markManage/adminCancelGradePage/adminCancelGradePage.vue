@@ -29,8 +29,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #adminCancelGrade input {
   margin-right: 1.4rem;
+}
+@media screen and (max-width: 1023px) {
+  html {
+  }
 }
 </style>

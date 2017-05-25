@@ -11,7 +11,7 @@
 
 <script>
   import topTitle from './../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/student/studentChangPasswordPage/topBar1/topBar1.vue'
+  import topBar from '../../../components/student/studentChangPasswordPage/topBar/topBar.vue'
   import changPasswordDiv from '../../../components/student/studentChangPasswordPage/studentChangPasswordContent/changePasswordContent.vue'
   export default {
     name: 'studentChangPasswordPage',

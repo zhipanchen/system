@@ -1,6 +1,12 @@
 <template>
   <div id="makeupCouApplyDiv">
-    <div class="blank"></div>
+    <div class="blank">
+      <div class="positionBar">
+        <span>您的当前位置：</span>
+        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+        <span> > <a href="#/login/main/eduAdminHome?course" class="returnHome">智能排课</a> > 排课信息 > 查看补课申请</span>
+      </div>
+    </div>
     <div id="tableDiv">
       <table class="operationTable">
         <thead>
@@ -23,16 +29,57 @@
             <td>{{ application.applicationTime }}</td>
             <td>{{ application.mediationReason }}</td>
             <td>
-              <button @click="setTrue(applications,index,application.index)">√</button>
+              <button class="operationButton" @click="operation(index,'true')">√</button>
               <!--<button @click="setTrue(index)">√</button>-->
               <!--申请通过批准-->
-              <button @click="setFalse(applications,index,applications.index)">×</button>
+              <button class="operationButton" @click="operation(index,'true')">×</button>
               <!--申请拒绝-->
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <Modal
+        v-model="modal1"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :style="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定通过该申请吗?</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="setTrue(applications,operationIndex)">确定</button>
+        <button id="modalBtn" @click="modal1 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+        v-model="modal2"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定拒绝该申请吗?</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="setFalse(applications,operationIndex)">确定</button>
+        <button id="modalBtn" @click="modal2 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+        v-model="modal3"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>{{ errorMessage }}</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="modal3 = false">确定</button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -47,10 +94,19 @@
           { applicationId:'',teacher: '王五', course: '护理管理学', className: '普高2015护理1班', courseTime: '周二上午1、2节', Type:'？？', reasonType:'？？', appTime: '2016.08.02',reason:'??' },
           { applicationId:'',teacher: '李小红', course: '内科护理', className: '普高2016护理3班', courseTime: '周五上午7节', Type:'？？', reasonType:'？？', appTime: '2016.08.02',reason:'??' }*/
         ],
+//                申请信息
+        operationIndex: null,
+//        对话框参数传递
+        modal1: false,
+//        对话框显隐
+        modal2: false,
+        modal3: false,
+        errorMessage: ""
       }
     },
     beforeMount: function() {
-      this.$http.post('./makeUpLessionHandle.action',{},{
+//    页面dom加载前获取后端数据
+      this.$http.post('./makeUpLessionHandle',{},{
 //      this.$http.post('../testPhp/makeupCouApply.php',{},{
         "Content-Type":"application/json"
       }).then(function(response){
@@ -59,15 +115,22 @@
         var data = response.body;
         this.applications = data.applicationsList;
       },function(error){
-        console.log("获取申请error:");
-        console.log(error);
+        this.$Message.error('连接失败，请重试！');
       });
     },
     methods: {
-      setTrue: function(applications,index,id){
-        //预留功能，需要后端返回处理确认
-        if(confirm("您确定通过该申请吗？")){
-          this.$http.post('./makeUpLessionHandle/result-button.action',{
+      operation: function(operationIndex,type){
+//                对话框参数传递，触发对应对话框
+        this.operationIndex = operationIndex;
+        if(type == "true"){
+          this.modal1 = true;
+        }else{
+          this.modal2 = true;
+        }
+      },
+      setTrue: function(applications,index){
+//        if(confirm("您确定通过该申请吗？")){
+          this.$http.post('./makeUpLessionHandle/result-button',{
 //          this.$http.post('../testPhp/adjustCouApplySetTrue.php',{
             "teacherId": this.applications[index].teacherId,
             "teacherName": this.applications[index].teacherName,
@@ -89,18 +152,19 @@
             if(data.result == "1") {
               applications.splice(index, 1);
             }else{
-              alert("操作失败！请重试");
+//              this.$Message.error("操作失败,请重试!");
+              this.errorMessage = "操作失败,请重试!";
+              this.modal3 = true;
             }
           },function(error){
-            console.log("通过申请error:");
-            console.log(error);
+            this.$Message.error('连接失败，请重试！');
           });
-        }
+//        }
+        this.modal1 = false;
       },
-      setFalse: function(applications,index,id){
-        //预留功能，需要后端返回处理确认
-        if(confirm("您确定拒绝该申请吗？")){
-          this.$http.post('./makeUpLessionHandle/result-button.action',{
+      setFalse: function(applications,index){
+//        if(confirm("您确定拒绝该申请吗？")){
+          this.$http.post('./makeUpLessionHandle/result-button',{
 //          this.$http.post('../testPhp/adjustCouApplySetFalse.php',{
             "teacherId": this.applications[index].teacherId,
             "teacherName": this.applications[index].teacherName,
@@ -122,13 +186,15 @@
             if(data.result == "1") {
               applications.splice(index, 1);
             }else{
-              alert("操作失败！请重试");
+//              this.$Message.error("操作失败,请重试!");
+              this.errorMessage = "操作失败,请重试!";
+              this.modal3 = true;
             }
           },function(error){
-            console.log("拒绝申请error:");
-            console.log(error);
+            this.$Message.error('连接失败，请重试！');
           });
-        }
+//        }
+        this.modal2 = false;
       }
     }
   }
@@ -146,7 +212,8 @@
   #tableDiv{
     margin: 0 5rem;
   }
-  button{
+  .operationButton{
+    /*操作按钮*/
     outline: none;
     border: thin solid #A6A6A6;
     background-color: white;
@@ -155,7 +222,7 @@
     font-size: 1rem;
     width: 1.45rem;
   }
-  button:hover{
+  .operationButton:hover{
     background-color: red;
     color: white;
     border: red;

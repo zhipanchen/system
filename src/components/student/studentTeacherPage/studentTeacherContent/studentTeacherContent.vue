@@ -1,8 +1,13 @@
 <template>
     <div id="myTeacher">
-      <div class="contentTitle">
-        <button id="refreshButton" class="am-btn am-btn-success am-radius" @click="refreshClick">刷新</button>
+      <div class="positionBar">
+        <span>你的当前位置：</span>
+        <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
+        <span> > 学生教师信息</span>
       </div>
+      <!--div class="contentTitle">
+        <button id="refreshButton" class="am-btn am-btn-success am-radius" @click="refreshClick">刷新</button>
+      </div-->
       <div class="tableDiv">
         <table class="normalTable">
           <tr>
@@ -32,6 +37,7 @@
         name: 'myTeacherPage',
         data () {
             return {
+              studentPageUrl:'index.html#'+'login/main/studentHome',
               teachers: [],
             }
         },

@@ -1,25 +1,26 @@
 <template>
     <div id="selfInformation">
-      <div class="contentTitle">
-        <span class="title">当前所在位置：个人基本信息</span>
-        <button id="backButton" v-show="buttonShow" class="am-btn am-btn-success am-radius" @click="backClick">返回</button>
+      <div class="positionBar">
+        <span>你的当前位置：</span>
+        <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
+        <span> > 学生个人信息</span>
       </div>
       <div class="tableBox">
         <table id="tableDiv" class="normalTable" border="1">
-          <tr><td>姓名</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.studentName"></td><td>身份证</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.studentIDcard"/></td></tr>
-          <tr><td>曾用名</td><td><input type="text" class="inputStyle" v-model="teacherMessage.formerName"/></td><td>高考准考证号</td><td><input type="text" class="inputStyle" readonly="readonly" readonly="readonly" v-model="teacherMessage.NCEERegistrationId"/></td></tr>
-          <tr><td>性别</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.studentGender"/></td><td>生源地</td><td><input type="text" class="inputStyle" v-model="teacherMessage.originOfStudent"/></td></tr>
-          <tr><td>目前状态</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.currentState"/></td><td>学生邮箱</td><td><input type="text" class="inputStyle" v-model="teacherMessage.emailAddress"/></td></tr>
-          <tr><td>出生日期</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.birthdate"/></td><td>学生手机</td><td><input type="text" class="inputStyle" v-model="teacherMessage.phoneNumber"/></td></tr>
-          <tr><td>入学日期</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.admissionDate"/></td><td>学生电话</td><td><input type="text" class="inputStyle" v-model="teacherMessage.homeTelephone"/></td></tr>
+          <tr><td>姓名</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.studentName"></td><td>身份证</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.studentIDcard"/></td></tr>
+          <tr><td>曾用名</td><td><input type="text" class="inputStyle" v-model="teacherMessage.formerName"/></td><td>高考准考证号</td><td><input type="text" class="inputStyle" readonly readonly v-model="teacherMessage.NCEERegistrationId"/></td></tr>
+          <tr><td>性别</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.studentGender"/></td><td>生源地</td><td><input type="text" class="inputStyle" v-model="teacherMessage.originOfStudent"/></td></tr>
+          <tr><td>目前状态</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.currentState"/></td><td>学生邮箱</td><td><input type="text" class="inputStyle" v-model="teacherMessage.emailAddress"/></td></tr>
+          <tr><td>出生日期</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.birthdate"/></td><td>学生手机</td><td><input type="text" class="inputStyle" v-model="teacherMessage.phoneNumber"/></td></tr>
+          <tr><td>入学日期</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.admissionDate"/></td><td>学生电话</td><td><input type="text" class="inputStyle" v-model="teacherMessage.homeTelephone"/></td></tr>
           <tr><td>婚否</td><td><input type="text" class="inputStyle" v-model="teacherMessage.maritalStatus"/></td><td>家庭地址</td><td><input type="text" class="inputStyle" v-model="teacherMessage.houseAddress"/></td></tr>
-          <tr><td>籍贯</td><td><input type="text" class="inputStyle" v-model="teacherMessage.nativePlace"/></td><td>班级职务</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.classDuty"/></td></tr>
-          <tr><td>学制</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.schoolYearType"/></td><td>文化程度</td><td><input type="text" class="inputStyle" v-model="teacherMessage.literacyLevels"/></td></tr>
-          <tr><td>学校层次</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.schoolLevel"/></td><td>毕业时间</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.graduationTime"/></td></tr>
-          <tr><td>入学成绩</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.entranceScores"/></td><td>毕业证号</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.graduationNum"/></td></tr>
-          <tr><td>体重</td><td><input type="text" class="inputStyle" v-model="teacherMessage.weight"/></td><td>教学班</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.className"/></td></tr>
-          <tr><td>身高</td><td><input type="text" class="inputStyle" v-model="teacherMessage.height"/></td><td>专业</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.specialityName"/></td></tr>
-          <tr><td>学号</td><td><input type="text" class="inputStyle" readonly="readonly" v-model="teacherMessage.studentId"/></td><td>政治面貌</td><td><input type="text" class="inputStyle" v-model="teacherMessage.politicalStatus"/></td></tr>
+          <tr><td>籍贯</td><td><input type="text" class="inputStyle" v-model="teacherMessage.nativePlace"/></td><td>班级职务</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.classDuty"/></td></tr>
+          <tr><td>学制</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.schoolYearType"/></td><td>文化程度</td><td><input type="text" class="inputStyle" v-model="teacherMessage.literacyLevels"/></td></tr>
+          <tr><td>学校层次</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.schoolLevel"/></td><td>毕业时间</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.graduationTime"/></td></tr>
+          <tr><td>入学成绩</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.entranceScores"/></td><td>毕业证号</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.graduationNum"/></td></tr>
+          <tr><td>体重</td><td><input type="text" class="inputStyle" v-model="teacherMessage.weight"/></td><td>教学班</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.className"/></td></tr>
+          <tr><td>身高</td><td><input type="text" class="inputStyle" v-model="teacherMessage.height"/></td><td>专业</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.specialityName"/></td></tr>
+          <tr><td>学号</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.studentId"/></td><td>政治面貌</td><td><input type="text" class="inputStyle" v-model="teacherMessage.politicalStatus"/></td></tr>
           <tr><td>学习形式</td><td><input type="text" class="inputStyle" v-model="teacherMessage.studyMode"/></td><td>备注</td><td><input type="text" class="inputStyle"/></td></tr>
         </table>
         <div class="updatePicture" align="center">
@@ -47,6 +48,13 @@
           <button id="submit" class="am-btn am-btn-success am-radius" @click="updateInforClick">提交</button>
         </div>
       </div>
+      <Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
+        <p style="text-align:center; font-size:1.1rem;">{{ messageStr }}</p>
+        <div slot="footer" style="text-align:center;">
+          <Button id="modalBtn" @click="ok2()">确定</Button>
+          <Button id="modalBtn" @click="cancel2()">取消</Button>
+        </div>
+      </Modal>
     </div>
 </template>
 
@@ -57,11 +65,16 @@
         name: 'studentInformationPage',
         data () {
             return {
+              studentPageUrl:'index.html#'+'login/main/studentHome',
               buttonShow:false,
               selected:'身份证照',
-              filePathRequest:'../updata1.php',
+              filePathRequest:'./studentManage/uploadStudentIDcardPhoto',
               path:'',//图片路径
-              teacherMessage: {}
+              teacherMessage: {},
+              modal1:false,
+              modal2:false,
+              okValue:0,//值为0无法执行，为1可以执行
+              messageStr:''
             }
         },
       beforeMount:function() {
@@ -78,31 +91,40 @@
       },
       methods:
       {
+        ok2 () {
+          this.modal2 = false;
+        },
+        cancel2(){
+          this.modal2 = false;
+        },
         selectChange:function(){
           if(this.selected=="身份证照"){
             if(this.teacherMessage.iDcardPhoto!="") {
               this.path = this.teacherMessage.iDcardPhoto;
             }
-            this.filePathRequest='../updata1.php';
+            this.filePathRequest='./studentManage/uploadStudentIDcardPhoto';
           }else if(this.selected=="证件照"){
               if(this.teacherMessage.credentialsPhoto!="") {
               this.path = this.teacherMessage.credentialsPhoto;
             }
-            this.filePathRequest='../updata2.php';
+            this.filePathRequest='./studentManage/uploadStudentCredentialsPhoto';
           }else if(this.selected=="生活照"){
             if(this.teacherMessage.livePhoto!="") {
               this.path = this.teacherMessage.livePhoto;
             }
-            this.filePathRequest='../updata3.php';
+            this.filePathRequest='./studentManage/uploadStudentLivePhoto';
           }
         },
         updateImageClick:function(){
           if(this.selected=="身份证照"){
             this.path=this.teacherMessage.iDcardPhoto;
+            this.$Message.success('上传文件成功！');
           }else if(this.selected=="证件照"){
             this.path=this.teacherMessage.credentialsPhoto;
+            this.$Message.success('上传文件成功！');
           }else if(this.selected=="生活照"){
             this.path=this.teacherMessage.livePhoto;
+            this.$Message.success('上传文件成功！');
           }
         },
         updateInforClick:function(){
@@ -142,7 +164,9 @@
           }, {"Content-Type": "application/json"}).then(function (response) {
             var data=response.body;
             if(data.result==1){
-              alert("提交成功！");
+              //this.$Message.success('提交成功！');
+              this.modal2=true;
+              this.messageStr='提交成功！';
             }
           });
         },
@@ -187,14 +211,13 @@
           console.log(res);
           this.path=data.path;
           if(this.selected=="身份证照"){
-            this.teacherMessage.iDcardPhoto=this.path;;
+            this.teacherMessage.iDcardPhoto=this.path;
           }else if(this.selected=="证件照"){
             this.teacherMessage.credentialsPhoto=this.path;
           }else if(this.selected=="生活照"){
             this.teacherMessage.livePhoto=this.path;
           }
         },
-
       }
     }
 </script>
@@ -207,25 +230,9 @@
       min-height: 2.9rem;
       margin-bottom:1rem;
     }
-    #backButton{
-      /*登录按钮*/
-      float:right;
-      margin-top:5px;
-      color: white;
-      width: 5.6rem;
-      outline: none;
-    }
-    .contentTitle{
-      padding:0.5rem 5rem;
-    }
-    .title{
-      display: block;
-      float:left;
-      margin-top:1rem;
-    }
     .tableBox{
       height:35rem;
-      padding:3rem 5rem 2rem 5rem;
+      padding:1rem 5rem 2rem 5rem;
     }
     .inputStyle{
       border:0rem;

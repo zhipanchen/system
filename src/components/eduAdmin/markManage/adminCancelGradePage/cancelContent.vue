@@ -1,30 +1,29 @@
 <template>
 <div>
+	<div class="positionBar">
+		<span>您的当前位置：</span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > 成绩管理</span>
+		<span> > 成绩</span>
+		<span> > 成绩撤销</span>
+	</div>
 	<div class="tableSelect">
-		<input v-model="courseNum" placeholder="课程编号">
-		<input v-model="courseName" placeholder="课程名称">
-	    <select v-model="teacherNumber">
-			<option disabled>教师编号</option>
-			<option v-for="option1 in options1" :value="option1.value" @click="tchNumClick(option1.value)">
-				{{ option1.text }}
+		<!-- 选择课程、教师，进行查询可撤销成绩列表 -->
+	    <select v-model="course">
+			<option disabled>选择课程</option>
+			<option v-for="option1 in courseInfo" :value="option1.courseId">
+				{{ option1.courseName }}
 			</option>
 	    </select>
 	    <select v-model="teacher">
-	    	<option disabled>上传教师</option>
-			<option v-for="option2 in options2" :value="option2.value" @click="tchClick(option2.value)">
-				{{ option2.text }}
+	    	<option disabled>选择教师</option>
+			<option v-for="option2 in teacherInfo" :value="option2.teacherId">
+				{{ option2.teacherName }}
 			</option>
 	    </select>
 		<button class="am-btn am-btn-success am-radius" @click="checkTableBtn()">查询</button>
-	    <button class="am-btn am-btn-success am-radius" @click="modal = true">提交</button>
-	    <Modal v-model="modal" id="modalBody" :styles="{top:'10rem'}">
-			<p style="text-align:center; font-size:1.1rem;">您确定要提交查看所有信息吗？</p>
-			<div slot="footer" style="text-align:center;">
-				<Button id="modalBtn" @click="ok()">确定</Button>
-				<Button id="modalBtn" @click="cancel()">取消</Button>
-			</div>
-		</Modal>
 	</div>
+	<!-- 可撤销成绩列表展示 -->
 	<div id="cancelContent">
 		<div class="cancelContentBody">
 			<table class="operationTable">
@@ -34,30 +33,50 @@
 						<th width="14%">课程名称</th>
 						<th width="14%">教师编号</th>
 						<th width="14%">上传教师</th>
+						<th width="14%">班级</th>
 						<th width="16%">上传时间</th>
-						<th width="14%">查看</th>
 						<th width="14%">操作</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="(data, index) in scoreUnloadList" :key="data">
-						<td v-text="data.classNum"></td>
-						<td v-text="data.className"></td>
-						<td v-text="data.teacherNum"></td>
+					<tr v-for="(data, index) in scoreCommitList" :key="data">
+						<td v-text="data.courseId"></td>
+						<td v-text="data.courseName"></td>
+						<td v-text="data.teacherId"></td>
 						<td v-text="data.teacherName"></td>
-						<td v-text="data.time"></td>
-						<td v-text="data.check"></td>
+						<td v-text="data.classId"></td>
+						<td v-text="data.commitTime"></td>
 						<td class="textBtn">
-							<ul>
-								<li><a @click="checkClick(index)">查看</a></li>
-								<li><a @click="backoutClick(index)">撤销</a></li>
-							</ul>
+							<a @click="backoutClick(index)">撤销</a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
+
+	<!-- 撤销二次确认弹窗 -->
+	<Modal v-model="modalOperation" id="modalBody" :styles="{top:'10rem'}">
+		<div style="text-align:center; font-size:1.1rem;">
+			<p>您确定要撤销成绩提交？</p>
+		</div>
+		<div slot="footer" style="text-align:center;">
+			<Button id="modalBtn" @click="backoutOk()">确定</Button>
+			<Button id="modalBtn" @click="backoutCancel()">取消</Button>
+		</div>
+	</Modal>
+
+	<!-- 错误弹窗提示 -->
+	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
+		<div style="text-align:center; font-size:1.1rem;">
+		    <p v-if="remindResult === '1'">操作失败！请重试</p>
+		    <p v-if="remindResult === '2'">未找到所查询内容！</p>
+		</div>
+	    <div slot="footer" style="text-align:center;">
+	        <Button id="modalBtn" @click="resultOk()">确认</Button>
+	        <!-- <Button id="modalBtn" @click="submitCancel()">取消</Button> -->
+	    </div>
+	</Modal>
 </div>
 </template>
 
@@ -65,103 +84,107 @@
 export default {
 	data () {
 		return {
-			courseNum: '',
-			courseName: '',
-			teacherNumber: '教师编号',
-			teacher: '上传教师',
-			// select选项
-			options1: [
-				// {text: '123456', value:'1'}
+			course: '选择课程',
+			teacher: '选择教师',
+			courseInfo: [],		// 课程下拉信息数组
+			teacherInfo: [],	// 教师下拉信息数组
+			// 可撤销成绩列表定义
+			scoreCommitList: [
+				{courseId: '010203', courseName: '护理学', teacherId: '010203', teacherName: '何平', commitTime: '06.01.23 12:55', classId: '01020'},
+				{courseId: '010203', courseName: '基础护理学', teacherId: '010203', teacherName: '何平', commitTime: '06.01.23 12:55', classId: '未查看'}
 			],
-			options2: [
-				// {text: '上传教师'}
-			],
-			scoreUnloadList: [
-				{classNum: '010203', className: '护理学', teacherNum: '010203', teacherName: '何平', time: '06.01.23 12:55', check: '未查看'}
-				// {classNum: '010203', className: '基础护理学', teacherNum: '010203', teacherName: '何平', time: '06.01.23 12:55', check: '未查看'}
-			],
-			modal: false,		// 提交弹出框
+			modalResult: false,
+			remindResult: '',
+			modalOperation: false,
+			index: ''
 		}
 	},
+	// 页面初始化，获取下拉信息
 	beforeMount: function () {
-		this.$http.post('../eduAdminCancelGrade.php',{
-            "Content-Type":"eduAdminCancelGrade/json"
+		this.$http.post('./courseManage/getCourseAndClassInfo',{
+            "Content-Type":"application/json"
         }).then(function(response){
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.scoreUnloadList = data.scoreUnloadList;
+            this.courseInfo = data.courseInfo;
+            this.teacherInfo = data.teacherInfo;
         },function(error){
             console.log("获取申请error:");
             console.log(error);
         });
 	},
   	methods: {
-  		tchNumClick: function (value) {
-  			this.$http.post('../eduAdminCancelGrade.php', {
-  				"courseNum": courseNum,
-  				"courseName": courseName,
-  				"value1": option1.value,
-  				"value2": option2.value
+  		// 点击查询，回调表单************************************************
+  		checkTableBtn: function () {
+  			if (this.course == "选择课程") {
+  				this.course = '';
+  			}
+  			if (this.teacher == "选择教师") {
+  				this.teacher = '';
+  			}
+  			this.$http.post('./getScoreCommitted', {
+  				"courseId": this.course,
+  				"teacherId": this.teacher
   			}, {
-  				"Content-Type":"eduAdminCancelGrade/json"
+  				"Content-Type":"application/json"
+  			}).then(function(response){
+  				console.log("通过申请:");
+                console.log(response);
+                var data = response.body;
+                if(data.scoreCommitList != []) {
+                    this.scoreCommitList = data.scoreCommitList;
+                }else{
+                    // this.$Message.error("操作失败！请重试");
+                    this.modalResult = true;
+                    this.remindResult = '2';
+                }
+  			});
+  		},
+  		// 撤销该条信息，弹窗二次确认********************************************
+  		backoutClick: function (index) {
+  			// alert(this.scoreCommitList[index].courseId);
+  			this.modalOperation = true;
+  			this.index = index;
+  		},
+  		// 弹窗点击确定，在列表中清除该条信息
+  		backoutOk: function () {
+  			this.modalOperation = false;
+  			this.$http.post('./cancelScoreCommitted', {
+  				"courseId": this.scoreCommitList[index].courseId,
+  				"teacherId": this.scoreCommitList[index].teacherId,
+  				"classId": this.scoreCommitList[index].classId
+  			}, {
+  				"Content-Type":"application/json"
   			}).then(function(response){
   				console.log("通过申请:");
                 console.log(response);
                 var data = response.body;
                 if(data.result == "1") {
-                    this.scoreUnloadList = data.scoreUnloadList;
+					this.$Message.success("已撤回！");
+					this.scoreCommitList.splice(index,1);
                 }else{
-                    alert("操作失败！请重试");
+                    // this.$Message.error("操作失败！请重试");
+                    this.modalResult = true;
+                    this.remindResult = '1';
                 }
   			});
   		},
-  		tchClick: function () {
-
+  		// 弹窗点击取消
+  		backoutCancel: function () {
+  			this.modalOperation = false;
   		},
-  		// 点击查询，回调表单
-  		checkTableBtn: function () {
-
-  		},
-  		// 点击提交，列表所有数据已查看***********************
-  		ok () {
-            setTimeout(() => {
-                this.modal = false;
-                this.$Message.success('提交成功！所有成绩信息已查看。');
-            }, 100);
-            for (var i = 0; i < this.scoreUnloadList.length; i++) {
-            	this.scoreUnloadList[i].check = "已通过";
-            }
-        },
-        cancel () {
-            setTimeout(() => {
-                this.modal = false;
-                this.$Message.error('提交失败！请重新操作。');
-            }, 100);
-        },
-  		// 查看该条信息，修改状态为“已查看”***************
-  		checkClick: function (index) {
-			var r = confirm("是否同意？")
-			if (r==true) {
-				alert("已通过！");
-				this.scoreUnloadList[index].check="已通过"
-			}
-  		},
-  		// 撤销该条信息，在列表中清除********************
-  		backoutClick: function (index) {
-			var r = confirm("是否撤销成绩提交？")
-			if (r==true) {
-				alert("已撤回！");
-				this.scoreUnloadList.splice(index,1)
-			}
-  		}
+  		// 弹窗提示点击确定，弹窗消失
+    	resultOk: function () {
+    		this.modalResult = false;
+    	}
   	}
 }
 
 
 </script>
 
-<style>
+<style scoped>
 #cancelContent {
 	background-color: #f3f3f3;
 	width: 100%;

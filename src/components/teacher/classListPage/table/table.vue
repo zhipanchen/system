@@ -1,14 +1,19 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>班级管理</span>
+    </div>
     <div id="back">
     <div id="table">
       <div id="top">
         <span>{{classFullName}}共{{classSize}}人</span>
          <div id="buttonDiv">
-          <button class="am-btn am-btn-success am-radius">保存</button>
-          <button class="am-btn am-btn-success am-radius">导出</button>
+          <button class="am-btn am-btn-success am-radius" @click="saveDia">保存</button>
+          <button class="am-btn am-btn-success am-radius" @click="load">导出</button>
          </div>
       </div>
-
       <div id="bottom">
         <span>班级名单</span>
       </div>
@@ -25,7 +30,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="data in tableList">
+            <tr v-for="(data,index) in tableList" :key="data.studentId">
               <td  v-text="data.studentName"></td>
               <td  v-text="data.studentId"></td>
               <td><select v-model="data.studentDuty">
@@ -41,13 +46,28 @@
               <td>
                 <textarea v-model="data.changeReason"></textarea>
               </td>
-              <td><span>查看学生信息</span></td>
+              <td><span :id="'selfInfo'+index" style="text-decoration: underline; cursor: pointer"  @click="selfInfo(index)">查看学生个人信息</span></td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+      <Modal
+        v-model="modal1"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>您确定保存信息吗？</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="save()">确定</button>
+          <button id="modalBtn" @click="modal1 = false">取消</button>
+        </div>
+      </Modal>
     </div>
+  </div>
 </template>
 
 <script>
@@ -65,6 +85,7 @@
                 '纪律委员',
                 '无'
               ],
+              modal1: false,
               currentStates:[
                 '在读',
                 '停课',
@@ -114,7 +135,11 @@
           });
       },
       methods: {
+        saveDia:function(){
+          this.modal1 = true;
+        },
         save:function(){
+          this.modal1 = false;
           for(var i=0;i<this.tableList.length;i++){
             if(this.tableList[i].currentState=="在读"){
               this.tableList[i].currentState="1"
@@ -127,36 +152,45 @@
             }
           }
           for(var n=0;n<this.tableList.length;n++){
-            if(this.tableList[n].studentDuty="班长"){
+            if(this.tableList[n].studentDuty=="班长"){
               this.tableList[n].studentDuty="1"
-            }else if( this.tableList[n].studentDuty="副班长"){
+            }else if( this.tableList[n].studentDuty=="副班长"){
               this.tableList[n].studentDuty="2"
-            }else if( this.tableList[n].studentDuty="学习委员"){
+            }else if( this.tableList[n].studentDuty=="学习委员"){
               this.tableList[n].studentDuty="3"
-            }else if(this.tableList[n].studentDuty="生活委员"){
+            }else if(this.tableList[n].studentDuty=="生活委员"){
               this.tableList[n].studentDuty="4"
-            }else if(this.tableList[n].studentDuty="纪律委员"){
+            }else if(this.tableList[n].studentDuty=="纪律委员"){
               this.tableList[n].studentDuty="5"
-            }else if(this.tableList[n].studentDuty="文体委员"){
+            }else if(this.tableList[n].studentDuty=="文体委员"){
               this.tableList[n].studentDuty="6"
-            }else if(this.tableList[n].studentDuty="无"){
+            }else if(this.tableList[n].studentDuty=="无"){
               this.tableList[n].studentDuty="7"
             }
               }
-//          this.$http.post('../jsonphp/class.php',{
-          this.$http.post('./classManage/editStudentStateInfo',{
+//          this.$http.post('../jsonphp/class.php',
+          this.$http.post('./classManage/editStudentStateInfo',
+            JSON.stringify({
             "studentAndStateList":this.tableList
-          },{"Content-Type":"application/json"}).then(function (response) {
+          }),{"Content-Type":"application/json"}).then(function (response) {
               console.log("传递:");
               console.log(response.body);
               if(response.body.result=="1")
-              {alert("success!")}
+              {this.$Message.success('操作成功！');}
             },
             function(error){
               console.log("传递error:");
               console.log(error);
             });
+        },
+        load:function(){
+          location.href='./classManage/exportClassStudentInfo'
+        },
+        selfInfo:function(index){
+          var id=this.tableList[index].studentId;
+          location.href='#/teacher/class/checkStudentInfo?'+id;
         }
+
       }
     }
 </script>
@@ -165,11 +199,13 @@
   @import '../../../../assets/css/external.css';
   #back{
     background-color: #f3f3f3;
+    padding-left: 5rem;
+    padding-right: 5rem;
   }
 #table{
   background-color: white;
-  margin-right:5rem;
-  margin-left:5rem;
+  /*margin-right:5rem;*/
+  /*margin-left:5rem;*/
   height:30rem;
   position: relative;
   top:2rem;

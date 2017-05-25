@@ -1,14 +1,21 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>个人信息</span>
+    </div>
     <div id="workExperience-teacher-tableDiv">
             <div id="tableLeft">
                 <span id="subtitle1">{{subtitle1}}</span>
-           <ul>
-               <li id="li"><a href="#">基本信息</a></li>
-               <li><a href="#">教育管理</a></li>
-               <li><a href="#">证书管理</a></li>
-               <li><a href="#">一线工作经历</a></li>
-               <li><a href="#">密码修改</a></li>
-           </ul>
+              <ul>
+                <li id="li"><a href="#/teacher/personInfo/basicMessage">基本信息</a></li>
+                <li><a href="#/teacher/info/educationManege">教育管理</a></li>
+                <li><a href="#/teacher/info/certificateManege">证书管理</a></li>
+                <li><a href="#/teacher/info/experience">一线工作经历</a></li>
+                <!--<li><a href="#">教学进修</a></li>-->
+                <li><a href="#/teacher/info/passwdChange">密码修改</a></li>
+              </ul>
             </div>
             <div id="tableRight">
                 <span id="subtitle2">{{subtitle2}}</span>
@@ -24,27 +31,27 @@
                       <td>操作</td>
                     </tr>
                     <!--循环生成信息，index作为data数组的下标索引，将index用作id的一部分，便于准确定位操作DOM，key用于绑定课程信息，保证索引不随着数组元素增删自动发生变化-->
-                    <tr v-for="(certificate,index) in certificates" :id="'InputTr'+index" :key="certificate.certificateNum">
+                    <tr v-for="(certificate,index) in certificates" :id="'InputTr'+index" :key="certificate.certificateId">
                       <td>
                         <select :id="'certificateSelect'+index" v-model="certificate.certificateType" disabled="disabled">
                           <option>请选择证书类型</option>
                           <option v-for="certificateType in certificateTypes">{{ certificateType }}</option>
                         </select>
                       </td>
-                      <td><input :value="certificate.certificateNum" readonly></td>
-                      <td><input v-model.lazy="certificate.certificateName" readonly></td>
-                      <td><input v-model.lazy="certificate.certificateLevel" readonly></td>
-                      <td><input v-model.lazy="certificate.reviewIstitution" readonly></td>
-                      <td><input v-model.lazy="certificate.reviewTime" readonly></td>
+                      <td><input onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" v-model.lazy="certificate.certificateNum" readonly></td>
+                      <td><input v-model.lazy="certificate.certificateName" onkeyup="this.value=this.value.replace(/\s+/g,'')"  readonly></td>
+                      <td><input v-model.lazy="certificate.certificateLevel" onkeyup="this.value=this.value.replace(/\s+/g,'')"  readonly></td>
+                      <td><input v-model.lazy="certificate.reviewIstitution" onkeyup="this.value=this.value.replace(/\s+/g,'')"  readonly></td>
+                      <td><input v-model.lazy="certificate.reviewTime" onkeyup="this.value=this.value.replace(/\s+/g,'')"  readonly></td>
                       <td class="operationTd">
                         <!--编辑功能，初始显示，编辑时隐藏-->
                         <img :id="'EditImg'+index" src="./images/edit.png" @click="editClick(index)">
                         <!--保存功能，初始隐藏，编辑时显示-->
-                        <img :id="'SaveImg'+index" class="saveImg" src="./images/save.png" @click="saveClick(index)">
+                        <img :id="'SaveImg'+index" class="saveImg" src="./images/save.png" @click="operationClick(index,'save')">
                         <!--取消编辑并重置，初始隐藏，编辑时显示-->
-                        <img :id="'RestoreImg'+index" class="restoreImg" src="./images/restore.png" @click="restoreClick(index)">
+                        <img :id="'RestoreImg'+index" class="restoreImg" src="./images/restore.png" @click="operationClick(index,'restore')">
                         <!--删除功能，初始显示，编辑时隐藏-->
-                        <img :id="'DeleteImg'+index" src="./images/delete.png" @click="deleteClick(index)">
+                        <img :id="'DeleteImg'+index" src="./images/delete.png" @click="operationClick(index,'delete')">
                       </td>
                     </tr>
                     <tr>
@@ -59,8 +66,51 @@
                     </tr>
                   </table>
                 </div>
-            </div>
-      </div>
+         </div>
+            <Modal
+        v-model="modal1"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>您确定取消编辑并重置该课程信息吗?</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="restoreClick(operationIndex)">确定</button>
+          <button id="modalBtn" @click="modal1 = false">取消</button>
+        </div>
+      </Modal>
+            <Modal
+        v-model="modal2"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>您确定删除该课程吗？?</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="deleteClick(operationIndex)">确定</button>
+          <button id="modalBtn" @click="modal2 = false">取消</button>
+        </div>
+      </Modal>
+            <Modal
+        v-model="modal3"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>您确定提交保存该信息吗？</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="saveClick(operationIndex)">确定</button>
+          <button id="modalBtn" @click="modal3 = false">取消</button>
+        </div>
+      </Modal>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -71,11 +121,16 @@
                 subtitle1:'个人信息',
                 subtitle2:'证书管理',
                 certificates:[],
-                certificateTypes:['教师资格证','护师职业资格证','医师职业资格证']
+                certificateTypes:['教师资格证','护师职业资格证','医师职业资格证'],
+                modal1: false,
+                modal2: false,
+                modal3: false,
+                operationIndex: 0
             }
         },
       beforeMount:function(){
         this.$http.post('./teacherManage/getTeacherCertInfo',{},
+//        this.$http.post('../jsonphp/certificate.php',{},
           {"Content-Type":"application/json"}).then(function (response) {
             console.log(response);
             this.certificates = response.body.certificatemanage;
@@ -95,6 +150,16 @@
           });
       },
         methods: {
+          operationClick: function(operationIndex,operation){
+            this.operationIndex = operationIndex;
+            if(operation == "restore"){
+              this.modal1 = true;
+            }else if(operation == "delete"){
+              this.modal2 = true;
+            }else if(operation == "save"){
+              this.modal3 = true;
+            }
+          },
 //        编辑功能
           editClick: function(index){
             var inputTr = document.getElementById("InputTr"+index);
@@ -119,47 +184,50 @@
           },
 //        取消修改,重置数据,退出编辑
           restoreClick: function(index){
-            if(confirm("您确定取消编辑并重置该课程信息吗？")){
-              var inputTr = document.getElementById("InputTr"+index);
-              var input = inputTr.getElementsByTagName("input");
-              var select = document.getElementById("certificateSelect"+index);
-              var editImg = document.getElementById("EditImg"+index);
-              var saveImg = document.getElementById("SaveImg"+index);
-              var restoreImg = document.getElementById("RestoreImg"+index);
-              var deleteImg = document.getElementById("DeleteImg"+index);
-              var i = null;
-//            重置数据到value，需要后端返回原始数据，处理回调
-
-//            使课程信息的输入标签变为不可输入，隐藏边框
-              for(i = 0;i<input.length;i++){
-                select.disabled = true;
-                input[i].readOnly = true;
-                input[i].style.border = "none";
-              }
-              editImg.style.display = "inline";
-              saveImg.style.display = "none";
-              deleteImg.style.display = "inline";
-              restoreImg  .style.display = "none";
-            }
+            location.reload();
+//            if(confirm("您确定取消编辑并重置该课程信息吗？")){
+//              var inputTr = document.getElementById("InputTr"+index);
+//              var input = inputTr.getElementsByTagName("input");
+//              var select = document.getElementById("certificateSelect"+index);
+//              var editImg = document.getElementById("EditImg"+index);
+//              var saveImg = document.getElementById("SaveImg"+index);
+//              var restoreImg = document.getElementById("RestoreImg"+index);
+//              var deleteImg = document.getElementById("DeleteImg"+index);
+//              var i = null;
+////            重置数据到value，需要后端返回原始数据，处理回调
+////              this.certificates.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_classrooms[index])));
+////            使课程信息的输入标签变为不可输入，隐藏边框
+//              for(i = 0;i<input.length;i++){
+//                select.disabled = true;
+//                input[i].readOnly = true;
+//                input[i].style.border = "none";
+//              }
+//              editImg.style.display = "inline";
+//              saveImg.style.display = "none";
+//              deleteImg.style.display = "inline";
+//              restoreImg  .style.display = "none";
+//              this.modal1 = false;
+////            }
           },
           deleteClick: function(index){
 //          从data中的课程信息数组中删除
 //          预留功能,将data提交到后端,实现删除数据,处理回调
-            if(confirm("您确定要删除该奖项吗？")){
+//            if(confirm("您确定要删除该奖项吗？")){
               console.log(this.certificates[index].certificateId);
+//              this.$http.post('../jsonphp/certificate.php',{
               this.$http.post('./teacherManage/deleteTeacherCertInfo',{
                 "certificateId":this.certificates[index].certificateId
               },{"Content-Type":"application/json"}).then(function (response){
                 if(response.body.result=='1')
-                { alert("操作成功！");
+                { this.$Message.success('操作成功！');
                   this.certificates.splice(index, 1);
                 }
               }, function(error){
                 console.log("传递error:");
                 console.log(error);
               });
-
-            }
+            this.modal2 = false;
+//            }
           },
 //        保存功能
           saveClick: function(index){
@@ -172,21 +240,30 @@
                 this.certificates[index].certificateType="3"
               }
 
-            if(confirm("您确定提交保存该课程吗？")){
+//            if(confirm("您确定提交保存该课程吗？")){
               this.$http.post('./teacherManage/editTeacherCertInfo',{
+//                this.$http.post('../jsonphp/certificate.php',{
                 "certificateType":this.certificates[index].certificateType,
                 "certificateNum":this.certificates[index].certificateNum,
                 "certificateName":this.certificates[index].certificateName,
                 "certificateLevel":this.certificates[index].certificateLevel,
                 "reviewIstitution":this.certificates[index].reviewIstitution,
-                "reviewTime":this.certificates[index].reviewTime
+                "reviewTime":this.certificates[index].reviewTime,
+                "certificateId":this.certificates[index].certificateId
               },{"Content-Type":"application/json"}).then(function (response){
                 if(response.body.result=='1')
-                {alert("操作成功！")}
+                {this.$Message.success('操作成功！');}
               }, function(error){
                 console.log("传递error:");
                 console.log(error);
               });
+            if(this.certificates[index].certificateType=="1"){
+              this.certificates[index].certificateType="教师资格证"
+            }else if(this.certificates[index].certificateType=="2"){
+              this.certificates[index].certificateType="护师职业资格证"
+            }else if(this.certificates[index].certificateType=="3"){
+              this.certificates[index].certificateType="医师职业资格证"
+            }
               var inputTr = document.getElementById("InputTr"+index);
               var input = inputTr.getElementsByTagName("input");
               var select = document.getElementById("certificateSelect"+index);
@@ -208,12 +285,14 @@
               saveImg.style.display = "none";
               deleteImg.style.display = "inline";
               restoreImg.style.display = "none";
-            }
+//            }
+            this.modal3 = false;
           },
 //        增加功能
           addClick: function (courses){
             courses.push(
-              { certificateType:'请选择证书类型', certificateNum:'请编辑后保存', certificateName:'请编辑后保存', certificateLevel:'请编辑后保存', reviewIstitution:'请编辑后保存', reviewTime:'请编辑后保存' }
+              { certificateType:'', certificateNum:'', certificateName:'', certificateLevel:'', reviewIstitution:'', reviewTime:'',certificateId:''
+              }
             );
           }
         }
@@ -297,7 +376,10 @@
         border-collapse: collapse;
     }
     img{
-
+      width:1.5rem;
+      height:1.5rem;
+      position:relative;
+      top:0.3rem;
     }
     #certificateTable td{
         border-bottom: thin solid #E3E3E3;
@@ -305,23 +387,21 @@
         text-align: center;
 
     }
-    Select{
-        height: 1.5rem;
-        width: 9rem;
-        outline: none;
-    }
+    /*Select{*/
+        /*height: 1.5rem;*/
+        /*width: 10rem;*/
+        /*outline: none;*/
+        /*font-size: 0.8rem;*/
+
+    /*}*/
     input{
         outline:none;
         border: none;
         text-align: center;
-        width: 6rem;
+        width: 5rem;
         font-size: 0.8rem;
     }
-    img{
-        width: 2rem;
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
+
     img:hover{
         cursor: pointer;
     }
@@ -335,7 +415,9 @@
     }
     /*功能图标*/
     .operationTd{
-        width: 8.3rem;
+
+      display: flex;
+      justify-content: center;
     }
     button{
         color: white;
@@ -350,9 +432,9 @@
       border: 0.1rem solid #d4d4d9;
       border-radius: 0.7rem;
       outline: none;
-      /*padding: 0.3rem 0.5rem;*/
-     width:6rem;
-      font-size: 0.8rem;
+      padding: 0.3rem 0.5rem;
+      width:7rem;
+      font-size: 0.6rem;
     }
   /*  input{
       border: 0.1rem solid #d4d4d9;

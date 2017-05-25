@@ -26,6 +26,7 @@
       banCouApplyDiv
     },
     mounted: function() {
+//      dom加载后调整页面高度
       var dom = document.getElementById("banCouApply");
       dom.style.height = window.innerHeight * 0.85 + "px";
     }
@@ -37,7 +38,6 @@
   html{
   }
   #banCouApply{
-    text-align: center;
   }
   @media screen and (max-width:1023px) {
     html {

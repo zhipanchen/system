@@ -29,6 +29,19 @@
         <p id="tipP">加载中……</p>
       </div>
     </div>
+    <Modal
+        v-model="modal"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>{{ errorMessage }}</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="modal = false">确定</button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -40,13 +53,16 @@
       return {
         img1: require("../../../assets/images/login-background.png"),//页面背景图片
         imgHref: "http://www.samsph.com/hsxx/1092/1/",//官网
-        exitHref: "#/login",
-        newPwd: "",
-        confirmPwd: "",
-        userId: ""
+        exitHref: "#/login",//退出跳转
+        newPwd: "",//新密码
+        confirmPwd: "",//确认密码
+        userId: "",//用户帐号
+        modal: false,//对话框显隐
+        errorMessage: ""
       }
     },
     mounted: function() {
+//      dom加载后获取后端的邮箱验证结果
       var dom = document.getElementById("resetForgetPassword");
       dom.style.height = window.innerHeight + "px";
       var thisURL = document.URL;
@@ -86,14 +102,17 @@
           console.log(e);
         }
       }, function (error) {
-        document.getElementById("tipP").innerHTML = "连接失败！请重试！";
+        document.getElementById("tipP").innerHTML = "连接失败，请重试！";
         console.log(error);
       });
     },
     methods: {
       nextClick: function(){
+//        修改密码
         if(this.newPwd != this.confirmPwd){
-          alert("两次输入的新密码不相同！");
+//          this.$Message.error("两次输入的新密码不相同！");
+          this.errorMessage = "两次输入的新密码不相同！";
+          this.modal = true;
         }else{
           var a = CryptoJS.MD5(this.newPwd + this.userId + "护士学校");
           a = a.toString().toUpperCase();
@@ -111,14 +130,15 @@
           }).then(function (response) {
             console.log(response.body);
             if(response.body.result == "1"){
-              alert("修改成功，请牢记新密码！");
-              location.href = '#/login';
+              this.$Message.success("修改成功，请牢记新密码！5s后跳转到登录……");
+              setTimeout("location.href = '#/login'", 5000);
             }else{
-              alert("修改失败，请确认新密码是否符合要求或验证是否仍有效！")
+//              this.$Message.error("修改失败，请确认新密码是否符合要求或验证是否仍有效！")
+              this.errorMessage = "修改失败，请确认新密码是否符合要求或验证是否仍有效！";
+              this.modal = true;
             }
           }, function (error) {
-            alert("连接失败，请确认重试！");
-            console.log(error);
+            this.$Message.error('连接失败，请重试！',3);
           });
         }
       }
@@ -128,10 +148,12 @@
 
 <style scoped>
   #schoolImg{
+    /*学校图标*/
     height: 3rem;
     border-radius: 1rem;
   }
   #userExitDiv{
+    /*退出区域*/
     float: right;
     display: flex;
     align-items: center;
@@ -139,6 +161,7 @@
     top: 0.5rem;
   }
   #exitImg{
+    /*退出图标*/
     position: relative;
     top: 0.2rem;
     padding-left: 0.7rem;
@@ -146,6 +169,7 @@
     height: 2rem;
   }
   #main{
+    /*主要内容区域*/
     border: solid LightGreen;
     background-color: white;
     border-radius: 1rem;
@@ -157,17 +181,20 @@
     padding: 1rem;
   }
   #stepDiv{
+    /*步骤条区域*/
     margin-left: 15%;
     margin-top: 1rem;
     background-color: white;
   }
   #titleDiv{
+    /*主要内容的顶部区域*/
     display: flex;
     align-items: center;
     justify-content: space-around;
     padding-top: 1rem;
   }
   #inputDiv{
+    /*输入区域*/
     border-top: thin solid #f3f3f3;
     height: inherit;
     margin: 1rem 3rem;
@@ -177,12 +204,15 @@
     justify-content: center;
   }
   .operationP{
+    /*输入区域*/
     display: none;
   }
   #nextButton{
+    /*修改密码按钮*/
     width: 5.6rem;
   }
   #tipP{
+    /*操作提示*/
     font-size: 1.2rem;
   }
   @media screen and (max-width: 1023px) {

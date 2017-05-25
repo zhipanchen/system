@@ -30,9 +30,10 @@ export default {
 }
 </script>
 
-<style>
-.inputNumber {
-  margin-right: 1.4rem;
-}
+<style scoped>
 
+@media screen and (max-width: 1023px) {
+  html {
+  }
+}
 </style>

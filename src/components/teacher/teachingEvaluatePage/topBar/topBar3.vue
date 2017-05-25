@@ -1,8 +1,14 @@
 <template>
   <div class="topBarDiv am-btn-group">
-    <a :href="checkCouUrl">
-      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" @click="checkCouClick">{{ checkCouButton }}</button>
+    <a href="#/teacher/class/teachingEvaluate">
+      <button id="checkCouButton" class="topBarButton am-btn am-btn-success  btn-active" >评教结果</button>
     </a>
+    <a href="#/teacher/class/tchGradesInput">
+      <button  class="topBarButton am-btn am-btn-success " >成绩录入</button>
+    </a>
+    <a href="#/teacher/class/classList">
+    <button  class="topBarButton am-btn am-btn-success" >班级管理</button>
+  </a>
   </div>
 </template>
 
@@ -26,7 +32,7 @@
   }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 @import '../../../../assets/css/external.css';
 
   html {

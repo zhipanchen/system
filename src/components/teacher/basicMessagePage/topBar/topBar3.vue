@@ -1,13 +1,7 @@
 <template>
   <div class="topBarDiv am-btn-group">
-    <a :href="manualCouUrl">
-      <button id="manualCouButton" class="topBarButton am-btn am-btn-success" @click="manualCouClick">{{ manualCouButton }}</button>
-    </a>
-    <a :href="sendApplyUrl">
-      <button id="sendApplyButton" class="topBarButton am-btn am-btn-success" @click="sendApplyClick">{{ sendApplyButton }}</button>
-    </a>
-    <a :href="checkCouUrl">
-      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" @click="checkCouClick">{{ checkCouButton }}</button>
+    <a href="#/teacher/personInfo/basicMessage">
+      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" >个人信息</button>
     </a>
   </div>
 </template>
@@ -17,9 +11,8 @@
     name: 'topBarDiv',
     data () {
       return {
-        manualCouButton: '手动排课申请',
-        sendApplyButton: '提交排课申请',
-        checkCouButton: '查看课表',
+
+        checkCouButton: '个人信息',
         arrInfoNum: '2',
         adjInfoNum: '0',
         manualCouUrl: '/teacher/tchManuAdjCl',
@@ -33,13 +26,13 @@
   }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 @import '../../../../assets/css/external.css';
 
   html {
     font-size: 16px;
   }
-  #manualCouButton {
+  #checkCouButton {
     margin-left: 5rem;
   }
 

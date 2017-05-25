@@ -28,9 +28,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 /*.blank {
   height: 2.9rem;
 }*/
-
+@media screen and (max-width: 1023px) {
+  html {
+  }
+}
 </style>

@@ -1,20 +1,26 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>个人信息</span>
+    </div>
     <div id="table">
       <div id="tableLeft">
         <span id="subtitle1">{{subtitle1}}</span>
         <ul>
-          <li id="li"><a href="#">基本信息</a></li>
-          <li><a href="#">教育管理</a></li>
-          <li><a href="#">证书管理</a></li>
-          <li><a href="#">一线工作经历</a></li>
+          <li id="li"><a href="#/teacher/personInfo/basicMessage">基本信息</a></li>
+          <li><a href="#/teacher/info/educationManege">教育管理</a></li>
+          <li><a href="#/teacher/info/certificateManege">证书管理</a></li>
+          <li><a href="#/teacher/info/experience">一线工作经历</a></li>
           <!--<li><a href="#">教学进修</a></li>-->
-          <li><a href="#">密码修改</a></li>
+          <li><a href="#/teacher/info/passwdChange">密码修改</a></li>
         </ul>
       </div>
       <div id="tableRight">
         <span id="subtitle2">{{subtitle2}}</span>
         <div id="tableDiv">
-          <table>
+          <table class="headTr">
             <thead>
               <tr>
                 <th width="%20">临床工作单位</th>
@@ -25,16 +31,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(data,index) in tableList" :key="data.startTime">
-                <td width="%20"><input readonly :id="'clinicWorkUnit'+index" type="text" v-model.lazy="data.clinicWorkUnit"></td>
-                <td width="%20"><input readonly :id="'workPost'+index" type="text" v-model.lazy="data.workPost"></td>
-                <td width="%20"><input readonly :id="'startTime'+index" type="text" v-model.lazy="data.startTime"></td>
-                <td width="%20"><input readonly :id="'endTime'+index" type="text" v-model.lazy="data.endTime"></td>
+              <tr v-for="(data,index) in tableList" :key="data.workExperienceId">
+                <td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'clinicWorkUnit'+index" type="text" v-model.lazy="data.clinicWorkUnit"></td>
+                <td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'workPost'+index" type="text" v-model.lazy="data.workPost"></td>
+                <td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'startTime'+index" type="text" v-model.lazy="data.startTime"></td>
+                <td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'endTime'+index" type="text" v-model.lazy="data.endTime"></td>
                 <td width="%20">
-                  <img @click="save(index)" class='img'style="display:none;" :src="imgSrc1" :id="'save'+index">
-                  <img @click="edit(index)" class='img'style="display:none;" :src="imgSrc2" :id="'edit'+index">
-                  <img @click="change(index)" class='img' style="display:inline;" :src="imgSrc3" :id="'change'+index">
-                  <img @click="del(index)" class='img' style="display:inline;" :src="imgSrc4" :id="'del'+index">
+                  <img @click="operationClick(index,'save')" class='img'style="display:none;" :src="imgSrc1" :id="'save'+index">
+                  <img @click="operationClick(index,'edit')"class='img'style="display:none;" :src="imgSrc2" :id="'edit'+index">
+                  <img @click="chang(index)" class='img' style="display:inline;" :src="imgSrc3" :id="'chang'+index">
+                  <img @click="operationClick(index,'del')" class='img' style="display:inline;" :src="imgSrc4" :id="'del'+index">
                 </td>
               </tr>
               <tr>
@@ -45,18 +51,55 @@
                 <td></td>
               </tr>
             </tbody>
-
           </table>
-
-          </div>
-
+         </div>
         <div>
         </div>
       </div>
-
-
-
+      <Modal
+        v-model="modal1"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>您确定取消编辑并重置该课程信息吗?</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="edit(operationIndex)">确定</button>
+          <button id="modalBtn" @click="modal1 = false">取消</button>
+        </div>
+      </Modal>
+      <Modal
+        v-model="modal2"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>您确定删除该课程吗？?</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="del(operationIndex)">确定</button>
+          <button id="modalBtn" @click="modal2 = false">取消</button>
+        </div>
+      </Modal>
+      <Modal
+        v-model="modal3"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>您确定提交保存该信息吗？</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="save(operationIndex)">确定</button>
+          <button id="modalBtn" @click="modal3 = false">取消</button>
+        </div>
+      </Modal>
     </div>
+  </div>
 </template>
 
 <script>
@@ -66,146 +109,160 @@
   import icon4 from'./delete.png'
   import icon5 from'./plus.png'
     export default {
-        name: '',
-        data () {
-            return {
-              imgSrc1:icon1,
-              imgSrc2:icon2,
-              imgSrc3:icon3,
-              imgSrc4:icon4,
-              imgSrc5:icon5,
-              subtitle1:'个人信息',
-              subtitle2:'一线工作经历',
-              tableList:[]
-            }},
-      beforeMount:function(){
-//        this.$http.post('./teacherManage/getTeacherWorkInfo',{},
-          this.$http.post('../jsonphp/experience.php',{},
-          {"Content-Type":"application/json"}).then(function (response) {
+      name: '',
+      data () {
+        return {
+          imgSrc1: icon1,
+          imgSrc2: icon2,
+          imgSrc3: icon3,
+          imgSrc4: icon4,
+          imgSrc5: icon5,
+          subtitle1: '个人信息',
+          subtitle2: '一线工作经历',
+          tableList: [],
+          modal1: false,
+          modal2: false,
+          modal3: false,
+          operationIndex: 0
+        }
+      },
+      beforeMount: function () {
+        this.$http.post('./teacherManage/getTeacherWorkInfo',{},
+//        this.$http.post('../jsonphp/experience.php', {},
+          {"Content-Type": "application/json"}).then(function (response) {
             console.log(response);
             this.tableList = response.body.workexperienceList;
-           },
-          function(error){
+          },
+          function (error) {
             console.log("获取error:");
             console.log(error);
           });
       },
-        methods:{
-            add: function(){
-              this.tableList.push({clinicWorkUnit:'',workPost:'',startTime:'',endTime:'',workExperienceId:''});
-            },
-            save:function(index){
-              var unit = document.getElementById("clinicWorkUnit"+index);
-              if(unit.value!="")
-              {
-                if(confirm('确认保存？'))
-                {   this.$http.post('../jsonphp/experience.php',{
-//                  this.$http.post('./teacherManage/editTeacherWorkInfo',{
-                    "clinicWorkUnit":this.tableList[index].clinicWorkUnit,
-                    "workPost":this.tableList[index].workPost,
-                    "startTime":this.tableList[index].startTime,
-                    "endTime":this.tableList[index].endTime,
-                    "workExperienceId":this.tableList[index].workExperienceId
-                  },{"Content-Type":"application/json"}).then(function (response){
-                     if(response.body.result=='1')
-                     {alert("操作成功！")}
-                  }, function(error){
-                    console.log("传递error:");
-                    console.log(error);
-                  });
-                  var save=document.getElementById("save"+index);
-                  save.style.display='none';
-                  var edit=document.getElementById("edit"+index);
-                  edit.style.display='none';
-                  var change=document.getElementById("change"+index);
-                  change.style.display='inline';
-                  var del=document.getElementById("del"+index);
-                  del.style.display='inline';
-                  unit.readOnly=true;
-                  unit.style.border='none';
-                  var job = document.getElementById("workPost"+index);
-                  job.readOnly=true;
-                  job.style.border='none';
-                  var begin = document.getElementById("startTime"+index);
-                  begin.readOnly=true;
-                  begin.style.border='none';
-                  var last = document.getElementById("endTime"+index);
-                  last.readOnly=true;
-                  last.style.border='none';
-                }}
-              else{alert('请输入临床工作单位！');}
-            },
-          edit:function(index){
-            if(confirm('取消保存？')) {
-              var save=document.getElementById("save"+index);
-              save.style.display='none';
-              var edit=document.getElementById("edit"+index);
-              edit.style.display='none';
-              var change=document.getElementById("change"+index);
-              change.style.display='inline';
-              var del=document.getElementById("del"+index);
-              del.style.display='inline';
-              var unit = document.getElementById("clinicWorkUnit"+index);
-              unit.readOnly=true;
-              unit.style.border='none';
-              var job = document.getElementById("workPost"+index);
-              job.readOnly=true;
-              job.style.border='none';
-              var begin = document.getElementById("startTime"+index);
-              begin.readOnly=true;
-              begin.style.border='none';
-              var last = document.getElementById("endTime"+index);
-              last.readOnly=true;
-              last.style.border='none';
-//              取消保存时后台应返回之前的值
-            }
-          },
-          del:function(index){
-            if(confirm("您确定要删除该奖项吗？")){
-              console.log(this.tableList[index].workExperienceId);
-//              this.$http.post('./teacherManage/deleteTeacherWorkInfo',{
-              this.$http.post('../jsonphp/experience.php',{
-                "workExperienceId":this.tableList[index].workExperienceId
-              },{"Content-Type":"application/json"}).then(function (response){
-                if(response.body.result=='1')
-                { alert("操作成功！");
-                  this.tableList.splice(index,1);
-                }
-              }, function(error){
-                console.log("传递error:");
-                console.log(error);
-              });
-
-            }
-
-          },
-          change: function (index) {
-            var unit = document.getElementById("clinicWorkUnit"+index);
-            unit.readOnly=false;
-            unit.style.border=' 0.1rem solid #d4d4d9';
-            var job = document.getElementById("workPost"+index);
-            job.readOnly=false;
-            job.style.border=' 0.1rem solid #d4d4d9';
-            var begin = document.getElementById("startTime"+index);
-            begin.readOnly=false;
-            begin.style.border=' 0.1rem solid #d4d4d9';
-            var last = document.getElementById("endTime"+index);
-            last.readOnly=false;
-            last.style.border=' 0.1rem solid #d4d4d9';
-
-            var save=document.getElementById("save"+index);
-            save.style.display='inline';
-            var edit=document.getElementById("edit"+index);
-            edit.style.display='inline';
-            var change=document.getElementById("change"+index);
-            change.style.display='none';
-            var del=document.getElementById("del"+index);
-            del.style.display='none';
+      methods: {
+        operationClick: function (operationIndex, operation) {
+          this.operationIndex = operationIndex;
+          if (operation == "edit") {
+            this.modal1 = true;
+          } else if (operation == "del") {
+            this.modal2 = true;
+          } else if (operation == "save") {
+            this.modal3 = true;
           }
+        },
+        add: function () {
+          this.tableList.push({clinicWorkUnit: '', workPost: '', startTime: '', endTime: '', workExperienceId: ''});
+        },
+        save: function (index) {
+          this.modal3 = false;
+          var unit = document.getElementById("clinicWorkUnit" + index);
+          if (unit.value != "") {
+//            this.$http.post('../jsonphp/experience.php', {
+                   this.$http.post('./teacherManage/editTeacherWorkInfo',{
+              "clinicWorkUnit": this.tableList[index].clinicWorkUnit,
+              "workPost": this.tableList[index].workPost,
+              "startTime": this.tableList[index].startTime,
+              "endTime": this.tableList[index].endTime,
+              "workExperienceId": this.tableList[index].workExperienceId
+            }, {"Content-Type": "application/json"}).then(function (response) {
+              if (response.body.result == '1') {
+                this.$Message.success('操作成功！');
+              }
+            }, function (error) {
+              console.log("传递error:");
+              console.log(error);
+            });
+            var save = document.getElementById("save" + index);
+            save.style.display = 'none';
+            var edit = document.getElementById("edit" + index);
+            edit.style.display = 'none';
+            var chang = document.getElementById("chang" + index);
+            chang.style.display = 'inline';
+            var del = document.getElementById("del" + index);
+            del.style.display = 'inline';
+            unit.readOnly = true;
+            unit.style.border = 'none';
+            var job = document.getElementById("workPost" + index);
+            job.readOnly = true;
+            job.style.border = 'none';
+            var begin = document.getElementById("startTime" + index);
+            begin.readOnly = true;
+            begin.style.border = 'none';
+            var last = document.getElementById("endTime" + index);
+            last.readOnly = true;
+            last.style.border = 'none';
+          }
+          else {
+            alert('请输入临床工作单位！');
+          }
+        },
+        edit: function (index) {
+//            this.modal1 = false;
+          location.reload();
+//            if(confirm('取消保存？')) {
+//              var save=document.getElementById("save"+index);
+//              save.style.display='none';
+//              var edit=document.getElementById("edit"+index);
+//              edit.style.display='none';
+//              var chang=document.getElementById("chang"+index);
+//              chang.style.display='inline';
+//              var del=document.getElementById("del"+index);
+//              del.style.display='inline';
+//              var unit = document.getElementById("clinicWorkUnit"+index);
+//              unit.readOnly=true;
+//              unit.style.border='none';
+//              var job = document.getElementById("workPost"+index);
+//              job.readOnly=true;
+//              job.style.border='none';
+//              var begin = document.getElementById("startTime"+index);
+//              begin.readOnly=true;
+//              begin.style.border='none';
+//              var last = document.getElementById("endTime"+index);
+//              last.readOnly=true;
+//              last.style.border='none';
+//              取消保存时后台应返回之前的值
+        },
+        del: function (index) {
+          this.modal2 = false;
+          console.log(this.tableList[index].workExperienceId);
+              this.$http.post('./teacherManage/deleteTeacherWorkInfo',{
+//          this.$http.post('../jsonphp/experience.php', {
+            "workExperienceId": this.tableList[index].workExperienceId
+          }, {"Content-Type": "application/json"}).then(function (response) {
+            if (response.body.result == '1') {
+              this.$Message.success('操作成功！');
+              this.tableList.splice(index, 1);
+            }
+          }, function (error) {
+            console.log("传递error:");
+            console.log(error);
+          });
+        },
+        chang: function (index) {
+//            this.modal1 = true;
+          var unit = document.getElementById("clinicWorkUnit" + index);
+          unit.readOnly = false;
+          unit.style.border = ' 0.1rem solid #d4d4d9';
+          var job = document.getElementById("workPost" + index);
+          job.readOnly = false;
+          job.style.border = ' 0.1rem solid #d4d4d9';
+          var begin = document.getElementById("startTime" + index);
+          begin.readOnly = false;
+          begin.style.border = ' 0.1rem solid #d4d4d9';
+          var last = document.getElementById("endTime" + index);
+          last.readOnly = false;
+          last.style.border = ' 0.1rem solid #d4d4d9';
 
-
-
-    }}
+          var save = document.getElementById("save" + index);
+          save.style.display = 'inline';
+          var edit = document.getElementById("edit" + index);
+          edit.style.display = 'inline';
+          var chang = document.getElementById("chang" + index);
+          chang.style.display = 'none';
+          var del = document.getElementById("del" + index);
+          del.style.display = 'none';
+        }
+      }
+    }
 </script>
 
 <style lang="css" scoped>
@@ -330,5 +387,8 @@
     height: 2.5rem;
     text-align: center;
 
+  }
+  th{
+    font-size: 0.9rem;
   }
 </style>

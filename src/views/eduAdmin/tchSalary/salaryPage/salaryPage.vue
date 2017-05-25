@@ -23,13 +23,9 @@ export default {
 }
 </script>
 
-<style>
-#salary input {
-  /*margin: 0.6rem 0;*/
-  margin-right: 1.4rem;
+<style scoped>
+@media screen and (max-width: 1023px) {
+  html {
+  }
 }
-.buttonPart {
-  float: right;
-}
-
 </style>

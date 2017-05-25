@@ -1,14 +1,20 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>个人信息</span>
+    </div>
   <div id="selfMessage-teacher-tableDiv">
     <div id="tableLeft">
       <span id="subtitle1">{{subtitle1}}</span>
       <ul>
-        <li id="li"><a href="#">基本信息</a></li>
-        <li><a href="#">教育管理</a></li>
-        <li><a href="#">证书管理</a></li>
-        <li><a href="#">一线工作经历</a></li>
-        <li><a href="#">教学进修</a></li>
-        <li><a href="#">密码修改</a></li>
+        <li id="li"><a href="#/teacher/personInfo/basicMessage">基本信息</a></li>
+        <li><a href="#/teacher/info/educationManege">教育管理</a></li>
+        <li><a href="#/teacher/info/certificateManege">证书管理</a></li>
+        <li><a href="#/teacher/info/experience">一线工作经历</a></li>
+        <!--<li><a href="#">教学进修</a></li>-->
+        <li><a href="#/teacher/info/passwdChange">密码修改</a></li>
       </ul>
     </div>
     <div id="tableRight">
@@ -17,28 +23,54 @@
         <table>
           <tr>
             <td>旧密码：</td>
-            <td><input type="password" v-model="old" /></td>
+            <td><input onkeyup="this.value=this.value.replace(/\s+/g,'')"  type="password" v-model="old" /></td>
           </tr>
           <tr>
             <td>新密码：</td>
-            <td><input type="password" v-model="neww" /></td>
+            <td><input onkeyup="this.value=this.value.replace(/\s+/g,'')"  type="password" v-model="neww" /></td>
           </tr>
           <tr>
             <td>确认密码：</td>
-            <td><input type="password" v-model="connew" /></td>
+            <td><input onkeyup="this.value=this.value.replace(/\s+/g,'')"  type="password" v-model="connew" /></td>
           </tr>
-
-
         </table>
-
       </div>
       <div id="buttonDiv">
-        <button class="am-btn am-btn-success am-radius" @click="save(old,neww,connew)">确定</button>
-        <button class="am-btn am-btn-success am-radius" @click="cancel">取消</button>
+        <button class="am-btn am-btn-success am-radius" @click="saveDia(old,neww,connew)">确定</button>
+        <button class="am-btn am-btn-success am-radius" @click="cancelDia()">取消</button>
       </div>
       <div>
       </div>
     </div>
+    <Modal
+      v-model="modal1"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定修改密码？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="save(oold,oneww,oconnew)">确定</button>
+        <button id="modalBtn" @click="modal1 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
+      v-model="modal2"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>您确定取消操作吗？?</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="cancel()">确定</button>
+        <button id="modalBtn" @click="modal2 = false">取消</button>
+      </div>
+    </Modal>
+  </div>
   </div>
 </template>
 
@@ -51,12 +83,31 @@
         subtitle1:'个人信息',
         subtitle2:'密码修改',
         old:'',
-        new:'',
-        connew:''
+        neww:'',
+        connew:'',
+        oold:'',
+        oneww:'',
+        oconnew:'',
+        modal1: false,
+        modal2: false
       }
     },
     methods: {
+      saveDia:function(old,neww,connew){
+        this.oold=old;
+        this.oneww=neww;
+        this.oconnew=connew;
+        this.modal1 = true;
+      },
+      cancelDia:function(){
+        this.modal2 = true;
+      },
       save:function(oldone,newone,connewone){
+//        alert(oldone);
+//        alert("1");
+//        alert(newone);
+//        alert(oldone);
+        this.modal1 = false;
         if(newone==connewone){
           var a=CryptoJs.MD5(oldone+"0402护士学校");//md5加密
           a = a.toString().toUpperCase();//转16进制字符串，大写
@@ -73,6 +124,7 @@
             }).toString();
           }
         this.$http.post('./resetPwd',{
+//          this.$http.post('../jsonphp/passwdChange.php',{
           "userPwd":JSON.stringify(encrypt(a)),
           "newPwd":JSON.stringify(encrypt(b)),
           "userId":"0402"
@@ -80,13 +132,13 @@
           {"Content-Type":"application/json"}).then(function (response) {
             console.log(response);
             if(response.body.result=="1"){
-              alert("操作成功！")
+              this.$Message.success('操作成功！');
             }
           },
           function(error){
             console.log("获取error:");
             console.log(error);
-          });}else{alert("密码不一致！")}
+          });}else{this.$Message.error('密码不一致！');}
       },
       cancel:function(){
         location.reload();

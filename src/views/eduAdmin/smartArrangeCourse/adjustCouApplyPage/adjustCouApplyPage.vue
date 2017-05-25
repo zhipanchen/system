@@ -3,7 +3,7 @@
   <div id="adjustCouApply">
     <topTitle></topTitle>
     <!--导航栏组件-->
-    <topBar activeVue="#/eduAdmin/adjustCouApply"></topBar>
+    <topBar activeVue="#/eduAdmin/course/courseInfo/adjustCouApply"></topBar>
     <!--查看调课申请页面主组件-->
     <adjustCouApplyDiv></adjustCouApplyDiv>
   </div>
@@ -26,6 +26,7 @@
       adjustCouApplyDiv
     },
     mounted: function() {
+//      dom加载后调整页面高度
       var dom = document.getElementById("adjustCouApply");
       dom.style.height = window.innerHeight *0.85 + "px";
     },

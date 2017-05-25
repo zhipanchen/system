@@ -13,9 +13,21 @@
                 <button id="queryButton" @click="queryCourseClick()"  class="am-btn am-btn-success am-radius">查找</button>
             </div>
         </div>
-
+        <div class="positionBar">
+            <span>您的当前位置：</span>
+            <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+            <span> > <a href="#/login/main/eduAdminHome?course" class="returnHome">智能排课</a> > 排课信息 > 查看当前课表</span>
+        </div>
         <div id="mainDiv">
-            <p id="tableTipP">支持分别以学期和周数为条件，对全校的课程表进行查询；支持调换选定的两门课程。</p>
+            <p id="tableTipP">
+                支持分别以学期和周数为条件，对全校的课程表进行查询；支持调换选定的两门课程。
+                <form action="./acdeminSeeCurriculumExcel" method="get">
+                    <!--<input type="text" v-model="termExport" name="yearSemester" style="display: none">-->
+                    <!--<input type="text" v-model="weekExport" name="week" style="display:none;">-->
+                    <div class="am-btn am-btn-success am-radius" style="position: absolute;right: 7rem;z-index: 10" @click="exportClick()">导出</div>
+                    <button id="exportButton" style="display: none" type="submit"></button>
+                </form>
+            </p>
             <p id="tableInfoP">当前课表：{{ term }} {{ week }} </p>
             <tableDiv :queryCourse="queryCourse"></tableDiv><!--表格组件-->
         </div>
@@ -28,11 +40,15 @@
         name: 'checkCourseDiv',
         data () {
             return {
-                term: '',//预想显示搜索后的课表信息标题
+                term: '',//显示搜索后的课表信息标题
                 week: '',
                 termSelect: '请选择学期',
                 weekSelect: '请选择周数',
+//                选择值绑定
                 queryCourse: [],
+                termExport: "",
+                weekExport: "",
+//                查找结果课表
                 weeks:[
                     { "name":"第一周", "value":"1" },
                     { "name":"第二周", "value":"2" },
@@ -43,7 +59,7 @@
                     { "name":"第七周", "value":"7" },
                     { "name":"第八周", "value":"8" },
                     { "name":"第九周", "value":"9" },
-                    { "name":"第十周", "value":"10" },
+//                    { "name":"第十周", "value":"10" },
                     { "name":"第十一周", "value":"11" },
                     { "name":"第十二周", "value":"12" },
                     { "name":"第十三周", "value":"13" },
@@ -52,9 +68,10 @@
                     { "name":"第十六周", "value":"16" },
                     { "name":"第十七周", "value":"17" },
                     { "name":"第十八周", "value":"18" },
-                    { "name":"第十九周", "value":"19" },
-                    { "name":"第二十周", "value":"20" }
+                    { "name":"第十九周", "value":"19" }
+//                    { "name":"第二十周", "value":"20" }
                 ],
+//                周数选择
                 terms:[
                     { "name":"2015-2016 第1学期", "value":"2015-2016.1" },
                     { "name":"2015-2016 第2学期", "value":"2015-2016.2" },
@@ -63,41 +80,68 @@
                     { "name":"2017-2018 第1学期", "value":"2017-2018.1" },
                     { "name":"2017-2018 第2学期", "value":"2017-2018.2" }
                 ]
+//                学期选择
             }
         },
         components: {
             tableDiv
         },
         beforeMount: function() {
-            this.$http.post('./alternateLessionHandle.action',{},{
-//            this.$http.post('../testPhp/adjustCouApply.php',{},{
+            this.$http.post('./acdeminSeeCurriculum',{
+//            this.$http.post('../testPhp/checkCourse.php',{
+                "yearSemester": "",
+                "week": ""
+            },{
                 "Content-Type":"application/json"
             }).then(function(response){
-                console.log("获取申请:");
+                console.log("获取课表:");
                 console.log(response.body);
-                var data = response.body;
-                this.applications = data.applicationsList;
+                this.queryCourse = response.body.acdeminCurriculum;
+                this.terms = [];
+                for (var i = 0; i < response.body.yearSemester.length; i++) {
+                    this.terms.push({"name":response.body.yearSemester[i].split(".")[0] + " 第" + response.body.yearSemester[i].split(".")[1] + "学期", "value":response.body.yearSemester[i]});
+                }
             },function(error){
-                console.log("获取申请error:");
-                console.log(error);
+                this.$Message.error('连接失败，请重试！');
             });
         },
+//    页面dom加载前获取后端数据
         methods: {
+            exportClick: function(){
+                if(this.termSelect == "请选择学期"){
+                    this.termExport = "";
+                }else{
+                    this.termExport = this.termSelect;
+                }
+                if(this.weekSelect == "请选择周数"){
+                    this.weekExport = "";
+                }else{
+                    this.weekExport = this.weekSelect;
+                }
+                document.getElementById("exportButton").click();
+            },
             queryCourseClick: function(){
+//                查找课表
+                if(this.termSelect == "请选择学期"){
+                    this.termSelect = "";
+                }
+                if(this.weekSelect == "请选择周数"){
+                    this.weekSelect = "";
+                }
                 this.$http.post('./acdeminSeeCurriculum',{
 //                this.$http.post('../testPhp/checkCourseQuery.php',{
-                    "year": this.termSelect.split(".")[0],
-                    "term": this.termSelect.split(".")[1],
+                    "yearSemester": this.termSelect,
                     "week": this.weekSelect
                 },{
                     "Content-Type":"application/json"
                 }).then(function(response){
                     console.log("查找课表:");
                     console.log(response.body);
-                    this.queryCourse = response.body.course;
+                    this.queryCourse = response.body.acdeminCurriculum;
+                    this.term = this.termSelect.split(".")[0]+"年第"+this.termSelect.split(".")[1]+"学期";
+                    this.week = "第"+this.weekSelect+"周";
                 },function(error){
-                    console.log("查找课表error:");
-                    console.log(error);
+                    this.$Message.error('连接失败，请重试！');
                 });
             }
         }
@@ -118,10 +162,12 @@
         margin-right: 1.4rem;
     }
     #operationDiv{
+        /*查找区域*/
         background-color: white;
         margin: 0 0 0.6rem;
     }
     #selectDiv{
+        /*选择框区域*/
         padding: 0.6rem 5rem;
     }
     #tableTipP{

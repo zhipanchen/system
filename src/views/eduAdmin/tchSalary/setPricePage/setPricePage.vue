@@ -25,9 +25,9 @@ export default {
 }
 </script>
 
-<style>
-.semester {
-	margin: 0 5rem;
-	float: right;
+<style scoped>
+@media screen and (max-width: 1023px) {
+  html {
+  }
 }
 </style>

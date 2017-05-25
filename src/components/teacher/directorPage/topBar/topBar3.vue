@@ -1,7 +1,10 @@
 <template>
   <div class="topBarDiv am-btn-group">
-    <a :href="checkCouUrl">
-      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" @click="checkCouClick">{{ checkCouButton }}</button>
+    <a href="#/teacher/teach/courseList">
+      <button id="checkCouButton" class="topBarButton am-btn am-btn-success " >教学计划</button>
+    </a>
+    <a href="#/teacher/teach/director">
+      <button  class="topBarButton am-btn am-btn-success btn-active" >督导反馈</button>
     </a>
   </div>
 </template>
@@ -26,7 +29,7 @@
   }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 @import '../../../../assets/css/external.css';
 
   html {

@@ -28,7 +28,7 @@
   }
 </script>
 
-<style lang="css">
+<style scoped>
   html{
     font-size: 100%;
   }

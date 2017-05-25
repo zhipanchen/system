@@ -1,5 +1,10 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <div id="selectDiv">
+    <div class="positionBar">
+      <span>你的当前位置：</span>
+      <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
+      <span> > 学生评教</span>
+    </div>
     <div class="blank">
       <select class="selectStyle1">
         <option value="选择学期" disabled selected>选择学期</option>
@@ -29,6 +34,25 @@
         </tr>
       </table>
     </div>
+    <Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}" width:700>
+      <table>
+        <tr>
+        </tr>
+        <!--表头-->
+        <tr v-for="(application,index) in applications" :id="application.id">
+          <td class="spanStyle">{{ application.teacher }}</td>
+          <td><input type="radio" value="1" :name="index" v-model="picked"/>优秀</td>
+          <td><input type="radio" value="2" :name="index" v-model="picked1"/>良好</td>
+          <td><input type="radio" value="3" :name="index" v-model="picked1"/>中等</td>
+          <td><input type="radio" value="4" :name="index" v-model="picked1"/>较差</td>
+          <td><input type="radio" value="5" :name="index" v-model="picked1"/>差</td>
+        </tr>
+      </table>
+      <div slot="footer" style="text-align:center;">
+        <Button id="modalBtn" @click="ok2()">确定</Button>
+        <Button id="modalBtn" @click="cancel2()">取消</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -37,6 +61,19 @@
     name: '',
     data () {
       return {
+        modal1:false,
+        modal2:false,
+        okValue:0,//值为0无法执行，为1可以执行
+        messageStr:'',
+        picked:true,
+        studentPageUrl:'index.html#'+'login/main/studentHome',
+        applications: [
+          { id:'1', teacher: '1.教师上课认真程度：'},
+          { id:'2', teacher: '2.教室课堂气氛：'},
+          { id:'3', teacher: '3.作业批改情况'},
+          { id:'4', teacher: '4.课堂收获情况'},
+          { id:'5', teacher: '5.教师上课生动形象，简单易懂'},
+        ],
         terms:[
           '2016-2017-1',
           '2016-2017-2',
@@ -55,11 +92,23 @@
       }
     },
     methods: {
+      ok2 () {
+        if(this.okValue==0){
+          this.modal2 = false;
+        }else if(this.okValue==1) {
+          this.modal2 = false;
+        }
+      },
+      cancel2(){
+        this.modal2=false;
+      },
       checkClick: function (index) {
-        var r = confirm("评教界面");
+        /*var r = confirm("评教");
         if (r) {
           this.evalutions[index].result = "已评教";
         }
+        */
+        this.modal2=true;
       }
     }
   }
@@ -103,6 +152,9 @@
   .aStyle{
     color:#3985FF;
     cursor: pointer;
+  }
+  .spanStyle{
+    float:left;
   }
 
   @media screen and (max-width: 1023px) {

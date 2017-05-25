@@ -12,14 +12,14 @@
       return {
         authorityMgmt1Btn: '角色管理',
         authorityMgmt2Btn: '权限设置',
-        authorityMgmt1Url: '',
-        authorityMgmt2Url: ''
+        authorityMgmt1Url: '#/eduAdmin/role/authorityMgmt1',
+        authorityMgmt2Url: '#/eduAdmin/role/eduAdminAuthorityManage2'
       }
     }
   }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
   #authorityMgmtBtn {
     margin-left: 5rem;
   }

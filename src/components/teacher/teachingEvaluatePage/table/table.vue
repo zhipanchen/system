@@ -1,4 +1,10 @@
 <template>
+  <div>
+    <div  class="positionBar">
+      <span>您当前的位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span>>评教结果</span>
+    </div>
     <div id="table">
       <div id="sel">
         <select @change="chooseTerm(option1)"  v-model="option1">
@@ -6,31 +12,30 @@
             {{ option1}}
           </option>
         </select>
-        <!--<input type="text" name="classNum" onfocus="if(value=='课程代码') {value=''}" onblur="if(value=='') {value='课程代码'}" value="课程代码"/>-->
-        <!--<input type="text" name="className"onfocus="if(value=='课程名称') {value=''}" onblur="if(value=='') {value='课程名称'}" value="课程名称"/>-->
-        <button class="am-btn am-btn-success am-radius">查看学生留言</button>
+        <!--<button class="am-btn am-btn-success am-radius">查看学生留言</button>-->
       </div>
       <div id="back">
       <div id="show">
-        <table class="normalTable">
+        <table class="operationTable">
           <thead>
             <tr>
-              <th width="20%">课程代码</th>
-              <th width="20%">课程名称</th>
-              <th width="20%">课程类型</th>
-
-              <th width="20%">参评人数</th>
-              <th width="20%">综合得分</th>
+              <th>课程代码</th>
+              <th>课程名称</th>
+              <th>课程类型</th>
+              <th>参评人数</th>
+              <th>综合得分</th>
+              <th></th>
               <!--<th width="15%">等级</th>-->
             </tr>
           </thead>
           <tbody>
-            <tr v-for="data in evaluationResult">
+            <tr v-for="(data,index) in evaluationResult" :key="data.courseId">
               <td v-text="data.courseId"></td>
               <td v-text="data.courseName"></td>
               <td v-text="data.courseType"></td>
               <td v-text="data.evaNum"></td>
               <td v-text="data.multiplyScore"></td>
+              <td><span :id="'stuMessage'+index" style="text-decoration: underline; cursor: pointer"  @click="stuMessage(index)">查看学生留言</span></td>
               <!--<td v-text="data.grade"></td>-->
             </tr>
           </tbody>
@@ -38,6 +43,7 @@
       </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -45,16 +51,14 @@
         name: 'table',
         data () {
             return {
-              semesterList:[
-                           ],
+              semesterList:[],
               option1:'',
-              evaluationResult:[
-
-              ]
+              evaluationResult:[{courseId:"123",courseName:"护理",courseType:"必修",evaNum:"23",multiplyScore:"98"}]
             }
         },
       beforeMount:function(){
-        this.$http.post('./studentEvaluation/showEvaluation',{},
+        this.$http.post('../jsonphp/teachingEvaluate.php',{},
+//        this.$http.post('./studentEvaluation/showEvaluation',{},
           {"Content-Type":"application/json"}).then(function(response){
             console.log(response.body);
             this.evaluationResult = response.body.evaluationResult;
@@ -68,22 +72,27 @@
       },
       methods:{
         chooseTerm:function(value){
-          this.$http.post('./studentEvaluation/showEvaluation',{
+          this.$http.post('../jsonphp/teachingEvaluate.php',{
+//          this.$http.post('./studentEvaluation/showEvaluation',{
 //            "appTeacherSerial": "0301",
             "semester": value
           },{"Content-Type":"application/json"}).then(function (response) {
               console.log("结果");
               console.log(response.body);
               if(response.body.result=="success")
-              { alert("操作成功！");
+              { this.$Message.success('操作成功！');
                 this.evaluationResult = response.body.evaluationResult;}
               else
-              {alert("操作失败！")}
+              {this.$Message.error('操作失败！');}
             },
             function(error){
               console.log("结果error:");
               console.log(error);
             });
+        },
+        stuMessage:function(index){
+          var id=this.evaluationResult[index].courseId;
+          location.href='#/teacher/studentMessage?'+id;
         }
       }
     }
@@ -95,9 +104,9 @@
     display: flex;
     padding-left:5rem;
     background-color: white;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+   justify-content: space-between;
   }
   #back{    background-color: #f3f3f3;}
   select{
@@ -117,8 +126,12 @@
     font-size: 0.8rem;
   }
   button{
-   position: relative;
-    left:52rem;
+  margin-right:5rem;
+
+  }
+  #space{
+    display: flex;
+    justify-content:space-between;
   }
   table{
     /*border: solid 1px lightgray;*/
@@ -135,13 +148,13 @@
     top:2rem;
   }
   tr{
-    height:2rem;
+    height:3rem;
   }
   td{
-    border:solid 1px lightgrey;
+    /*border:solid 1px lightgrey;*/
   }
   th{
-    border:solid 1px lightgrey;
-    height: 2.5rem;
+    /*border:solid 1px lightgrey;*/
+    /*height: 2.5rem;*/
   }
 </style>

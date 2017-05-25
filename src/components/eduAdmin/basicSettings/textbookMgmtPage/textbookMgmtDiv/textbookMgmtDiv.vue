@@ -3,8 +3,10 @@
     <div class="dropDown">
       <div id="fiveYearDiv">
         <button class="amButtom" @click="fiveYearClick"><img id="fiveYearArrow" class="iconImg" :src="icon2"><span class="subtitle">五年制</span></button>
+        <!--按钮实现点击显示或隐藏-->
         <table id="fiveYearTable" v-show="fiveYearTable">
           <tr>
+            <td>年级</td>
             <td>教材名称</td>
             <td>所用课程</td>
             <td>课程编码</td>
@@ -14,6 +16,7 @@
             <td>ISBN码</td>
           </tr>
           <tr v-for="fiveTextbook in fiveTextbooks">
+            <td>{{ fiveTextbook.gradeName }}</td>
             <td>{{ fiveTextbook.textbookName }}</td>
             <td>{{ fiveTextbook.courseName }}</td>
             <td>{{ fiveTextbook.courseId }}</td>
@@ -28,6 +31,7 @@
         <button class="amButtom" @click="threeYearClick"><img id="threeYearArrow" class="iconImg" :src="icon1"><span class="subtitle">三年制</span></button>
         <table id="threeYearTable" v-show="threeYearTable">
           <tr>
+            <td>年级</td>
             <td>教材名称</td>
             <td>所用课程</td>
             <td>课程编码</td>
@@ -37,6 +41,7 @@
             <td>ISBN码</td>
           </tr>
           <tr v-for="threeTextbook in threeTextbooks">
+            <td>{{ threeTextbook.gradeName }}</td>
             <td>{{ threeTextbook.textbookName }}</td>
             <td>{{ threeTextbook.courseName }}</td>
             <td>{{ threeTextbook.courseId }}</td>
@@ -67,19 +72,9 @@
         threeYearTable: false,
 //        三年制教材下拉内容，初始为下拉隐藏
         fiveTextbooks: [
-          /*{ textbookName:"护理", courseName:"护理", courseId:"123465", author:"李雷", publisher:"高等教育出版社", pubtime:"1", isbn:"978-7-04-029457-6" },
-          { textbookName:"护理", courseName:"护理", courseId:"123465", author:"李雷", publisher:"高等教育出版社", pubtime:"2", isbn:"978-7-04-029457-6" },
-          { textbookName:"护理", courseName:"护理", courseId:"123465", author:"李雷", publisher:"高等教育出版社", pubtime:"3", isbn:"978-7-04-029457-6" },
-          { textbookName:"护理", courseName:"护理", courseId:"123465", author:"李雷", publisher:"高等教育出版社", pubtime:"4", isbn:"978-7-04-029457-6" },
-          { textbookName:"护理", courseName:"护理", courseId:"123465", author:"李雷", publisher:"高等教育出版社", pubtime:"5", isbn:"978-7-04-029457-6" },*/
         ],
 //        五年制教材信息
         threeTextbooks: [
-          /*{ textbookName:"护理", courseName:"护理", courseId:"123465", author:"李雷", publisher:"高等教育出版社", pubtime:"1", isbn:"978-7-04-029457-6" },
-          { textbookName:"护理", courseName:"护理", courseId:"123465", author:"李雷", publisher:"高等教育出版社", pubtime:"2", isbn:"978-7-04-029457-6" },
-          { textbookName:"护理", courseName:"护理", courseId:"123465", author:"李雷", publisher:"高等教育出版社", pubtime:"3", isbn:"978-7-04-029457-6" },
-          { textbookName:"护理", courseName:"护理", courseId:"123465", author:"李雷", publisher:"高等教育出版社", pubtime:"4", isbn:"978-7-04-029457-6" },
-          { textbookName:"护理", courseName:"护理", courseId:"123465", author:"李雷", publisher:"高等教育出版社", pubtime:"5", isbn:"978-7-04-029457-6" },*/
         ],
 //        三年制教材信息
       }
@@ -92,18 +87,77 @@
         console.log("获取教材:");
         console.log(response);
         var data = response.body;
-        for(var i = 0;i < data.TextbookAndYearType.length;i++){
-          if(data.TextbookAndYearType[i].schoolYearType == "三年制"){
-            this.threeTextbooks.push(data.TextbookAndYearType[i]);
+        var fiveYears = [];
+        var threeYears = [];
+        var fiveBuffer = [];
+        var threeBuffer = [];
+        function sortNumber(a,b) {
+          return a - b
+        }
+//        排序规则，从小到大
+        for(var i = 0;i < data.textbookList.length;i++){
+          if(data.textbookList[i].schoolYearType == "3"){
+            this.threeTextbooks.push(data.textbookList[i]);
           }else{
-            this.fiveTextbooks.push(data.TextbookAndYearType[i]);
+            this.fiveTextbooks.push(data.textbookList[i]);
           }
         }
+//        保存无序的教材信息
+        console.log(this.fiveTextbooks);
+        console.log(this.threeTextbooks);
+        for (var i = 0; i < this.fiveTextbooks.length; i++) {
+//          循环获取年级
+          var isExist = false;
+          for (var n = 0; n < fiveYears.length; n++) {
+//            循环判断是否重复
+            if(this.fiveTextbooks[i].gradeName == fiveYears[n]){
+              isExist = true;
+            }
+          }
+          if(!isExist){
+            fiveYears.push(this.fiveTextbooks[i].gradeName);
+          }
+        }
+        fiveYears = fiveYears.sort(sortNumber);
+//        对年级进行排序
+        for (var i = 0; i < fiveYears.length; i++) {
+//          根据年级依次重新排序教材
+          for (var n = 0; n < this.fiveTextbooks.length; n++) {
+            if(this.fiveTextbooks[n].gradeName == fiveYears[i]){
+              fiveBuffer.push(this.fiveTextbooks[n]);
+            }
+          }
+        }
+        this.fiveTextbooks = fiveBuffer;
+//        将排序好的教材保存显示
+
+        for (var i = 0; i < this.threeTextbooks.length; i++) {
+          var isExist = false;
+          for (var n = 0; n < threeYears.length; n++) {
+            if(this.threeTextbooks[i].gradeName == threeYears[n]){
+              isExist = true;
+            }
+          }
+          if(!isExist){
+            threeYears.push(this.threeTextbooks[i].gradeName);
+          }
+        }
+        threeYears = threeYears.sort(sortNumber);
+        for (var i = 0; i < threeYears.length; i++) {
+          for (var n = 0; n < this.threeTextbooks.length; n++) {
+            if(this.threeTextbooks[n].gradeName == threeYears[i]){
+              threeBuffer.push(this.threeTextbooks[n]);
+            }
+          }
+        }
+        this.threeTextbooks = threeBuffer;
+
       },function(error){
         console.log("获取教材error:");
         console.log(error);
       });
     },
+//    页面dom加载前获取后端数据
     methods: {
 //        点击显示或隐藏五年制下拉教材信息
       fiveYearClick: function () {
@@ -124,12 +178,10 @@
       threeYearClick: function () {
         var threeYearArrow = document.getElementById("threeYearArrow");
         if (!this.threeArrow) {
-//              alert("open");
           this.threeArrow = true;
           this.threeYearTable = true;
           threeYearArrow.src = this.icon2;
         } else {
-//              alert("close");
           this.threeArrow = false;
           this.threeYearTable = false;
           threeYearArrow.src = this.icon1;
@@ -147,13 +199,16 @@
     margin: 0 auto;
     background-color: #f3f3f3;
     height: 100%;
+    overflow: auto;
   }
   .dropDown{
+    /*主要内容区域*/
     margin: 0.6rem 5rem;
     position: relative;
     top: 0.6rem;
   }
   table{
+    /*教材信息*/
     width: 100%;
     margin: 0 auto;
     border-collapse: collapse;

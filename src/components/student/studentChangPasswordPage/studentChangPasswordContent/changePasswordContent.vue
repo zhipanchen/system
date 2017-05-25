@@ -1,8 +1,9 @@
 <template>
     <div id="changePasswordContent">
-      <div class="blank">
-          <label class="title">当前所在位置：修改密码</label>
-          <button id="backButton" class="am-btn am-btn-success am-radius" @click="backClick">返回</button>
+      <div class="positionBar">
+        <span>你的当前位置：</span>
+        <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
+        <span> > 修改密码</span>
       </div>
       <div class="content">
         <div class="empty"></div>
@@ -24,14 +25,13 @@
           <button class="confirmButton am-btn am-btn-success am-radius" @click="confirmClick">确定</button>
         </div>
       </div>
-      <Button @click="modal2=true" id="modalBtn">不带标题栏</Button>
-      <Model v-model="model2" id="modalBody" :styles="{top:'10rem'}">
-        <p stle="text-align:center;font-size:1.1rem;">你确定要删除该信息吗？</p>
-        <div solt="footer" style="text-align:center">
-          <Buton id="modalBtn" :loading=modal_loading" @click="ok2">取消</Buton>
-          <Buton id="modalBtn" :loading=modal_loading" @click="cancel2">取消</Buton>
+      <Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
+        <p style="text-align:center; font-size:1.1rem;">{{ messageStr }}</p>
+        <div slot="footer" style="text-align:center;">
+          <Button id="modalBtn" @click="ok2()">确定</Button>
+          <Button id="modalBtn" @click="cancel2()">取消</Button>
         </div>
-        </Model>
+      </Modal>
     </div>
 </template>
 
@@ -41,64 +41,75 @@
         name: 'studentChangPasswordContent',
         data () {
             return {
+              studentPageUrl:'index.html#'+'login/main/studentHome',
               nowPassword:'',
               newPassword:'',
               newPasswordAgain:'',
               modal1:false,
-              modal2:false
+              modal2:false,
+              okValue:0,//值为0无法执行，为1可以执行
+              messageStr:''
             }
         },
         methods:{
-          ok2:function(){
-            this.modal_loading=true;
-            seTimeout(()=>{
-              this.modal_loading=false;
+          ok2 () {
+            if(this.okValue==0){
+              this.modal2 = false;
+            }else if(this.okValue==1) {
+              this.modal2 = false;
 
-            })
+              var a = CryptoJS.MD5(this.nowPassword + "0402" + "护士学校");//MD5加密
+              var b = CryptoJS.MD5(this.newPassword + "0402" + "护士学校");//MD5加密
+              a = a.toString().toUpperCase();//转16进制字符串,大写化
+              b = b.toString().toUpperCase();//转16进制字符串,大写化
+              function encrypt(data) {
+                //AES加密函数
+                var key = CryptoJS.enc.Latin1.parse('uestc2017nurse01');
+                var iv = CryptoJS.enc.Latin1.parse('10esrun7102ctseu');
+                return CryptoJS.AES.encrypt(data, key, {
+                  iv: iv,
+                  mode: CryptoJS.mode.CBC,
+                  padding: CryptoJS.pad.ZeroPadding
+                }).toString();
+              }
+
+              this.$http.post('./resetPwd', {
+                "userPwd": JSON.stringify(encrypt(a)),
+                "newPwd": JSON.stringify(encrypt(b))
+                //对MD5加密结果进行AES加密,并JSON字符串化,传递后端
+              }, {
+                "Content-Type": "application/json"
+              }).then(function (response) {
+                console.log(response.body);
+                if (response.body.result == "1") {
+                  this.$Message.success('密码修改成功！');
+                } else {
+                  this.$Message.error('密码修改不成功！');
+                }
+              }, function (error) {
+                this.$Message.error("连接失败,请确认重试！");
+                console.log(error);
+              });
+            }
           },
-          backClick: function(){
-          alert("返回");
-        },
+          cancel2(){
+            this.modal2=false;
+          },
           confirmClick:function() {
             if (this.nowPassword == '' || this.newPassword == '' || this.newPasswordAgain == '') {
-              alert('输入不能为空！');
+              this.okValue=0;
+              this.messageStr="输入不能为空！";
+              this.modal2 = true;
             }
             else {
-              if (this.newPassword !=this.newPasswordAgain){
-                alert('新密码与确认密码不一致！');
-                }else {
-                var a = CryptoJS.MD5(this.nowPassword + "0402" + "护士学校");//MD5加密
-                alert(a);
-                var b=CryptoJS.MD5(this.newPassword + "0402" + "护士学校");//MD5加密
-                a = a.toString().toUpperCase();//转16进制字符串,大写化
-                b = b.toString().toUpperCase();//转16进制字符串,大写化
-                function encrypt(data) {
-                  //AES加密函数
-                  var key  = CryptoJS.enc.Latin1.parse('uestc2017nurse01');
-                  var iv   = CryptoJS.enc.Latin1.parse('10esrun7102ctseu');
-                  return CryptoJS.AES.encrypt(data, key, {
-                    iv:iv,
-                    mode:CryptoJS.mode.CBC,
-                    padding:CryptoJS.pad.ZeroPadding
-                  }).toString();
-                }
-                this.$http.post('./resetPwd', {
-                  "userPwd": JSON.stringify(encrypt(a)),
-                  "newPwd": JSON.stringify(encrypt(b))
-                  //对MD5加密结果进行AES加密,并JSON字符串化,传递后端
-                }, {
-                  "Content-Type": "application/json"
-                }).then(function (response) {
-                  console.log(response.body);
-                  if(response.body.result == "1"){
-                    alert('密码修改成功！');
-                  }else{
-                    alert("密码修改不成功！");
-                  }
-                }, function (error) {
-                  alert("连接失败,请确认重试！");
-                  console.log(error);
-                });
+              if (this.newPassword != this.newPasswordAgain) {
+                this.okValue=0;
+                this.messageStr="新密码也确认密码不一致！";
+                this.modal2 = true;
+              } else {
+                this.okValue=1;
+                this.messageStr="确定修改密码？";
+                this.modal2 = true;
               }
             }
           }
@@ -109,23 +120,6 @@
 <style scoped>
     html {
         font-size: 100%;
-    }
-    #backButton{
-      /*登录按钮*/
-      float:right;
-      margin-right:5rem;
-      margin-top:0.6rem;
-      color: white;
-      width: 5.6rem;
-      vertical-align: bottom;
-      outline: none;
-    }
-    .title{
-      display: block;
-      float:left;
-      margin-left:5rem;
-      height:3.5rem;
-      vertical-align: middle;
     }
     .content{
       background-color:#F3F3F3;

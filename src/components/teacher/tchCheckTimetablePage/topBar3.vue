@@ -1,13 +1,13 @@
 <template>
   <div class="topBarDiv am-btn-group">
-    <a :href="manualCouUrl">
-      <button id="manualCouButton" class="topBarButton am-btn am-btn-success">{{ manualCouButton }}</button>
+    <a :href="courseMgmtUrl">
+      <button id="courseMgmtBtn" class="topBarButton am-btn am-btn-success btn-active">{{ courseMgmtBtn }}</button>
     </a>
-    <a :href="sendApplyUrl">
-      <button id="sendApplyButton" class="topBarButton am-btn am-btn-success">{{ sendApplyButton }}</button>
+    <a :href="teacherTestUrl">
+      <button id="teacherTestBtn" class="topBarButton am-btn am-btn-success">{{ teacherTestBtn }}</button>
     </a>
-    <a :href="checkCouUrl">
-      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active">{{ checkCouButton }}</button>
+    <a :href="tchResearchUrl">
+      <button id="tchResearchBtn" class="topBarButton am-btn am-btn-success">{{ tchResearchBtn }}</button>
     </a>
   </div>
 </template>
@@ -17,14 +17,12 @@
     name: 'topBarDiv',
     data () {
       return {
-        manualCouButton: '手动排课申请',
-        sendApplyButton: '提交排课申请',
-        checkCouButton: '查看课表',
-        arrInfoNum: '2',
-        adjInfoNum: '0',
-        manualCouUrl: '/teacher/tchManuAdjCl',
-        sendApplyUrl: 'http://localhost:8080/',
-        checkCouUrl: ''
+        courseMgmtBtn: '教师课表',
+        teacherTestBtn: '查看考场',
+        tchResearchBtn: '查看课酬',
+        courseMgmtUrl: '#/teacher/classInfo/tchCheckTimetable',
+        teacherTestUrl: '#/teacher/classInfo/teacherTestInfo',
+        tchResearchUrl: '#/teacher/classInfo/tchCheckSalary',
       }
     },
     methods: {
@@ -33,13 +31,13 @@
   }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 @import '../../../assets/css/external.css';
 
   html {
     font-size: 16px;
   }
-  #manualCouButton {
+  #courseMgmtBtn {
     margin-left: 5rem;
   }
 /*  .topBarButton,.topBarButton:active{

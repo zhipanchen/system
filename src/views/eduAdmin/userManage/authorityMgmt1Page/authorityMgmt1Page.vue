@@ -27,15 +27,9 @@ export default {
 }
 </script>
 
-<style>
-#main {
-  /*width: 80%;*/
-  margin: 2.7rem 5rem;
-  display: flex;
-  justify-content: center;
+<style scoped>
+@media screen and (max-width: 1023px) {
+  html {
+  }
 }
-.lPart, .rPart {
-  margin: 0 3rem;
-}
-
 </style>

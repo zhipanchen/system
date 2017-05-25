@@ -1,24 +1,21 @@
 <template>
     <div id="tchingProcess" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
-      <div v-for="(yearAndCourse,yearTypeIndex) in yearAndCourseList">
-        <div :id="yearTypeIndex + 'YearsTypeDiv'" class="yearsTypeDiv">
+      <div>
+        <div class="yearsTypeDiv">
           <!--年制模块下拉菜单-->
-          <!--<span><img :id="yearType.English + 'Arrow'" class="yearsTypeImg" :src="arrowright"></span>-->
-          <span :id="yearTypeIndex + 'P'" class="yearsTypeP">{{yearAndCourse.yearType}}年制</span>
-          <span><button id="yearTypeIndex + 'Module'" class="yearButton">下载模板</button></span>
+          <span class="yearsTypeP">5年制教学进度</span>
         </div>
 
-        <div :id="yearTypeIndex + 'ProcessMenu'">
-          <div v-for="(grade,gradeIndex) in yearAndCourse.gradeList">
-            <div :id="yearTypeIndex + 'GradeProcessDiv' + gradeIndex" class="gradeProcessDiv">
+        <div>
+          <div v-for="(grade,gradeIndex) in gradeIdArr">
+            <div v-if="grade.yearType==='5'" :id="'5GradeProcessDiv' + gradeIndex" class="gradeProcessDiv">
               <!--年级教学进程下拉菜单-->
-              <span><img :id="yearTypeIndex + 'Arrow' + gradeIndex" class="gradeProcessImg" @click="tableSlideToggle(yearTypeIndex,gradeIndex)" :src="arrowright"></span>
-              <span :id="yearTypeIndex + 'P' + gradeIndex" class="gradeProcessP" @click="tableSlideToggle(yearTypeIndex,gradeIndex)">{{grade.gradeName}}级</span>
-              <span><button class="gradeButton">导入</button></span>
-              <span><button class="gradeButton">导出</button></span>
+              <span><img :id="'5Arrow' + gradeIndex" class="gradeProcessImg" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)" :src="arrowright"></span>
+              <span :id="'5P' + gradeIndex" class="gradeProcessP" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)">{{grade.gradeName}}级</span>
+              <span><button class="gradeButton" @click="downloadClick(gradeIdList[gradeIndex])">下载</button></span>
             </div>
 
-            <div :id="yearTypeIndex + 'Table' + gradeIndex" style="display: none">
+            <div :id="'5Table' + gradeIndex" style="display: none">
               <table class="normalTable" style="table-layout: fixed">
                 <thead>
                 <tr>
@@ -45,23 +42,94 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="course in grade.courseList">
-                  <td v-text="course.courseType"></td>
+                <tr v-for="course in courseAllList[gradeIndexArr[gradeIndex]].courseList">
+                  <td v-text="course.courseTypeName"></td>
                   <td v-text="course.courseName"></td>
-                  <td v-text="course.studentTimeAdd"></td>
-                  <td v-text="course.studentTimeTheory"></td>
-                  <td v-text="course.studentTimePractice"></td>
-                  <td v-text="course.term1"></td>
-                  <td v-text="course.term2"></td>
-                  <td v-text="course.term3"></td>
-                  <td v-text="course.term4"></td>
-                  <td v-text="course.term5"></td>
-                  <td v-text="course.term6"></td>
-                  <td v-text="course.term7"></td>
-                  <td v-text="course.term8"></td>
-                  <td v-text="course.term9"></td>
-                  <td v-text="course.term10"></td>
-                  <td v-text="course.courseStatus"></td>
+                  <td v-text="course.totalHours"></td>
+                  <td v-text="course.theoryHours"></td>
+                  <td v-text="course.practiceHours"></td>
+                  <td v-text="course.semesterPeriod1"></td>
+                  <td v-text="course.semesterPeriod2"></td>
+                  <td v-text="course.semesterPeriod3"></td>
+                  <td v-text="course.semesterPeriod4"></td>
+                  <td v-text="course.semesterPeriod5"></td>
+                  <td v-text="course.semesterPeriod6"></td>
+                  <td v-text="course.semesterPeriod7"></td>
+                  <td v-text="course.semesterPeriod8"></td>
+                  <td v-text="course.semesterPeriod9"></td>
+                  <td v-text="course.semesterPeriod10"></td>
+                  <td v-if="course.teachStatus === 0">未开始</td>
+                  <td v-else-if="course.teachStatus === 1">完成</td>
+                  <td v-else>正在执行</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="yearsTypeDiv">
+          <!--年制模块下拉菜单-->
+          <!--<span><img :id="yearType.English + 'Arrow'" class="yearsTypeImg" :src="arrowright"></span>-->
+          <span class="yearsTypeP">3年制教学进度</span>
+        </div>
+
+        <div>
+          <div v-for="(grade,gradeIndex) in gradeIdArr">
+            <div v-if="grade.yearType==='3'" :id="'3GradeProcessDiv' + gradeIndex" class="gradeProcessDiv">
+              <!--年级教学进程下拉菜单-->
+              <span><img :id="'3Arrow' + gradeIndex" class="gradeProcessImg" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)" :src="arrowright"></span>
+              <span :id="'3P' + gradeIndex" class="gradeProcessP" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)">{{grade.gradeName}}级</span>
+              <span><button class="gradeButton" @click="downloadClick(gradeIdList[gradeIndex])">下载</button></span>
+            </div>
+
+            <div :id="'3Table' + gradeIndex" style="display: none">
+              <table class="normalTable" style="table-layout: fixed">
+                <thead>
+                <tr>
+                  <th width="12%" rowspan="2">课程类别</th>
+                  <th width="12%" rowspan="2">课程名称</th>
+                  <th width="18%" colspan="3">学时</th>
+                  <th width="48%" colspan="10">执行学期</th>
+                  <th width="10%" rowspan="2">课程状态</th>
+                </tr>
+                <tr>
+                  <td>总计</td>
+                  <td>理论</td>
+                  <td>实践</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                  <td>8</td>
+                  <td>9</td>
+                  <td>10</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="course in courseAllList[gradeIndexArr[gradeIndex]].courseList">
+                  <td v-text="course.courseTypeName"></td>
+                  <td v-text="course.courseName"></td>
+                  <td v-text="course.totalHours"></td>
+                  <td v-text="course.theoryHours"></td>
+                  <td v-text="course.practiceHours"></td>
+                  <td v-text="course.semesterPeriod1"></td>
+                  <td v-text="course.semesterPeriod2"></td>
+                  <td v-text="course.semesterPeriod3"></td>
+                  <td v-text="course.semesterPeriod4"></td>
+                  <td v-text="course.semesterPeriod5"></td>
+                  <td v-text="course.semesterPeriod6"></td>
+                  <td v-text="course.semesterPeriod7"></td>
+                  <td v-text="course.semesterPeriod8"></td>
+                  <td v-text="course.semesterPeriod9"></td>
+                  <td v-text="course.semesterPeriod10"></td>
+                  <td v-if="course.teachStatus === 0">未开始</td>
+                  <td v-else-if="course.teachStatus === 1">完成</td>
+                  <td v-else>正在执行</td>
                 </tr>
                 </tbody>
               </table>
@@ -81,66 +149,71 @@
             return {
               arrowright:arrowright,
               arrowdown:arrowdown,
-              yearAndCourseList:[
+              indexBool:false,
+              courseIndex:'0',
+              gradeIdList:[
+                '20145','20155','20133','20143'
+              ],
+              gradeIdArr:[
+//                {gradeName:'2015',yearType:'5'}
+              ],
+              gradeIndexArr:[
+                '0','0','0','0','0','0','0','0'
+              ],
+              courseAllList:[
                 {
-                  yearType:'3',
-                  gradeList:[
-                    {
-                      gradeName:'2013',
-                      courseList:[
-                        {courseType:'公共基础课3',courseName:'职业生涯规划',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'36',term2:'',term3:'',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'},
-                        {courseType:'公共基础课3',courseName:'哲学与人生',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'',term2:'36',term3:'',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'},
-                        {courseType:'公共基础课3',courseName:'经济政治与社会',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'',term2:'',term3:'36',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'}
-                      ]
-                    },
-                    {
-                      gradeName:'2012',
-                      courseList:[
-                        {courseType:'公共基础课2',courseName:'职业生涯规划',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'36',term2:'',term3:'',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'},
-                        {courseType:'公共基础课2',courseName:'哲学与人生',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'',term2:'36',term3:'',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'},
-                        {courseType:'公共基础课2',courseName:'经济政治与社会',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'',term2:'',term3:'36',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'}
-                      ]
-                    }
-                  ]
-                },
-                {
-                  yearType:'5',
-                  gradeList:[
-                    {
-                      gradeName:'2015',
-                      courseList:[
-                        {courseType:'公共基础课5',courseName:'职业生涯规划',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'36',term2:'',term3:'',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'},
-                        {courseType:'公共基础课5',courseName:'哲学与人生',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'',term2:'36',term3:'',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'},
-                        {courseType:'公共基础课5',courseName:'经济政治与社会',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'',term2:'',term3:'36',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'}
-                      ]
-                    },
-                    {
-                      gradeName:'2014',
-                      courseList:[
-                        {courseType:'公共基础课4',courseName:'职业生涯规划',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'36',term2:'',term3:'',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'},
-                        {courseType:'公共基础课4',courseName:'哲学与人生',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'',term2:'36',term3:'',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'},
-                        {courseType:'公共基础课4',courseName:'经济政治与社会',studentTimeAdd:'36',studentTimeTheory:'32',studentTimePractice:'4',term1:'',term2:'',term3:'36',term4:'',term5:'',term6:'',term7:'',term8:'',term9:'',term10:'',courseStatus:'未完成'}
-                      ]
-                    }
+                  grade:'',
+                  yearType:'',
+                  courseList:[
+                    {courseTypeName:'公共基础课3',courseName:'职业生涯规划',totalHours:'36',theoryHours:'32',practiceHours:'4',semesterPeriod1:'36',semesterPeriod2:'',semesterPeriod3:'',semesterPeriod4:'',semesterPeriod5:'',semesterPeriod6:'',semesterPeriod7:'',semesterPeriod8:'',semesterPeriod9:'',semesterPeriod10:'',teachStatus:'0'},
+                    {courseTypeName:'公共基础课3',courseName:'哲学与人生',totalHours:'36',theoryHours:'32',practiceHours:'4',semesterPeriod1:'',semesterPeriod2:'36',semesterPeriod3:'',semesterPeriod4:'',semesterPeriod5:'',semesterPeriod6:'',semesterPeriod7:'',semesterPeriod8:'',semesterPeriod9:'',semesterPeriod10:'',courseStatus:'1'},
+                    {courseTypeName:'公共基础课3',courseName:'经济政治与社会',totalHours:'36',theoryHours:'32',practiceHours:'4',semesterPeriod1:'',semesterPeriod2:'',semesterPeriod3:'36',semesterPeriod4:'',semesterPeriod5:'',semesterPeriod6:'',semesterPeriod7:'',semesterPeriod8:'',semesterPeriod9:'',semesterPeriod10:'',courseStatus:'2'}
                   ]
                 }
               ]
             }
         },
       beforeMount:function() {
-        this.$http.post('../teachingProcessJson',{},{
+        this.$http.post('./teachingSchedule/showGrade',{},{
           "Content-Type":"application/json"
         }).then(function (response) {
           console.log(response);
-          this.yearAndCourseList = response.body.yearAndCourseList;
+          this.gradeIdList = response.body.gradeIdList;
+          for(var i=0;i<this.gradeIdList.length;i++){
+            this.gradeIdArr.push({gradeName:this.gradeIdList[i].slice(0,4),yearType:this.gradeIdList[i].slice(4,5)});
+          }
         },function(error){
           console.log("获取error");
         });
       },
       methods:{
-        tableSlideToggle:function(yearTypeIndex,gradeIndex){
-          var table = document.getElementById(yearTypeIndex + 'Table' + gradeIndex);
-          var arrow = document.getElementById(yearTypeIndex + 'Arrow' + gradeIndex);
+        tableSlideToggle:function(yearType,gradeIndex,gradeName){
+          var table = document.getElementById(yearType + 'Table' + gradeIndex);
+          var arrow = document.getElementById(yearType + 'Arrow' + gradeIndex);
+          this.indexBool = false;
+          for(var i=0;i<this.courseAllList.length;i++){
+            if(this.courseAllList[i].grade===gradeName && this.courseAllList[i].yearType===yearType){
+              this.gradeIndexArr[gradeIndex] = i;
+              this.indexBool = true;
+              break;
+            }
+          }
+          if(this.indexBool === false){
+            this.$http.post('./showTeachProcess',{
+              "gradeId":this.gradeIdList[gradeIndex]
+            },{
+              "Content-Type":"application/json"
+            }).then(function (response) {
+              console.log(response);
+              var grade = response.body.grade;
+              var yearType = response.body.yearType;
+              var teachProcessVoList = response.body.teachProcessVoList;
+              this.courseAllList.push({grade:grade,yearType:yearType,courseList:teachProcessVoList});
+              this.gradeIndexArr[gradeIndex] = this.courseAllList.length - 1;
+            },function(error){
+              console.log("获取error");
+            });
+          }
           if (arrow.src === this.arrowright){
             table.style.display = "inline";
             arrow.src = this.arrowdown;
@@ -149,6 +222,9 @@
             table.style.display = "none";
             arrow.src = this.arrowright;
           }
+        },
+        downloadClick:function(gradeId){
+          location.href="./exportTeachProcess?gradeId="+gradeId;
         }
       }
     }

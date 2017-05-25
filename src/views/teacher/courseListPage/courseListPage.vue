@@ -25,10 +25,9 @@ export default {
 }
 </script>
 
-<style>
-.textWeight {
-  font-weight: bold;
-  font-size: 1.1rem;
+<style scoped>
+@media screen and (max-width: 1023px) {
+  html {
+  }
 }
-
 </style>

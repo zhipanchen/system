@@ -13,13 +13,12 @@
       </div>
       <div id="PasswordDiv" class="inputDiv">
         <span class="inputSpan">密码</span><br/>
-        <input id="passwordInput" class="loginInput" type="password" v-model="passwordValue">
-      </div><br/>
+        <input id="passwordInput" class="loginInput" type="password" v-model="passwordValue" @keyup.enter="loginClick()">
+      </div>
+      <p></p>
+      <p></p>
       <div>
-        <!--<input id="rememberCheckbox" type="checkbox"><label id="rememberLabel" for="rememberCheckbox">记住我</label>-->
-      </div><br/>
-      <div>
-        <button id="loginButton" @click="loginClick" class="am-btn am-btn-success am-radius">登录</button>
+        <button id="loginButton" @click="loginClick()" class="am-btn am-btn-success am-radius">登录</button>
         <span id="forgetSpan" @click="forgetPwClick">忘记密码？</span>
       </div>
     </div>
@@ -71,7 +70,7 @@
           loginClick: function(){
 //            登录验证
             if(this.userNumValue == "" || this.passwordValue == "" ) {
-              alert("帐号或密码不能为空！");
+              this.$Message.warning("帐号或密码不能为空！");
             }else{
               var a = CryptoJS.MD5(this.passwordValue + this.userId + "护士学校");
               a = a.toString().toUpperCase();
@@ -89,19 +88,24 @@
               }).then(function (response) {
                 console.log(response.body);
                 if(response.body.result == "1"){
-                  location.href = '#/eduAdmin/adjustCouApply';
+                  sessionStorage.setItem("userType", response.body.userType);
+                  if(response.body.userType == "1"){
+                    location.href = '#/login/main/studentHome';
+                  }else{
+                    location.href = '#/login/main/eduAdminHome';
+                  }
                 }else{
-                  alert("帐号或密码有误！请确认重试！");
+                  this.$Message.error("帐号或密码有误！请确认重试！");
                 }
               }, function (error) {
-                alert("连接失败,请确认重试！");
+                this.$Message.error('连接失败，请重试！',3);
                 console.log(error);
               });
             }
           },
           forgetPwClick: function(){
 //            忘记密码
-            location.href='#/forgetPassword';
+            location.href='#/login/operation/forgetPassword';
           }
         }
     }
@@ -112,11 +116,11 @@
     }
     #login{
       /*页面*/
-      text-align: center;
+      /*text-align: center;*/
       font-family: 微软雅黑;
       background-repeat: no-repeat;
-      height: 46rem;
       display: flex;
+      min-height: 45.9rem;
       align-items: center;
       justify-content: center;
     }
@@ -135,7 +139,7 @@
     #schoolImg{
       /*学校图标*/
       width: 50%;
-      height: 15%;
+      /*height: 15%;*/
     }
     #hospitalMottoP{
       /*医训*/

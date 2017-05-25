@@ -11,10 +11,10 @@
 
 <script>
   import topTitle from './../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/eduAdmin/eduAdminManagerPage/topBar1/topBar1.vue'
+  import topBar from '../../../components/eduAdmin/eduAdminManagerPage/topBar/topBar.vue'
   import eduAdminManagerContent from '../../../components/eduAdmin/eduAdminManagerPage/eduAdminManagerContent/eduAdminManagerContent.vue'
   export default {
-    name: 'changPasswordPage',
+    name: 'studentChangPasswordPage',
     data () {
       return {
       }
