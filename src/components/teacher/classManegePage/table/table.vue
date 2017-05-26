@@ -68,9 +68,11 @@
             }
         },
         methods:{
+          //添加
           add: function(){
             this.tableList.push({name:'',input:'',selected:'0'});
           },
+          //保存
           save:function(index){
             var Input = document.getElementById("Input"+index);
             var Select = document.getElementById("Select"+index);
@@ -91,6 +93,7 @@
             }}
             else{alert('请输入奖项！');}
           },
+          //取消
           edit:function(index){
             if(confirm('取消保存？')) {
               var save=document.getElementById("save"+index);
@@ -108,6 +111,7 @@
 //              取消保存时后台应返回之前的值
             }
           },
+          //编辑
           change: function (index) {
             var Input = document.getElementById("Input"+index);
             Input.readOnly=false;
@@ -122,6 +126,7 @@
             var del=document.getElementById("del"+index);
             del.style.display='none';
           },
+          //删除
           del:function(index){
             if(confirm("您确定要删除该奖项吗？")){
               this.tableList.splice(index,1);

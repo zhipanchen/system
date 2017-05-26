@@ -277,10 +277,8 @@
     },
     beforeMount: function() {
 //    页面dom加载前获取后端数据
-
       this.$http.post('./courseAssociationManege',{},{
 //      this.$http.post('../testPhp/courseArrangeSetting.php',{},{
-
         "Content-Type":"application/json"
       }).then(function(response){
         console.log("获取:");

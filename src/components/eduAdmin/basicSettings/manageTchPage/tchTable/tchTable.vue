@@ -3,6 +3,7 @@
     <div id="dropdownInfo">
       <span><input type="text" id="tchName" class="inputWM" placeholder="请输入姓名" v-model="teacherinfoKey.teacherName" @click="tchNameClick"></span>
       <span><input type="text" id="tchID" class="inputWM" placeholder="请输入编号" v-model="teacherinfoKey.teacherId" @click="tchIdClick"></span>
+      <!--教师姓名，编号输入框-->
       <span><button id="searchFor" class="am-btn am-btn-success am-radius buttonWM" @click="checkTchInfoClick()">查找</button></span>
       <span><button id="downloadForm" class="am-btn am-btn-success am-radius buttonWM" @click="downloadFormClick">下载模板</button></span>
       <span style="display: inline-block">
@@ -21,6 +22,7 @@
         </Upload>
       </span>
       <span><button id="leadOut" class="am-btn am-btn-success am-radius buttonWM" @click="downloadClick">下载</button></span>
+      <!--查找，上传，下载按钮-->
     </div>
     <div>
       <modal v-model="modalDownloadBool" width="400" id="modalBody">
@@ -36,8 +38,8 @@
         </div>
       </modal>
     </div>
+    <!--文件上传失败信息弹窗-->
     <div id="tchTable" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
-      <!--教师信息表格-->
       <table id="eduAdminTchTableSy" class="operationTable" style="table-layout: fixed;">
         <!--table-layout: fixed;固定表格格局-->
         <thead>
@@ -111,6 +113,7 @@
         </tbody>
       </table>
     </div>
+    <!--教师信息表格-->
     <div>
       <modal v-model="modalOperateBool" width="400" id="modalBody">
         <div style="text-align: center;font-size: 1.1rem;">
@@ -125,18 +128,18 @@
           <button id="modalBtn" @click="operateCancel">取消</button>
         </div>
       </modal>
+      <!--用户修改，取消修改教师信息，删除教师时，弹窗确认-->
       <modal v-model="modalResultBool" width="400" id="modalBody">
         <div style="text-align: center;font-size: 1.1rem;">
-          <p v-if="operateMsg === '1'&&resultMsg === '1'">保存修改成功</p>
-          <p v-else-if="operateMsg === '1'&&resultMsg === '0'">保存修改失败</p>
-          <p v-else-if="operateMsg === '3'&&resultMsg === '1'">删除成功</p>
-          <p v-else-if="operateMsg === '3'&&resultMsg === '0'">删除失败</p>
+          <p v-if="operateMsg == '1'">保存修改失败</p>
+          <p v-else-if="operateMsg == '3'">删除失败</p>
           <p v-else>处理出错</p>
         </div>
         <div slot="footer" style="text-align: center">
           <button id="modalBtn" @click="resultOk">确定</button>
         </div>
       </modal>
+      <!--弹窗提示确认保存修改，删除失败信息-->
     </div>
   </div>
 </template>
@@ -193,9 +196,11 @@
         tchNameClick:function(){
           this.teacherinfoKey.teacherId = "";
         },
+//        点击教师姓名输入框时，清空教师编号输入框
         tchIdClick:function(){
           this.teacherinfoKey.teacherName = "";
         },
+//        点击教师编号输入框时，清空教师姓名输入框
         checkTchInfoClick:function() {
           this.$http.post('./teacherManage/findTeacherInfo',{
             "teacherName":this.teacherinfoKey.teacherName,
@@ -214,17 +219,21 @@
             console.log("获取error");
           });
         },
+//        提交教师姓名和编号，接收教师信息
         handleFormatError:function(){
           this.downloadMsg = "1";
           this.modalDownloadBool = true;
         },
+//        处理上传文件格式不正确问题
         handleSizeError:function(){
           this.downloadMsg = "2";
           this.modalDownloadBool = true;
         },
+//        处理上传文件过大问题
         handleProgress:function(){
           this.$Message.loading("正在上传中...");
         },
+//        message提示：上传文件中
         handleSuccess:function(res){
           if(res.result==='1'){
             this.downloadMsg = "3";
@@ -234,19 +243,24 @@
           }
           this.modalDownloadBool = true;
         },
+//        文件上传成功后，如果上传文件没有问题，4秒后刷新页面，如果文件内容出错，提示文件出错信息
         handleError:function(){
           this.downloadMsg = "4";
           this.modalDownloadBool = true;
         },
+//        提示文件上传失败
         downloadFormClick:function(){
           location.href="./teacherManage/exportTeacherInfoTemplet";
         },
+//        下载上传模板
         downloadClick:function(){
           location.href="./teacherManage/exportTeacherInfo";
         },
+//        下载教师信息Excel表
         checkOk:function(){
           this.modalDownloadBool = false;
         },
+//        用户确认文件上传操作结果
         editClick: function(index){
           var inputTable = document.getElementById("inputTable"+index);
           var input = inputTable.getElementsByTagName("input");
@@ -289,21 +303,25 @@
           deleteImg.style.display = "none";
           restoreImg.style.display = "inline";
         },
+//        修改教师信息
         saveClick:function(index){
           this.modalOperateBool = true;
           this.operateMsg = "1";
           this.index = index;
         },
+//        保存对教师信息的修改时，弹窗确认
         restoreClick:function(index){
           this.modalOperateBool = true;
           this.operateMsg = "2";
           this.index = index;
         },
+//        取消对教师信息的修改时，弹窗确认
         deleteClick:function(index){
           this.modalOperateBool = true;
           this.operateMsg = "3";
           this.index = index;
         },
+//        删除教师时，弹窗确认
         saveOk: function(){
           var inputTable = document.getElementById("inputTable"+this.index);
           var input = inputTable.getElementsByTagName("input");
@@ -332,6 +350,7 @@
               this.teacherSimpleInfoList[this.index].currentWorkTitle = currentWorkTitleSplit[0];
               this.teacherSimpleInfoList[this.index].currentWorkDuty = currentWorkDutySplit[0];
               this.teacherSimpleInfoList[this.index].teacherType = teacherTypeSplit[0];
+              this.$Message.success("保存成功！");
             }
           },function(error){
             console.log("获取error");
@@ -347,6 +366,7 @@
           deleteImg.style.display = "inline";
           restoreImg.style.display = "none";
         },
+//        保存对教师信息的修改
         cancelOk: function(){
           var inputTable = document.getElementById("inputTable"+this.index);
           var input = inputTable.getElementsByTagName("input");
@@ -365,6 +385,7 @@
           deleteImg.style.display = "inline";
           restoreImg.style.display = "none";
         },
+//        取消对教师信息的修改
         deleteOk: function(){
           this.$http.post('./teacherManage/deleteTeacherInfo',{
             "teacherId":this.teacherSimpleInfoList[this.index].teacherId
@@ -375,6 +396,7 @@
             this.resultMsg=response.body.result;
             if(this.resultMsg==='1'){
               this.teacherSimpleInfoList.splice(this.index,1);
+              this.$Message.success("删除成功！");
             }
           },function(error){
             console.log("获取error");
@@ -382,12 +404,15 @@
           this.modalOperateBool = false;
           this.modalResultBool = true;
         },
+//        删除教师及其所有信息
         operateCancel:function(){
           this.modalOperateBool = false;
         },
+//        取消掉保存，删除，取消保存等操作
         resultOk: function(){
           this.modalResultBool = false;
         }
+//        确认操作失败信息
       }
     }
 </script>

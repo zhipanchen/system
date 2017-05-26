@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="" class="returnHome">首页</a></span>
-		<span> > 课酬模块</span>
+		<!-- <span> > 课酬模块</span> -->
 		<span> > 薪酬管理</span>
 	</div>
 	<div class="tableSelect">
@@ -320,7 +320,15 @@ export default {
         // 保存功能
 		saveClick: function(type,index){
 			var inputTr = document.getElementById(type+"InputTr"+index);
-            var input = inputTr.getElementsByTagName("input");
+        	var input = inputTr.getElementsByTagName("input");
+        	if (this.type == "teacher") {
+            	this.teacher[this.index].payPerCourse = input[0].value;
+            }else if (this.type == "doctor") {
+            	this.doctor[this.index].payPerCourse = input[0].value;
+            }else if (this.type == "nurse") {
+            	this.nurse[this.index].payPerCourse = input[0].value;
+            }
+            // 输入非空判断
 			if (input[0].value == "") {
 				this.modalResult = true;
 				this.remindResult = '6';
@@ -333,23 +341,13 @@ export default {
 		},
 		saveOk: function () {
 			this.modalOperation = false;
-			var inputTr = document.getElementById(type+"InputTr"+index);
+			var inputTr = document.getElementById(this.type+"InputTr"+this.index);
             var input = inputTr.getElementsByTagName("input");
-            var editImg = document.getElementById(type+"EditImg"+index);
-            var saveImg = document.getElementById(type+"SaveImg"+index);
-            var restoreImg = document.getElementById(type+"RestoreImg"+index);
-            var deleteImg = document.getElementById(type+"DeleteImg"+index);
+            var editImg = document.getElementById(this.type+"EditImg"+this.index);
+            var saveImg = document.getElementById(this.type+"SaveImg"+this.index);
+            var restoreImg = document.getElementById(this.type+"RestoreImg"+this.index);
+            var deleteImg = document.getElementById(this.type+"DeleteImg"+this.index);
 		    var i = null;
-			// 保存数据到data,虽然input的value和data中的属性绑定,但并不是完成的双向,此时data中的属性数据并没有发生修改
-			    // this.jobtitleStrList[index].jobtitleId = input[0].value;
-			    // this.jobtitleStrList[index].jobName = input[0].value;
-			if (type == "teacher") {
-            	this.teacher[index].payPerCourse = input[0].value;
-            }else if (type == "doctor") {
-            	this.doctor[index].payPerCourse = input[0].value;
-            }else if (type == "nurse") {
-            	this.nurse[index].payPerCourse = input[0].value;
-            }
 			for(i = 0;i<input.length;i++){
 			    input[i].readOnly = true;
 			    input[i].style.border = "none";
@@ -362,9 +360,9 @@ export default {
 			// 向后台提交数据
 			// console.log(jobtitleId);
 			this.$http.post('./jobTitleManage/editJobtitle',{
-			    "jobtitleId": this.jobtitleStrList[index].jobtitleId,
-			    "jobName": this.jobtitleStrList[index].jobName,
-			    "payPerCourse": this.jobtitleStrList[index].payPerCourse
+			    "jobtitleId": this.jobtitleStrList[this.index].jobtitleId,
+			    "jobName": this.jobtitleStrList[this.index].jobName,
+			    "payPerCourse": this.jobtitleStrList[this.index].payPerCourse
 			},{
 			    "Content-Type":"application/json"
 			}).then(function(response){
