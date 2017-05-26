@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > 课程管理</span>
+		<!-- <span> > 课程管理</span> -->
 		<span> > 调课申请</span>
 	</div>
 	<div class="curSettings">
@@ -34,8 +34,8 @@
 				</thead>
 				<tbody>
 					<tr v-for="(data, index) in courseList" :key="data">
-						<td class="applyAdj">
-							<a value="toggle" @click="applyAdjBtn(index)" >申请调课</a>
+						<td class="applyAdj" id="applyAdj">
+							<a value="toggle" @click="applyAdjBtn(index)" :id="'transEediting'+index">申请调课</a>
 						</td>
 						<td v-text="index + 1"></td>
 						<td>{{data.courseId}}</td>
@@ -189,6 +189,7 @@
 		    <p v-else-if= "remindResult === '3'">保存失败！</p>
 		    <p v-else-if= "remindResult === '4'">请选择所有选项再提交！</p>
 		    <p v-else-if= "remindResult === '5'">请选择前面4个选项！</p>
+		    <p v-else-if= "remindResult === '6'">正在编辑中！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -210,6 +211,7 @@ export default {
 			isShow: false,
 			//	申请调课列表原始数据
 			courseList: [
+				{className: '对口高职2015护理（9+3）1班', courseName: '护理管理学',courseId: '10301', teacherName: '何平（61742）'},
 				{className: '对口高职2015护理（9+3）1班', courseName: '护理管理学',courseId: '10301', teacherName: '何平（61742）'}
 			],
 			// 表格所选当行变量
@@ -255,7 +257,8 @@ export default {
 	        modal1: false,		// 提交弹出框
 	        modal2: false,		// 取消弹出框
 	        modalResult: false,
-			remindResult: ''
+			remindResult: '',
+			index: ''
 		}
 	},
   	beforeMount: function() {
@@ -283,50 +286,61 @@ export default {
 		// },
 		// 点击表格“申请调课”，显示选项内容****************************************************************************
 	    applyAdjBtn: function (index) {
-	    	this.teacherNameGet = this.courseList[index].teacherName;
-    		this.courseIdGet = this.courseList[index].courseId;
-    		this.courseNameGet = this.courseList[index].courseName;
-    		this.classNameGet = this.courseList[index].className;
-	    	this.courseAssociationIdGet = this.courseList[index].courseAssociationId;
-	    	this.teacherIdGet = this.courseList[index].teacherId;
-	    	this.classIdGet = this.courseList[index].classId;
-    		if (this.isShow == false) {
-    			this.isShow = true;
-    			this.$http.post('./alternateLessionApplication/application-button',{
-    				"teacherName": this.courseList[index].teacherName,
-    				"courseId": this.courseList[index].courseId,
-    				"courseName": this.courseList[index].courseName,
-    				"className": this.courseList[index].className,
-    				"courseAssociationId": this.courseList[index].courseAssociationId,
-    				"teacherId": this.courseList[index].teacherId,
-    				"classId": this.courseList[index].classId
-		        },{
-		            "Content-Type":"application/json"
-		        }).then(function(response){
-		            console.log("获取申请:");
-		            console.log(response.body);
-		            var data = response.body;
-		            if (data.result == "1") {
-		            	this.weekset = data.weekset;
-			            this.weekdayandlessonnum = data.weekdayandlessonnum;
-			            this.selectiveClassroomSet = data.selectiveClassroomSet;
-			            this.selectiveWeekSet = data.selectiveWeekSet;
-			            // 从二维数组中获取原星期和原节次的数组数据
-			            // for (var i = 0; i < this.weekdayandlessonnum.length; i++) {
-			            // 	this.preWeek.push(this.weekdayandlessonnum[i][0]);
-			            // 	this.preSection.push(this.weekdayandlessonnum[i][1]);
-			            // }
-		            }else if (data.result == "0") {
-				        this.$Message.error('操作失败！请重试');
-				    }
-		        },function(error){
-		            console.log("获取申请error:");
-		            console.log(error);
-		        });
-    		}
-    		else {
-    			this.isShow = true;
-    		}
+	    	// 判断是否有正在编辑调课信息的，若有，则不能点击其它申请调课
+	    	if (this.isShow == true) {
+	    		this.modalResult = true;
+	    		this.remindResult = '6';
+	    	}else {
+		    	// 修改操作“申请调课”为“编辑中”
+		    	var transEediting = document.getElementById("transEediting"+index);
+		    	transEediting.innerHTML = "编辑中...";
+		    	this.index = index;
+		    	this.teacherNameGet = this.courseList[index].teacherName;
+	    		this.courseIdGet = this.courseList[index].courseId;
+	    		this.courseNameGet = this.courseList[index].courseName;
+	    		this.classNameGet = this.courseList[index].className;
+		    	this.courseAssociationIdGet = this.courseList[index].courseAssociationId;
+		    	this.teacherIdGet = this.courseList[index].teacherId;
+		    	this.classIdGet = this.courseList[index].classId;
+	    		if (this.isShow == false) {
+	    			this.isShow = true;
+	    			this.$http.post('./alternateLessionApplication/application-button',{
+	    				"teacherName": this.courseList[index].teacherName,
+	    				"courseId": this.courseList[index].courseId,
+	    				"courseName": this.courseList[index].courseName,
+	    				"className": this.courseList[index].className,
+	    				"courseAssociationId": this.courseList[index].courseAssociationId,
+	    				"teacherId": this.courseList[index].teacherId,
+	    				"classId": this.courseList[index].classId
+			        },{
+			            "Content-Type":"application/json"
+			        }).then(function(response){
+			            console.log("获取申请:");
+			            console.log(response.body);
+			            var data = response.body;
+			            if (data.result == "1") {
+			            	this.weekset = data.weekset;
+				            this.weekdayandlessonnum = data.weekdayandlessonnum;
+				            this.selectiveClassroomSet = data.selectiveClassroomSet;
+				            this.selectiveWeekSet = data.selectiveWeekSet;
+				            // 从二维数组中获取原星期和原节次的数组数据
+				            // for (var i = 0; i < this.weekdayandlessonnum.length; i++) {
+				            // 	this.preWeek.push(this.weekdayandlessonnum[i][0]);
+				            // 	this.preSection.push(this.weekdayandlessonnum[i][1]);
+				            // }
+			            }else if (data.result == "0") {
+					        this.$Message.error('操作失败！请重试');
+					    }
+			        },function(error){
+			            console.log("获取申请error:");
+			            console.log(error);
+			        });
+	    		}
+	    		else {
+	    			this.isShow = true;
+	    		}
+	    	}
+	    	
     	},
     	// 选择调制周数，判断所选周数是否比原周数大**********************************************************************
     	// 选择成功之后，申请获得调至星期下拉数据**********
@@ -411,7 +425,8 @@ export default {
     			this.modalResult = true;
     			this.remindResult = '4';
     		}else {
-
+		    	var transEediting = document.getElementById("transEediting"+this.index);
+		    	transEediting.innerHTML = "申请调课";
     			if (this.isShow ==true) {
 	    			this.isShow = false;
 	    			this.$http.post('./alternateLessionApplication/application-submit',{
@@ -467,6 +482,8 @@ export default {
     	// }
     	ok2 () {
             this.modal2 = false;
+	    	var transEediting = document.getElementById("transEediting"+this.index);
+	    	transEediting.innerHTML = "申请调课";
             // this.$Message.error('取消修改并未保存！');
             this.modalResult = true;
             this.remindResult = '3';

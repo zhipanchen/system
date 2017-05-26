@@ -1,5 +1,5 @@
 <template>
-  <div class="topBarDiv am-btn-group">
+  <div id="tchCheckTimetable_topBar" class="topBarDiv am-btn-group">
     <a :href="courseMgmtUrl">
       <button id="courseMgmtBtn" class="topBarButton am-btn am-btn-success btn-active">{{ courseMgmtBtn }}</button>
     </a>
@@ -23,7 +23,26 @@
         courseMgmtUrl: '#/teacher/classInfo/tchCheckTimetable',
         teacherTestUrl: '#/teacher/classInfo/teacherTestInfo',
         tchResearchUrl: '#/teacher/classInfo/tchCheckSalary',
+        authorityList: ''
       }
+    },
+    mounted: function () {
+      try{
+        var buttons = document.getElementById("tchCheckTimetable_topBar").getElementByTagName("button");
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.display = "none";
+        }
+        for (var i = 0; i < this.authorityList.length; i++) {
+          if (this.authorityList[i] == "39") {
+            buttons[0].style.display = "block";
+          }else if (this.authorityList[i] == "25") {
+            buttons[1].style.display = "block";
+          }else if (this.authorityList[i] == "35") {
+            buttons[2].style.display = "block";
+          }
+        }
+      }catch(e) {}
     },
     methods: {
       
