@@ -207,6 +207,7 @@ export default {
       });
   },
     methods:{
+      //打开保存对话框
       saveDia:function(selected1,selected3,selected4,message2){
         this.oselected1=selected1;
         this.oselected3=selected3;
@@ -214,6 +215,7 @@ export default {
         this.omessage2=message2;
         this.modal1 = true;
       },
+      //点击申请补课 进行填写申请内容
       show:function(index){
         this.seenS=true;
         this.change=index;
@@ -243,6 +245,7 @@ export default {
             console.log(error);
           });
       },
+      //选择周数与教室  与后端交互传过来剩下的下拉的内容
       choose:function(sel1,sel4){
         if(sel1!="选择周数"&&sel4!="选择教室"){
          this. $http.post('./makeUpLessionApplication/application-select.action',{
@@ -272,6 +275,7 @@ export default {
          })
         }
       },
+      //保存
       saveSel:function(sele1,sele3,sele4,message){
         console.log(sele3);
         this.modal1=false;
@@ -309,6 +313,7 @@ export default {
           });
         this.seenS=false;
       },
+      //取消
       cancel:function(){
         location.reload();
       }

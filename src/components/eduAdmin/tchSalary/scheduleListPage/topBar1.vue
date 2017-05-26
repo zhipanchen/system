@@ -1,5 +1,5 @@
 <template>
-  <div class="topBarDiv am-btn-group">
+  <div id="scheduleList_topBar" class="topBarDiv am-btn-group">
     <a :href="salaryMgmtUrl"><button id="salaryMgmtBtn" class="topBarButton am-btn am-btn-success">{{ salaryMgmtBtn }}</button></a>
     <a :href="salarySettingUrl"><button id="salarySettingBtn" class="topBarButton am-btn am-btn-success">{{ salarySettingBtn }}</button></a>
     <a :href="scheduleListUrl"><button id="scheduleListBtn" class="topBarButton am-btn am-btn-success btn-active">{{ scheduleListBtn }}</button></a>
@@ -17,8 +17,27 @@
         scheduleListBtn: '上课列表',
         salaryMgmtUrl: '#/eduAdmin/emolument/salary',
         salarySettingUrl: '#/eduAdmin/emolument/setPrice',
-        scheduleListUrl: '#/eduAdmin/emolument/scheduleList'
+        scheduleListUrl: '#/eduAdmin/emolument/scheduleList',
+        authorityList: ''
       }
+    },
+    mounted: function () {
+      try{
+        var buttons = document.getElementById("scheduleList_topBar").getElementByTagName("button");
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.display = "none";
+        }
+        for (var i = 0; i < this.authorityList.length; i++) {
+          if (this.authorityList[i] == "5") {
+            buttons[0].style.display = "block";
+          }else if (this.authorityList[i] == "22") {
+            buttons[1].style.display = "block";
+          }else if (this.authorityList[i] == "66") {
+            buttons[2].style.display = "block";
+          }
+        }
+      }catch(e) {}
     }
   }
 </script>

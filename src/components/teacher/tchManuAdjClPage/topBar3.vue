@@ -1,5 +1,5 @@
 <template>
-  <div class="topBarDiv am-btn-group">
+  <div id="tchManuAdjCl_topBar" class="topBarDiv am-btn-group">
     <a :href="makeupLessonUrl">
       <button id="makeupLessonBtn" class="am-btn am-btn-success">{{ makeupLessonBtn }}</button>
     </a>
@@ -26,8 +26,29 @@
         makeupLessonUrl: '#/teacher/course/makeupClass',
         adjustCourseUrl: '#/teacher/course/tchManuAdjCl',
         stopCourseUrl: '#/teacher/course/stopClass',
-        banAdjustUrl: '#/teacher/course/requirement'
+        banAdjustUrl: '#/teacher/course/requirement',
+        authorityList: ''
       }
+    },
+    mounted: function () {
+      try{
+        var buttons = document.getElementById("tchManuAdjCl_topBar").getElementByTagName("button");
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.display = "none";
+        }
+        for (var i = 0; i < this.authorityList.length; i++) {
+          if (this.authorityList[i] == "42") {
+            buttons[0].style.display = "block";
+          }else if (this.authorityList[i] == "41") {
+            buttons[1].style.display = "block";
+          }else if (this.authorityList[i] == "40") {
+            buttons[2].style.display = "block";
+          }else if (this.authorityList[i] == "38") {
+            buttons[3].style.display = "block";
+          }
+        }
+      }catch(e) {}
     },
     methods: {
 

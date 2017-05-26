@@ -69,6 +69,7 @@
               <!--<img id="notAdopt" src="./images/restore.png" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'1')">-->
             </td>
           </tr>
+          <!--教学计划tr-->
           <tr v-for="(courseGroupInfo,index) in  courseGroupInfosTwo">
             <td v-text="courseGroupInfo.groupName"></td>
             <td v-text="courseGroupInfo.teacherName"></td>
@@ -99,6 +100,7 @@
               <!--<img id="notAdopt" src="./images/restore.png" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'1')">-->
             </td>
           </tr>
+          <!--教案课件tr-->
           </tbody>
         </table>
       </div>
