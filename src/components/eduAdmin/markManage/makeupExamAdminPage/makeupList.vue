@@ -3,8 +3,8 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > 成绩管理</span>
-		<span> > 补考</span>
+		<span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">成绩管理</a></span>
+		<!-- <span> > 补考</span> -->
 		<span> > 补考成绩管理</span>
 	</div>
 	<div class="tableSelect">
@@ -131,6 +131,7 @@
 				    <p v-else-if= "remindResult === '4'">申请失败！</p>
 				    <p v-else-if= "remindResult === '5'">操作失败！请重试</p>
 				    <p v-else-if= "remindResult === '6'">未找到可下载的内容！</p>
+		    		<p v-else-if="remindResult === '7'">请选择年制！</p>
 				</div>
 			    <div slot="footer" style="text-align:center;">
 			        <Button id="modalBtn" @click="resultOk()">确定</Button>
@@ -161,8 +162,8 @@ export default {
 				// {},{},{},{}
 			],
 			makeUpAskList: [
-				{studentName: '李华', courseName: '护理学', makeUpAskTime: '2017-04-10'},
-				{studentName: '李华', courseName: '护理学', makeUpAskTime: '2017-04-10'}
+				// {studentName: '李华', courseName: '护理学', makeUpAskTime: '2017-04-10'},
+				// {studentName: '李华', courseName: '护理学', makeUpAskTime: '2017-04-10'}
 			],
 			modal1: false,		// 同意所有申请弹出框
 			modal2: false,		// 不同意所有申请弹出框
@@ -222,7 +223,9 @@ export default {
   		// 查找名单
   		findBtn: function () {
     		if (this.selGradeType == "选择年制") {
-    			this.selGradeType = '0';
+    			// this.selGradeType = '0';
+    			this.modalResult = true;
+    			this.remindResult = '7';
     		}
     		if (this.selYearTerm == "选择学期") {
     			this.selYearTerm = '';
@@ -295,7 +298,7 @@ export default {
     		if (this.selClassId == "选择班级") {
     			this.selClassId = '';
     		}
-	    	location.href = ".exportMakeUpList?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"courseId="+this.selCourseName+"&"+"classId="+this.selClassId;
+	    	location.href = "./exportMakeUpList?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"courseId="+this.selCourseName+"&"+"classId="+this.selClassId;
 	    },
 	    // 单个批准补考申请********************************************************
   		rightBtn: function (index) {

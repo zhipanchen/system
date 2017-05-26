@@ -199,33 +199,39 @@
         var restoreImg = document.getElementById("restoreImg"+index);
         var deleteImg = document.getElementById("deleteImg"+index);
 
-        this.$http.post('./courseTypeManage/addCourseType', {
-          "courseTypeId":this.courseTypeList[index].courseTypeId,
-          "courseTypeName":this.courseTypeList[index].courseTypeName
-        }, {
-          "Content-Type": "application/json"
-        }).then(function (response) {
+        if(this.courseTypeList[index].courseTypeName == ""){
+          this.errorMessage = "课程类型名称不能为空!";
+          this.modal4 = true;
           this.modal2 = false;
-          var data = response.body;
-          if (data.result == "1") {
-            this.$Message.success('保存成功！');
-            input.readOnly = true;
-            input.style.border = "none";
+        }else {
+          this.$http.post('./courseTypeManage/addCourseType', {
+            "courseTypeId": this.courseTypeList[index].courseTypeId,
+            "courseTypeName": this.courseTypeList[index].courseTypeName
+          }, {
+            "Content-Type": "application/json"
+          }).then(function (response) {
+            this.modal2 = false;
+            var data = response.body;
+            if (data.result == "1") {
+              this.$Message.success('保存成功！');
+              input.readOnly = true;
+              input.style.border = "none";
 
-            editImg.style.display = "inline";
-            deleteImg.style.display = "inline";
-            saveImg.style.display = "none";
-            restoreImg.style.display = "none";
+              editImg.style.display = "inline";
+              deleteImg.style.display = "inline";
+              saveImg.style.display = "none";
+              restoreImg.style.display = "none";
 //                退出编辑状态
-          }else{
+            } else {
 //              this.$Message.error("操作失败,请重试!");
-            this.errorMessage = "操作失败,请重试!";
-            this.modal4 = true;
-          }
-        }, function (error) {
-          this.modal2 = false;
-          this.$Message.error("连接失败,请重试!");
-        });
+              this.errorMessage = "操作失败,请重试!";
+              this.modal4 = true;
+            }
+          }, function (error) {
+            this.modal2 = false;
+            this.$Message.error("连接失败,请重试!");
+          });
+        }
       },
       deleteClick: function (index) {
         this.$http.post('./courseTypeManage/deleteCourseType',{

@@ -1,5 +1,12 @@
 <template>
-  <div id="table">
+  <div>
+    <div class="positionBar">
+      <span>您的当前位置：</span>
+      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+      <span> > 教务公告</span>
+      <span> > 公告发布</span>
+    </div>
+    <div id="table">
     <div id="show">
         <div id="top">
           <div>
@@ -17,7 +24,7 @@
         </div>
         <div id="middle">
           <!--<span style="white-space:nowrap;">*内容:</span>-->
-         <textarea v-model="announcementContent" placeholder="请在此处输入正文..."></textarea>
+         <textarea  v-model="announcementContent" placeholder="请在此处输入正文..."></textarea>
         </div>
         <div id="bottom">
            <!--<button class="am-btn am-btn-success am-radius" @click="up">上传</button>-->
@@ -28,6 +35,7 @@
               <input v-model="announcementType"  name="announcementType"  readonly style="display: none">
               <input v-model="announcementContent"  name="announcementContent"  readonly style="display: none">
               <span style="position: relative;" class="am-btn am-btn-success am-radius" @click="dia(announcementContent)">发布</span>
+              <button id="sub" style="display: none" type="submit"></button>
               <Modal
                 v-model="modal1"
                 width="400"
@@ -38,7 +46,7 @@
                   <p>您确定发布该信息吗?</p>
                 </div>
                 <div slot="footer" style="text-align: center">
-                  <button id="modalBtn" type="submit">确定</button>
+                  <button id="modalBtn" @click="subm()">确定</button>
                   <span id="modalBtn" @click="modal1 = false">取消</span>
                 </div>
               </Modal>
@@ -66,6 +74,7 @@
           <!--<button class="am-btn am-btn-success am-radius" @click="publish(announcementName,announcementType,announcementContent)">发布</button>-->
         </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -97,7 +106,11 @@
     methods: {
       dia: function (announcementContent) {
         this.modal1 = true;
-        this.announcementContent=announcementContent.replace('<br />','/n');
+//        this.announcementContent=announcementContent.replace('<br />','/n');
+        this.announcementContent=announcementContent.replace(/\n|\r\n/g,"<br>")
+      },
+      subm:function(){
+        document.getElementById("sub").click();
       }
 //      publish: function () {
 //        var form = new FormData(document.getElementById("tf"));

@@ -3,8 +3,8 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > 成绩管理</span>
-		<span> > 补考</span>
+		<span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">成绩管理</a></span>
+		<!-- <span> > 补考</span> -->
 		<span> > 补考成绩录入</span>
 	</div>
 	<div class="tableSelect">
@@ -43,7 +43,7 @@
 						<td v-text="makeupScore.studentId"></td>
 						<td v-text="makeupScore.studentName"></td>
 						<td>
-							<input id="input1" type="text" :value="makeupScore.makeupGrade" readonly="true"/>
+							<input id="input1" type="text" :value="makeupScore.makeupGrade" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
 						</td>
 					</tr>
 				</tbody>
@@ -74,6 +74,8 @@
 		    <p v-else-if= "remindResult === '4'">保存失败！</p>
 		    <p v-else-if= "remindResult === '5'">提交失败！</p>
 		    <p v-else-if= "remindResult === '6'">该课程没有可编辑的成绩！</p>
+		    <p v-else-if= "remindResult === '7'">请输入所有成绩！</p>
+    		<p v-else-if="remindResult === '8'">请选择年制！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -136,7 +138,9 @@ export default {
     	// 查询按钮************************************************************************
     	findBtn: function () {
     		if (this.selGradeType == "选择年制") {
-    			this.selGradeType = '0';
+    			// this.selGradeType = '0';
+    			this.modalResult = true;
+    			this.remindResult = '8';
     		}
     		if (this.selYearTerm == "选择学期") {
     			this.selYearTerm = '';
@@ -185,8 +189,23 @@ export default {
     	},
     	// 保存修改成绩**************************************************************************
     	saveAllBtn: function () {
-    		this.modalOperation = true;
-    		this.opertaionBool = '1';
+    		var inputGroup = document.getElementById("inputGroup");
+    		var input = inputGroup.getElementsByTagName("input");
+    		var emptyNum = 0;
+    		for (var i = 0; i < this.makeUpGradeInputList.length; i++) {
+    			this.makeUpGradeInputList[i].makeupGrade = input[i].value;
+    			if (input[i].value == "") {
+    				emptyNum++;
+    			}
+    		}
+    		// 输入非空判断
+    		if (emptyNum == 0) {
+    			this.modalOperation = true;
+    			this.opertaionBool = '1';
+    		}else {
+    			this.modalResult = true;
+    			this.remindResult = '7';
+    		}
     	},
     	saveOk: function () {
     		this.modalOperation = false;

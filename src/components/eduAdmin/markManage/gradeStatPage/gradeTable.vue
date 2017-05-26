@@ -3,8 +3,8 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > 成绩管理</span>
-		<span> > 成绩</span>
+		<span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">成绩管理</a></span>
+		<!-- <span> > 成绩</span> -->
 		<span> > 成绩统计</span>
 	</div>
 	<div class="tableSelect">
@@ -69,6 +69,7 @@
 		<div style="text-align:center; font-size:1.1rem;">
 		    <p v-if="resultBool === '1'">未找到所查询内容！</p>
 		    <p v-else-if="resultBool === '2'">未找到可下载的内容！</p>
+		    <p v-else-if="resultBool === '3'">请选择年制！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -149,7 +150,9 @@ export default {
     	// 查询按钮
 		inquireBtn: function() {
     		if (this.selGradeType == "选择年制") {
-    			this.selGradeType = '0';
+    			// this.selGradeType = '0';
+    			this.modalResult = true;
+    			this.resultBool = '3';
     		}
     		if (this.selYearTerm == "选择学期") {
     			this.selYearTerm = '';
@@ -210,7 +213,7 @@ export default {
     		if (this.maxScore == '') {
     			this.maxScore = '100';
     		}
-			location.href = ".exportScoreListByMaxMinScore?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"specialityId="+this.selSpeciality+"&"+"courseId="+this.selCourseName+"&"+"minScore="+this.minScore+"&"+"maxScore="+this.maxScore;
+			location.href = "./exportScoreListByMaxMinScore?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"specialityId="+this.selSpeciality+"&"+"courseId="+this.selCourseName+"&"+"minScore="+this.minScore+"&"+"maxScore="+this.maxScore;
   		},
     	// 弹窗提示点击确定，弹窗消失
     	resultOk: function () {

@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > 课酬模块</span>
+		<!-- <span> > 课酬模块</span> -->
 		<span> > 上课列表</span>
 	</div>
 	<div class="tableSelect">
@@ -48,8 +48,8 @@ export default {
 			selTeacher: '选择教师',
 			teacherInfo: [],
 			teachJournalList: [
-				{courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
-				{courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
+				// {courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
+				// {courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
 			],
 			modalResult: false
 		}

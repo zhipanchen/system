@@ -29,7 +29,7 @@
       <div id="secondDiv" class="pageDiv">
         <span class="pageSpan">
           <ul>
-            <a href="#/student/setting/changePassword"><li>修改密码</li></a>
+            <a href="#/student/setting/changPassword"><li>修改密码</li></a>
           </ul>
         </span>
         <span class="pageSpan">
@@ -54,6 +54,16 @@
       return {
         msg: ''
       }
+    },
+    beforeMount: function () {
+      this.$http.post('./getPermissionByUser',{},{
+//      this.$http.post('../testPhp/getPermissionByUser.php',{},{
+        "Content-Type":"application/json"
+      }).then(function(response){
+        sessionStorage.setItem("authorityList", JSON.stringify(response.body.currentPermissionList));
+      },function(error){
+        this.$Message.error('连接失败，请重试！');
+      });
     },
     mounted: function() {
 //      dom加载后调整页面高度

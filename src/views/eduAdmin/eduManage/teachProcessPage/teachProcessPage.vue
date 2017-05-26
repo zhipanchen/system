@@ -3,7 +3,11 @@
     <div id="teachProcessPage">
       <topTitle></topTitle>
       <topBar></topBar>
-      <div class="blank"></div>
+      <div class="blank positionBar">
+        <span>您的当前位置是：</span>
+        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+        <span> > <a href="#/login/main/eduAdminHome?manage" class="returnHome">教务管理</a> > 教务安排 > 教学进度 </span>
+      </div>
       <tchingProcess></tchingProcess>
     </div>
 </template>
@@ -35,9 +39,6 @@
     }
     #teachProcessPage{
       min-height:50rem;
-    }
-    .blank{
-      height: 2.9rem;
     }
     @media screen and (max-width: 1023px) {
         html {

@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > 班级管理</span>
+		<!-- <span> > 班级管理</span> -->
 		<span> > <a href="#/teacher/class/tchGradesInput" class="returnHome">成绩录入</a></span>
 		<span> > 正考成绩录入</span>
 	</div>
@@ -45,16 +45,16 @@
 				<div class="submitGrade" id="submitGrade" v-show="inputGradeRate">
 					<span>比率设置：</span>
 					<span>
-						平时比率：<input v-model="usualRate" placeholder="0" readonly="true">%
+						平时比率：<input v-model="usualRate" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">%
 					</span>
 					<span>
-						期中比率：<input v-model="halfRate" placeholder="0" readonly="true">%
+						期中比率：<input v-model="halfRate" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">%
 					</span>
 					<span>
-						期末比率：<input v-model="finalRate" placeholder="0" readonly="true">%
+						期末比率：<input v-model="finalRate" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">%
 					</span>
 					<span>
-						实验比率：<input v-model="practiceRate" placeholder="0" readonly="true">%
+						实验比率：<input v-model="practiceRate" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">%
 					</span>
 				</div>
 				<!-- <div class="select-button">
@@ -82,16 +82,16 @@
 								<td v-text="areTestScore.studentId"></td>
 								<td v-text="areTestScore.studentName"></td>
 								<td>
-									<input id="input1" type="text" :value="areTestScore.ususallyGrade" readonly="true">
+									<input id="input1" type="text" :value="areTestScore.ususallyGrade" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 								</td>
 								<td>
-									<input id="input2" type="text" :value="areTestScore.halfGrade" readonly="true">
+									<input id="input2" type="text" :value="areTestScore.halfGrade" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 								</td>
 								<td>
-									<input id="input3" type="text" :value="areTestScore.finalExamGrade" readonly="true">
+									<input id="input3" type="text" :value="areTestScore.finalExamGrade" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 								</td>
 								<td>
-									<input id="input4" type="text" :value="areTestScore.practiceGrade" readonly="true">
+									<input id="input4" type="text" :value="areTestScore.practiceGrade" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 								</td>
 								<td v-text="areTestScore.finalGrade"></td>
 								<td v-text="areTestScore.comment"></td>
@@ -124,6 +124,7 @@
 					    <p v-else-if= "remindResult === '4'">保存失败！</p>
 					    <p v-else-if= "remindResult === '5'">提交失败！</p>
 					    <p v-else-if= "remindResult === '6'">请正确输入成绩比率并使其值和为100！</p>
+		    			<p v-else-if= "remindResult === '7'">请输入所有成绩和成绩比率！</p>
 					</div>
 				    <div slot="footer" style="text-align:center;">
 				        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -140,11 +141,11 @@ export default {
 	name: 'gradePutBody',
 	data () {
 		return {
-			buttonShow: false,
-			submitShow: false,
+			buttonShow: true,
+			submitShow: true,
 			courseAssociationId: '',
-			inputLesson: '护理管理学',
-			classes: '对口高职2015护理（9+3）1班',
+			inputLesson: '',
+			classes: '',
 			scoreShow: true,	// 显示正考成绩
 			makeupScoreShow: false,		// 隐藏补考成绩
 			inputGradeRate: true,		//显示输入成绩比率
@@ -155,8 +156,8 @@ export default {
 			practiceRate: '0',	//实验比率
 	        // 学生正考成绩列表
 			scoreList: [
-				// {studentId: '15303010503', studentName: '谢兴月', ususallyGrade: '98', halfGrade: '75', finalGrade: '86', practiceGrade: '96'},
-				// {studentId: '15303010503', studentName: '谢兴月', ususallyGrade: '98', halfGrade: '75', finalGrade: '86', practiceGrade: '96'}
+				// {studentId: '15303010503', studentName: '谢兴月', ususallyGrade: '98', halfGrade: '75', finalExamGrade: '86', practiceGrade: '96'},
+				// {studentId: '15303010503', studentName: '谢兴月', ususallyGrade: '98', halfGrade: '75', finalExamGrade: '86', practiceGrade: '96'}
 			],
 			modalOperation: false,
 			modalResult: false,
@@ -180,10 +181,10 @@ export default {
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.inputLesson = data.courseName;
-            this.classes = data.className;
+            this.inputLesson = data.canModifyCourInfo.courseName;
+            this.classes = data.canModifyCourInfo.className;
             this.scoreList = data.scoreList;
-            if (this.canModifyGrade == true) {
+            if (this.canModifyCourInfo.canModifyGrade) {
             	this.buttonShow = true;
             	this.submitShow = true;
             }
@@ -211,18 +212,37 @@ export default {
     	},
 		// 保存所有数据并提交******************************************************
 		saveAllBtn: function () {
+    		var submitGrade = document.getElementById("submitGrade");
+    		var inputRate = submitGrade.getElementsByTagName("input");
+    		var inputGroup = document.getElementById("inputGroup");
+    		var input = inputGroup.getElementsByTagName("input");
+    		var emptyNum = 0;
 			var usualRate = Number(this.usualRate);
 			var halfRate = Number(this.halfRate);
 			var finalRate = Number(this.finalRate);
 			var practiceRate = Number(this.practiceRate);
 			var allRate = usualRate+halfRate+finalRate+practiceRate;
 			// console.log(allRate);
-			if (allRate == '100') {
+			// console.log(input.length);
+			for (var i = 0; i < this.scoreList.length; i++) {
+				this.scoreList[i].ususallyGrade = input[0+i*4].value;
+    			this.scoreList[i].halfGrade = input[1+i*4].value;
+    			this.scoreList[i].finalExamGrade = input[2+i*4].value;
+    			this.scoreList[i].practiceGrade = input[3+i*4].value;
+    			if (input[i].value == "") {
+    				emptyNum++;
+				}
+    		}
+			// 判断所有比率之和为100，输入非空判断
+			if (allRate=='100' && emptyNum==0 && this.usualRate!='' && this.halfRate!='' && this.finalRate!='' && this.practiceRate!='') {
 				this.modalOperation = true;
 	    		this.opertaionBool = '1';
-	    	}else {
+	    	}else if (allRate != '100') {
 	    		this.modalResult = true;
                 this.remindResult = '6';
+	    	}else {
+	    		this.modalResult = true;
+                this.remindResult = '7';
 	    	}
 		},
 		saveOk: function () {
@@ -314,7 +334,7 @@ export default {
 
     	// 下载模板
     	downloadTemplate: function () {
-			location.href = ".exportScoreModule?courseAssociationId="+this.courseAssociationId;
+			location.href = "./exportScoreModule?courseAssociationId="+this.courseAssociationId;
     	},
 
     	// *************************************************************************************

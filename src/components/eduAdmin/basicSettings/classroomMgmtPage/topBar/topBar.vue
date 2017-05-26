@@ -28,7 +28,7 @@
             buttons[0].style.display = "block";
           }else if(this.authorityList[i] == "21"){
             buttons[1].style.display = "block";
-          }else if(this.authorityList[i] == "64"){
+          }else if(this.authorityList[i] == "65"){
             buttons[2].style.display = "block";
           }else if(this.authorityList[i] == "20"){
             buttons[3].style.display = "block";

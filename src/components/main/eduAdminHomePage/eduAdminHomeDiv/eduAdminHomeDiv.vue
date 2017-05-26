@@ -233,8 +233,8 @@
           })
         }
       });
-//      this.$http.post('./getPermissionByUser',{},{
-      this.$http.post('../testPhp/getPermissionByUser.php',{},{
+      this.$http.post('./getPermissionByUser',{},{
+//      this.$http.post('../testPhp/getPermissionByUser.php',{},{
         "Content-Type":"application/json"
       }).then(function(response){
         sessionStorage.setItem("authorityList", JSON.stringify(response.body.currentPermissionList));
@@ -255,6 +255,7 @@
         this.$nextTick(function () {
           try {
             var li = document.getElementById("menuDiv").getElementsByTagName("li");
+            var ivuMenuItem = document.getElementsByClassName("ivu-menu-item");
             var thisURL = document.URL;
             if(thisURL.indexOf("?") >= 0) {
               var param = thisURL.split("?")[1];
@@ -598,6 +599,7 @@
               });
             }else{
               li[1].click();
+              ivuMenuItem[0].style.backgroundColor = "white";
             }
           }catch (e){
           }
@@ -1227,8 +1229,10 @@
   img{
     width: 5rem;
   }
-  @media screen and (max-width: 1023px) {
-    html {
+  @media screen and (max-width: 1301px) {
+    #detail{
+      /*详情点击*/
+      left: 15rem;
     }
   }
 </style>
