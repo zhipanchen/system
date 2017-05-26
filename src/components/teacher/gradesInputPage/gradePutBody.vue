@@ -180,10 +180,12 @@ export default {
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.inputLesson = data.courseName;
-            this.classes = data.className;
+
+            this.inputLesson = data.canModifyCourInfo.courseName;
+            this.classes = data.canModifyCourInfo.className;
             this.scoreList = data.scoreList;
-            if (this.canModifyGrade == true) {
+            if (this.canModifyCourInfo.canModifyGrade == true) {
+
             	this.buttonShow = true;
             	this.submitShow = true;
             }
@@ -314,7 +316,9 @@ export default {
 
     	// 下载模板
     	downloadTemplate: function () {
-			location.href = ".exportScoreModule?courseAssociationId="+this.courseAssociationId;
+
+			location.href = "./exportScoreModule?courseAssociationId="+this.courseAssociationId;
+
     	},
 
     	// *************************************************************************************

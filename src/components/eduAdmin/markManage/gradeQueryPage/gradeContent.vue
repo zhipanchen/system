@@ -209,7 +209,9 @@ export default {
     		if (this.selClassId == "选择班级") {
     			this.selClassId = '';
     		}
-    		location.href = ".exportScoreListByStu?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"courseId="+this.selCourseName+"&"+"classId="+this.selClassId+"&"+"studentId="+this.studentId;
+
+    		location.href = "./exportScoreListByStu?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"courseId="+this.selCourseName+"&"+"classId="+this.selClassId+"&"+"studentId="+this.studentId;
+
     	},
     	// 弹窗提示点击确定，弹窗消失
     	resultOk: function () {
