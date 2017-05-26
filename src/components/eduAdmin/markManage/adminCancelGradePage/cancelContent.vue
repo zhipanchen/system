@@ -71,6 +71,7 @@
 		<div style="text-align:center; font-size:1.1rem;">
 		    <p v-if="remindResult === '1'">操作失败！请重试</p>
 		    <p v-if="remindResult === '2'">未找到所查询内容！</p>
+		    <p v-if="remindResult === '3'">请选择后进行查询！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -117,29 +118,34 @@ export default {
   	methods: {
   		// 点击查询，回调表单************************************************
   		checkTableBtn: function () {
-  			if (this.course == "选择课程") {
-  				this.course = '';
+  			// 判断是否选择
+  			if (this.course == "选择课程" || this.teacher == "选择教师") {
+  				this.modalResult = true;
+  				this.remindResult = '3';
+  			}else {
+	  			// if (this.teacher == "选择教师") {
+	  			// 	this.teacher = '';
+	  			// }else if (this.course == "选择课程") {
+	  			// 	this.course = '';
+	  			// }
+		  		this.$http.post('./getScoreCommitted', {
+	  				"courseId": this.course,
+	  				"teacherId": this.teacher
+	  			}, {
+	  				"Content-Type":"application/json"
+	  			}).then(function(response){
+	  				console.log("通过申请:");
+	                console.log(response);
+	                var data = response.body;
+	                if(data.scoreCommitList != []) {
+	                    this.scoreCommitList = data.scoreCommitList;
+	                }else{
+	                    // this.$Message.error("操作失败！请重试");
+	                    this.modalResult = true;
+	                    this.remindResult = '2';
+	                }
+	  			});
   			}
-  			if (this.teacher == "选择教师") {
-  				this.teacher = '';
-  			}
-  			this.$http.post('./getScoreCommitted', {
-  				"courseId": this.course,
-  				"teacherId": this.teacher
-  			}, {
-  				"Content-Type":"application/json"
-  			}).then(function(response){
-  				console.log("通过申请:");
-                console.log(response);
-                var data = response.body;
-                if(data.scoreCommitList != []) {
-                    this.scoreCommitList = data.scoreCommitList;
-                }else{
-                    // this.$Message.error("操作失败！请重试");
-                    this.modalResult = true;
-                    this.remindResult = '2';
-                }
-  			});
   		},
   		// 撤销该条信息，弹窗二次确认********************************************
   		backoutClick: function (index) {
@@ -151,9 +157,9 @@ export default {
   		backoutOk: function () {
   			this.modalOperation = false;
   			this.$http.post('./cancelScoreCommitted', {
-  				"courseId": this.scoreCommitList[index].courseId,
-  				"teacherId": this.scoreCommitList[index].teacherId,
-  				"classId": this.scoreCommitList[index].classId
+  				"courseId": this.scoreCommitList[this.index].courseId,
+  				"teacherId": this.scoreCommitList[this.index].teacherId,
+  				"classId": this.scoreCommitList[this.index].classId
   			}, {
   				"Content-Type":"application/json"
   			}).then(function(response){
@@ -162,7 +168,7 @@ export default {
                 var data = response.body;
                 if(data.result == "1") {
 					this.$Message.success("已撤回！");
-					this.scoreCommitList.splice(index,1);
+					this.scoreCommitList.splice(this.index,1);
                 }else{
                     // this.$Message.error("操作失败！请重试");
                     this.modalResult = true;

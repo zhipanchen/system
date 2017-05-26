@@ -46,6 +46,7 @@
 			</table>
 		</div>
 	</div>
+	<!-- 弹窗提示 -->
 	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 		<div style="text-align:center; font-size:1.1rem;">
 		    <p>操作失败！请重试</p>
@@ -69,6 +70,7 @@ export default {
 		}
 	},
 	beforeMount: function() {
+		// 初始化获取薪酬表格信息
         this.$http.post('./checkSalaryByEdu',{},{
             "Content-Type":"application/json"
         }).then(function(response){
@@ -124,6 +126,7 @@ export default {
 	    exportBtn: function () {
 	    	location.href = "./downloadallSalaryList"
 	    },
+	    // 弹窗提示确认，点击消失
 	    resultOk: function () {
 	    	this.modalResult = false;
 	    }

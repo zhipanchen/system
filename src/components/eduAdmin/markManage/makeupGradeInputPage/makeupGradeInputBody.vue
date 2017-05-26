@@ -76,6 +76,7 @@
 		    <p v-else-if= "remindResult === '6'">该课程没有可编辑的成绩！</p>
 		    <p v-else-if= "remindResult === '7'">请输入所有成绩！</p>
     		<p v-else-if="remindResult === '8'">请选择年制！</p>
+    		<p v-else-if="remindResult === '9'">请选择后进行查询！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -141,42 +142,41 @@ export default {
     			// this.selGradeType = '0';
     			this.modalResult = true;
     			this.remindResult = '8';
+    		}else if (this.selYearTerm == "选择学期" || this.selCourseName == "选择课程") {
+    			this.modalResult = true;
+    			this.remindResult = '9';
+    		}else {
+	    		this.$http.post('./getMakeUpGradeInputList',{
+					"gradeType": this.selGradeType,
+					"yearTerm": this.selYearTerm,
+					"courseId": this.selCourseName,
+				},{
+		            "Content-Type":"application/json"
+		        }).then(function(response){
+		            console.log("获取申请:");
+		            console.log(response.body);
+		            var data = response.body;
+		            if(data.result == "1") {
+	                    this.makeUpGradeInputList = data.makeUpGradeInputList;
+	                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
+	                    if (this.makeUpGradeInputList != []) {
+	                    	this.buttonShow = true;
+	                    	this.submitShow = true;
+	                    }else {
+	                    	this.modalResult = true;
+	                    	this.remindResult = '6';
+	                    }
+	                }else {
+	                    // this.$Message.error('操作失败！请重试');
+	                    this.modalResult = true;
+	                    this.remindResult = '1';
+	                }
+		        },function(error){
+		            console.log("获取申请error:");
+		            console.log(error);
+		        });
     		}
-    		if (this.selYearTerm == "选择学期") {
-    			this.selYearTerm = '';
-    		}
-    		if (this.selCourseName == "选择课程") {
-    			this.selCourseName = '';
-    		}
-    		this.$http.post('./getMakeUpGradeInputList',{
-				"gradeType": this.selGradeType,
-				"yearTerm": this.selYearTerm,
-				"courseId": this.selCourseName,
-			},{
-	            "Content-Type":"application/json"
-	        }).then(function(response){
-	            console.log("获取申请:");
-	            console.log(response.body);
-	            var data = response.body;
-	            if(data.result == "1") {
-                    this.makeUpGradeInputList = data.makeUpGradeInputList;
-                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
-                    if (this.makeUpGradeInputList != []) {
-                    	this.buttonShow = true;
-                    	this.submitShow = true;
-                    }else {
-                    	this.modalResult = true;
-                    	this.remindResult = '6';
-                    }
-                }else {
-                    // this.$Message.error('操作失败！请重试');
-                    this.modalResult = true;
-                    this.remindResult = '1';
-                }
-	        },function(error){
-	            console.log("获取申请error:");
-	            console.log(error);
-	        });
+    		
     	},
     	// 编辑修改补考成绩*****************************************************************
     	compileBtn: function () {
@@ -187,11 +187,12 @@ export default {
     			input[i].style.border = "0.1rem solid #d4d4d9";
     		}
     	},
-    	// 保存修改成绩**************************************************************************
+    	// 点击保存**************************************************************************
     	saveAllBtn: function () {
     		var inputGroup = document.getElementById("inputGroup");
     		var input = inputGroup.getElementsByTagName("input");
     		var emptyNum = 0;
+    		// 判断是否有未输入空值
     		for (var i = 0; i < this.makeUpGradeInputList.length; i++) {
     			this.makeUpGradeInputList[i].makeupGrade = input[i].value;
     			if (input[i].value == "") {
@@ -207,6 +208,7 @@ export default {
     			this.remindResult = '7';
     		}
     	},
+    	// 确认保存修改成绩
     	saveOk: function () {
     		this.modalOperation = false;
     		var inputGroup = document.getElementById("inputGroup");
@@ -240,11 +242,12 @@ export default {
 	            console.log(error);
 	        });
     	},
-    	// 提交补考成绩，提交后不可再修改***********************************************************
+    	// 点击提交***********************************************************
     	submitBtn: function () {
     		this.modalOperation = true;
     		this.opertaionBool = '2';
     	},
+    	// 确认补考成绩，提交后不可再修改
     	submitOk: function () {
     		this.modalOperation = false;
     		this.$http.post('./saveMakeUpScore',{
@@ -273,9 +276,11 @@ export default {
 	            console.log(error);
 	        });
     	},
+    	// 保存、提交弹窗取消
     	cancel: function () {
     		this.modalOperation = false;
     	},
+    	// 信息提示确认并取消弹窗
     	resultOk: function () {
     		this.modalResult = false;
     	}

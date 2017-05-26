@@ -15,7 +15,7 @@
         <div class="rpart">
 			<button class="am-btn am-btn-success am-radius rightBtn" @click="signInBtn()">签到</button>
 			<button class="am-btn am-btn-success am-radius rightBtn" @click="returnBtn()">返回</button>
-			<!-- 弹窗签到 -->
+			<!-- 弹窗签到操作 -->
 			<Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
 			    <div slot="header" style="font-size:1.6rem; text-align:center; padding:0.2rem 0;" id="modalHeader">
 		            <span>上课日志</span>
@@ -129,11 +129,11 @@ export default {
 		}
 	},
 	beforeMount: function() {
+		//分割成字符串，获取courseAssociationId
 		var thisURL = document.URL; 
-		//分割成字符串  
         var getval =thisURL.split('?')[1];
         this.courseAssociationId = getval.split("=")[1];
-
+        // 获取已签到课程信息
         this.$http.post('./teachJournalDetailList',{
         	"courseAssociationId": this.courseAssociationId
         },{
@@ -226,6 +226,7 @@ export default {
 				console.log(error);
             });
         },
+        // 取消提交，返回到签到弹窗
 		submitCancel: function () {
 			this.modalSubmit = false;
             // this.$Message.error('签到失败！');
@@ -245,6 +246,7 @@ export default {
 		returnBtn: function () {
 			window.location.href = "#/teacher/teach/courseList"
 		},
+		// 弹窗提示点击确认消失
     	resultOk: function () {
     		this.modalResult = false;
     	}
