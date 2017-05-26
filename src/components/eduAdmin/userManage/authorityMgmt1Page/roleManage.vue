@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > 权限管理</span> -->
+		<span> > 权限管理</span>
 		<span> > 角色管理</span>
 	</div>
 	<div id="authorityMgmt">
@@ -99,17 +99,17 @@ export default {
 			userNameShow: '',
 			userIdGet: '',
 			userList: [		// 角色下的人
-				// {userName: '李华', userId: '123546'},
-				// {userName: '李华', userId: '123465'},
-				// {userName: '李华', userId: '123465'},
-				// {userName: '李华', userId: '123465'},
-				// {userName: '李华', userId: '123465'},
-				// {userName: '李华', userId: '123465'},
-				// {userName: '李华', userId: '123465'},
-				// {userName: '李华', userId: '123465'},
-				// {userName: '李华', userId: '123465'},
-				// {userName: '李华', userId: '123465'},
-				// {userName: '李华', userId: '123465'}
+				{userName: '李华', userId: '123546'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'},
+				{userName: '李华', userId: '123465'}
 			],
 			roleList: [		// 一人的全部角色数据
 				// {roleName: '教师', roleId: '1'},

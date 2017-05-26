@@ -1,5 +1,5 @@
 <template>
-  <div id="teach_topBar" class="topBarDiv am-btn-group">
+  <div class="topBarDiv am-btn-group">
     <a href="#/teacher/teach/courseList">
       <button id="checkCouButton" class="topBarButton am-btn am-btn-success " >教学计划</button>
     </a>
@@ -20,26 +20,8 @@
         adjInfoNum: '0',
         manualCouUrl: '/teacher/tchManuAdjCl',
         sendApplyUrl: 'http://localhost:8080/',
-        checkCouUrl: '',
-        authorityList:''
-
+        checkCouUrl: ''
       }
-    },
-    mounted:function(){
-      try{
-        var buttons=document.getElementById("teach_topBar").getElementsByTagName("button");
-        this.authorityList=JSON.parse(sessionStorage.getItem("authorityList"));
-        for(var i=0;i<buttons.length;i++){
-          buttons[i].style.display="none";
-        }
-        for(var i=0;i<this.authorityList.length;i++){
-          if(this.authorityList[i]=="36"){
-            buttons[0].style.display="block";
-          }else if(this.authorityList[i]=="52"){
-            buttons[1].style.display="block";
-          }
-        }
-      }catch(e){}
     },
     methods: {
 

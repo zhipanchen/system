@@ -29,7 +29,7 @@
       <div id="secondDiv" class="pageDiv">
         <span class="pageSpan">
           <ul>
-            <a href="#/student/setting/changPassword"><li>修改密码</li></a>
+            <a href="#/student/setting/changePassword"><li>修改密码</li></a>
           </ul>
         </span>
         <span class="pageSpan">

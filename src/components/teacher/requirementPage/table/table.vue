@@ -114,7 +114,6 @@
           this.ooption2value=option2value;
           this.modal1 = true;
         },
-        //与后端交互 所选星期几
         chooseDay:function(value){
           this.modal1 = false;
           this.$http.post('./teacherRestApplyHandle',{

@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > 班级管理</span> -->
+		<span> > 班级管理</span>
 		<span> > 成绩录入</span>
 	</div>
 	<div class="blank">
@@ -69,10 +69,10 @@ export default {
 	name: 'tchGrdPutBody',
 	data () {
 		return {
-			preSemester: '',
+			preSemester: '2016-2017年第一学期',
 			// warmPrompt: '按排课信息输入成绩（若单科成绩输入时间长，请15分钟保持一次）',
 			scoreInputList: [
-				// {courseAssociationId: '1', semester: '2016-2017学年第一学期', teacherName: '何平', className: '对口高职2015护理（9+3）1班', courseName: '护理管理学'}
+				{courseAssociationId: '1', semester: '2016-2017学年第一学期', teacherName: '何平', className: '对口高职2015护理（9+3）1班', courseName: '护理管理学'}
 			],
 			modalResult: false,
 			remindResult: ''
@@ -95,7 +95,7 @@ export default {
 	methods: {
 		// 导出功能
 		exportFormatBtn: function (index) {
-			location.href = "./downloadScoreList?courseAssociationId="+this.scoreInputList[index].courseAssociationId;
+			location.href = ".downloadScoreList?courseAssociationId="+this.scoreInputList[index].courseAssociationId;
 		},
     	resultOk: function () {
     		this.modalResult = false;

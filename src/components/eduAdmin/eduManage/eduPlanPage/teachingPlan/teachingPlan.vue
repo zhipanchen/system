@@ -124,6 +124,7 @@
     <div>
       <div class="yearsTypeDiv">
         <!--年制模块下拉菜单-->
+        <!--<span><img :id="yearType.English + 'Arrow'" class="yearsTypeImg" :src="arrowright"></span>-->
         <span class="yearsTypeP">3年制培养方案</span>
         <span><button class="yearButton" @click="downloadFormClick">下载模板</button></span>
       </div>
@@ -131,6 +132,7 @@
       <div>
         <div v-for="(grade,gradeIndex) in gradeIdArr">
           <div v-if="grade.yearType==='3'" :id="'3GradePlanDiv' + gradeIndex" class="gradePlanDiv">
+            <!--年级教学进程下拉菜单-->
             <span><img :id="'3Arrow' + gradeIndex" class="gradePlanImg" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)" :src="arrowright"></span>
             <span :id="'3P' + gradeIndex" class="gradePlanP" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)">{{grade.gradeName}}级</span>
             <span><button class="gradeButton" @click="downloadClick(gradeIdList[gradeIndex])">下载</button></span>
@@ -151,7 +153,6 @@
               </Upload>
             </span>
           </div>
-          <!--年级教学进程下拉菜单-->
           <div :id="'3Table' + gradeIndex" style="display: none">
             <table class="normalTable" style="table-layout: fixed">
               <thead>
@@ -237,11 +238,9 @@
               </tbody>
             </table>
           </div>
-          <!--课程信息table-->
         </div>
       </div>
     </div>
-    <!--3年制培养方案-->
   </div>
 </template>
 
@@ -291,7 +290,6 @@
         console.log("获取error");
       });
     },
-//    初始化页面时，获取年级Id列表
     methods:{
       tableSlideToggle:function(yearType,gradeIndex,gradeName){
         var table = document.getElementById(yearType + 'Table' + gradeIndex);
@@ -326,25 +324,21 @@
           arrow.src = this.arrowright;
         }
       },
-//      点击年级下拉该年级培养方案表格
       handleFormatError:function(file){
         this.$Notice.warning({
           title: '文件格式不正确',
           desc: '文件 ' + file.name + ' 格式不正确，请上传xls或xlsx表格。'
         });
       },
-//      处理上传文件格式错误问题
       handleSizeError:function(file){
         this.$Notice.warning({
           title: '超出文件大小限制',
           desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
         });
       },
-//      处理上传文件大小过大问题
       handleProgress:function(){
         this.$Message.loading("正在上传中...");
       },
-//      message提示用户文件正在上传
       handleSuccess:function(res){
         if(res.result===1){
           this.$Message.success("上传成功！");
@@ -353,19 +347,16 @@
           this.$Message.error(result);
         }
       },
-//      文件上传成功后，若文件内容没问题，提示上传成功，若文件内容出错，弹窗提示出错信息
+//      从后台接收的数据必须先用变量接收后再应用
       handleError:function(){
         this.$Message.error("上传失败");
       },
-//      弹窗提示文件上传失败
       downloadFormClick:function(){
         location.href="./schoolCoursePlan/downloadTemplet";
       },
-//      下载培养方案模板
       downloadClick:function(gradeId){
         location.href="./schoolCoursePlan/exportExcel?gradeId="+gradeId;
       }
-//      下载某年级的培养方案
     }
   }
 </script>

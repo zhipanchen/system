@@ -71,7 +71,6 @@
           });
       },
       methods:{
-        //选择学期
         chooseTerm:function(value){
           this.$http.post('../jsonphp/teachingEvaluate.php',{
 //          this.$http.post('./studentEvaluation/showEvaluation',{
@@ -91,7 +90,6 @@
               console.log(error);
             });
         },
-        //查看学生留言
         stuMessage:function(index){
           var id=this.evaluationResult[index].courseId;
           location.href='#/teacher/studentMessage?'+id;

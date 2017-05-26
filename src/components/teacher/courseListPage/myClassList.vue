@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > 教学管理</span> -->
+		<span> > 教学管理</span>
 		<span> > 教学计划</span>
 	</div>
 	<div class="blank">
@@ -166,11 +166,11 @@ export default {
 			remindResult: '',
 			uploadResult: '',
 			teachJournalList: [
-				// {courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
-				// {courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
+				{courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
+				{courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
 			],
 			// 下载课件列表
-			// uploadList: [{coursewareName:'123',coursewareId:'aaaa'},{coursewareName:'123',coursewareId:'aaaa'}],
+			uploadList: [{coursewareName:'123',coursewareId:'aaaa'},{coursewareName:'123',coursewareId:'aaaa'}],
 			courseIdPost: '',
 			uploadState: '',		// 上传状态
 			fileName: '',

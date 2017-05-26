@@ -3,11 +3,7 @@
   <div id="authorityManage2Page">
     <topTitle></topTitle>
     <topBar></topBar>
-      <div class="blank positionBar">
-        <span>您的当前位置是：</span>
-        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-        <span> > 权限管理 > 权限设置 </span>
-      </div>
+    <div class="blank"></div>
     <dropdownStaff></dropdownStaff>
   </div>
 </template>
@@ -36,6 +32,9 @@
 <style scoped>
   html {
     font-size: 100%;
+  }
+  .blank{
+    height: 2.9rem;
   }
   @media screen and (max-width: 1023px) {
     html {

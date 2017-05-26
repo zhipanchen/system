@@ -135,11 +135,9 @@
           });
       },
       methods: {
-        //保存对话框打开
         saveDia:function(){
           this.modal1 = true;
         },
-        //保存功能
         save:function(){
           this.modal1 = false;
           for(var i=0;i<this.tableList.length;i++){
@@ -185,11 +183,9 @@
               console.log(error);
             });
         },
-        //导出
         load:function(){
           location.href='./classManage/exportClassStudentInfo'
         },
-        //跳转到学生个人信息
         selfInfo:function(index){
           var id=this.tableList[index].studentId;
           location.href='#/teacher/class/checkStudentInfo?'+id;

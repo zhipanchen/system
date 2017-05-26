@@ -17,9 +17,9 @@
       </select>
       <!--课程选择下拉列表-->
       <span><button id="searchFor" class="am-btn am-btn-success am-radius buttonWM" @click="checkEvaInfoClick()">查询</button></span>
-      <!--查询按钮-->
     </div>
     <div id="evaResultTable" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
+      <!--评教结果表格-->
       <table id="stdInfoTableSy" class="normalTable" style="table-layout: fixed;">
         <thead>
         <tr>
@@ -45,7 +45,6 @@
         </tbody>
       </table>
     </div>
-    <!--评教结果表格-->
   </div>
 </template>
 
@@ -99,13 +98,11 @@
           console.log("获取error");
         });
       },
-//      初始化页面时，获取学期列表，教师列表，课程列表，课程信息列表
       methods:{
         termClick1:function(){
           this.evaluateinfoKey.teacherId = "0";
           this.evaluateinfoKey.courseId = "0";
         },
-//        点击学期select下拉框时，清空教师，课程下拉框
         termClick: function(){
           this.$http.post('./termClickJson',{
             "term":this.evaluateinfoKey.term
@@ -119,11 +116,9 @@
             console.log("获取error");
           });
         },
-//        点击学期select下拉框后选择学期时，从后台获取对应学期的教师，课程列表
         teacherClick1:function(){
           this.evaluateinfoKey.courseId = "0";
         },
-//        点击教师select下拉框时，清空课程下拉框
         teacherClick: function(){
           this.$http.post('./evaResultTeacherClickJson',{
             "teacherId":this.evaluateinfoKey.teacherId
@@ -136,7 +131,6 @@
             console.log("获取error");
           });
         },
-//        点击教师select下拉框后选择教师时，从后台获取对应教师的课程列表
         checkEvaInfoClick: function(){
           this.$http.post('./studentEvaluation/findEvaluationResult',{
             "term":this.evaluateinfoKey.term,
@@ -151,7 +145,6 @@
             console.log("获取error");
           });
         }
-//        提交学期，教师，课程，从后台获取相应课程信息
       }
     }
 </script>

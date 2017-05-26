@@ -209,7 +209,6 @@
           });
       },
       methods: {
-        //保存的对话框打开
         saveDia:function(teacherId,targroupName,
                          teacherName,teacherGender,birthdate,teacherIDcard,worktime,currentWorkUnit,isDoubleTeacher,hireCampus,
                          phoneNumber,emailAddress,qqNumber,clinicWorkYear,currentWorkDuty,currentWorkTitle){
@@ -231,11 +230,9 @@
             this.ocurrentWorkTitle=currentWorkTitle;
             this.modal1 = true;
         },
-        //取消的对话框
         cancelDia:function(){
           this.modal2 = true;
         },
-        //保存功能
         save:function(teacherId,targroupName,
                       teacherName,teacherGender,birthdate,teacherIDcard,worktime,currentWorkUnit,isDoubleTeacher,hireCampus,
                       phoneNumber,emailAddress,qqNumber,clinicWorkYear,currentWorkDuty,currentWorkTitle){
@@ -270,7 +267,6 @@
               console.log(error);
             });
         },
-        //取消功能
         cancel:function(){
           location.reload();
         }

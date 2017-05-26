@@ -108,7 +108,6 @@
 //              tableList:[{teacherId:"1"},{teacherId:"2"}]
             }
       },
-      //打开页面判断状态 auditStatus
       mounted:function(){
 ////        this.$http.post('../jsonphp/teachingPlan.php',{},{"Content-Type":"application/json"}).then(function (response) {
 //            this.$http.post('./courseTeachPlan/showTeachPlan',{},{"Content-Type":"application/json"}).then(function (response) {
@@ -217,7 +216,6 @@
           this.oindex=index;
           this.modal2 = true;
         },
-        //通过
       success:function(index){
         var type;
          if(this.tableList[index].coursewareType=="教学计划"){
@@ -252,7 +250,6 @@
               console.log(error);
             });
       },
-        //不通过
         fail:function(index){
               this.modal2=false;
           var type;
@@ -334,7 +331,6 @@
 //           console.log(error);
 //         });
 //       },
-        //选择学期
         chooseTerm:function(value){
 //          this.$http.post('./jsonphp/teachingPlan.php',{
           this.$http.post('./courseTeachPlan/showTeachPlan',{

@@ -139,7 +139,6 @@
           });
       },
       methods: {
-        //打开对话框
         operationClick: function (operationIndex, operation) {
           this.operationIndex = operationIndex;
           if (operation == "edit") {
@@ -150,11 +149,9 @@
             this.modal3 = true;
           }
         },
-        //添加
         add: function () {
           this.tableList.push({clinicWorkUnit: '', workPost: '', startTime: '', endTime: '', workExperienceId: ''});
         },
-        //保存
         save: function (index) {
           this.modal3 = false;
           var unit = document.getElementById("clinicWorkUnit" + index);
@@ -198,7 +195,6 @@
             alert('请输入临床工作单位！');
           }
         },
-        //取消保存
         edit: function (index) {
 //            this.modal1 = false;
           location.reload();
@@ -225,7 +221,6 @@
 //              last.style.border='none';
 //              取消保存时后台应返回之前的值
         },
-        //删除
         del: function (index) {
           this.modal2 = false;
           console.log(this.tableList[index].workExperienceId);
@@ -242,7 +237,6 @@
             console.log(error);
           });
         },
-        //进行编辑
         chang: function (index) {
 //            this.modal1 = true;
           var unit = document.getElementById("clinicWorkUnit" + index);

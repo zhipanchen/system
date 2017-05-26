@@ -72,7 +72,6 @@
           });
       },
       methods:{
-        //确认已读信息
           confirm:function(index){
             console.log(index);
             console.log(this.tableList[index].status);
@@ -95,7 +94,6 @@
               console.log(error);
             });
         },
-        //跳转传值
         directorResult:function(index){
           var courseId=this.tableList[index].courseId;
           var classId=this.tableList[index].classId;

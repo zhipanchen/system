@@ -3,7 +3,7 @@
   <div class="positionBar">
     <span>您的当前位置：</span>
     <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-    <!-- <span> > 教务公告</span> -->
+    <span> > 教务公告</span>
     <span> > 公告信息</span>
   </div>
     <div id="notifyBoard" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
@@ -37,11 +37,11 @@
         data () {
             return {
               announcementId:'',
-              announcementName:'',
-              announcementTime:'',
-              announcementType:'',
-              announcementUserName:'',
-              announcementContent:'',
+              announcementName:'新标题',
+              announcementTime:'2017.05.08',
+              announcementType:'学生科',
+              announcementUserName:'何平',
+              announcementContent:'哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,哈哈哈哈哈哈哈哈哈哈哈哈嗝,',
               fileName:'例附件'
             }
         },

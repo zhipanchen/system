@@ -147,7 +147,6 @@
         this.omessage2=message2;
         this.modal1 = true;
       },
-      //展示申请停课的申请内容
       show:function(index){
           this.seenS=true;
           this.change=index;
@@ -182,7 +181,6 @@
             console.log(error);
           });
       },
-      //保存申请
       saveSel:function(value,message){
           console.log(message);
           this.modal1=false;

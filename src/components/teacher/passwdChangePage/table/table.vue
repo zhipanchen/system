@@ -93,18 +93,15 @@
       }
     },
     methods: {
-      //弹出保存的对话框
       saveDia:function(old,neww,connew){
         this.oold=old;
         this.oneww=neww;
         this.oconnew=connew;
         this.modal1 = true;
       },
-      //取消的对话框
       cancelDia:function(){
         this.modal2 = true;
       },
-      //保存
       save:function(oldone,newone,connewone){
 //        alert(oldone);
 //        alert("1");
@@ -143,7 +140,6 @@
             console.log(error);
           });}else{this.$Message.error('密码不一致！');}
       },
-      //取消
       cancel:function(){
         location.reload();
       }

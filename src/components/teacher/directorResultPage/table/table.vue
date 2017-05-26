@@ -168,7 +168,6 @@
         });
     },
     methods: {
-      //打开保存对话框
       saveDia:function(SuperviseTime,AttendanceInfo,TeachContent,TeacherQualityScored,
                        TeachGoalsScored,TeachContentScored,TeachMethodsScored,TeachRoutineScored,TeachEffectScored,CommentsInfo,ForwardInfo){
           this.oSuperviseTime=SuperviseTime;
@@ -184,11 +183,9 @@
           this.oForwardInfo=ForwardInfo;
           this.modal1 = true;
       },
-      //打开取消对话框
       cancelDia:function(){
         this.modal2 = true;
       },
-      //保存
       save:function(SuperviseTime,AttendanceInfo,TeachContent,TeacherQualityScored,
                     TeachGoalsScored,TeachContentScored,TeachMethodsScored,TeachRoutineScored,TeachEffectScored,CommentsInfo,ForwardInfo){
         this.modal1=false;
@@ -230,7 +227,6 @@
             console.log(error);
           });
       },
-      //返回上一页面
       cancel:function(){
 //        location.reload();
         window.history.back(-1);

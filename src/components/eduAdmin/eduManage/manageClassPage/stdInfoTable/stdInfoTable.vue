@@ -1,18 +1,17 @@
 <template>
   <div>
     <div id="searchInfo">
+      <!--年制选择下拉列表-->
       <select class="selectWM" v-model="statechangeKey.schoolYearType">
         <option value="0">选择年制</option>
         <option v-for="yearType in yearTypes" :value="yearType">{{yearType}}年制</option>
       </select>
-      <!--年制选择下拉列表-->
       <span><input type="text" id="stdID" class="inputWM" placeholder="请输入学号" v-model="statechangeKey.studentId"></span>
       <span><input type="text" id="stdName" class="inputWM" placeholder="请输入姓名" v-model="statechangeKey.studentName"></span>
-      <!--学号，姓名输入框-->
       <span><button id="searchFor" class="am-btn am-btn-success am-radius buttonWM" @click="searchChangeInfo()">查询</button></span>
-      <!--查询按钮-->
     </div>
     <div id="stdInfoTable" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
+      <!--学生异动信息表格-->
       <table id="stdInfoTableSy" class="normalTable" style="table-layout: fixed;">
         <thead>
         <tr>
@@ -44,7 +43,6 @@
         </tbody>
       </table>
     </div>
-    <!--学生异动信息表格-->
   </div>
 </template>
 
@@ -79,7 +77,6 @@
           console.log("获取error");
         });
       },
-//      初始化时，获取异动情况列表
       methods:{
         searchChangeInfo: function(){
           this.$http.post('./stateManage/findStateChangeInfo',{
@@ -100,7 +97,6 @@
             console.log("获取error");
           });
         }
-//        查询学生异动情况
       }
     }
 </script>

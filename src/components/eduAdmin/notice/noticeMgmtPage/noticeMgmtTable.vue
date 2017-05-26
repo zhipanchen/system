@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > 教务公告</span> -->
+		<span> > 教务公告</span>
 		<span> > 公告管理</span>
 	</div>
 	<div id="noticeMgmtBody">
@@ -75,12 +75,12 @@ export default {
 	data () {
 		return {
 			announcementList: [
-				// {announcementName: 'aaaaa'},
-				// {announcementName: 'bbbb'},
-				// {announcementName: 'dddd'}
+				{announcementName: 'aaaaa'},
+				{announcementName: 'bbbb'},
+				{announcementName: 'dddd'}
 			],
 			modal1: false,
-    		modal2: false,//我添加的对话框
+      modal2: false,//我添加的对话框
 			modalResult: false,
 			index: ''
 		}

@@ -150,7 +150,6 @@
           });
       },
         methods: {
-          //对话框打开
           operationClick: function(operationIndex,operation){
             this.operationIndex = operationIndex;
             if(operation == "restore"){

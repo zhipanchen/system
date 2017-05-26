@@ -121,7 +121,6 @@
         });
     },
     methods: {
-      //打开对话框
       saveDia:function(graduateSchool,secialty,schoolSystem,highestEDU,highestDegree){
           this.ograduateSchool=graduateSchool;
           this.osecialty=secialty;
@@ -133,7 +132,6 @@
       cancelDia:function(){
         this.modal2 = true;
       },
-      //保存
       save:function(graduateSchool,secialty,schoolSystem,highestEDU,highestDegree){
         this.modal1 = false;
         console.log(graduateSchool);
@@ -155,7 +153,6 @@
             console.log(error);
           });
       },
-      //刷新
       cancel:function(){
         location.reload();
       }

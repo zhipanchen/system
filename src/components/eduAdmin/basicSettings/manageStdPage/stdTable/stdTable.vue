@@ -34,8 +34,8 @@
           <button type="ghost" id="leadIn" class="am-btn am-btn-success am-radius buttonWM">上传</button>
           </Upload>
         </span>
+        <!--上传文件-->
         <span><button id="leadOut" class="am-btn am-btn-success am-radius buttonWM" @click="downloadClick">下载</button></span>
-        <!--查找，下载，上传按钮-->
       </div>
       <div>
         <modal v-model="modalDownloadBool" width="400" id="modalBody">
@@ -54,6 +54,7 @@
       <!--上传文件出错信息提示弹窗-->
       <div style="padding: 0.6rem 5rem;background-color: #f3f3f3">
         <div id="stdTable" style="background-color: white">
+          <!--学生信息表格-->
           <table id="eduAdminStdTableSy" class="operationTable" style="table-layout: fixed;">
             <!--table-layout: fixed;固定表格格局-->
             <thead>
@@ -78,37 +79,50 @@
               <td><input id="input5" :value="studentSimpleInfo.schoolYearType" readonly="readonly" style="border: none"></td>
               <td><input id="input6" :value="studentSimpleInfo.gradeName" readonly="readonly" style="border: none"></td>
               <td><input id="input7" :value="studentSimpleInfo.specialityName" readonly="readonly" style="border: none"></td>
-              <td><input id="input8" :value="studentSimpleInfo.className" readonly="readonly" style="border: none;"></td>
               <td>
+                <span><input id="input8" :value="studentSimpleInfo.className" readonly="readonly" style="border: none;"></span>
+                <select :id="'select' + index" v-model="classNameEleList[index].className" style="display: none;width: 80%;">
+                  <option v-for="classArr in yearAndClassList[classNameEleList[index].yearTypeClassIndex].gradeList[classNameEleList[index].gradeClassIndex].classList" :value="classArr.className">{{classArr.className}}</option>
+                </select>
+              </td>
+              <td>
+                <img :id="'editImg'+index" src="./images/edit.png" @click="editClick(index)">
+                <img :id="'saveImg'+index" src="./images/save.png" style="display: none" @click="saveClick(index)">
                 <img :id="'deleteImg'+index" src="./images/delete.png" @click="deleteClick(index)">
+                <img :id="'restoreImg'+index" src="./images/restore.png" style="display: none" @click="restoreClick(index)">
               </td>
             </tr>
             </tbody>
           </table>
-          <!--学生信息表格-->
         </div>
       </div>
+      <!--学生信息table-->
       <div>
         <modal v-model="modalOperateBool" width="400" id="modalBody">
           <div style="text-align: center;font-size: 1.1rem;">
-            <p v-if="operateMsg==='3'">是否确定删除</p>
+            <p v-if="operateMsg==='1'">是否确定保存修改</p>
+            <p v-else-if="operateMsg==='2'">是否确定取消修改</p>
+            <p v-else>是否确定删除</p>
           </div>
           <div slot="footer" style="text-align: center">
-            <button v-if="operateMsg==='3'" id="modalBtn" @click="deleteOk()">确定</button>
+            <button v-if="operateMsg==='1'" id="modalBtn" @click="saveOk()">确定</button>
+            <button v-else-if="operateMsg==='2'" id="modalBtn" @click="cancelOk()">确定</button>
+            <button v-else id="modalBtn" @click="deleteOk()">确定</button>
             <button id="modalBtn" @click="operateCancel">取消</button>
           </div>
         </modal>
         <!--确认保存、删除操作弹窗-->
         <modal v-model="modalResultBool" width="400" id="modalBody">
           <div style="text-align: center;font-size: 1.1rem;">
-            <p v-if="operateMsg === '3'">删除失败</p>
+            <p v-if="operateMsg === '1'">保存修改失败</p>
+            <p v-else-if="operateMsg === '3'">删除失败</p>
             <p v-else>处理出错</p>
           </div>
           <div slot="footer" style="text-align: center">
             <button id="modalBtn" @click="resultOk">确定</button>
           </div>
         </modal>
-        <!--操作失败提示弹窗-->
+        <!--操作成功或失败提示弹窗-->
       </div>
     </div>
 </template>
@@ -155,7 +169,7 @@
                       gradeName:'2015',
                       gradeId:'20155',
                       classList:[
-                        {className:'护理3班',classId:'555'},
+                        {className:'护理4班',classId:'555'},
                         {className:'临床4班',classId:'666'}
                       ]
                     }
@@ -163,13 +177,14 @@
                 }
               ],
               studentSimpleInfoList:[
-                  {studentId:'1530310503',studentName:'高兴月',studentIDcard:'321281199503281111',studentGender:'女',schoolYearType:'5',gradeName:'2015',specialityName:'护理',className:'护理3班',birthdate:'1993.02.03',ethno:'汉',nativePlace:'上海',phoneNumber:'15680992212',houseAddress:'成都市青牛区'},
-                  {studentId:'1530310503',studentName:'高兴月',studentIDcard:'321281199503281111',studentGender:'女',schoolYearType:'3',gradeName:'2013',specialityName:'护理',className:'护理3班',birthdate:'1993.02.03',ethno:'汉',nativePlace:'上海',phoneNumber:'15680992212',houseAddress:'成都市青牛区'}
+                  {studentId:'1530310503',studentName:'高兴月',studentIDcard:'321281199503281111',studentGender:'女',schoolYearType:'5',gradeName:'2015',specialityName:'护理',className:'护理4班',birthdate:'1993.02.03',ethno:'汉',nativePlace:'上海',phoneNumber:'15680992212',houseAddress:'成都市青牛区'}
                 ],
-              classNameEle:'',
+              classNameEleList:[
+                {studentId:'1530310503',yearTypeClassIndex:'1',gradeClassIndex:'0',className:'护理4班'}
+              ],
               index:'0',
-              yearTypeClassIndex:'0',
-              gradeClassIndex:'0',
+//              yearTypeClassIndex:'0',
+//              gradeClassIndex:'0',
               modalDownloadBool:false,
               modalOperateBool:false,
               modalResultBool:false,
@@ -185,6 +200,10 @@
           console.log(response);
           this.yearAndClassList = response.body.getGradeAndClassObj.yearAndClassList;
           this.studentSimpleInfoList = response.body.getGradeAndClassObj.studentSimpleInfoList;
+          this.classNameEleList.splice(0,1);
+          for(var i=0;i<this.studentSimpleInfoList.length;i++){
+            this.classNameEleList.push({studentId:this.studentSimpleInfoList[i].studentId,yearTypeClassIndex:'',gradeClassIndex:'',className:this.studentSimpleInfoList[i].className})
+          }
         },function(error){
           console.log("获取error");
         });
@@ -275,15 +294,107 @@
           this.modalDownloadBool = false;
         },
 //        确认文件上传结果弹窗
+        editClick: function(index){
+          var inputTable = document.getElementById("inputTable"+index);
+          var input = inputTable.getElementsByTagName("input");
+          var select = document.getElementById("select" + index);
+          var editImg = document.getElementById("editImg"+index);
+          var saveImg = document.getElementById("saveImg"+index);
+          var deleteImg = document.getElementById("deleteImg"+index);
+          var restoreImg = document.getElementById("restoreImg"+index);
+          input[7].style.display = "none";
+          select.style.display = "inline";
+          editImg.style.display = "none";
+          saveImg.style.display = "inline";
+          deleteImg.style.display = "none";
+          restoreImg.style.display = "inline";
+          for(var i=0;i<this.yearAndClassList.length;i++){
+            if(this.yearAndClassList[i].yearType===this.studentSimpleInfoList[index].schoolYearType){
+              for(var j=0;j<this.yearAndClassList[i].gradeList.length;j++){
+                if(this.yearAndClassList[i].gradeList[j].gradeName===this.studentSimpleInfoList[index].gradeName){
+                  this.classNameEleList[index].yearTypeClassIndex=i;
+                  this.classNameEleList[index].gradeClassIndex=j;
+                }
+              }
+            }
+          }
+        },
+//        编辑学生信息
+        saveClick:function(index){
+          this.modalOperateBool = true;
+          this.operateMsg = "1";
+          this.index = index;
+        },
+//        保存学生信息时，弹窗让用户确认
+        restoreClick:function(index){
+          this.modalOperateBool = true;
+          this.operateMsg = "2";
+          this.index = index;
+        },
+//        取消修改学生信息时，弹窗让用户确认
         deleteClick:function(index){
           this.modalOperateBool = true;
           this.operateMsg = "3";
           this.index = index;
         },
 //        删除学生信息时，弹窗让用户确认
-        deleteOk: function(index){
+        saveOk: function(){
+          var inputTable = document.getElementById("inputTable"+this.index);
+          var input = inputTable.getElementsByTagName("input");
+          var select = document.getElementById("select" + this.index);
+          var editImg = document.getElementById("editImg"+this.index);
+          var saveImg = document.getElementById("saveImg"+this.index);
+          var deleteImg = document.getElementById("deleteImg"+this.index);
+          var restoreImg = document.getElementById("restoreImg"+this.index);
+          this.$http.post('./studentManage/editStudentSimpleInfo',{
+            "studentId":input[0].value,
+            "className":this.classNameEleList[this.index].className
+          },{
+            "Content-Type":"application/json"
+          }).then(function (response) {
+            console.log(response);
+            this.resultMsg=response.body.result;
+            if(this.resultMsg==='1'){
+              this.studentSimpleInfoList[this.index].className = this.classNameEleList[this.index].className;
+              input[7].style.display = "inline";
+              select.style.display = "none";
+              this.$Message.success("保存成功！");
+            }else{
+              this.modalResultBool = true;
+            }
+          },function(error){
+            console.log("获取error");
+          });
+          this.modalOperateBool = false;
+          editImg.style.display = "inline";
+          saveImg.style.display = "none";
+          deleteImg.style.display = "inline";
+          restoreImg.style.display = "none";
+        },
+//        确认保存学生信息操作
+        cancelOk: function(){
+          var inputTable = document.getElementById("inputTable"+this.index);
+          var input = inputTable.getElementsByTagName("input");
+          var select = document.getElementById("select" + this.index);
+          var editImg = document.getElementById("editImg"+this.index);
+          var saveImg = document.getElementById("saveImg"+this.index);
+          var deleteImg = document.getElementById("deleteImg"+this.index);
+          var restoreImg = document.getElementById("restoreImg"+this.index);
+          this.classNameEleList[this.index].className = this.studentSimpleInfoList[this.index].className;
+          input[7].style.display = "inline";
+          select.style.display = "none";
+          this.modalOperateBool = false;
+          editImg.style.display = "inline";
+          saveImg.style.display = "none";
+          deleteImg.style.display = "inline";
+          restoreImg.style.display = "none";
+        },
+//        确认不保存学生信息操作
+        deleteOk: function(){
+          var inputTable = document.getElementById("inputTable"+this.index);
+          var input = inputTable.getElementsByTagName("input");
           this.$http.post('./studentManage/deleteStudentInfo',{
-            "studentId":this.studentSimpleInfoList[this.index].studentId
+            "studentId":input[0].value
           },{
             "Content-Type":"application/json"
           }).then(function (response) {

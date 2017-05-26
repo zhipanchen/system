@@ -3,11 +3,6 @@
     <div id="tchTeachingPlanPage">
       <topTitle></topTitle>
       <topBar></topBar>
-      <div class="positionBar">
-        <span>您的当前位置是：</span>
-        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-        <span> > <a href="#/login/main/eduAdminHome?manage" class="returnHome">教务管理</a> > 教务省察 > 教学计划 </span>
-      </div>
       <courseGroupTable></courseGroupTable>
     </div>
 </template>

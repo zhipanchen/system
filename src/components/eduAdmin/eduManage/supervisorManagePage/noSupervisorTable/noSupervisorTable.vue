@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="noSupervisorDiv" style="display: inline">
-      <div id="tchDropdown" style="height: 3rem;margin: 0.6rem 5rem;padding-top:2rem;background-color: white;">
+      <div id="tchDropdown" style="height: 5rem;margin: 0.6rem 5rem;background-color: white;">
         <select id="teacherSelect" class="selectWM" v-model="noSupervisorinfoKey.teacherId" @change="teacherClick()">
           <option value="">选择任课教师</option>
           <option v-for="teacher in teacherList" :value="teacher.teacherId">{{teacher.teacherName}}</option>
@@ -14,10 +14,10 @@
         <!--课程选择下拉列表-->
         <span><button id="searchFor" class="am-btn am-btn-success am-radius buttonWM" @click="checkNoSupervisorInfoClick()">查找</button></span>
         <span><button id="leadOut" class="am-btn am-btn-success am-radius buttonWM" @click="downloadClick">下载</button></span>
-        <!--查找，下载按钮-->
       </div>
       <div id="noSupervisorTable" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
         <span><p>*下面是筛选后的课程</p></span>
+        <!--未设置督导的课程的表格-->
         <table id="noSupervisorTableSy" class="normalTable" style="table-layout: fixed;">
           <thead>
           <tr>
@@ -42,9 +42,7 @@
           <span><button id="goTo" class="bottomButton am-btn am-btn-success am-radius" @click="goToClick()">查看已设置督导课程</button></span>
         </div>
       </div>
-      <!--未设置督导的课程的表格-->
     </div>
-    <!--未设置督导页面-->
     <div id="supervisorDiv" style="display: none">
       <div id="setSupervisorDropdown">
         <div style="height: 5rem;margin: 0.6rem 5rem;background-color: white;">
@@ -58,15 +56,14 @@
             <!--督导员选择下拉列表-->
             <span><button id="save" class="am-btn am-btn-success am-radius buttonWM" @click="saveSupervisorInfoClick()">保存</button></span>
             <span><button id="cancel" class="am-btn am-btn-success am-radius buttonWM" @click="restoreSupervisorInfoClick()">取消</button></span>
-            <!--保存，取消保存督导员设置按钮-->
           </div>
         </div>
       </div>
-      <!--督导员设置div-->
       <div style="padding: 0.6rem 5rem;background-color: #f3f3f3">
         <div id="supervisorTable" style="background-color: white">
           <span><p>*下面是已分配督导员的课程</p></span>
           <table id="supervisorTableSy" class="operationTable" style="table-layout: fixed;">
+            <!--已分配督导员的课程的表格-->
             <thead>
             <tr>
               <th width="10%">当前状态</th>
@@ -80,8 +77,8 @@
             </thead>
             <tbody>
             <tr v-for=" settedSupervisorCourseInfo in settedSupervisorCourseInfoList">
-              <td v-if="settedSupervisorCourseInfo.status == 1">已读</td>
-              <td v-if="settedSupervisorCourseInfo.status == 0"><u>未读</u></td>
+              <td v-if="settedSupervisorCourseInfo.status === '1'">已读</td>
+              <td v-if="settedSupervisorCourseInfo.status === '0'"><u>未读</u></td>
               <td v-text="settedSupervisorCourseInfo.supervisorName"></td>
               <td v-text="settedSupervisorCourseInfo.className"></td>
               <td v-text="settedSupervisorCourseInfo.courseId"></td>
@@ -91,15 +88,12 @@
             </tr>
             </tbody>
           </table>
-          <!--已分配督导员的课程的表格-->
           <div class="buttonDiv">
             <span><button id="goBack" class="bottomButton am-btn am-btn-success am-radius" @click="supervisorTableGoBackClick()">返回</button></span>
           </div>
-          <!--返回未设置督导员页面-->
         </div>
       </div>
     </div>
-    <!--已设置督导员页面-->
     <div id="superviseBackTable" style="display: none">
       <div id="superviseBackShow" style="padding: 0.6rem 5rem;background-color: #f3f3f3;">
         <div v-for="(superviseInfo,index) in superviseInfoList">
@@ -107,7 +101,6 @@
             <span><img :id="'arrow'+index" class="superviseImg" @click="tableSlideToggle(index)" :src="arrowright"></span>
             <span class="superviseP" @click="tableSlideToggle(index)">{{superviseInfo.superviseTime}}</span>
           </div>
-          <!--督导时间下拉导航栏，点击后下拉该时间的督导反馈表格-->
           <div :id="'superviseTableDiv' + index" style="display: none">
             <table class="normalTable">
               <tbody>
@@ -132,17 +125,14 @@
               </tbody>
             </table>
           </div>
-          <!--督导反馈表格-->
-          <div class="buttonDiv">
-            <span><button class="bottomButton am-btn am-btn-success am-radius" @click="submitClick(superviseInfo.superviseTime)">提交</button></span>
-            <span><button class="bottomButton am-btn am-btn-success am-radius" @click="cancelClick()">取消</button></span>
-            <span><button class="bottomButton am-btn am-btn-success am-radius" @click="superviseBackTableGoBackClick()">返回</button></span>
-          </div>
-          <!--提交，取消提交教务评价按钮，返回已设置督导页面按钮-->
+        </div>
+        <div class="buttonDiv">
+          <span><button class="bottomButton am-btn am-btn-success am-radius" @click="submitClick(superviseInfo.superviseTime)">提交</button></span>
+          <span><button class="bottomButton am-btn am-btn-success am-radius" @click="cancelClick()">取消</button></span>
+          <span><button class="bottomButton am-btn am-btn-success am-radius" @click="superviseBackTableGoBackClick()">返回</button></span>
         </div>
       </div>
     </div>
-    <!--督导反馈页面-->
   </div>
 
 </template>
@@ -245,7 +235,6 @@
           console.log("获取error");
         });
       },
-//      初始化页面时，获取课程列表，教师列表，未设置督导课程的课程信息列表
       methods:{
         checkNoSupervisorInfoClick: function(){
           this.$http.post('./teachingSupervision/checkNoSupervisorInfoJson',{
@@ -260,11 +249,9 @@
             console.log("获取error");
           });
         },
-//        查询未设置督导的课程
         downloadClick:function(){
           location.href="./teachingSupervision/exportExcel";
         },
-//        下载未设置督导对的课程
         teacherClick:function(){
           this.$http.post('./teachingSupervision/noSupervisorTeacherClickJson',{
             "teacherId":this.noSupervisorinfoKey.teacherId
@@ -278,7 +265,6 @@
           });
           this.noSupervisorinfoKey.courseId = "0";
         },
-//        点击教师select框时，获取对应教师的课程列表
         setSupervisorClick:function(courseId,courseName,classId,teacherId){
           var noSupervisorDiv = document.getElementById("noSupervisorDiv");
           var supervisorDiv = document.getElementById("supervisorDiv");
@@ -302,7 +288,7 @@
           supervisorDiv.style.display = "inline";
           noSupervisorDiv.style.display = "none";
         },
-//        点击某课程的设置督导按钮，从未设置督导页面跳转到已设置督导页面
+//        从未设置督导页面跳转到已设置督导页面
         goToClick:function(){
           var noSupervisorDiv = document.getElementById("noSupervisorDiv");
           var supervisorDiv = document.getElementById("supervisorDiv");
@@ -319,7 +305,6 @@
             console.log("获取error");
           });
         },
-//        直接从未设置督导页面跳转到已设置督导页面
         saveSupervisorInfoClick:function(){
           this.$http.post('./teachingSupervision/setSupervisor',{
             "supervisorId":this.supervisorinfoKey.supervisorId,
@@ -331,7 +316,7 @@
           }).then(function (response) {
             console.log(response);
             var message = response.body.message;
-            if(message==1){
+            if(message==="1"){
               this.settedSupervisorCourseInfoList = response.body.settedSupervisorCourseInfoList;
             }else{
               alert("保存失败!");
@@ -340,11 +325,10 @@
             console.log("获取error");
           });
         },
-//        保存督导设置
         restoreSupervisorInfoClick:function(){
           this.supervisorinfoKey.supervisorName = '';
         },
-//        取消督导设置
+//        从已设置督导页面跳转到督导反馈页面
         checksupervisorBackInfoClick:function(supervisorId,classId,courseId,teacherId){
           var supervisorDiv = document.getElementById("supervisorDiv");
           var superviseBackTable = document.getElementById("superviseBackTable");
@@ -370,7 +354,7 @@
           superviseBackTable.style.display = "inline"
 
         },
-//        从已设置督导页面跳转到督导反馈页面
+//        从已设置督导页面跳转到未设置督导页面
         supervisorTableGoBackClick:function(){
           var noSupervisorDiv = document.getElementById("noSupervisorDiv");
           var supervisorDiv = document.getElementById("supervisorDiv");
@@ -389,7 +373,6 @@
           supervisorDiv.style.display = "none";
           setSupervisorDropdown.style.display = "inline";
         },
-//        从已设置督导页面跳转到未设置督导页面
         tableSlideToggle:function(index){
           var table = document.getElementById('superviseTableDiv' + index);
           var arrow = document.getElementById('arrow'+index);
@@ -402,7 +385,6 @@
             arrow.src = this.arrowright;
           }
         },
-//        点击督导时间下拉导航栏后下拉该时间的督导反馈表格
         submitClick:function(superviseTime){
           if(this.superviseBackinfoKey.forwardInfo.length === 0){
             alert("您没有输入教务人员意见");
@@ -424,18 +406,16 @@
             });
           }
         },
-//        提交教务人员意见
         cancelClick:function(){
           this.superviseBackinfoKey.forwardInfo = "";
         },
-//        取消保存教务人员意见
+//        从督导反馈页面跳转到已设置督导页面
         superviseBackTableGoBackClick:function(){
           var supervisorDiv = document.getElementById("supervisorDiv");
           var superviseBackTable = document.getElementById("superviseBackTable");
           supervisorDiv.style.display = "inline";
           superviseBackTable.style.display = "none"
         }
-//        从督导反馈页面跳转到已设置督导页面
       }
     }
 </script>

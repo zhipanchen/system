@@ -157,7 +157,6 @@
       cancelDia:function(){
         this.modal2 = true;
       },
-      //添加组员 判断是否已在教研组中
       addPerson: function(type,persons){
         var select = document.getElementById(type+"Select");
         if(select.value!="选择教师"&&select.value!=""){
@@ -178,11 +177,9 @@
           persons.push(select.value);}
         select.value = "";
       },
-      //删除
       removePerson: function(index,persons){
         persons.splice(index,1);
       },
-      //保存 向后端传值
       save:function(){
         this.modal1=false;
         for(var i=0;i<this.members.length;i++){
@@ -219,7 +216,6 @@
             console.log(error);
           });
         },
-      //取消
        cancel:function(){
         location.reload();
       }}
