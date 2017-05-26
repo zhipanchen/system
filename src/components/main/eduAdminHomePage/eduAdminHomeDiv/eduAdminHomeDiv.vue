@@ -233,8 +233,10 @@
           })
         }
       });
+
       this.$http.post('./getPermissionByUser',{},{
 //      this.$http.post('../testPhp/getPermissionByUser.php',{},{
+
         "Content-Type":"application/json"
       }).then(function(response){
         sessionStorage.setItem("authorityList", JSON.stringify(response.body.currentPermissionList));

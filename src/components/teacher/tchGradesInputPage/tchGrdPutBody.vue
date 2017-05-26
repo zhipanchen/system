@@ -95,7 +95,9 @@ export default {
 	methods: {
 		// 导出功能
 		exportFormatBtn: function (index) {
+
 			location.href = "./downloadScoreList?courseAssociationId="+this.scoreInputList[index].courseAssociationId;
+
 		},
     	resultOk: function () {
     		this.modalResult = false;

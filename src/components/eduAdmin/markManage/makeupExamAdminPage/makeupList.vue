@@ -295,7 +295,9 @@ export default {
     		if (this.selClassId == "选择班级") {
     			this.selClassId = '';
     		}
+
 	    	location.href = "./exportMakeUpList?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"courseId="+this.selCourseName+"&"+"classId="+this.selClassId;
+
 	    },
 	    // 单个批准补考申请********************************************************
   		rightBtn: function (index) {

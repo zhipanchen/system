@@ -210,7 +210,9 @@ export default {
     		if (this.maxScore == '') {
     			this.maxScore = '100';
     		}
-			location.href = "./exportScoreListByMaxMinScore?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"specialityId="+this.selSpeciality+"&"+"courseId="+this.selCourseName+"&"+"minScore="+this.minScore+"&"+"maxScore="+this.maxScore;
+
+			location.href = "./exportScoreListByMaxMinScore?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"specialityId="+this.selSpeciality+"&"+"courseId="+this.selCourseName+"&"+"minScore="+this.minScore+"&"+"maxScore="+this.maxScore;	
+
   		},
     	// 弹窗提示点击确定，弹窗消失
     	resultOk: function () {
