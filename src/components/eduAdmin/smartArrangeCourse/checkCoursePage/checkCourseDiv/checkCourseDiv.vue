@@ -22,8 +22,8 @@
             <p id="tableTipP">
                 支持分别以学期和周数为条件，对全校的课程表进行查询；支持调换选定的两门课程。
                 <form action="./acdeminSeeCurriculumExcel" method="get">
-                    <!--<input type="text" v-model="termExport" name="yearSemester" style="display: none">-->
-                    <!--<input type="text" v-model="weekExport" name="week" style="display:none;">-->
+                    <input type="text" v-model="termExport" name="yearSemester" style="display: none">
+                    <input type="text" v-model="weekExport" name="week" style="display:none;">
                     <div class="am-btn am-btn-success am-radius" style="position: absolute;right: 7rem;z-index: 10" @click="exportClick()">导出</div>
                     <button id="exportButton" style="display: none" type="submit"></button>
                 </form>

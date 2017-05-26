@@ -307,8 +307,7 @@ export default {
 			    this.modalResult = true;
 			    if(data.result == "1") {
 			        input[0].value = "";
-			        // this.remindResult = '4';
-			        this.$Message.success("删除成功！");
+			        this.remindResult = '4';
 			    }else if (data.result == "0") {
 			        // alert("操作失败！请重试");
 			        this.remindResult = '5';
@@ -374,8 +373,7 @@ export default {
 	            	this.jobtitleStrList = data.jobtitleStrList;
 		        	window.location.reload();
 		        	this.modalResult = true;
-		        	// this.remindResult = '2';
-		        	this.$Message.success("保存成功！");
+		        	this.remindResult = '2';
 	            }
 			},
 			function(error){

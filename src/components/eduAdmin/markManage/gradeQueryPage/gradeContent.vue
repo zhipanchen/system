@@ -71,7 +71,6 @@
 		    <p v-if="resultBool === '1'">未找到所查询内容！</p>
 		    <p v-else-if="resultBool === '2'">未找到可下载的内容！</p>
 		    <p v-else-if="resultBool === '3'">请选择年制！</p>
-		    <p v-else-if="resultBool === '4'">请选择后进行查询！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -166,34 +165,38 @@ export default {
     			// this.selGradeType = '0';
     			this.modalResult = true;
     			this.resultBool = '3';
-    		}else if (this.selYearTerm == "选择学期" || this.selCourseName == "选择课程" || this.selClassId == "选择班级") {
-    			this.modalResult = true;
-    			this.resultBool = '4';
-    		}else {
-	    		this.$http.post('./findScoreByStuNo',{
-		        	"gradeType": this.selGradeType,
-		        	"yearTerm": this.selYearTerm,
-		        	"courseId": this.selCourseName,
-		        	"classId": this.selClassId,
-		        	"studentId": this.studentId
-		        },{    
-		            "Content-Type":"application/json"
-		        }).then(function(response){
-		            console.log("获取申请:");
-		            console.log(response.body);
-		            var data = response.body;
-		            if (data.scoreListByStuNo == []) {
-		            	this.scoreListByStuNo = data.scoreListByStuNo;
-		            }else{
-				        this.modalResult = true;
-				        this.resultBool = '1';
-				    }
-		        },function(error){
-		            console.log("获取申请error:");
-		            console.log(error);
-	        	});
     		}
-    		
+    		if (this.selYearTerm == "选择学期") {
+    			this.selYearTerm = '';
+    		}
+    		if (this.selCourseName == "选择课程") {
+    			this.selCourseName = '';
+    		}
+    		if (this.selClassId == "选择班级") {
+    			this.selClassId = '';
+    		}
+    		this.$http.post('./findScoreByStuNo',{
+	        	"gradeType": this.selGradeType,
+	        	"yearTerm": this.selYearTerm,
+	        	"courseId": this.selCourseName,
+	        	"classId": this.selClassId,
+	        	"studentId": this.studentId
+	        },{    
+	            "Content-Type":"application/json"
+	        }).then(function(response){
+	            console.log("获取申请:");
+	            console.log(response.body);
+	            var data = response.body;
+	            if (data.scoreListByStuNo == []) {
+	            	this.scoreListByStuNo = data.scoreListByStuNo;
+	            }else{
+			        this.modalResult = true;
+			        this.resultBool = '1';
+			    }
+	        },function(error){
+	            console.log("获取申请error:");
+	            console.log(error);
+        	});
     	},
     	// 导出按钮
     	exportBtn: function() {

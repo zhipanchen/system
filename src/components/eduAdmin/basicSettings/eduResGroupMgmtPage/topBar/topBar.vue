@@ -15,6 +15,27 @@
         msg: ''
       }
     },
+    mounted: function() {
+      try{
+        var buttons = document.getElementById("eduResearchGroupManagement_topBar").getElementsByTagName("button");
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+//        console.log(this.authorityList);
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.display = "none";
+        }
+        for (var i = 0; i < this.authorityList.length; i++) {
+          if(this.authorityList[i] == "24"){
+            buttons[0].style.display = "block";
+          }else if(this.authorityList[i] == "23"){
+            buttons[1].style.display = "block";
+          }else if(this.authorityList[i] == "26"){
+            buttons[2].style.display = "block";
+          }else if(this.authorityList[i] == "64"){
+            buttons[3].style.display = "block";
+          }
+        }
+      }catch(e){}
+    },
     methods: {
       hrefClick: function (num) {
         if (num == 1) {

@@ -70,7 +70,6 @@
 		    <p v-if="resultBool === '1'">未找到所查询内容！</p>
 		    <p v-else-if="resultBool === '2'">未找到可下载的内容！</p>
 		    <p v-else-if="resultBool === '3'">请选择年制！</p>
-		    <p v-else-if="resultBool === '4'">请选择后进行查询！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -154,39 +153,45 @@ export default {
     			// this.selGradeType = '0';
     			this.modalResult = true;
     			this.resultBool = '3';
-    		}else if (this.selYearTerm == "选择学期" || this.selCourseName == "选择课程" || this.selSpeciality == "选择专业") {
-    			this.modalResult = true;
-    			this.resultBool = '4';
-    		}else if (this.minScore == '') {
-    			this.minScore = '0';
-    		}else if (this.maxScore == '') {
-    			this.maxScore = '100';
-    		}else {
-	    		this.$http.post('./findScore',{
-		        	"gradeType": this.selGradeType,
-		        	"yearTerm": this.selYearTerm,
-		        	"specialityId": this.selSpeciality,
-		        	"courseId": this.selCourseName,
-		        	"minScore": this.minScore,
-		        	"maxScore": this.maxScore
-		        },{    
-		            "Content-Type":"application/json"
-		        }).then(function(response){
-		            console.log("获取申请:");
-		            console.log(response.body);
-		            var data = response.body;
-		            if (data.scoreList == []) {
-		            	this.scoreList = data.scoreList;
-		            }else{
-				        this.modalResult = true;
-				        this.resultBool = '1';
-				    }
-		        },function(error){
-		            console.log("获取申请error:");
-		            console.log(error);
-	        	});
     		}
-    		
+    		if (this.selYearTerm == "选择学期") {
+    			this.selYearTerm = '';
+    		}
+    		if (this.selSpeciality == "选择专业") {
+    			this.selSpeciality = '';
+    		}
+    		if (this.selCourseName == "选择课程") {
+    			this.selCourseName = '';
+    		}
+    		if (this.minScore == '') {
+    			this.minScore = '0';
+    		}
+    		if (this.maxScore == '') {
+    			this.maxScore = '100';
+    		}
+    		this.$http.post('./findScore',{
+	        	"gradeType": this.selGradeType,
+	        	"yearTerm": this.selYearTerm,
+	        	"specialityId": this.selSpeciality,
+	        	"courseId": this.selCourseName,
+	        	"minScore": this.minScore,
+	        	"maxScore": this.maxScore
+	        },{    
+	            "Content-Type":"application/json"
+	        }).then(function(response){
+	            console.log("获取申请:");
+	            console.log(response.body);
+	            var data = response.body;
+	            if (data.scoreList == []) {
+	            	this.scoreList = data.scoreList;
+	            }else{
+			        this.modalResult = true;
+			        this.resultBool = '1';
+			    }
+	        },function(error){
+	            console.log("获取申请error:");
+	            console.log(error);
+        	});
     	},
     	// 导出按钮
 		exportBtn: function () {

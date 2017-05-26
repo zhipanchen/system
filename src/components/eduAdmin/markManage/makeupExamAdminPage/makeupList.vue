@@ -132,7 +132,6 @@
 				    <p v-else-if= "remindResult === '5'">操作失败！请重试</p>
 				    <p v-else-if= "remindResult === '6'">未找到可下载的内容！</p>
 		    		<p v-else-if="remindResult === '7'">请选择年制！</p>
-		    		<p v-else-if="remindResult === '8'">请选择后进行查询！</p>
 				</div>
 			    <div slot="footer" style="text-align:center;">
 			        <Button id="modalBtn" @click="resultOk()">确定</Button>
@@ -227,59 +226,63 @@ export default {
     			// this.selGradeType = '0';
     			this.modalResult = true;
     			this.remindResult = '7';
-    		}else if (this.selYearTerm == "选择学期" || this.selCourseName == "选择课程" || this.selClassId == "选择班级") {
-    			this.modalResult = true;
-    			this.remindResult = '8';
-    		}else {
-	    		// 获取需要补考名单*************************************************
-	  			this.$http.post('./findMakeUpList',{
-		        	"gradeType": this.selGradeType,
-		        	"yearTerm": this.selYearTerm,
-		        	"courseId": this.selCourseName,
-		        	"classId": this.selClassId
-		        },{    
-		            "Content-Type":"application/json"
-		        }).then(function(response){
-		            console.log("获取申请:");
-		            console.log(response.body);
-		            var data = response.body;
-		            if (data.result == "1") {
-		            	this.scoreList = data.scoreList;
-		            }else{
-				        // this.$Message.error("操作失败！请重试");
-				        this.modalResult = true;
-				        this.remindResult = '5';
-				    }
-		        },function(error){
-		            console.log("获取申请error:");
-		            console.log(error);
-	        	});
-	        	// 获取补考申请同意名单*********************************************
-	        	this.$http.post('./findMakeUpAskList',{
-		        	"gradeType": this.selGradeType,
-		        	"yearTerm": this.selYearTerm,
-		        	"courseId": this.selCourseName,
-		        	"classId": this.selClassId
-		        },{    
-		            "Content-Type":"application/json"
-		        }).then(function(response){
-		            console.log("获取申请:");
-		            console.log(response.body);
-		            var data = response.body;
-		            if (data.result == "1") {
-		            	this.makeUpAskList = data.makeUpAskList;
-		            }else{
-				        // this.$Message.error("操作失败！请重试");
-				        this.modalResult = true;
-				        this.remindResult = '1';
-				    }
-		        },function(error){
-		            console.log("获取申请error:");
-		            console.log(error);
-	        	});
-				this.checkResult = '1';
     		}
-        	
+    		if (this.selYearTerm == "选择学期") {
+    			this.selYearTerm = '';
+    		}
+    		if (this.selCourseName == "选择课程") {
+    			this.selCourseName = '';
+    		}
+    		if (this.selClassId == "选择班级") {
+    			this.selClassId = '';
+    		}
+        	// 获取需要补考名单*************************************************
+  			this.$http.post('./findMakeUpList',{
+	        	"gradeType": this.selGradeType,
+	        	"yearTerm": this.selYearTerm,
+	        	"courseId": this.selCourseName,
+	        	"classId": this.selClassId
+	        },{    
+	            "Content-Type":"application/json"
+	        }).then(function(response){
+	            console.log("获取申请:");
+	            console.log(response.body);
+	            var data = response.body;
+	            if (data.result == "1") {
+	            	this.scoreList = data.scoreList;
+	            }else{
+			        // this.$Message.error("操作失败！请重试");
+			        this.modalResult = true;
+			        this.remindResult = '5';
+			    }
+	        },function(error){
+	            console.log("获取申请error:");
+	            console.log(error);
+        	});
+        	// 获取补考申请同意名单*********************************************
+        	this.$http.post('./findMakeUpAskList',{
+	        	"gradeType": this.selGradeType,
+	        	"yearTerm": this.selYearTerm,
+	        	"courseId": this.selCourseName,
+	        	"classId": this.selClassId
+	        },{    
+	            "Content-Type":"application/json"
+	        }).then(function(response){
+	            console.log("获取申请:");
+	            console.log(response.body);
+	            var data = response.body;
+	            if (data.result == "1") {
+	            	this.makeUpAskList = data.makeUpAskList;
+	            }else{
+			        // this.$Message.error("操作失败！请重试");
+			        this.modalResult = true;
+			        this.remindResult = '1';
+			    }
+	        },function(error){
+	            console.log("获取申请error:");
+	            console.log(error);
+        	});
+			this.checkResult = '1';
 	    },
 	    // 下载按钮********************************************************************
 	    exportBtn: function () {

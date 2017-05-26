@@ -76,7 +76,6 @@
 		    <p v-else-if= "remindResult === '6'">该课程没有可编辑的成绩！</p>
 		    <p v-else-if= "remindResult === '7'">请输入所有成绩！</p>
     		<p v-else-if="remindResult === '8'">请选择年制！</p>
-    		<p v-else-if="remindResult === '9'">请选择后进行查询！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -142,41 +141,42 @@ export default {
     			// this.selGradeType = '0';
     			this.modalResult = true;
     			this.remindResult = '8';
-    		}else if (this.selYearTerm == "选择学期" || this.selCourseName == "选择课程") {
-    			this.modalResult = true;
-    			this.remindResult = '9';
-    		}else {
-	    		this.$http.post('./getMakeUpGradeInputList',{
-					"gradeType": this.selGradeType,
-					"yearTerm": this.selYearTerm,
-					"courseId": this.selCourseName,
-				},{
-		            "Content-Type":"application/json"
-		        }).then(function(response){
-		            console.log("获取申请:");
-		            console.log(response.body);
-		            var data = response.body;
-		            if(data.result == "1") {
-	                    this.makeUpGradeInputList = data.makeUpGradeInputList;
-	                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
-	                    if (this.makeUpGradeInputList != []) {
-	                    	this.buttonShow = true;
-	                    	this.submitShow = true;
-	                    }else {
-	                    	this.modalResult = true;
-	                    	this.remindResult = '6';
-	                    }
-	                }else {
-	                    // this.$Message.error('操作失败！请重试');
-	                    this.modalResult = true;
-	                    this.remindResult = '1';
-	                }
-		        },function(error){
-		            console.log("获取申请error:");
-		            console.log(error);
-		        });
     		}
-    		
+    		if (this.selYearTerm == "选择学期") {
+    			this.selYearTerm = '';
+    		}
+    		if (this.selCourseName == "选择课程") {
+    			this.selCourseName = '';
+    		}
+    		this.$http.post('./getMakeUpGradeInputList',{
+				"gradeType": this.selGradeType,
+				"yearTerm": this.selYearTerm,
+				"courseId": this.selCourseName,
+			},{
+	            "Content-Type":"application/json"
+	        }).then(function(response){
+	            console.log("获取申请:");
+	            console.log(response.body);
+	            var data = response.body;
+	            if(data.result == "1") {
+                    this.makeUpGradeInputList = data.makeUpGradeInputList;
+                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
+                    if (this.makeUpGradeInputList != []) {
+                    	this.buttonShow = true;
+                    	this.submitShow = true;
+                    }else {
+                    	this.modalResult = true;
+                    	this.remindResult = '6';
+                    }
+                }else {
+                    // this.$Message.error('操作失败！请重试');
+                    this.modalResult = true;
+                    this.remindResult = '1';
+                }
+	        },function(error){
+	            console.log("获取申请error:");
+	            console.log(error);
+	        });
     	},
     	// 编辑修改补考成绩*****************************************************************
     	compileBtn: function () {
