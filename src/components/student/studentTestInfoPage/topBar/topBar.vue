@@ -9,6 +9,9 @@
     <a :href="studentTestUrl">
       <button  class="topBarButton am-btn am-btn-success btn-active">学生考场信息</button>
     </a>
+    <a :href="studentGradeUrl">
+      <button  class="topBarButton am-btn am-btn-success">学生成绩信息</button>
+    </a>
   </div>
 </template>
 
@@ -17,9 +20,32 @@
     name: 'topBarDiv',
     data () {
       return {
-        studentCourseUrl: 'index.html#'+'studentTestInfoContent/query/studentLesson',
-        studentTeacherUrl: 'index.html#'+'studentTestInfoContent/query/studentTeacher',
-        studentTestUrl:'index.html#'+'studentTestInfoContent/query/studentTestInfo',
+        studentCourseUrl: '#/student/query/studentLesson',
+        studentTeacherUrl: '#/student/query/studentTeacher',
+        studentTestUrl:'#/student/query/studentTestInfo',
+        studentGradeUrl:'#/student/query/stInquireGrade',
+        authorityList:null
+      }
+    },
+    mounted: function () {
+      try {
+        var buttons = document.getElementById("stdInquireGradeBar").getElementByTagName("button");
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.display = "none";
+        }
+        for (var i = 0; i < this.authorityList.length; i++) {
+          if (this.authorityList[i] == "59") {
+            buttons[0].style.display = "block";
+          } else if (this.authorityList[i] == "50") {
+            buttons[1].style.display = "block";
+          } else if (this.authorityList[i] == "61") {
+            buttons[2].style.display = "block";
+          }else if (this.authorityList[i] == "51") {
+            buttons[3].style.display = "block";
+          }
+        }
+      } catch (e) {
       }
     }
   }

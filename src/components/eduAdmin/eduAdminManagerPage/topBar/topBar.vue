@@ -1,5 +1,5 @@
 <template>
-  <div class="topBarDiv am-btn-group">
+  <div id="adminCancelGrade_topBar" class="topBarDiv am-btn-group">
     <a :href="testManageUrl">
       <button id="test" class="topBarButton am-btn am-btn-success btn-active">{{ testManage }}</button>
     </a>
@@ -12,8 +12,23 @@
     data () {
       return {
         testManage: '考务管理',
-        testManageUrl: 'index.html#'+'eduAdmin/test/eduAdminManager'
+        testManageUrl: '#/eduAdmin/test/eduAdminManager',
+        authorityList:null
       }
+    },
+    mounted: function () {
+      try{
+        var buttons = document.getElementById("adminCancelGrade_topBar").getElementByTagName("button");
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.display = "none";
+        }
+        for (var i = 0; i < this.authorityList.length; i++) {
+          if (this.authorityList[i] == "10") {
+            buttons[0].style.display = "block";
+          }
+        }
+      }catch(e) {}
     }
   }
 </script>

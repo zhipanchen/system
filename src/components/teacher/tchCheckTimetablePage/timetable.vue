@@ -141,6 +141,7 @@ export default {
 			modalResult: false
 		}
 	},
+	// 初始化获取教师当前学期课程表
 	beforeMount: function () {
 		this.$http.post('./teacherSeeCurriculum',{},{
             "Content-Type":"application/json"

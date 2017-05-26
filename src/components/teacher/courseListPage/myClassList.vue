@@ -89,44 +89,40 @@
 							</span>
 						</td>
 						<td class="textBtn" :value="data.courseAssociationId">
+							<!-- 跳转到教师签到页面 -->
 							<a :href="'#/teacher/teach/normalSchedule?courseAssociationId='+data.courseAssociationId">签到</a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 			
+			<!-- 查看申请状态弹出，并有下载功能按钮 -->
 			<Modal v-model="modal" id="modalBody" :styles="{top:'10rem'}">
 			    <div>
-			    	<!-- 查看课件列表，选择下载 -->
-			    	<!-- <p v-if="modalBool === '0'" style="text-align:center; font-size:0.8rem;">
-			    		<table width="100%">
-			    			<tr v-for="(courseware, index) in uploadList">
-			    				<td :value="courseware.coursewareId" width="40%">{{courseware.coursewareName}}</td>
-			    				<td width="40%">{{courseware.coursewareTime}}</td>
-			    				<td @click="uploadClick(index)" width="20%">
-			    					<button class="am-btn am-btn-success am-radius" style="padding: 0.3rem 1.1rem;">下载</button></td>
-			    			</tr>
-			    		</table>
-			    	</p> -->
-			    	<!-- 查看教学计划弹窗，返回申请状态，有下载功能按钮 -->
 			    	<p style="text-align:center; font-size:1.8rem; height:3rem;">申请状态：{{uploadState}}</p>
 			    </div>
 			    <div slot="footer" style="text-align:center;">
+			    	<!-- 下载课件 -->
 			        <Button v-if="modalBool === '1'" id="modalBtn" @click="ok1()">下载</Button>
+			        <!-- 下载教学计划 -->
 			        <Button v-else-if="modalBool === '2'" id="modalBtn" @click="ok2()">下载</Button>
 			        <Button id="modalBtn" @click="cancel()">取消</Button>
 			    </div>
 			</Modal>
+
 			<!-- 提交弹窗 -->
 			<Modal v-model="modalSubmit" id="modalBody" :styles="{top:'10rem'}">
 			    <p style="text-align:center; font-size:1.1rem;">您确定要提交吗？</p>
 			    <p style="text-align:center; font-size:0.9rem; color:red;">（提示：提交后将无法上传）</p>
 			    <div slot="footer" style="text-align:center;">
+			    	<!-- 提交课件 -->
 			        <Button v-if="submitBool === '1'" id="modalBtn" @click="submitOk1()">确认</Button>
+			        <!-- 提交教学计划 -->
 			        <Button v-else-if="submitBool === '2'" id="modalBtn" @click="submitOk2()">确认</Button>
 			        <Button id="modalBtn" @click="submitCancel()">取消</Button>
 			    </div>
 			</Modal>
+
 			<!-- 提交状态返回 -->
 			<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 				<div style="text-align:center; font-size:1.1rem;">
@@ -179,6 +175,7 @@ export default {
 			index: ''
 		}
 	},
+	// 初始化获取已签到课程列表
 	beforeMount: function() {
         this.$http.post('./getTeacherTeachJournal',{},{
             "Content-Type":"application/json"

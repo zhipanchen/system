@@ -129,11 +129,11 @@ export default {
 		}
 	},
 	beforeMount: function() {
+		//分割成字符串，获取courseAssociationId
 		var thisURL = document.URL; 
-		//分割成字符串  
         var getval =thisURL.split('?')[1];
         this.courseAssociationId = getval.split("=")[1];
-
+        // 获取已签到课程列表
         this.$http.post('./teachJournalDetailList',{
         	"courseAssociationId": this.courseAssociationId
         },{
@@ -226,6 +226,7 @@ export default {
 				console.log(error);
             });
         },
+        // 提交取消，返回签到弹窗
 		submitCancel: function () {
 			this.modalSubmit = false;
             // this.$Message.error('签到失败！');

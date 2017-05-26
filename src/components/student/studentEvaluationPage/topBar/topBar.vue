@@ -1,5 +1,5 @@
 <template>
-  <div class="topBarDiv am-btn-group">
+  <div id="stdInquireGradeBar" class="topBarDiv am-btn-group">
     <a :href="changePasswordUrl">
       <button id="changePasswordButton" class="topBarButton am-btn am-btn-success">修改密码</button>
     </a>
@@ -17,9 +17,29 @@
     name: 'topBarDiv',
     data () {
       return {
-        changePasswordUrl: 'index.html#'+'studentTestInfoContent/setting/changPassword',
-        selfInfUrl:'index.html#'+'studentTestInfoContent/setting/studentInformation',
-        studentEvaluationUrl: 'index.html#'+'studentTestInfoContent/setting/studentEvaluation',
+        changePasswordUrl: '#/student/setting/changPassword',
+        selfInfUrl:'#/student/setting/studentInformation',
+        studentEvaluationUrl: '#/student/setting/studentEvaluation',
+        authorityList:null
+      }
+    },
+    mounted: function () {
+      try {
+        var buttons = document.getElementById("stdInquireGradeBar").getElementByTagName("button");
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.display = "none";
+        }
+        for (var i = 0; i < this.authorityList.length; i++) {
+          if (this.authorityList[i] == "59") {
+            buttons[0].style.display = "block";
+          } else if (this.authorityList[i] == "50") {
+            buttons[1].style.display = "block";
+          } else if (this.authorityList[i] == "61") {
+            buttons[2].style.display = "block";
+          }
+        }
+      } catch (e) {
       }
     }
   }

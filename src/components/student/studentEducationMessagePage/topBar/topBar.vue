@@ -12,7 +12,7 @@
     data () {
       return {
         manualCouButton: '信息通知',
-        manualCouUrl:  'index.html#'+'studentTestInfoContent/query/educationMessage',
+        manualCouUrl:  '#/student/query/educationMessage',
       }
     }
   }

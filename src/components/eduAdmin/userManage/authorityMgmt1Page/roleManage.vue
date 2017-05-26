@@ -11,7 +11,7 @@
 		<div class="roles">
 			<div class="selectCheck">
 				<select v-model="role" style="width:8rem;" @change="selRoleListClick()">
-					<option disabled>基础角色</option>
+					<!-- <option disabled>基础角色</option> -->
 			    	<option v-for="selRole in selRoleList" :value="selRole.value">{{ selRole.text }}</option>
 			    </select>
 				<input v-model="userIdOrName" placeholder="输入姓名或ID" style="width:6rem;" @change="inputUser()">
@@ -21,37 +21,31 @@
 				<table class="roleTable tableRowClick">
 					<tbody>
 						<tr v-for="(person, index) in userList" :key="person">
-		<!-- 					<td>
-								<input type="checkbox" v-model="personUserId[index]" @on-change="checkUser(index)">
-								<Checkbox v-model="personUserId[index]" @on-change="checkUser(index)"></Checkbox>
-							</td> -->
 							<td @click="checkUser(index)">{{person.userName}}</td>
 							<td @click="checkUser(index)">{{person.userId}}</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-			
 		</div>
+		<!-- 个人对应的角色设置 -->
 		<div class="authorities">
 			<div class="changed">
 				<span :value="userIdGet">当前选择：{{userNameShow}}</span>
-				<!-- <button class="am-btn am-btn-su-ccess am-radius" @click="changeBtn">修改权限</button> -->
 			</div>
 			<div class="changedTable">
 				<table>
 					<tbody>
 						<tr v-for="(authority, index) in roleList" :key="authority">
 							<td>
-								<!-- <input type="checkbox" v-model="authorityRoleId[index]"> -->
 								<input type="checkbox" :value="authority.roleId" v-model="authorityRoleId">
-								<!-- <Checkbox v-model="authority.roleId[index]"></Checkbox> -->
 							</td>
 							<td :for="authority.roleId">{{authority.roleName}}</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
+			<!-- 弹窗操作 -->
 			<div class="changedBtn">
 				<button class="am-btn am-btn-success am-radius" @click="modal1 = true">保存</button>
 				<Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
@@ -71,6 +65,7 @@
 				</Modal>
 			</div>
 
+			<!-- 弹窗提示 -->
 			<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 				<div style="text-align:center; font-size:1.1rem;">
 				    <p v-if="remindResult === '1'">操作失败！请重试</p>
@@ -90,14 +85,16 @@
 export default {
 	data () {
 		return {
-			role: '基础角色',	// 选择角色
+			role: '0',	// 选择角色
 			selRoleList: [
+				{text: '基础角色', value: '0'},
 				{text: '教师', value: '2'},
 				{text: '管理员', value: '3'}
 			],
 			userIdOrName: '',	//输入姓名或编码
 			userNameShow: '',
 			userIdGet: '',
+			allteacherList: [],	// 所有角色下的人
 			userList: [		// 角色下的人
 				// {userName: '李华', userId: '123546'},
 				// {userName: '李华', userId: '123465'},
@@ -133,6 +130,7 @@ export default {
             var data = response.body;
             this.userList = data.allteacherList;
             this.roleList = data.allroleList;
+            this.allteacherList = data.allteacherList;
         },function(error){
             console.log("获取申请error:");
             console.log(error);
@@ -141,22 +139,24 @@ export default {
 	methods: {
 		// 下拉框-基础角色选择
 		selRoleListClick: function () {
-    		if (this.role == "选择年制") {
-    			this.role = '';
+			console.log(this.role)
+    		if (this.role == "0") {
+    			this.role = this.allteacherList;
+    		}else {
+	    		this.$http.post('./getRoleUser',{
+		        	"roleId": this.role
+		        },{    
+		            "Content-Type":"application/json"
+		        }).then(function(response){
+		            console.log("获取申请:");
+		            console.log(response.body);
+		            var data = response.body;
+		            this.userList = data.userList;
+		        },function(error){
+		            console.log("获取申请error:");
+		            console.log(error);
+	        	});
     		}
-			this.$http.post('./getRoleUser',{
-	        	"roleId": this.role
-	        },{    
-	            "Content-Type":"application/json"
-	        }).then(function(response){
-	            console.log("获取申请:");
-	            console.log(response.body);
-	            var data = response.body;
-	            this.userList = data.userList;
-	        },function(error){
-	            console.log("获取申请error:");
-	            console.log(error);
-        	});
 		},
 		// 输入输入姓名或编码，查找用户
 		inputUser: function () {
@@ -206,7 +206,6 @@ export default {
 	            console.log(error);
         	});
 		},
-		// 保存角色设定********************************************************
 		// saveBtn: function () {
 		// 	this.$http.post('./setUserRole',{
 	 //        	"userId": this.userIdGet,
@@ -227,6 +226,7 @@ export default {
 	 //            console.log(error);
   //       	});
 		// },
+		// 确认保存角色设定********************************************************
 		ok1 () {
 		    this.modal1 = false;
             this.$http.post('./setUserRole',{
@@ -251,6 +251,7 @@ export default {
 	            console.log(error);
         	});
         },
+		// 取消保存角色设定********************************************************
         cancel1 () {
             this.modal1 = false;
 	        this.modalResult = true;
@@ -279,6 +280,7 @@ export default {
 	            console.log(error);
         	});
         },
+        // 不保存确认
 		ok2 () {
             this.modal2 = false;
             this.$http.post('./getUserRole',{

@@ -52,6 +52,7 @@
 		</div>
 	</div>
 
+	<!-- 弹窗提示 -->
 	<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 		<div style="text-align:center; font-size:1.1rem;">
 		    <p v-if="remindResult === '1'">操作失败！请重试</p>
@@ -78,6 +79,7 @@ export default {
 			remindResult: ''
 		}
 	},
+	// 初始化获取当前学期、教师上课信息
 	beforeMount: function() {
         this.$http.post('./getTeachScoreList',{},{
             "Content-Type":"application/json"

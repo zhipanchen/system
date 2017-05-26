@@ -1,5 +1,5 @@
 <template>
-  <div class="topBarDiv am-btn-group">
+  <div id="stdInquireGradeBar" class="topBarDiv am-btn-group">
     <a :href="teacherCourseUrl">
       <button id="manualCouButton" class="topBarButton am-btn am-btn-success">{{ teacherCourse }}</button>
     </a>
@@ -20,9 +20,29 @@
         teacherCourse: '教师课表',
         teacherTest: '查看考场',
         teacherReward: '查看课酬',
-        teacherCourseUrl: 'index.html#'+'teacher/classInfo/tchCheckTimetable',
-        teacherTestUrl: 'index.html#'+'teacher/classInfo/teacherTestInfo',
-        teacherRewardUrl: 'index.html#'+'teacher/classInfo/tchCheckSalary'
+        teacherCourseUrl: '#/teacher/classInfo/tchCheckTimetable',
+        teacherTestUrl: '#/teacher/classInfo/teacherTestInfo',
+        teacherRewardUrl: '#/teacher/classInfo/tchCheckSalary',
+        authorityList:null
+      }
+    },
+    mounted: function () {
+      try {
+        var buttons = document.getElementById("stdInquireGradeBar").getElementByTagName("button");
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.display = "none";
+        }
+        for (var i = 0; i < this.authorityList.length; i++) {
+          if (this.authorityList[i] == "39") {
+            buttons[0].style.display = "block";
+          } else if (this.authorityList[i] == "25") {
+            buttons[1].style.display = "block";
+          } else if (this.authorityList[i] == "35") {
+            buttons[2].style.display = "block";
+          }
+        }
+      } catch (e) {
       }
     }
   }

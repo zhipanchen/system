@@ -13,6 +13,7 @@
 	<div id="setPriceBody">
 		<div class="setPriceContent">
 			<div>
+				<!-- 教师职务课酬设置 -->
 				<button class="amButtom">
 					<span class="subtitle">教学职称</span>
 				</button>
@@ -46,6 +47,7 @@
 			</div>
 
 			<div>
+				<!-- 医生职务课酬设置 -->
 				<button class="amButtom">
 					<span class="subtitle">工作职称</span>
 				</button>
@@ -77,6 +79,7 @@
 					</tbody>
 				</table>
 
+				<!-- 护士职务课酬设置 -->
 				<img id="nurseArrow" class="iconImg" :src="icon1" style="position:absolute; left:6rem;">
 				<button class="amButtom" @click="nurseClick()" style="background-color:#1fa573; cursor:pointer;">
 					<span class="subtitle" style="left:2rem;">护士</span>
@@ -107,6 +110,7 @@
 			</div>
 		</div>
 
+		<!-- 弹窗操作 -->
 		<Modal v-model="modalOperation" id="modalBody" :styles="{top:'10rem'}">
 			<div style="text-align:center; font-size:1.1rem;">
 				<p v-if="opertaionBool === '1'">您确定要保存所修改内容吗？</p>
@@ -121,6 +125,7 @@
 			</div>
 		</Modal>
 
+		<!-- 弹窗提示 -->
 		<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 			<div style="text-align:center; font-size:1.1rem;">
 			    <p v-if="remindResult === '1'">操作失败！请重试</p>

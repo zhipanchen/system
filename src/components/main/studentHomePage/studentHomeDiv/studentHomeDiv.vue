@@ -55,6 +55,16 @@
         msg: ''
       }
     },
+    beforeMount: function () {
+      this.$http.post('./getPermissionByUser',{},{
+//      this.$http.post('../testPhp/getPermissionByUser.php',{},{
+        "Content-Type":"application/json"
+      }).then(function(response){
+        sessionStorage.setItem("authorityList", JSON.stringify(response.body.currentPermissionList));
+      },function(error){
+        this.$Message.error('连接失败，请重试！');
+      });
+    },
     mounted: function() {
 //      dom加载后调整页面高度
       var dom = document.getElementById("studentHomeDiv");

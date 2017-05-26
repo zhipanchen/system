@@ -31,6 +31,7 @@
 						<td>{{data.courseHours}}</td>
 						<td>{{data.takedHours}}</td>
 						<td class="textBtn" :value="data.courseAssociationId">
+							<!-- 跳转到教务查看签到页面 -->
 							<a :href="'#/eduAdmin/emolument/seeSigninList?courseAssociationId='+data.courseAssociationId">签到</a>
 						</td>
 					</tr>

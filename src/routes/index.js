@@ -248,16 +248,21 @@ export default new Router({   //将routes里的参数导出
     //*******************************************************************（吴坚end）
     //*******************************************************************（李西炜start）
     {
+      //教务教师首页界面
       path: '/login/main/eduAdminHome',
       name: '/eduAdminHome',
       component: eduAdminHome
     },
+    /*
     {
+      //教师首页界面
       path: '/login/main/teacherHome',
       name: '/teacherHome',
       component: teacherHome
     },
+    */
     {
+      //学生首页界面
       path: '/login/main/studentHome',
       name: '/studentHome',
       component: studentHome
@@ -332,6 +337,7 @@ export default new Router({   //将routes里的参数导出
       path: '/eduAdmin/baseSetting/resource/courseTypeMgmt',
       name: '/eduAdmin/baseSetting/resource/courseTypeMgmt',
       component: courseTypeMgmtPage
+      //  课程类型管理页面
     },
     {
       path: '/eduAdmin/baseSetting/person/eduResGroupMgmt',

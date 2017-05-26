@@ -157,9 +157,9 @@ export default {
   		backoutOk: function () {
   			this.modalOperation = false;
   			this.$http.post('./cancelScoreCommitted', {
-  				"courseId": this.scoreCommitList[index].courseId,
-  				"teacherId": this.scoreCommitList[index].teacherId,
-  				"classId": this.scoreCommitList[index].classId
+  				"courseId": this.scoreCommitList[this.index].courseId,
+  				"teacherId": this.scoreCommitList[this.index].teacherId,
+  				"classId": this.scoreCommitList[this.index].classId
   			}, {
   				"Content-Type":"application/json"
   			}).then(function(response){
@@ -168,7 +168,7 @@ export default {
                 var data = response.body;
                 if(data.result == "1") {
 					this.$Message.success("已撤回！");
-					this.scoreCommitList.splice(index,1);
+					this.scoreCommitList.splice(this.index,1);
                 }else{
                     // this.$Message.error("操作失败！请重试");
                     this.modalResult = true;

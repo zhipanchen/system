@@ -187,11 +187,12 @@ export default {
     			input[i].style.border = "0.1rem solid #d4d4d9";
     		}
     	},
-    	// 保存修改成绩**************************************************************************
+    	// 点击保存**************************************************************************
     	saveAllBtn: function () {
     		var inputGroup = document.getElementById("inputGroup");
     		var input = inputGroup.getElementsByTagName("input");
     		var emptyNum = 0;
+    		// 判断是否有未输入空值
     		for (var i = 0; i < this.makeUpGradeInputList.length; i++) {
     			this.makeUpGradeInputList[i].makeupGrade = input[i].value;
     			if (input[i].value == "") {
@@ -207,6 +208,7 @@ export default {
     			this.remindResult = '7';
     		}
     	},
+    	// 确认保存修改成绩
     	saveOk: function () {
     		this.modalOperation = false;
     		var inputGroup = document.getElementById("inputGroup");
@@ -240,11 +242,12 @@ export default {
 	            console.log(error);
 	        });
     	},
-    	// 提交补考成绩，提交后不可再修改***********************************************************
+    	// 点击提交***********************************************************
     	submitBtn: function () {
     		this.modalOperation = true;
     		this.opertaionBool = '2';
     	},
+    	// 确认补考成绩，提交后不可再修改
     	submitOk: function () {
     		this.modalOperation = false;
     		this.$http.post('./saveMakeUpScore',{
@@ -273,9 +276,11 @@ export default {
 	            console.log(error);
 	        });
     	},
+    	// 保存、提交弹窗取消
     	cancel: function () {
     		this.modalOperation = false;
     	},
+    	// 信息提示确认并取消弹窗
     	resultOk: function () {
     		this.modalResult = false;
     	}
