@@ -37,7 +37,7 @@
         </tbody>
       </table>
     </div>
-    <p id="tipP" style="display: none"></p>
+    <p id="tipP" style="display: none;color:red;"></p>
     <transition name="editTran">
       <!--transition过渡动画-->
       <div v-show="editValue" id="editDiv">
@@ -274,6 +274,7 @@
               this.classTimes.push({time:this.classroomAndTime[i].time,timeInfo:this.classroomAndTime[i].timeInfo});
             }
           }
+          this.time = "选择时间";
           console.log(this.classTimes);
         }, function (error) {
           this.$Message.error('连接失败，请重试！');
@@ -283,6 +284,7 @@
 //        var editDiv = document.getElementById("editDiv");
         var operationTd = document.getElementById(this.saveId);
 //        var saveButton = document.getElementById("saveButton");
+        console.log(this.time);
         if(this.time != "" && this.time != "选择时间" && this.time != null && this.classroom != "") {
           var index = null;
           for (var i = 0; i < this.informations.length; i++) {
@@ -306,7 +308,6 @@
             "Content-Type": "application/json"
           }).then(function (response) {
             this.modal4 = false;
-            console.log(response.body);
             console.log(this.informations[index]);
             if (response.body.result == 1) {
               this.informations[index].time = this.time;

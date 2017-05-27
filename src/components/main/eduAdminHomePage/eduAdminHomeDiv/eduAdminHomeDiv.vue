@@ -599,7 +599,7 @@
               });
             }else{
               li[1].click();
-              ivuMenuItem[0].style.backgroundColor = "white";
+              ivuMenuItem[0].className += " ivu-menu-item-active ivu-menu-item-selected";
             }
           }catch (e){
           }

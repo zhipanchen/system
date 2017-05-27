@@ -51,7 +51,7 @@
     name: "resetForgetPassword",
     data () {
       return {
-        img1: require("../../../assets/images/login-background.png"),//页面背景图片
+        img1: require("../../../assets/images/login-background.jpg"),//页面背景图片
         imgHref: "http://www.samsph.com/hsxx/1092/1/",//官网
         exitHref: "#/login",//退出跳转
         newPwd: "",//新密码
@@ -109,7 +109,10 @@
     methods: {
       nextClick: function(){
 //        修改密码
-        if(this.newPwd != this.confirmPwd){
+        if(this.newPwd == ""){
+          this.errorMessage = "密码不能为空,请确认重试！";
+          this.modal = true;
+        }else if(this.newPwd != this.confirmPwd){
 //          this.$Message.error("两次输入的新密码不相同！");
           this.errorMessage = "两次输入的新密码不相同！";
           this.modal = true;

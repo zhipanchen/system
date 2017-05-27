@@ -3,7 +3,7 @@
   <div id="login" :style="{ backgroundImage: 'url(' + img1 + ')' }">
     <!--背景图片不能在css中设置，否则可能导致打包图片失败-->
     <div id="loginDiv" :style="{ backgroundImage: 'url(' + img2 + ')' }">
-      <a href="http://www.samsph.com/hsxx/1092/1/"><img id="schoolImg" src="./images/schoolLogo.png" :alt="imgAlt" ></a>
+      <a href="http://www.samsph.com/hsxx/1092/1/"><img id="schoolImg" src="../../../assets/images/title.png" :alt="imgAlt" ></a>
       <p id="hospitalMottoP">厚德 至善 求精 图强</p>
       <p id="loginTitleP">用户登录</p>
       <span id="loginTipSpan">不清楚登录规则？请点击<span id="tipSpan" @click="modal1 = true">这里</span>查看</span>
@@ -49,7 +49,7 @@
         data () {
             return {
               imgAlt: '四川省医科科学院·四川省人民医院·护士学校',//学校图标
-              img1: require('../../../assets/images/login-background.png'),//页面背景图片
+              img1: require('../../../assets/images/login-background.jpg'),//页面背景图片
               img2: require('./images/loginDiv.png'),//登录背景图片
               userId: '',//用户名
               passwordValue: '',//用户密码
