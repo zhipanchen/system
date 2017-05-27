@@ -8,7 +8,7 @@
 	</div>
 	<div class="tableSelect">
       	<select v-model="selTeacher">
-			<option disabled>选择教师</option>
+			<option disabled value="">选择教师</option>
 			<option v-for="teacherListOne in teacherInfo" :value="teacherListOne.teacherId">{{teacherListOne.teacherName}}</option>
 		</select>
       	<button class="am-btn am-btn-success am-radius" @click="searchBtn()">查询</button>
@@ -19,7 +19,8 @@
 			<table class="operationTable">
 				<thead>
 					<tr>
-						<th width="17%">课程名称</th>
+						<th width="15%">课程名称</th>
+						<th width="15%">班级名称</th>
 						<th width="12%">计划课时</th>
 						<th width="12%">已上课时</th>
 						<th width="12%">签到</th>
@@ -28,6 +29,7 @@
 				<tbody>
 					<tr v-for="(data, index) in teachJournalList">
 						<td :value="data.courseId">{{data.courseName}}</td>
+						<td>{{data.className}}</td>
 						<td>{{data.courseHours}}</td>
 						<td>{{data.takedHours}}</td>
 						<td class="textBtn" :value="data.courseAssociationId">
@@ -46,7 +48,7 @@
 export default {
 	data () {
 		return {
-			selTeacher: '选择教师',
+			selTeacher: '',
 			teacherInfo: [],
 			teachJournalList: [
 				// {courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
@@ -74,9 +76,6 @@ export default {
 	methods: {
 		// 查询按钮
 		searchBtn: function () {
-    		if (this.selTeacher == "选择教师") {
-    			this.selTeacher = '';
-    		}
 			this.$http.post('./getTeacherTeachJournalByEdu',{
 				"teacherId": this.selTeacher
 			},{

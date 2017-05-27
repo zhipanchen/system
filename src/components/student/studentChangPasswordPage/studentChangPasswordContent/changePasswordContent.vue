@@ -41,15 +41,23 @@
         name: 'studentChangPasswordContent',
         data () {
             return {
-              studentPageUrl:'index.html#'+'login/main/studentHome',
+              studentPageUrl:'#/login/main/studentHome',
               nowPassword:'',
               newPassword:'',
               newPasswordAgain:'',
+              userId:'',
               modal1:false,
               modal2:false,
               okValue:0,//值为0无法执行，为1可以执行
               messageStr:''
             }
+        },
+        beforeMount: function() {
+        this.$http.post('./getCurrentUser',{},{
+          "Content-Type":"application/json"
+        }).then(function(response){
+          this.userId = response.body.currentUserId;
+        });
         },
         methods:{
           ok2 () {
@@ -58,8 +66,8 @@
             }else if(this.okValue==1) {
               this.modal2 = false;
 
-              var a = CryptoJS.MD5(this.nowPassword + "0402" + "护士学校");//MD5加密
-              var b = CryptoJS.MD5(this.newPassword + "0402" + "护士学校");//MD5加密
+              var a = CryptoJS.MD5(this.nowPassword + this.userId + "护士学校");//MD5加密
+              var b = CryptoJS.MD5(this.newPassword + this.userId + "护士学校");//MD5加密
               a = a.toString().toUpperCase();//转16进制字符串,大写化
               b = b.toString().toUpperCase();//转16进制字符串,大写化
               function encrypt(data) {

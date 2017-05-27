@@ -156,7 +156,9 @@ export default {
         	nurArrow: false,
         	nurseTable: false,
 			currentSemester: '',
-			teacher: [],
+			teacher: [
+				// {jobName: 'aa', payPerCourse: '123', jobtitleId:'123'},{jobName: 'bb', payPerCourse: '55', jobtitleId:'24'}
+			],
 			doctor: [],
 			nurse: [],
 			jobtitleStrList: [],
@@ -287,8 +289,8 @@ export default {
 	          saveImg.style.display = "none";
 	          deleteImg.style.display = "inline";
 	          restoreImg.style.display = "none";
-	        this.modalResult = true;
-	        this.remindResult = '3';
+	        // this.modalResult = true;
+	        // this.remindResult = '3';
         },
         // 清除input中数据
         deleteClick: function(type,index){
@@ -300,9 +302,17 @@ export default {
         deleteOk: function () {
         	this.modalOperation = false;
     		var inputTr = document.getElementById(this.type+"InputTr"+this.index);
-            var input = inputTr.getElementsByTagName("input");
+            var input = inputTr.getElementsByTagName("input");var post_payPerCourse = '';
+			var post_jobtitleId = '';
+			if (this.type == "teacher") {
+            	post_jobtitleId = this.teacher[this.index].jobtitleId;
+            }else if (this.type == "doctor") {
+            	post_jobtitleId = this.doctor[this.index].jobtitleId;
+            }else if (this.type == "nurse") {
+            	post_jobtitleId = this.nurse[this.index].jobtitleId;
+            }
 			this.$http.post('./jobTitleManage/deleteJobtitle',{
-			    "jobtitleId": this.jobtitleStrList[this.index].jobtitleId
+			    "jobtitleId": post_jobtitleId
 			},{
 			    "Content-Type":"application/json"
 			}).then(function(response){
@@ -311,7 +321,7 @@ export default {
 			    var data = response.body;
 			    this.modalResult = true;
 			    if(data.result == "1") {
-			        input[0].value = "";
+			        input[0].value = "0";
 			        // this.remindResult = '4';
 			        this.$Message.success("删除成功！");
 			    }else if (data.result == "0") {
@@ -327,13 +337,7 @@ export default {
 		saveClick: function(type,index){
 			var inputTr = document.getElementById(type+"InputTr"+index);
         	var input = inputTr.getElementsByTagName("input");
-        	if (this.type == "teacher") {
-            	this.teacher[this.index].payPerCourse = input[0].value;
-            }else if (this.type == "doctor") {
-            	this.doctor[this.index].payPerCourse = input[0].value;
-            }else if (this.type == "nurse") {
-            	this.nurse[this.index].payPerCourse = input[0].value;
-            }
+        	// console.log(input[0].value)
             // 输入非空判断
 			if (input[0].value == "") {
 				this.modalResult = true;
@@ -342,7 +346,14 @@ export default {
 				this.modalOperation = true;
 	        	this.opertaionBool = '1';
 	        	this.type = type;
-	        	this.index = index;
+		        this.index = index;
+	        	if (this.type == "teacher") {
+	            	this.teacher[index].payPerCourse = input[0].value;
+	            }else if (this.type == "doctor") {
+	            	this.doctor[index].payPerCourse = input[0].value;
+	            }else if (this.type == "nurse") {
+	            	this.nurse[index].payPerCourse = input[0].value;
+	            }
 			}
 		},
 		saveOk: function () {
@@ -365,10 +376,26 @@ export default {
 			  restoreImg.style.display = "none";
 			// 向后台提交数据
 			// console.log(jobtitleId);
+			var post_payPerCourse = '';
+			var post_jobtitleId = '';
+			var post_jobName = '';
+			if (this.type == "teacher") {
+            	post_payPerCourse = this.teacher[this.index].payPerCourse;
+            	post_jobtitleId = this.teacher[this.index].jobtitleId;
+            	post_jobName = this.teacher[this.index].jobName;
+            }else if (this.type == "doctor") {
+            	post_payPerCourse = this.doctor[this.index].payPerCourse;
+            	post_jobtitleId = this.doctor[this.index].jobtitleId;
+            	post_jobName = this.doctor[this.index].jobName;
+            }else if (this.type == "nurse") {
+            	post_payPerCourse = this.nurse[this.index].payPerCourse;
+            	post_jobtitleId = this.nurse[this.index].jobtitleId;
+            	post_jobName = this.nurse[this.index].jobName;
+            }
 			this.$http.post('./jobTitleManage/editJobtitle',{
-			    "jobtitleId": this.jobtitleStrList[this.index].jobtitleId,
-			    "jobName": this.jobtitleStrList[this.index].jobName,
-			    "payPerCourse": this.jobtitleStrList[this.index].payPerCourse
+			    "jobtitleId": post_jobtitleId,
+			    "jobName": post_jobName,
+			    "payPerCourse": post_payPerCourse
 			},{
 			    "Content-Type":"application/json"
 			}).then(function(response){
@@ -376,10 +403,8 @@ export default {
 	            console.log(response.body);
 	            var data = response.body;
 	            if (data.result == 1) {
-	            	this.jobtitleStrList = data.jobtitleStrList;
-		        	window.location.reload();
-		        	this.modalResult = true;
-		        	// this.remindResult = '2';
+	            	// this.jobtitleStrList = data.jobtitleStrList;
+		        	// window.location.reload();
 		        	this.$Message.success("保存成功！");
 	            }
 			},

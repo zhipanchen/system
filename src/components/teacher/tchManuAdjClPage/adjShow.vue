@@ -58,7 +58,7 @@
 						</td>
 						<td class="choice" width="17%">
 							<select v-model="selPreWeek">
-								<option disabled>选择周数</option>
+								<option disabled value="">选择周数</option>
 								<option v-for="preWeek in weekset" :value="preWeek">第{{ preWeek }}周</option>
 							</select>
 						</td>
@@ -67,7 +67,7 @@
 						</td>
 						<td class="choice" width="17%">
 							<select v-model="selCourseDay">
-								<option disabled>选择时间</option>
+								<option disabled value="">选择时间</option>
 								<option v-for="(preDay, index) in weekdayandlessonnum" :value="preDay">星期{{ preDay[0] }}第{{preDay[1] }}节</option>
 							</select>
 						</td>
@@ -76,7 +76,7 @@
 						</td>
 						<td class="choice" width="17%">
 							<select v-model="selPreSection">
-								<option disabled>选择节次</option>
+								<option disabled value="">选择节次</option>
 								<option v-for="preSection in lessonNumset" :value="preSection">第{{ preSection }}节</option>
 							</select>
 						</td> -->
@@ -85,7 +85,7 @@
 						</td>
 						<td class="choice" width="17%">
 							<select v-model="selClassroom">
-								<option disabled>选择上课教室</option>
+								<option disabled value="">选择上课教室</option>
 								<option v-for="classroom in selectiveClassroomSet" :value="classroom">{{ classroom }}</option>
 							</select>
 						</td>
@@ -96,7 +96,7 @@
 						</td>
 						<td class="choice">
 							<select v-model="selAdjWeek" @change="selectiveWeekSetChange()">
-								<option disabled>选择周数</option>
+								<option disabled value="">选择周数</option>
 								<option v-for="adjWeek in selectiveWeekSet" :value="adjWeek">第{{ adjWeek }}周</option>
 							</select>
 						</td>
@@ -104,8 +104,8 @@
 							<span>调至上课时间：</span>
 						</td>
 						<td class="choice">
-							<select v-model="selAdjDay">
-								<option disabled>选择时间</option>
+							<select v-model="selAdjDay" @click="allWeekdaysAndLessonNumsClick()">
+								<option disabled value="">选择时间</option>
 								<option v-for="(adjDay, index) in allWeekdaysAndLessonNumsList" :value="adjDay">星期{{adjDay[0]}}第{{adjDay[1]}}节</option>
 							</select>
 						</td>
@@ -114,7 +114,7 @@
 						</td>
 						<td class="choice">
 							<select v-model="selAdjSection" @click="selectiveLessonNumClick()">
-								<option disabled>选择节次</option>
+								<option disabled value="">选择节次</option>
 								<option v-for="adjSection in selectiveLessonNum" :value="adjSection" @onchange="selectiveLessonNumChange()">第{{ adjSection }}节</option>
 							</select>
 						</td> -->
@@ -229,22 +229,22 @@ export default {
 			// 输入框
 			message: '',
 			// adjSel下拉选项******************************************************
-	        selPreWeek: '选择周数',	// 原周数
+	        selPreWeek: '',	// 原周数
 	        weekset: [
 	          // { text: '选择周数', value: '0' },
 	          // { text: '第一周', value: '1' }
 	        ],
-	        selCourseDay: '选择时间',		// 原星期和节次
+	        selCourseDay: '',		// 原星期和节次
 	        weekdayandlessonnum: [
 	        	// [1,2]
 	        ],
 	        // selPreSection: '选择节次',		// 原节次
 	        // lessonNumset: [],
-	        selClassroom: '选择上课教室',		// 上课教室
+	        selClassroom: '',		// 上课教室
 	        selectiveClassroomSet: [],
-	        selAdjWeek: '选择周数',	// 调至周数
+	        selAdjWeek: '',	// 调至周数
 	        selectiveWeekSet: [],
-	        selAdjDay: '选择时间',		// 调至星期和节次
+	        selAdjDay: '',		// 调至星期和节次
 	        allWeekdaysAndLessonNumsList: [
 	        	// [1,2]
 	        ],
@@ -350,12 +350,12 @@ export default {
     			// this.$Message.error('请在原周之后选择周数！');
     			this.modalResult = true;
     			this.remindResult = '1';
-    			this.selAdjWeek = '选择周数';
+    			this.selAdjWeek = '';
     		}else {
-    			if (this.selPreWeek=="选择周数" || this.selCourseDay=="选择时间" || this.selClassroom=="选择上课教室" || this.selAdjWeek=="选择周数" ) {
-	    			this.modalResult = true;
-	    			this.remindResult = '5';
-	    		}else {
+    			// if (this.selPreWeek=="" || this.selCourseDay=="" || this.selClassroom=="" || this.selAdjWeek=="" ) {
+	    		// 	this.modalResult = true;
+	    		// 	this.remindResult = '5';
+	    		// }else {
 					this.$http.post('./alternateLessionApplication/application-select',{
 			        	"originWeek": this.selPreWeek,
 			        	"originWeekday": this.selCourseDay[0],
@@ -414,14 +414,21 @@ export default {
 			            console.log("获取申请error:");
 			            console.log(error);
 		        	});
-		        }
+		        // }
+    		}
+    	},
+    	// 选择调制上课时间之前，判断前面4个选项是否已选完 
+    	allWeekdaysAndLessonNumsClick: function () {
+    		if (this.selPreWeek=="" || this.selCourseDay=="" || this.selClassroom=="" || this.selAdjWeek=="") {
+    			this.modalResult = true;
+	    		this.remindResult = '5';
     		}
     	},
     	// 点击“提交”按钮，选项内容提交并隐藏*****************************************************************************
     	ok1 () {
             this.modal1 = false;
             // 判断选项是否为空
-    		if (this.selPreWeek=="选择周数" || this.selCourseDay=="选择时间" || this.selClassroom=="选择上课教室" || this.selAdjWeek=="选择周数" || this.selAdjDay=="选择时间" ) {
+    		if (this.selPreWeek=="" || this.selCourseDay=="" || this.selClassroom=="" || this.selAdjWeek=="" || this.selAdjDay=="" ) {
     			this.modalResult = true;
     			this.remindResult = '4';
     		}else {

@@ -146,7 +146,8 @@
         modal2:false,
         okValue:0,//值为0无法执行，为1可以执行
         messageStr:'',
-        eduAdminPageUrl:'index.html#'+'login/main/eduAdminHome',
+        index:0,
+        eduAdminPageUrl:'#/login/main/eduAdminHome',
         teacherSelects:[
           'teacherSelect1',
           'teacherSelect2',
@@ -180,19 +181,19 @@
           '五年制',
         ],
         grades:[
-          /*
+
           '一年级',
           '二年级',
-          */
+
         ],
         courses: [
-          /*
+
           '课程01',
           '课程02',
           '课程03',
           '课程04',
           '课程05',
-          */
+
         ],
         informations: [
           //未完成课表
@@ -208,12 +209,12 @@
           */
         ],
         terms:[
-          /*
+
           '2016-2017-1',
           '2016-2017-2',
           '2017-2018-1',
           '2017-2018-2',
-          */
+
         ],
         times:[
           '周一',
@@ -263,6 +264,7 @@
       if(this.okValue==0) {
         this.modal2 = false;
       }else if(this.okValue==1){
+        this.modal2 = false;
         var year=0;
         if(this.yearSelect=="三年制"){
           year=3;
@@ -270,7 +272,7 @@
           year=5;
         }
         this.$http.post('./examManagementResetOne', {
-          courseAssociationId: this.informationsFinish[index].courseAssociationId,
+          courseAssociationId: this.informationsFinish[this.index].courseAssociationId,
           schoolYear:year,
           grade: this.gradeSelect,
           courseId:this.courseSelect
@@ -297,7 +299,6 @@
             this.$Message.error('删除失败！');
           }
         });
-
       }
     },
     cancel2(){
@@ -316,6 +317,11 @@
     },
     //年制选择
     yearClick:function(){
+
+      this.grades=[];
+      this.gradeSelect="选择年级（必选项）";
+      this.courses=[];
+      this.courseSelect="选择课程（必选项）";
       var year=0;
       if(this.yearSelect=="三年制") {
         year = 3;
@@ -331,6 +337,8 @@
     },
     //年级选择
     gradeClick:function(){
+      this.courses=[];
+      this.courseSelect="选择课程（必选项）";
       var year=0;
       if(this.yearSelect=="选择年制（必选项）"){
           this.modal2=true;
@@ -361,7 +369,7 @@
         return;
       }
 
-      if(this.gradeSelect='选择年级（必选项）'){
+      if(this.gradeSelect=='选择年级（必选项）'){
         this.modal2=true;
         this.messageStr="未选择年级！";
         this.okValue=0;
@@ -415,6 +423,7 @@
     },
     //删除
     removeClick:function(index){
+      this.index=index;
       this.modal2=true;
       this.messageStr="确认删除信息？";
       this.okValue=1;
@@ -491,7 +500,7 @@
       }else{
         var chooseTeacher=true;
         for (var i = 0; i < this.todos.length; i++) {
-          var a=eval("this."+this.teacherSelects[2 * i])
+          var a=this.teacherSelects[2 * i];
           if(a=='监考老师1（必选项）'){
             chooseTeacher=false;
           }

@@ -23,11 +23,11 @@
 			    <div style="text-align:center; font-size:1.1rem;">
 			    	<span class="modal-select">
 				    	<select v-model="selWeekList" @change="selWeekChange()">
-							<option disabled>选择周数</option>
+							<option disabled value="">选择周数</option>
 							<option v-for="weekListOne in weekList" :value="weekListOne">{{weekListOne}}</option>
 						</select>
 						<select v-model="selGiveLessonsDetailsList">
-							<option disabled>选择上课时间</option>
+							<option disabled value="">选择上课时间</option>
 							<option v-for="detailsOne in giveLessonsDetailsList" :value="detailsOne.giveLessonsDetailsId">{{detailsOne.timeandplaceInfo}}</option>
 						</select>
 					</span>
@@ -116,9 +116,9 @@ export default {
 			modal1: false,		// 签到窗口
 			modal2: false,		// 查看上课日志窗口
 			courseAssociationId: '',
-			selWeekList: '选择周数',		// 选择周数下拉框
+			selWeekList: '',		// 选择周数下拉框
 			weekList: [],
-			selGiveLessonsDetailsList: '选择上课时间',		// 选择上课时间下拉框
+			selGiveLessonsDetailsList: '',		// 选择上课时间下拉框
 			giveLessonsDetailsList: [],
 			teachJournalInFoInput: '',	// 上传日志输入框
 			checkTeachJournalInFo: '',	// 查看上课日志

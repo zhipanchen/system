@@ -87,7 +87,7 @@
         var buttons = document.getElementById("textbookManagement_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
 //        console.log(this.authorityList);
-        for (var i = 0; i < buttons.length; i++) {
+        for (var i = 0; i < 4; i++) {
           buttons[i].style.display = "none";
         }
         for (var i = 0; i < this.authorityList.length; i++) {
@@ -164,7 +164,7 @@
           this.$Message.success('上传成功！3s后自动刷新页面！', 3);
           console.log(res);
           this.loadingMsg = false;
-          setTimeout("location.reload(true)", 4000);
+          setTimeout("location.reload()", 4000);
         }else{
           this.$Loading.error();
           var msg = document.getElementsByClassName("ivu-message-notice");

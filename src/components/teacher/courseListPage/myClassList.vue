@@ -22,8 +22,9 @@
 				<thead>
 					<tr>
 						<th width="17%">课程名称</th>
-						<th width="12%">计划课时</th>
-						<th width="12%">已上课时</th>
+						<th width="17%">授课班级</th>
+						<th width="10%">计划课时</th>
+						<th width="10%">已上课时</th>
 						<th width="12%">课件</th>
 						<th width="12%">教学计划</th>
 						<th width="12%">签到</th>
@@ -32,6 +33,7 @@
 				<tbody>
 					<tr v-for="(data, index) in teachJournalList">
 						<td :value="data.courseId">{{data.courseName}}</td>
+						<td>{{data.className}}</td>
 						<td>{{data.courseHours}}</td>
 						<td>{{data.takedHours}}</td>
 						<td class="textBtn">
@@ -47,10 +49,10 @@
 									:max-size="5120"
 									:on-format-error = "handleFormatError1"
 						            :on-exceeded-size="handleSizeError1"
+						            :on-progress="handleProgress1"
 						            :on-success="handleSuccess1"
 						            :on-error="handleError1"
 									action="./courseTeachPlan/uploadCourseware">
-						            <!-- :on-progress="handleProgress1" -->
 									<a :id="'signIn1'+index">上传</a>
 								</Upload>
 							</span>
@@ -74,10 +76,10 @@
 									:max-size="2048"
 									:on-format-error = "handleFormatError2"
 						            :on-exceeded-size="handleSizeError2"
+						            :on-progress="handleProgress2"
 						            :on-success="handleSuccess2"
 						            :on-error="handleError2"
 							 		action="./courseTeachPlan/uploadTeachPlan">
-						            <!-- :on-progress="handleProgress2" -->
 									<a :id="'signIn2'+index">上传</a>
 								</Upload>
 							</span>
@@ -90,7 +92,7 @@
 						</td>
 						<td class="textBtn" :value="data.courseAssociationId">
 							<!-- 跳转到教师签到页面 -->
-							<a :href="'#/teacher/teach/normalSchedule?courseAssociationId='+data.courseAssociationId">签到</a>
+							<a :href="'#/teacher/teach/normalSchedule?courseAssociationId='+data.courseAssociationId+'&'+'courseName='+encodeURIComponent(data.courseName)+'&'+'className='+encodeURIComponent(data.className)">签到</a>
 						</td>
 					</tr>
 				</tbody>
@@ -162,8 +164,8 @@ export default {
 			remindResult: '',
 			uploadResult: '',
 			teachJournalList: [
-				// {courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
-				// {courseId: 'GGBX0001', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
+				// {courseId: 'GGBX0001', className: '一班', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
+				// {courseId: 'GGBX0001', className: '一班', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
 			],
 			// 下载课件列表
 			// uploadList: [{coursewareName:'123',coursewareId:'aaaa'},{coursewareName:'123',coursewareId:'aaaa'}],
@@ -342,6 +344,7 @@ export default {
 		},
 		// 二次确认提交
 		submitOk1: function () {
+			var signIn1 = document.getElementById("signIn1"+this.index);
 			this.modalSubmit = false;
 			this.courseIdPost = this.teachJournalList[this.index].courseId;
 			this.$http.post('./courseTeachPlan/returnTeachPlanSubmit',{
@@ -356,7 +359,7 @@ export default {
 	            // this.modalResult = true;
 	            if (data.result == '1') {
 	            	this.$Message.success("提交成功！");
-					document.getElementById("signIn1").style.display = "none";
+					signIn1.style.display = "none";
 	            }else {
 	            	this.modalResult = true;
 	            	this.remindResult = '2';
@@ -374,6 +377,7 @@ export default {
 		},
 		// 二次确认提交
 		submitOk2: function () {
+			var signIn2 = document.getElementById("signIn2"+this.index);
 			this.modalSubmit = false;
 			this.courseIdPost = this.teachJournalList[this.index].courseId;
 			this.$http.post('./courseTeachPlan/returnTeachPlanSubmit',{
@@ -388,7 +392,7 @@ export default {
 	            // this.modalResult = true;
 	            if (data.result == '1') {
 	            	this.$Message.success("提交成功！");
-					document.getElementById("signIn2").style.display = "none";
+					signIn2.style.display = "none";
 	            }else {
 	            	this.modalResult = true;
 	            	this.remindResult = '2';
@@ -422,9 +426,9 @@ export default {
           this.remindResult = '5';
           this.fileName = file.name;
         },
-        // handleProgress1:function(){
-        //   this.$Message.loading("正在上传中...");
-        // },
+        handleProgress1:function(){
+          this.$Message.loading("正在上传中...");
+        },
         handleSuccess1:function(res){
           if(res.result=='1'){
             this.$Message.success("上传成功！");
@@ -453,9 +457,9 @@ export default {
           this.remindResult = '5';
           this.fileName = file.name;
         },
-        // handleProgress2:function(){
-        //   this.$Message.loading("正在上传中...");
-        // },
+        handleProgress2:function(){
+          this.$Message.loading("正在上传中...");
+        },
         handleSuccess2:function(res){
           if(res.result=='1'){
             this.$Message.success("上传成功！");
