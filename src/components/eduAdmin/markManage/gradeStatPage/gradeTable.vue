@@ -10,19 +10,19 @@
 	<div class="tableSelect">
 		<!-- 填选信息进行查询学生成绩 -->
 		<select v-model="selGradeType">
-			<option disabled>选择年制</option>
+			<option disabled value="">选择年制</option>
 			<option v-for="gradeTypeOne in gradeType" :value="gradeTypeOne.value">{{gradeTypeOne.text}}</option>
 		</select>
 		<select v-model="selYearTerm">
-			<option disabled>选择学期</option>
+			<option disabled value="">选择学期</option>
 			<option v-for="yearTermOne in yearTerm" :value="yearTermOne.startYearSemester">{{yearTermOne.startYearSemester}}</option>
 		</select>
 		<select v-model="selSpeciality">
-			<option disabled>选择专业</option>
+			<option disabled value="">选择专业</option>
 			<option v-for="specialityOne in specialityInfo" :value="specialityOne.specialityId">{{specialityOne.specialityName}}</option>
 		</select>
 		<select v-model="selCourseName">
-			<option disabled>选择课程</option>
+			<option disabled value="">选择课程</option>
 			<option v-for="courseNameOne in courseInfo" :value="courseNameOne.courseId">{{courseNameOne.courseName}}</option>
 		</select>
         <span class="inputFraction">
@@ -85,10 +85,10 @@ export default {
 	data () {
 		return {
 			// 全局变量定义
-			selGradeType: '选择年制',
-			selYearTerm: '选择学期',
-			selSpeciality: '选择专业',
-			selCourseName: '选择课程',
+			selGradeType: '',
+			selYearTerm: '',
+			selSpeciality: '',
+			selCourseName: '',
 			gradeType: [
 				{text: '三年制', value: '3'},
 				{text: '五年制', value: '5'}
@@ -150,17 +150,18 @@ export default {
 	methods: {
     	// 查询按钮
 		inquireBtn: function() {
-    		if (this.selGradeType == "选择年制") {
-    			// this.selGradeType = '0';
+			if (this.minScore == '') {
+    			this.minScore = '0';
+    		}
+    		if (this.maxScore == '') {
+    			this.maxScore = '100';
+    		}
+    		if (this.selGradeType == "") {
     			this.modalResult = true;
     			this.resultBool = '3';
-    		}else if (this.selYearTerm == "选择学期" || this.selCourseName == "选择课程" || this.selSpeciality == "选择专业") {
+    		}else if (this.selYearTerm == "" || this.selCourseName == "" || this.selSpeciality == "") {
     			this.modalResult = true;
     			this.resultBool = '4';
-    		}else if (this.minScore == '') {
-    			this.minScore = '0';
-    		}else if (this.maxScore == '') {
-    			this.maxScore = '100';
     		}else {
 	    		this.$http.post('./findScore',{
 		        	"gradeType": this.selGradeType,
@@ -175,7 +176,7 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
-		            if (data.scoreList == []) {
+		            if (data.scoreList != []) {
 		            	this.scoreList = data.scoreList;
 		            }else{
 				        this.modalResult = true;
@@ -190,25 +191,21 @@ export default {
     	},
     	// 导出按钮
 		exportBtn: function () {
-    		if (this.selGradeType == "选择年制") {
-    			this.selGradeType = '0';
-    		}
-    		if (this.selYearTerm == "选择学期") {
-    			this.selYearTerm = '';
-    		}
-    		if (this.selSpeciality == "选择专业") {
-    			this.selSpeciality = '';
-    		}
-    		if (this.selCourseName == "选择课程") {
-    			this.selCourseName = '';
-    		}
     		if (this.minScore == '') {
     			this.minScore = '0';
     		}
     		if (this.maxScore == '') {
     			this.maxScore = '100';
     		}
-			location.href = "./exportScoreListByMaxMinScore?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"specialityId="+this.selSpeciality+"&"+"courseId="+this.selCourseName+"&"+"minScore="+this.minScore+"&"+"maxScore="+this.maxScore;
+    		if (this.selGradeType == "") {
+    			this.modalResult = true;
+    			this.resultBool = '3';
+    		}else if (this.selYearTerm == "" || this.selCourseName == "" || this.selSpeciality == "") {
+    			this.modalResult = true;
+    			this.resultBool = '4';
+    		}else {
+				location.href = "./exportScoreListByMaxMinScore?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"specialityId="+this.selSpeciality+"&"+"courseId="+this.selCourseName+"&"+"minScore="+this.minScore+"&"+"maxScore="+this.maxScore;
+			}
   		},
     	// 弹窗提示点击确定，弹窗消失
     	resultOk: function () {

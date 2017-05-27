@@ -10,15 +10,15 @@
 	<div class="tableSelect">
 		<!-- 填选信息进行查询学生补考成绩输入 -->
 		<select v-model="selGradeType">
-			<option disabled>选择年制</option>
+			<option disabled value="">选择年制</option>
 			<option v-for="gradeTypeOne in gradeType" :value="gradeTypeOne.value">{{gradeTypeOne.text}}</option>
 		</select>
 		<select v-model="selYearTerm">
-			<option disabled>选择学期</option>
+			<option disabled value="">选择学期</option>
 			<option v-for="yearTermOne in yearTerm" :value="yearTermOne.startYearSemester">{{yearTermOne.startYearSemester}}</option>
 		</select>
 		<select v-model="selCourseName">
-			<option disabled>选择课程</option>
+			<option disabled value="">选择课程</option>
 			<option v-for="courseNameOne in courseInfo" :value="courseNameOne.courseId">{{courseNameOne.courseName}}</option>
 		</select>
 		<button class="am-btn am-btn-success am-radius" v-on:click="findBtn()">查询</button>
@@ -91,9 +91,9 @@ export default {
 		return {
 			buttonShow: false,
 			submitShow: false,	// 初始化，编辑、保存、提交按钮不显示
-			selGradeType: '选择年制',
-			selYearTerm: '选择学期',
-			selCourseName: '选择课程',
+			selGradeType: '',
+			selYearTerm: '',
+			selCourseName: '',
 			gradeType: [		// 选择年制
 				{text: '三年制', value: '3'},
 				{text: '五年制', value: '5'}
@@ -138,11 +138,11 @@ export default {
     methods: {
     	// 查询按钮************************************************************************
     	findBtn: function () {
-    		if (this.selGradeType == "选择年制") {
+    		if (this.selGradeType == "") {
     			// this.selGradeType = '0';
     			this.modalResult = true;
     			this.remindResult = '8';
-    		}else if (this.selYearTerm == "选择学期" || this.selCourseName == "选择课程") {
+    		}else if (this.selYearTerm == "" || this.selCourseName == "") {
     			this.modalResult = true;
     			this.remindResult = '9';
     		}else {
@@ -156,8 +156,8 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
-		            if(data.result == "1") {
-	                    this.makeUpGradeInputList = data.makeUpGradeInputList;
+		            // if(data.result == "1") {
+	             //        this.makeUpGradeInputList = data.makeUpGradeInputList;
 	                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
 	                    if (this.makeUpGradeInputList != []) {
 	                    	this.buttonShow = true;
@@ -166,11 +166,11 @@ export default {
 	                    	this.modalResult = true;
 	                    	this.remindResult = '6';
 	                    }
-	                }else {
-	                    // this.$Message.error('操作失败！请重试');
-	                    this.modalResult = true;
-	                    this.remindResult = '1';
-	                }
+	                // }else {
+	                //     // this.$Message.error('操作失败！请重试');
+	                //     this.modalResult = true;
+	                //     this.remindResult = '1';
+	                // }
 		        },function(error){
 		            console.log("获取申请error:");
 		            console.log(error);

@@ -14,7 +14,7 @@
       return {
         salaryMgmtBtn: '薪酬单',
         salarySettingBtn: '薪酬管理',
-        scheduleListBtn: '上课列表',
+        scheduleListBtn: '查看签到',
         salaryMgmtUrl: '#/eduAdmin/emolument/salary',
         salarySettingUrl: '#/eduAdmin/emolument/setPrice',
         scheduleListUrl: '#/eduAdmin/emolument/scheduleList',

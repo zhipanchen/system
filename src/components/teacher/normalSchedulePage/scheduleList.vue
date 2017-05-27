@@ -9,7 +9,7 @@
 	</div>
 	<div class="spanButton">
 		<div class="lpart">
-			<span class="textWeight">【{{courseName}}】</span>
+			<span class="textWeight">【{{courseName}}】	{{className}}</span>
         	<span class="textBlue">（注：请在上课后五天内填写）</span>
         </div>
         <div class="rpart">
@@ -23,11 +23,11 @@
 			    <div style="text-align:center; font-size:1.1rem;">
 			    	<span class="modal-select">
 				    	<select v-model="selWeekList" @change="selWeekChange()">
-							<option disabled>选择周数</option>
+							<option disabled value="">选择周数</option>
 							<option v-for="weekListOne in weekList" :value="weekListOne">{{weekListOne}}</option>
 						</select>
 						<select v-model="selGiveLessonsDetailsList">
-							<option disabled>选择上课时间</option>
+							<option disabled value="">选择上课时间</option>
 							<option v-for="detailsOne in giveLessonsDetailsList" :value="detailsOne.giveLessonsDetailsId">{{detailsOne.timeandplaceInfo}}</option>
 						</select>
 					</span>
@@ -108,7 +108,8 @@
 export default {
 	data () {
 		return {
-			courseName: '基础护理技术',
+			courseName: '',
+			className: '',
 			teachJournalDetailList: [
 				// {signDate: '2016-09-06', execWeek: '1', weekdays: '2', lessonNum: '2', classroomId: '302'},
 				// {signDate: '2016-09-06', execWeek: '1', weekdays: '2', lessonNum: '2', classroomId: '302'}
@@ -116,9 +117,9 @@ export default {
 			modal1: false,		// 签到窗口
 			modal2: false,		// 查看上课日志窗口
 			courseAssociationId: '',
-			selWeekList: '选择周数',		// 选择周数下拉框
+			selWeekList: '',		// 选择周数下拉框
 			weekList: [],
-			selGiveLessonsDetailsList: '选择上课时间',		// 选择上课时间下拉框
+			selGiveLessonsDetailsList: '',		// 选择上课时间下拉框
 			giveLessonsDetailsList: [],
 			teachJournalInFoInput: '',	// 上传日志输入框
 			checkTeachJournalInFo: '',	// 查看上课日志
@@ -130,9 +131,13 @@ export default {
 	},
 	beforeMount: function() {
 		//分割成字符串，获取courseAssociationId
-		var thisURL = document.URL; 
+		var thisURL = document.URL;
         var getval =thisURL.split('?')[1];
-        this.courseAssociationId = getval.split("=")[1];
+        var keyValue = getval.split('&'); 
+        // this.courseAssociationId = getval.split("=")[1];
+        this.courseAssociationId = keyValue[0].split("=")[1];
+        this.courseName = decodeURIComponent(keyValue[1].split("=")[1]);
+        this.className = decodeURIComponent(keyValue[2].split("=")[1]);
         // 获取已签到课程列表
         this.$http.post('./teachJournalDetailList',{
         	"courseAssociationId": this.courseAssociationId
@@ -142,6 +147,8 @@ export default {
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
+            this.teachJournalDetailList = data.teachJournalDetailList;
+            this.courseName = data.courseName;
             this.teachJournalDetailList = data.teachJournalDetailList;
         },function(error){
             console.log("获取申请error:");

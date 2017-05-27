@@ -8,14 +8,14 @@
 	</div>
 	<div class="tableSelect">
 		<select v-model="selSemester">
-			<option disabled>选择学期</option>
+			<option disabled value="">选择学期</option>
 			<option v-for="semesterOpt in yearSemester" :value="semesterOpt">
 				{{semesterOpt}}
 				<!-- {{ semesterOpt.year }}第{{ semesterOpt.term }}学期 -->
 			</option>
 		</select>
 		<select v-model="selWeek">
-			<option disabled>选择周数</option>
+			<option disabled value="">选择周数</option>
 			<option v-for="weekOpt in week" :value="weekOpt">
 				第{{ weekOpt }}周
 			</option>
@@ -98,7 +98,7 @@
 
 		<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 			<div style="text-align:center; font-size:1.1rem;">
-			    <p>操作失败！请重试</p>
+			    <p>请选择学期和周数！</p>
 			</div>
 		    <div slot="footer" style="text-align:center;">
 		        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -114,11 +114,11 @@ export default {
 		return {
 			// year: '',
 			// term: '',
-			selSemester: '选择学期',
+			selSemester: '',
 			yearSemester: [
 				// 12456
 			],
-			selWeek: '选择周数',
+			selWeek: '',
 			week: ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],
 			firstCourse: '',
 			secondCourse: '',
@@ -174,16 +174,16 @@ export default {
 	methods: {
 		// 查询课表	
 		checkTableBtn: function () {
-			this.$http.post('./teacherSeeCurriculum',{
-	        	"yearSemester": this.selSemester,
-	        	"week": this.selWeek
-	        },{    
-	            "Content-Type":"application/json"
-	        }).then(function(response){
-	            console.log("获取申请:");
-	            console.log(response.body);
-	            var data = response.body;
-	            if (data.result == "1") {
+			if (this.selSemester != '' && this.selWeek != '') {
+				this.$http.post('./teacherSeeCurriculum',{
+		        	"yearSemester": this.selSemester,
+		        	"week": this.selWeek
+		        },{    
+		            "Content-Type":"application/json"
+		        }).then(function(response){
+		            console.log("获取申请:");
+		            console.log(response.body);
+		            var data = response.body;
 		            this.firstCourse = data.teacherCurriculum[0].firstCourse;
 		            this.secondCourse = data.teacherCurriculum[0].secondCourse;
 		            this.thirdCourse = data.teacherCurriculum[0].thirdCourse;
@@ -199,14 +199,14 @@ export default {
 		            this.thirteenthCourse = data.teacherCurriculum[0].thirteenthCourse;
 		            this.fourteenthCourse = data.teacherCurriculum[0].fourteenthCourse;
 		            this.teacherDetailCurriculum = data.teacherDetailCurriculum;
-	            }else {
-			        // this.$Message.error("操作失败！请重试");
-			        this.modalResult = true;
-			    }
-	        },function(error){
-	            console.log("获取申请error:");
-	            console.log(error);
-        	});
+		        },function(error){
+		            console.log("获取申请error:");
+		            console.log(error);
+	        	});
+			}else {
+				this.modalResult = true;
+				
+			}
 			// var tableInfo = document.getElementById('tableInfo');
 			// tableInfo.action = 'index.php';
 			// tableInfo.method = 'get';

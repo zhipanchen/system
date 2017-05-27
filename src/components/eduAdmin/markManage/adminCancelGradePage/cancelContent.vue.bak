@@ -10,13 +10,13 @@
 	<div class="tableSelect">
 		<!-- 选择课程、教师，进行查询可撤销成绩列表 -->
 	    <select v-model="course">
-			<option disabled value="">选择课程</option>
+			<option disabled>选择课程</option>
 			<option v-for="option1 in courseInfo" :value="option1.courseId">
 				{{ option1.courseName }}
 			</option>
 	    </select>
 	    <select v-model="teacher">
-	    	<option disabled value="">选择教师</option>
+	    	<option disabled>选择教师</option>
 			<option v-for="option2 in teacherInfo" :value="option2.teacherId">
 				{{ option2.teacherName }}
 			</option>
@@ -85,8 +85,8 @@
 export default {
 	data () {
 		return {
-			course: '',
-			teacher: '',
+			course: '选择课程',
+			teacher: '选择教师',
 			courseInfo: [],		// 课程下拉信息数组
 			teacherInfo: [],	// 教师下拉信息数组
 			// 可撤销成绩列表定义
@@ -119,10 +119,15 @@ export default {
   		// 点击查询，回调表单************************************************
   		checkTableBtn: function () {
   			// 判断是否选择
-  			if (this.course == "" || this.teacher == "") {
+  			if (this.course == "选择课程" || this.teacher == "选择教师") {
   				this.modalResult = true;
   				this.remindResult = '3';
   			}else {
+	  			// if (this.teacher == "选择教师") {
+	  			// 	this.teacher = '';
+	  			// }else if (this.course == "选择课程") {
+	  			// 	this.course = '';
+	  			// }
 		  		this.$http.post('./getScoreCommitted', {
 	  				"courseId": this.course,
 	  				"teacherId": this.teacher

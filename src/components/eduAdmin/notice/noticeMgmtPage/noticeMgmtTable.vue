@@ -36,13 +36,14 @@
 									<Button id="modalBtn" @click="cancel()">取消</Button>
 								</div>
 							</Modal>
+							<!-- 弹窗提示 -->
 							<Modal v-model="modalResult" id="modalBody" :styles="{top:'10rem'}">
 								<p style="text-align:center; font-size:1.1rem;">删除失败！请重试。</p>
 								<div slot="footer" style="text-align:center;">
 									<Button id="modalBtn" @click="resultOk()">确定</Button>
 								</div>
 							</Modal>
-							<!-- 弹窗提示 -->
+							<!-- 弹窗提示发布失败 -->
 							<Modal v-model="modal2" width="400" :mask-closable="false" id="modalBody" :styles="{top:'10rem'}">
 								<div style="font-size: 1.1rem;text-align: center;">
 									<p>发布失败！</p>

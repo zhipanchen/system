@@ -10,19 +10,19 @@
 	<div class="tableSelect">
 		<!-- 填选信息进行查询学生成绩 -->
         <select v-model="selGradeType" @change="gradeChange()">
-			<option disabled>选择年制</option>
+			<option disabled value="">选择年制</option>
 			<option v-for="gradeTypeOne in gradeType" :value="gradeTypeOne.value">{{gradeTypeOne.text}}</option>
 		</select>
 		<select v-model="selYearTerm">
-			<option disabled>选择学期</option>
+			<option disabled value="">选择学期</option>
 			<option v-for="yearTermOne in yearTerm" :value="yearTermOne.startYearSemester">{{yearTermOne.startYearSemester}}</option>
 		</select>
 		<select v-model="selCourseName">
-			<option disabled>选择课程</option>
+			<option disabled value="">选择课程</option>
 			<option v-for="courseNameOne in courseInfo" :value="courseNameOne.courseId">{{courseNameOne.courseName}}</option>
 		</select>
 		<select v-model="selClassId">
-			<option disabled>选择班级</option>
+			<option disabled value="">选择班级</option>
 			<option v-for="classIdOne in classInfo" :value="classIdOne.classId">{{classIdOne.className}}</option>
 		</select>
         <button class="am-btn am-btn-success am-radius" @click="findBtn()">查询</button>
@@ -148,10 +148,10 @@ export default {
 	name: 'makeupList',
 	data () {
 		return {
-			selGradeType: '选择年制',
-			selYearTerm: '选择学期',
-			selCourseName: '选择课程',
-			selClassId: '选择班级',
+			selGradeType: '',
+			selYearTerm: '',
+			selCourseName: '',
+			selClassId: '',
 			gradeType: [
 				{text: '三年制', value: '3'},
 				{text: '五年制', value: '5'}
@@ -223,11 +223,11 @@ export default {
     	},
   		// 查找名单
   		findBtn: function () {
-    		if (this.selGradeType == "选择年制") {
+    		if (this.selGradeType == "") {
     			// this.selGradeType = '0';
     			this.modalResult = true;
     			this.remindResult = '7';
-    		}else if (this.selYearTerm == "选择学期" || this.selCourseName == "选择课程" || this.selClassId == "选择班级") {
+    		}else if (this.selYearTerm == "" || this.selCourseName == "" || this.selClassId == "") {
     			this.modalResult = true;
     			this.remindResult = '8';
     		}else {
@@ -243,7 +243,7 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
-		            if (data.result == "1") {
+		            if (data.scoreList != []) {
 		            	this.scoreList = data.scoreList;
 		            }else{
 				        // this.$Message.error("操作失败！请重试");
@@ -266,7 +266,7 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
-		            if (data.result == "1") {
+		            if (data.makeUpAskList != []) {
 		            	this.makeUpAskList = data.makeUpAskList;
 		            }else{
 				        // this.$Message.error("操作失败！请重试");
@@ -283,19 +283,16 @@ export default {
 	    },
 	    // 下载按钮********************************************************************
 	    exportBtn: function () {
-    		if (this.selGradeType == "选择年制") {
-    			this.selGradeType = '0';
-    		}
-    		if (this.selYearTerm == "选择学期") {
-    			this.selYearTerm = '';
-    		}
-    		if (this.selCourseName == "选择课程") {
-    			this.selCourseName = '';
-    		}
-    		if (this.selClassId == "选择班级") {
-    			this.selClassId = '';
-    		}
-	    	location.href = "./exportMakeUpList?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"courseId="+this.selCourseName+"&"+"classId="+this.selClassId;
+    		if (this.selGradeType == "") {
+    			// this.selGradeType = '0';
+    			this.modalResult = true;
+    			this.remindResult = '7';
+    		}else if (this.selYearTerm == "" || this.selCourseName == "" || this.selClassId == "") {
+    			this.modalResult = true;
+    			this.remindResult = '8';
+    		}else {
+	    		location.href = "./exportMakeUpList?gradeType="+this.selGradeType+"&"+"yearTerm="+this.selYearTerm+"&"+"courseId="+this.selCourseName+"&"+"classId="+this.selClassId;
+	    	}
 	    },
 	    // 单个批准补考申请********************************************************
   		rightBtn: function (index) {

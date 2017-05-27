@@ -25,6 +25,7 @@
 						<th width="">职称</th>
 						<th width="">课程编号</th>
 						<th width="">所授课程</th>
+						<th width="">授课班级</th>
 						<th width="">课时</th>
 						<th width="">课酬/课时</th>
 						<th width="">总课酬</th>
@@ -35,6 +36,7 @@
 						<td>{{data.workUnit}}  {{data.workDuty}}</td>
 						<td v-text="data.courseId"></td>
 						<td v-text="data.courseName"></td>
+						<td>{{data.className}}</td>
 						<td v-text="data.courseHours"></td>
 						<td v-text="data.payPerCourse"></td>
 						<td v-text="data.wage"></td>
@@ -54,7 +56,7 @@ export default {
 			// selYearTerm: '选择学期',
 			// yearTerm: [],
 			teacherPayrollList: [
-				{}
+				// {}
 			]
 		}
 	},
