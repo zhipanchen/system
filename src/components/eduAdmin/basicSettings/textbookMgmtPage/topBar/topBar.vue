@@ -9,7 +9,7 @@
     <div class="positionBar">
       <span>您的当前位置：</span>
       <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-      <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 资源管理设置 > 教室管理</span>
+      <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 资源管理设置 > 教材管理</span>
     </div>
     <div id="whiteDiv">
       <div id="buttonDiv">
@@ -83,6 +83,25 @@
 //      dom加载后改变上传插件默认的按钮样式
       var importButton = document.getElementById("importButton");
       importButton.className = "am-btn am-btn-success am-radius";
+      try{
+        var buttons = document.getElementById("textbookManagement_topBar").getElementsByTagName("button");
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+//        console.log(this.authorityList);
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.display = "none";
+        }
+        for (var i = 0; i < this.authorityList.length; i++) {
+          if(this.authorityList[i] == "27"){
+            buttons[0].style.display = "block";
+          }else if(this.authorityList[i] == "21"){
+            buttons[1].style.display = "block";
+          }else if(this.authorityList[i] == "65"){
+            buttons[2].style.display = "block";
+          }else if(this.authorityList[i] == "20"){
+            buttons[3].style.display = "block";
+          }
+        }
+      }catch(e){}
     },
     methods:{
       hrefClick: function (num) {

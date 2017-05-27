@@ -4,7 +4,7 @@
       <div class="positionBar">
         <span>您的当前位置：</span>
         <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-        <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 资源管理设置 > 教室管理</span>
+        <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 资源管理设置 > 课程类型管理</span>
       </div>
     </div>
     <div id="tableDiv">
@@ -217,10 +217,11 @@
               input.readOnly = true;
               input.style.border = "none";
 
-              editImg.style.display = "inline";
-              deleteImg.style.display = "inline";
+              editImg.style.display = "none";
+              deleteImg.style.display = "none";
               saveImg.style.display = "none";
               restoreImg.style.display = "none";
+              setTimeout("location.reload(true)", 2000);
 //                退出编辑状态
             } else {
 //              this.$Message.error("操作失败,请重试!");

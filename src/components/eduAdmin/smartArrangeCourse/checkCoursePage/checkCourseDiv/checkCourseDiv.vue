@@ -22,8 +22,8 @@
             <p id="tableTipP">
                 支持分别以学期和周数为条件，对全校的课程表进行查询；支持调换选定的两门课程。
                 <form action="./acdeminSeeCurriculumExcel" method="get">
-                    <!--<input type="text" v-model="termExport" name="yearSemester" style="display: none">-->
-                    <!--<input type="text" v-model="weekExport" name="week" style="display:none;">-->
+                    <input type="text" v-model="termExport" name="yearSemester" style="display: none">
+                    <input type="text" v-model="weekExport" name="week" style="display:none;">
                     <div class="am-btn am-btn-success am-radius" style="position: absolute;right: 7rem;z-index: 10" @click="exportClick()">导出</div>
                     <button id="exportButton" style="display: none" type="submit"></button>
                 </form>
@@ -31,6 +31,19 @@
             <p id="tableInfoP">当前课表：{{ term }} {{ week }} </p>
             <tableDiv :queryCourse="queryCourse"></tableDiv><!--表格组件-->
         </div>
+        <Modal
+            v-model="modal"
+            width="400"
+            :mask-closable="false"
+            id="modalBody"
+            :styles="{top:'10rem'}">
+            <div style="font-size: 1.1rem;text-align: center;">
+                <p>{{ errorMessage }}</p>
+            </div>
+            <div slot="footer" style="text-align: center">
+                <button id="modalBtn" @click="modal = false">确定</button>
+            </div>
+        </Modal>
     </div>
 </template>
 <!--待完善查询课表的数据交互，需要确认后端的查询方式；待完善下拉搜索功能，需要确认后端提供数据库搜索支持还是前端通过js搜索处理-->
@@ -79,8 +92,10 @@
                     { "name":"2016-2017 第2学期", "value":"2016-2017.2" },
                     { "name":"2017-2018 第1学期", "value":"2017-2018.1" },
                     { "name":"2017-2018 第2学期", "value":"2017-2018.2" }
-                ]
+                ],
 //                学期选择
+                modal: false
+//                对话框显隐
             }
         },
         components: {
@@ -122,27 +137,26 @@
             },
             queryCourseClick: function(){
 //                查找课表
-                if(this.termSelect == "请选择学期"){
-                    this.termSelect = "";
-                }
-                if(this.weekSelect == "请选择周数"){
-                    this.weekSelect = "";
-                }
-                this.$http.post('./acdeminSeeCurriculum',{
+                if(this.termSelect == "请选择学期" || this.weekSelect == "请选择周数"){
+                    this.errorMessage = "学期和周数都是必选的，请确认重试！";
+                    this.modal = true;
+                }else {
+                    this.$http.post('./acdeminSeeCurriculum', {
 //                this.$http.post('../testPhp/checkCourseQuery.php',{
-                    "yearSemester": this.termSelect,
-                    "week": this.weekSelect
-                },{
-                    "Content-Type":"application/json"
-                }).then(function(response){
-                    console.log("查找课表:");
-                    console.log(response.body);
-                    this.queryCourse = response.body.acdeminCurriculum;
-                    this.term = this.termSelect.split(".")[0]+"年第"+this.termSelect.split(".")[1]+"学期";
-                    this.week = "第"+this.weekSelect+"周";
-                },function(error){
-                    this.$Message.error('连接失败，请重试！');
-                });
+                        "yearSemester": this.termSelect,
+                        "week": this.weekSelect
+                    }, {
+                        "Content-Type": "application/json"
+                    }).then(function (response) {
+                        console.log("查找课表:");
+                        console.log(response.body);
+                        this.queryCourse = response.body.acdeminCurriculum;
+                        this.term = this.termSelect.split(".")[0] + "年第" + this.termSelect.split(".")[1] + "学期";
+                        this.week = "第" + this.weekSelect + "周";
+                    }, function (error) {
+                        this.$Message.error('连接失败，请重试！');
+                    });
+                }
             }
         }
     }

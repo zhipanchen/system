@@ -29,10 +29,10 @@
           <td>{{ application.appTime }}</td>
           <td>{{ application.reason }}</td>
           <td>
-            <button class="operationButton" @click="operation(application.forbiddentimeId,'true',index)">√</button>
+            <button class="operationButton" @click="operation(application.lessonsChangeId,'true',index)">√</button>
             <!--<button @click="setTrue(index)">√</button>-->
             <!--申请通过批准-->
-            <button class="operationButton" @click="operation(application.forbiddentimeId,'false',index)">×</button>
+            <button class="operationButton" @click="operation(application.lessonsChangeId,'false',index)">×</button>
             <!--申请拒绝-->
           </td>
         </tr>
@@ -109,7 +109,6 @@
 //    页面dom加载前获取后端数据
       this.$http.post('./closedCourseApplyShow',{
 //      this.$http.post('../testPhp/suspendCouApply.php',{
-        "lessonsChangeId": 1
       },{
         "Content-Type":"application/json"
       }).then(function(response){

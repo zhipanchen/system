@@ -50,7 +50,7 @@
     name: "forgetPassword",
     data () {
       return {
-        img1: require("../../../assets/images/login-background.png"),//页面背景图片
+        img1: require("../../../assets/images/login-background.jpg"),//页面背景图片
         imgHref: "http://www.samsph.com/hsxx/1092/1/",//官网
         exitHref: "#/login",
 //        退出返回登录
@@ -99,41 +99,49 @@
       nextClick: function(){
 //        发送验证邮件
         if(!this.sending) {
-          this.sending = true;
-          this.$Message.loading('正在验证并发送邮件，请等待……', 0);
-          this.$Loading.start();
+          if(this.userId == ""){
+            this.errorMessage = "帐号不能为空,请确认重试！";
+            this.modal = true;
+          }else if(this.email.indexOf("@") < 0){
+            this.errorMessage = "邮件输入格式有误,请确认重试！";
+            this.modal = true;
+          }else {
+            this.sending = true;
+            this.$Message.loading('正在验证并发送邮件，请等待……', 0);
+            this.$Loading.start();
 //        this.$http.post('../testPhp/loginCheck.php', {
-          this.$http.post('./findbackPwd', {
-            "userId": this.userId,
-            "email": this.email
-          },{
-            "Content-Type": "application/json"
-          }).then(function (response) {
-            this.removeLoading();
-            console.log(response.body);
-            if (response.body.result == "1") {
-              this.$Loading.finish();
-              this.current = 1;
-              this.step1 = "已完成";
-              this.step2 = "进行中";
-              var operationP = document.getElementsByClassName("operationP");
-              for (var i = 0; i < operationP.length; i++) {
-                operationP[i].style.display = "none";
-              }
-              var emailP = document.getElementById("emailP");
-              emailP.style.display = "block";
-              emailP.innerHTML = "验证邮件已发送到" + this.email + ",请在有效期内点击打开邮件内链接完成验证。";
-            } else {
-              this.$Loading.error();
+            this.$http.post('./findbackPwd', {
+              "userId": this.userId,
+              "email": this.email
+            }, {
+              "Content-Type": "application/json"
+            }).then(function (response) {
+              this.removeLoading();
+              console.log(response.body);
+              if (response.body.result == "1") {
+                this.$Loading.finish();
+                this.current = 1;
+                this.step1 = "已完成";
+                this.step2 = "进行中";
+                var operationP = document.getElementsByClassName("operationP");
+                for (var i = 0; i < operationP.length; i++) {
+                  operationP[i].style.display = "none";
+                }
+                var emailP = document.getElementById("emailP");
+                emailP.style.display = "block";
+                emailP.innerHTML = "验证邮件已发送到" + this.email + ",请在有效期内点击打开邮件内链接完成验证。";
+              } else {
+                this.$Loading.error();
 //              this.$Message.error("帐号或邮件地址有误,请确认重试！");
-              this.errorMessage = "帐号或邮件地址有误,请确认重试！";
-              this.modal = true;
-            }
-          }, function (error) {
-            this.$Message.error('连接失败，请重试！', 3);
-            this.$Loading.error();
-            this.removeLoading();
-          });
+                this.errorMessage = "帐号或邮件地址有误,请确认重试！";
+                this.modal = true;
+              }
+            }, function (error) {
+              this.$Message.error('连接失败，请重试！', 3);
+              this.$Loading.error();
+              this.removeLoading();
+            });
+          }
         }
       }
     }

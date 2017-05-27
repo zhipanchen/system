@@ -21,13 +21,14 @@
         width="400"
         :mask-closable="false"
         id="modalBody"
+        :closable="closable"
         :style="{top:'10rem'}">
       <div style="font-size: 1.1rem;text-align: center;">
-        <p>您确定进行智能排课吗?</p>
+        <p>{{ modalMessage }}</p>
       </div>
       <div slot="footer" style="text-align: center">
-        <button id="modalBtn" @click="restartArrangeClick()">确定</button>
-        <button id="modalBtn" @click="modal = false">取消</button>
+        <Button  id="modalBtn" @click="restartArrangeClick()" :loading="loading">确定</Button>
+        <button id="modalBtn" @click="closeModal()">取消</button>
       </div>
     </Modal>
   </div>
@@ -39,8 +40,15 @@
     name: 'couArrangeTableDiv',
     data () {
       return {
-        modal: false
+        modal: false,
 //        对话框显隐
+        modalMessage: "您确定进行智能排课吗?",
+        loading: false,
+//        异步关闭对话框
+        closable: false,
+//        取消esc关闭对话框和左上角×
+        isClose: true
+//        是否允许关闭对话框
       }
     },
     components: {
@@ -61,18 +69,30 @@
     methods: {
       restartArrangeClick: function(){
 //        重新智能排课
+        this.modalMessage = '正在智能排课中……';
+        this.loading = true;
+        this.isClose = false;
         this.$http.post('./acdeminArrangeCurriculum',{},{
 //        this.$http.post('../testPhp/adjustCouApplySetTrue.php',{},{
           "Content-Type":"application/json"
         }).then(function(response){
           this.modal = false;
+          this.isClose = true;
+          this.modalMessage =  "您确定进行智能排课吗?";
+          location.href(true);
           console.log(response.body);
-          this.$Message.loading('正在智能排课中（页面刷新后若课表无变动，需稍等后刷新）……', 5);
-          setTimeout("location.reload(true)",6000);
         },function(error){
-          this.modal = false;
+//          this.modal = false;
+//          this.modalMessage =  "您确定进行智能排课吗?";
+          this.isClose = true;
           this.$Message.error("连接失败，请重试！");
         });
+      },
+      closeModal: function () {
+//        关闭对话框
+        if(this.isClose){
+          this.modal = false;
+        }
       }
     }
   }

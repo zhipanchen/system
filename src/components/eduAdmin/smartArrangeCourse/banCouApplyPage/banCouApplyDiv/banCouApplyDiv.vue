@@ -18,7 +18,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="application in applications" :id="application.forbiddentimeId">
+          <tr v-for="(application,index) in applications" :id="application.forbiddentimeId">
             <td>{{ application.teacherName }}</td>
             <td>{{ application.appContent }}</td>
             <td>{{ application.appTime }}</td>

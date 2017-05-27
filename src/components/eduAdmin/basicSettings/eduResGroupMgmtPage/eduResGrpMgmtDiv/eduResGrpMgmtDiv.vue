@@ -3,7 +3,7 @@
       <div class="positionBar">
         <span>您的当前位置：</span>
         <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-        <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 人员管理设置 > 教室管理</span>
+        <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 人员管理设置 > 教研组管理</span>
       </div>
       <div id="mainDiv">
         <div id="groupDiv">
@@ -64,8 +64,8 @@
             </p>
           </div>
           <div id="operationDiv">
-            <button @click="save" class="am-btn am-btn-success am-radius">保存</button>
-            <button @click="cancel" class="am-btn am-btn-success am-radius">取消</button>
+            <button @click="operationClick(operationIndex,'save',operationObj)" class="am-btn am-btn-success am-radius">保存</button>
+            <button @click="operationClick(operationIndex,'cancel',operationObj)" class="am-btn am-btn-success am-radius">取消</button>
           </div>
         </div>
       </div>
@@ -104,7 +104,7 @@
           id="modalBody"
           :styles="{top:'10rem'}">
         <div style="font-size: 1.1rem;text-align: center;">
-          <p>您确定删除该成员吗？"</p>
+          <p>您确定删除该成员吗？</p>
         </div>
         <div slot="footer" style="text-align: center">
           <button id="modalBtn" @click="removePerson(operationIndex,operationObj)">确定</button>
@@ -225,6 +225,10 @@
             }else if(type == "remove"){
               this.modal3 = true;
               this.operationObj = operationObj;
+            }else if(type == "save"){
+              this.modal4 = true;
+            }else if(type == "cancel"){
+              this.modal5 = true;
             }
           },
 //          教研组点击监听，用于展示相应的教研组详细信息
@@ -498,6 +502,8 @@
                 this.errorMessage = "组长和成员不能为空！";
                 this.modal6 = true;
               }else {
+                var operationDiv = document.getElementById("operationDiv");
+                operationDiv.style.display = "none";
                 if(this.isAdd) {
 //                  判断是否为未保存的新增教研组
 //                  this.$http.post('../testPhp/classroomMgmtSave.php', {
@@ -517,23 +523,17 @@
                     data = response.body;
                     if (data.result == "1") {
                       this.isAdd = false;
-                      /*document.getElementById("groupInput").readOnly = true;
-                      document.getElementById("groupInput").style.border = "none";*/
-                      this.groupId = 0;
-                      this.groupName = "";
-                      this.groupNumber = "";
-                      this.targroupType = "";
-                      this.leaders = [];
-                      this.members = [];
                       this.$Message.success("保存成功!");
                       setTimeout("location.reload(location.href)",2000);
                     } else {
+                      operationDiv.style.display = "block";
                       this.modal4 = false;
 //                      this.$Message.error("操作失败，请重试！");
                       this.errorMessage = "操作失败，请重试！";
                       this.modal6 = true;
                     }
                   }, function (error) {
+                    operationDiv.style.display = "block";
                     this.modal4 = false;
                     this.$Message.error("连接失败，请重试！");
                   });
@@ -555,21 +555,17 @@
                     data = response.body;
                     if (data.result == "1") {
                       this.isAdd = false;
-                      this.groupId = 0;
-                      this.groupName = "";
-                      this.groupNumber = "";
-                      this.targroupType = "";
-                      this.leaders = [];
-                      this.members = [];
                       this.$Message.success("保存成功!");
                       setTimeout("location.reload(location.href)",2000);
                     } else {
+                      operationDiv.style.display = "block";
                       this.modal4 = false;
 //                      this.$Message.error("操作失败，请重试！");
                       this.errorMessage = "操作失败，请重试！";
                       this.modal6 = true;
                     }
                   }, function (error) {
+                    operationDiv.style.display = "block";
                     this.modal4 = false;
                     this.$Message.error("连接失败，请重试！");
                   });
