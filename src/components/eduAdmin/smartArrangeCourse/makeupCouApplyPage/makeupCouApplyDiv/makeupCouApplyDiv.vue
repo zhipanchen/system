@@ -32,7 +32,7 @@
               <button class="operationButton" @click="operation(index,'true')">√</button>
               <!--<button @click="setTrue(index)">√</button>-->
               <!--申请通过批准-->
-              <button class="operationButton" @click="operation(index,'true')">×</button>
+              <button class="operationButton" @click="operation(index,'false')">×</button>
               <!--申请拒绝-->
             </td>
           </tr>
