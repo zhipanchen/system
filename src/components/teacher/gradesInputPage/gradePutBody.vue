@@ -187,7 +187,7 @@ export default {
             this.inputLesson = data.canModifyCourInfo.courseName;
             this.classes = data.canModifyCourInfo.className;
             this.scoreList = data.scoreList;
-            if (data.canModifyCourInfo.canModifyGrade) {
+            if (this.canModifyCourInfo.canModifyGrade) {
             	this.buttonShow = true;
             	this.submitShow = true;
             }

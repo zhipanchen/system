@@ -221,7 +221,7 @@ export default {
 	            console.log(error);
 	        });
     	},
-  		// 查找名单***********************************************************************************
+  		// 查找名单
   		findBtn: function () {
     		if (this.selGradeType == "") {
     			// this.selGradeType = '0';
@@ -244,8 +244,8 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
-		            if (data.makeUpList != []) {
-		            	this.makeUpList = data.makeUpList;
+		            if (data.scoreList != []) {
+		            	this.scoreList = data.scoreList;
 		            }else{
 				        findResult++;
 				    }
