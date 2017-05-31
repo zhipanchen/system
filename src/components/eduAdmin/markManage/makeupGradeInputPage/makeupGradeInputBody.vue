@@ -158,7 +158,7 @@ export default {
 		            console.log(response.body);
 		            var data = response.body;
 		            // if(data.result == "1") {
-	             //        this.makeUpGradeInputList = data.makeUpGradeInputList;
+	                    this.makeUpGradeInputList = data.makeUpGradeInputList;
 	                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
 	                    if (this.makeUpGradeInputList != []) {
 	                    	this.buttonShow = true;

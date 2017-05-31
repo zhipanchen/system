@@ -1,5 +1,5 @@
 <template>
-  <div id="tchingPlan" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
+  <div id="tchingPlan" style="padding: 0.6rem 5rem;margin-top: 3.5rem;background-color: #f3f3f3">
     <div>
       <div class="yearsTypeDiv">
         <span class="yearsTypeP">5年制培养方案</span>
@@ -8,7 +8,7 @@
       <!--年制栏-->
       <div>
         <div v-for="(grade,gradeIndex) in gradeIdArr">
-          <div v-if="grade.yearType==='5'" :id="'5GradePlanDiv' + gradeIndex" class="gradePlanDiv">
+          <div v-if="grade.yearType=='5'" :id="'5GradePlanDiv' + gradeIndex" class="gradePlanDiv">
             <span><img :id="'5Arrow' + gradeIndex" class="gradePlanImg" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)" :src="arrowright"></span>
             <span :id="'5P' + gradeIndex" class="gradePlanP" @click="tableSlideToggle(grade.yearType,gradeIndex,grade.gradeName)">{{grade.gradeName}}级</span>
             <span><button class="gradeButton" @click="downloadClick(gradeIdList[gradeIndex])">下载</button></span>

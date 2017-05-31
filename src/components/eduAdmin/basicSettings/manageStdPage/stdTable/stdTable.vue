@@ -36,6 +36,15 @@
         </span>
         <span><button id="leadOut" class="am-btn am-btn-success am-radius buttonWM" @click="downloadClick">下载</button></span>
         <!--查找，下载，上传按钮-->
+        <modal v-model="modalCheckBool" width="400" id="modalBody">
+          <div style="text-align: center;font-size: 1.1rem;">
+            <p >请输入正确的学生信息!</p>
+          </div>
+          <div slot="footer" style="text-align: center">
+            <button id="modalBtn" @click="resultCheckOk">确定</button>
+          </div>
+        </modal>
+        <!--查找时学生信息不明确，弹窗提示-->
       </div>
       <div>
         <modal v-model="modalDownloadBool" width="400" id="modalBody">
@@ -58,15 +67,15 @@
             <!--table-layout: fixed;固定表格格局-->
             <thead>
             <tr>
-              <th>学号</th>
-              <th>姓名</th>
-              <th>身份证号码</th>
-              <th>性别</th>
-              <th>学制</th>
-              <th>年级</th>
-              <th>专业</th>
-              <th>班级</th>
-              <th>操作</th>
+              <th width="16%">学号</th>
+              <th width="10%">姓名</th>
+              <th width="20%">身份证号码</th>
+              <th width="7%">性别</th>
+              <th width="7%">学制</th>
+              <th width="10%">年级</th>
+              <th width="10%">专业</th>
+              <th width="10%">班级</th>
+              <th width="10%">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -168,6 +177,7 @@
                 ],
               classNameEle:'',
               index:'0',
+              modalCheckBool: false,
               yearTypeClassIndex:'0',
               gradeClassIndex:'0',
               modalDownloadBool:false,
@@ -225,7 +235,7 @@
             console.log(response);
             var result = response.body.result;
             if(result === "0"){
-              alert("请输入正确的学生信息！");
+              this.modalCheckBool = true;
             }else{
               this.studentSimpleInfoList = response.body.studentSimpleInfoList;
             }
@@ -234,6 +244,10 @@
           });
         },
 //        查询学生成绩：向后台提交年制、年级、班级，后台返回相应的学生信息
+        resultCheckOk:function(){
+          this.modalCheckBool = false;
+        },
+//        确认查询成绩信息错误
         handleFormatError:function(){
           this.downloadMsg = "1";
           this.modalDownloadBool = true;
