@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 0.6rem 5rem;background-color: #f3f3f3">
+  <div style="padding: 0.6rem 5rem;margin-top: 3.5rem;background-color: #f3f3f3">
     <div id="gradeManagementDiv" style="background-color: white">
       <div id="fiveYearDiv" v-show="gradeManagement">
         <button class="amButtom" @click="fiveYearClick"><img id="fiveYearArrow" class="iconImg" :src="icon2"><span class="subtitle">{{firstYearType}}年制</span></button>
@@ -7,7 +7,7 @@
           <tr v-for="(fiveGrade,index) in fiveGrades" :id="'fiveInputTr'+index">
             <td><input class="gradeInput" type="text" :value="fiveGrade.gradeName" readonly="readonly"></td>
             <td><input class="gradeInput" type="text" :value="fiveGrade.studentNum" readonly="readonly"></td>
-            <td class="checkGradeInfo" @click="checkGradeInfoClick(firstYearType,fiveGrade.gradeName)"><u>查看年级信息</u></td>
+            <td class="checkGradeInfo" @click="checkGradeInfoClick(firstYearType,fiveGrade.gradeName)"><u>班级管理</u></td>
             <td>
               <img :id="'fiveDeleteImg'+index" src="./images/delete.png" @click="deleteGradeClick(firstYearType,fiveGrades[index].gradeName,'1',index)">
             </td>
@@ -22,7 +22,7 @@
           <tr v-for="(threeGrade,index) in threeGrades" :id="'threeInputTr'+index">
             <td><input class="gradeInput" type="text" :value="threeGrade.gradeName" readonly="readonly"></td>
             <td><input class="gradeInput" type="text" :value="threeGrade.studentNum" readonly="readonly"></td>
-            <td class="checkGradeInfo" @click="checkGradeInfoClick(secondYearType,threeGrade.gradeName)"><u>查看年级信息</u></td>
+            <td class="checkGradeInfo" @click="checkGradeInfoClick(secondYearType,threeGrade.gradeName)"><u>班级管理</u></td>
             <td>
               <img :id="'threeDeleteImg'+index" src="./images/delete.png" @click="deleteGradeClick(secondYearType,threeGrades[index].gradeName,'2',index)">
             </td>
@@ -33,7 +33,7 @@
       <div>
         <modal v-model="modalOperateBool" width="400" id="modalBody">
           <div style="text-align: center;font-size: 1.1rem;">
-            <p>是否确定删除</p>
+            <p>该年级的所有教学计划和班级信息都会被删除，请谨慎对待！是否确定删除</p>
           </div>
           <div slot="footer" style="text-align: center">
             <button id="modalBtn" @click="deleteOk()">确定</button>
@@ -94,7 +94,7 @@
             <div style="text-align: center;font-size: 1.1rem;">
               <p v-if="operateMsg==='1'">是否确定保存修改</p>
               <p v-else-if="operateMsg==='2'">是否确定取消修改</p>
-              <p v-else>是否确定删除</p>
+              <p v-else>该班级的所有课程信息都会被删除，请谨慎对待！是否确定删除</p>
             </div>
             <div slot="footer" style="text-align: center">
               <button v-if="operateMsg==='1'" id="modalBtn" @click="saveGradeOk()">确定</button>
