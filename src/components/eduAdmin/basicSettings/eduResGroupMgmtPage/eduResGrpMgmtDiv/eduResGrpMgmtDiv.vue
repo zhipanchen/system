@@ -524,7 +524,7 @@
                     if (data.result == "1") {
                       this.isAdd = false;
                       this.$Message.success("保存成功!");
-                      setTimeout("location.reload(location.href)",2000);
+                      setTimeout("location.reload()",2000);
                     } else {
                       operationDiv.style.display = "block";
                       this.modal4 = false;
@@ -556,7 +556,7 @@
                     if (data.result == "1") {
                       this.isAdd = false;
                       this.$Message.success("保存成功!");
-                      setTimeout("location.reload(location.href)",2000);
+                      setTimeout("location.reload()",2000);
                     } else {
                       operationDiv.style.display = "block";
                       this.modal4 = false;
@@ -576,7 +576,7 @@
 //          教研组成员删除功能
           cancel: function(){
 //            if(confirm("您确定取消修改并刷新页面吗？")){
-            location.reload(true);
+            location.reload();
             this.modal5 = false;
 //            }
           }

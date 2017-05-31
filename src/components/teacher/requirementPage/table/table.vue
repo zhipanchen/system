@@ -67,6 +67,20 @@
         <button id="modalBtn" @click="modal2 = false">确定</button>
       </div>
     </Modal>
+    <Modal
+      v-model="modal3"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>请选择星期几！</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <!--<button id="modalBtn" @click="chooseDay">确定</button>-->
+        <button id="modalBtn" @click="modal3 = false">确定</button>
+      </div>
+    </Modal>
     </div>
 </template>
 
@@ -87,6 +101,7 @@
               tableList:[],
               modal1: false,
               modal2: false,
+              modal3: false,
               ooption2value:''
             }
         },
@@ -112,7 +127,12 @@
       methods:{
         chooseDia:function(option2value){
           this.ooption2value=option2value;
-          this.modal1 = true;
+          if(option2value==''){
+            this.modal3 =true;
+          }else{
+            this.modal1 = true;
+          }
+
         },
         //与后端交互 所选星期几
         chooseDay:function(value){
@@ -125,7 +145,7 @@
               console.log(response.body);
             if(response.body.result=="1")
             {this.$Message.success('操作成功！');
-              var t=setTimeout(" location.reload();",4000)
+              var t=setTimeout(" location.reload();",2000)
             }
             else
 //            {this.$Message.error('操作失败！');}

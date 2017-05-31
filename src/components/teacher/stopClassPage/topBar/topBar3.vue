@@ -43,9 +43,9 @@
           }else if(this.authorityList[i]=="41"){
             buttons[1].style.display="block";
           }else if(this.authorityList[i]=="40"){
-            buttons[1].style.display="block";
+            buttons[2].style.display="block";
           }else if(this.authorityList[i]=="38"){
-            buttons[1].style.display="block";
+            buttons[3].style.display="block";
           }
         }
       }catch(e){}

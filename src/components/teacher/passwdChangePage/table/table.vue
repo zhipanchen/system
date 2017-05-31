@@ -111,10 +111,11 @@
 //        alert(newone);
 //        alert(oldone);
         this.modal1 = false;
+        var idNum= JSON.parse(sessionStorage.getItem("userInfo")).currentUserId;
         if(newone==connewone){
-          var a=CryptoJs.MD5(oldone+"0402护士学校");//md5加密
+          var a=CryptoJs.MD5(oldone+idNum+"护士学校");//md5加密
           a = a.toString().toUpperCase();//转16进制字符串，大写
-          var b=CryptoJs.MD5(newone+"0402护士学校");//md5加密
+          var b=CryptoJs.MD5(newone+idNum+"护士学校");//md5加密
           b = b.toString().toUpperCase();//转16进制字符串，大写
           function  encrypt(data){
             //AES加密
