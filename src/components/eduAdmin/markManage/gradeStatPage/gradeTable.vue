@@ -105,7 +105,7 @@ export default {
 			// 返回学生成绩列表
 			scoreList: [
 				// {stuNum: '20142201010', stuName: '何平', stuGrade: '大二', stuMajor: '护理学', stuSemester: '2016-2017第一学期', stuCourse: '护理学', stuScore: '80'}
-				{},{},{}
+				// {},{},{}
 			],
 			modalResult: false,
 			resultBool: ''
