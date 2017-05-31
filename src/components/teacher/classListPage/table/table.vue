@@ -38,13 +38,15 @@
                   {{ studentDuty }}
                 </option>
               </select></td>
-              <td><select  v-model="data.currentState">
-                <option  v-for="currentState in currentStates">
+              <td><select @change="canInput(index)"  :id="'currentStates'+index" v-model="data.currentState">
+                <option v-for="currentState in currentStates">
                   {{ currentState }}
                 </option>
               </select></td>
               <td>
-                <textarea v-model="data.changeReason"></textarea>
+                <textarea :id="'canInput'+index" readonly v-model="data.changeReason"></textarea>
+                <!--<input :id="'canInput'+index" readonly v-model="data.changeReason">-->
+              </td>
               </td>
               <td><span :id="'selfInfo'+index" style="text-decoration: underline; cursor: pointer"  @click="selfInfo(index)">查看学生个人信息</span></td>
             </tr>
@@ -139,6 +141,11 @@
         saveDia:function(){
           this.modal1 = true;
         },
+        //必须修改select 备注才能输入
+        canInput:function(index){
+          var canInput = document.getElementById("canInput"+index);
+          canInput.readOnly = false;
+        },
         //保存功能
         save:function(){
           this.modal1 = false;
@@ -178,7 +185,8 @@
               console.log("传递:");
               console.log(response.body);
               if(response.body.result=="1")
-              {this.$Message.success('操作成功！');}
+              {this.$Message.success('操作成功！');
+                var t=setTimeout(" location.reload();",2000);}
             },
             function(error){
               console.log("传递error:");

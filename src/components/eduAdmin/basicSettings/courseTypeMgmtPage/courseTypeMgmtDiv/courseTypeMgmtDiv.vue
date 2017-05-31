@@ -221,7 +221,7 @@
               deleteImg.style.display = "none";
               saveImg.style.display = "none";
               restoreImg.style.display = "none";
-              setTimeout("location.reload(true)", 2000);
+              setTimeout("location.reload()", 2000);
 //                退出编辑状态
             } else {
 //              this.$Message.error("操作失败,请重试!");

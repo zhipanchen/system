@@ -50,6 +50,20 @@
                   <span id="modalBtn" @click="modal1 = false">取消</span>
                 </div>
               </Modal>
+            <Modal
+              v-model="modal2"
+              width="400"
+              :mask-closable="false"
+              id="modalBody"
+              :styles="{top:'10rem'}">
+              <div style="font-size: 1.1rem;text-align: center;">
+                <p>请填写完整信息！</p>
+              </div>
+              <div slot="footer" style="text-align: center">
+                <!--<button id="modalBtn" @click="subm()">确定</button>-->
+                <span id="modalBtn" @click="modal2 = false">确定</span>
+              </div>
+            </Modal>
           </form>
           <!--<form enctype="multipart/form-data" id="tf">-->
             <!--<span>附件：</span>-->
@@ -88,6 +102,7 @@
         announcementType:'',
         announcementContent:'',
         modal1:false,
+        modal2:false,
         options:[{option:'学院公告',value:'1'},{option:'部门发布',value:'2'},{option:'科研动态',value:'3'},{option:'对外播报',value:'4'},{option:'教务文件',value:'5'},{option:'校务公布',value:'6'}]
       }
 
@@ -105,9 +120,14 @@
 //    },
     methods: {
       dia: function (announcementContent) {
-        this.modal1 = true;
+
 //        this.announcementContent=announcementContent.replace('<br />','/n');
-        this.announcementContent=announcementContent.replace(/\n|\r\n/g,"<br>")
+        this.announcementContent=announcementContent.replace(/\n|\r\n/g,"<br>");
+        if(this.announcementName==''||this.announcementType==''||this.announcementContent==''){
+          this.modal2 = true;
+        }else{
+          this.modal1 = true;
+        }
       },
       subm:function(){
         document.getElementById("sub").click();

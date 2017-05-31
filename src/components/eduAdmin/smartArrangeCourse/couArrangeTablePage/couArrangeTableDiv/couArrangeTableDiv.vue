@@ -79,7 +79,7 @@
           this.modal = false;
           this.isClose = true;
           this.modalMessage =  "您确定进行智能排课吗?";
-          location.href(true);
+          location.reload();
           console.log(response.body);
         },function(error){
 //          this.modal = false;
