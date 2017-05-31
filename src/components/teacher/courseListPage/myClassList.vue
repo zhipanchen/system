@@ -49,10 +49,10 @@
 									:max-size="5120"
 									:on-format-error = "handleFormatError1"
 						            :on-exceeded-size="handleSizeError1"
-						            :on-progress="handleProgress1"
 						            :on-success="handleSuccess1"
 						            :on-error="handleError1"
 									action="./courseTeachPlan/uploadCourseware">
+						            <!-- :on-progress="handleProgress1" -->
 									<a :id="'signIn1'+index">上传</a>
 								</Upload>
 							</span>
@@ -76,10 +76,10 @@
 									:max-size="2048"
 									:on-format-error = "handleFormatError2"
 						            :on-exceeded-size="handleSizeError2"
-						            :on-progress="handleProgress2"
 						            :on-success="handleSuccess2"
 						            :on-error="handleError2"
 							 		action="./courseTeachPlan/uploadTeachPlan">
+						            <!-- :on-progress="handleProgress2" -->
 									<a :id="'signIn2'+index">上传</a>
 								</Upload>
 							</span>
@@ -214,8 +214,9 @@ export default {
 	            console.log("获取申请:");
 	            console.log(response.body);
 	            var data = response.body;
-	            if (data.uploadStatus == '1' && data.coursewareType == '1') {
-	            	signIn1.style.display = "none";
+	            // 判断是否已提交，若未提交，则显示“上传”功能
+	            if (data.uploadStatus == '0' && data.coursewareType == '1') {
+	            	signIn1.style.display = "inline-block";
 	            }
 	        },function(error){
 	            console.log("获取申请error:");
@@ -231,7 +232,7 @@ export default {
 			var signIn2 = document.getElementById("signIn2"+index);
 			optTeachPlan.style.display = "none";
 			// this.optHide2 = true;
-			upload2.style.display = "inline-block";
+			// upload2.style.display = "inline-block";
 			check2.style.display = "inline-block";
 			submit2.style.display = "inline-block";
 			this.courseIdPost = this.teachJournalList[index].courseId;
@@ -244,8 +245,9 @@ export default {
 	            console.log("获取申请:");
 	            console.log(response.body);
 	            var data = response.body;
-	            if (data.uploadStatus == '1' && data.coursewareType == '0') {
-	            	signIn2.style.display = "none";
+	            // 判断是否已提交，若未提交，则显示“上传”功能
+	            if (data.uploadStatus == '0' && data.coursewareType == '0') {
+	            	signIn2.style.display = "inline-block";
 	            }
 	        },function(error){
 	            console.log("获取申请error:");
@@ -412,6 +414,7 @@ export default {
 
 		// *********************************************************************************************
 		// 上传课件*********************************************************************************
+		// 上传文件格式报错
 		handleFormatError1:function(file){
           // this.$Notice.warning({
           //   title: '文件格式不正确',
@@ -421,14 +424,17 @@ export default {
           this.remindResult = '4';
           this.fileName = file.name;
         },
+        // 上传文件大小不对
         handleSizeError1:function(file){
           this.modalResult = true;
           this.remindResult = '5';
           this.fileName = file.name;
         },
+        // 正在上传中
         handleProgress1:function(){
           this.$Message.loading("正在上传中...");
         },
+        // 上传成功反馈
         handleSuccess1:function(res){
           if(res.result=='1'){
             this.$Message.success("上传成功！");
@@ -440,6 +446,7 @@ export default {
             }, 3000);
           }
         },
+        // 上传失败反馈
         handleError1:function(res){
           // if (res==='0') {
             console.log("获取申请error:");
@@ -447,19 +454,23 @@ export default {
           // }
         },
         // 上传教学计划*****************************************************************************
+        // 上传文件格式报错
 		handleFormatError2:function(file){
           this.modalResult = true;
           this.remindResult = '3';
           this.fileName = file.name;
         },
+        // 上传文件大小不对
         handleSizeError2:function(file){
           this.modalResult = true;
           this.remindResult = '5';
           this.fileName = file.name;
         },
+        // 正在上传中
         handleProgress2:function(){
           this.$Message.loading("正在上传中...");
         },
+        // 上传成功反馈
         handleSuccess2:function(res){
           if(res.result=='1'){
             this.$Message.success("上传成功！");
@@ -471,6 +482,7 @@ export default {
             }, 3000);
           }
         },
+        // 上传失败反馈
         handleError2:function(res){
           console.log("获取申请error:");
 	      console.log(error);
