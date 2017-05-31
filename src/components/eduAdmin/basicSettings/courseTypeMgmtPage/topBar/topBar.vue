@@ -36,6 +36,7 @@
         }
       }catch(e){}
     },
+//    权限控制导航显隐
     methods: {
       hrefClick: function (num) {
         if (num == 1) {

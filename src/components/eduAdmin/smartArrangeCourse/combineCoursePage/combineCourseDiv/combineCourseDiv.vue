@@ -319,7 +319,7 @@
                   this.editValue = false;
                   operationTd.innerHTML = "合课编辑";
                   this.$Message.success("保存成功！");
-                  location.reload(true);
+                  location.reload();
                 }else{
                   this.number++;
 //                  this.$Message.success("保存成功！请继续进行该课程其它上课时间的编辑。",3.5);
@@ -331,7 +331,7 @@
                 this.number = 0;
                 this.editValue = false;
                 operationTd.innerHTML = "合课编辑";
-                setTimeout("location.reload(true)", 2000);
+                setTimeout("location.reload()", 2000);
               }
             } else {
 //              this.$Message.error("操作失败,请重试!");
@@ -385,7 +385,7 @@
           "Content-Type": "application/json"
         }).then(function (response) {
           if(response.body.result == "1"){
-            location.reload(true);
+            location.reload();
           }else{
 //            this.$Message.error('操作失败，请重试！');
             this.errorMessage = "操作失败,请重试!";

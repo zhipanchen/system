@@ -62,6 +62,7 @@
           }
         }
       }catch(e){};
+//    权限控制导航显隐
       if(this.activeVue == this.checkCouUrl) {
         var checkCouButton = document.getElementById('checkCouButton');
         checkCouButton.className += " btn-active";

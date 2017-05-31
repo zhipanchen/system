@@ -87,7 +87,7 @@
         var buttons = document.getElementById("textbookManagement_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
 //        console.log(this.authorityList);
-        for (var i = 0; i < buttons.length; i++) {
+        for (var i = 0; i < 4; i++) {
           buttons[i].style.display = "none";
         }
         for (var i = 0; i < this.authorityList.length; i++) {
@@ -103,6 +103,7 @@
         }
       }catch(e){}
     },
+//    权限控制导航显隐
     methods:{
       hrefClick: function (num) {
         if (num == 1) {
@@ -115,19 +116,23 @@
           location.href = "#/eduAdmin/baseSetting/resource/classroomMgmt"
         }
       },
+//      路由跳转
       downloadClick: function(){
         location.href = "./textbookManage/exportTextbookInfo"
       },
+//      下载教材信息
       handleFormatError: function(){
 //        this.$Message.error('文件格式错误！限制格式为'+this.$refs.uploadForTextbook.format,3);
         this.errorMessage = "文件格式错误！限制格式为"+this.$refs.uploadForTextbook.format;
         this.modal1 = true;
       },
+//      上传格式错误回调
       handleSize: function(){
 //        this.$Message.error('文件大小超出范围！限制最大（KB）为'+this.$refs.uploadForTextbook.maxSize,3);
         this.errorMessage = "文件大小超出范围！限制最大（KB）为"+this.$refs.uploadForTextbook.maxSize;
         this.modal1 = true;
       },
+//      上传大小错误回调
       handleError: function(res){
         var msg = document.getElementsByClassName("ivu-message-notice");
         if(this.loadingMsg){
@@ -146,11 +151,13 @@
         this.modal1 = true;
         this.loadingMsg = false;
       },
+//      上传失败回调
       handleProgress: function(){
         this.$Loading.start();
         this.$Message.loading('正在上传中……', 0);
         this.loadingMsg = true;
       },
+//      上传中的回调
       handleSuccess: function(res) {
         console.log(res);
         if (res.result == 1) {
@@ -164,7 +171,7 @@
           this.$Message.success('上传成功！3s后自动刷新页面！', 3);
           console.log(res);
           this.loadingMsg = false;
-          setTimeout("location.reload(true)", 4000);
+          setTimeout("location.reload()", 4000);
         }else{
           this.$Loading.error();
           var msg = document.getElementsByClassName("ivu-message-notice");
@@ -178,6 +185,7 @@
           this.modal = true;
         }
       }
+//      上传成功的回调
     }
   }
 </script>

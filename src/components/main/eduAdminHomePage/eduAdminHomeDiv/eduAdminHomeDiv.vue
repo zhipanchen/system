@@ -62,6 +62,7 @@
           /*{roleId:"3",roleName:"教务"},
           {roleId:"2",roleName:"教师"}*/
         ],
+        firstEnter: true,
 //        角色列表
         authorityList: [],
 //        权限id列表
@@ -612,6 +613,11 @@
     watch:{
       activeName: function () {
 //        监听角色选择绑定的变化，生成一级功能块
+        var ivuMenuItem = document.getElementsByClassName("ivu-menu-item ivu-menu-item-active ivu-menu-item-selected");
+        if(this.firstEnter){
+          this.firstEnter = false;
+          ivuMenuItem[0].className = "ivu-menu-item";
+        }
         this.$http.post('./getRoleAuthority',{
           "roleId": this.activeName
         },{
@@ -864,16 +870,7 @@
 //        角色选择触发绑定变化，触发中间功能块显隐
         this.inFunction = true;
         this.activeName = name;
-        /*var pageSpans = document.getElementsByClassName("pageSpan");
-        var functionModel = document.getElementsByClassName(this.activeName);
-        var dataSpan = document.getElementById("dataSpan");
-        for (var i = 0; i < pageSpans.length; i++) {
-          pageSpans[i].style.display = "none";
-        }
-        for (var i = 0; i < functionModel.length; i++) {
-          functionModel[i].style.display = "block";
-        }
-        dataSpan.style.display = "block";*/
+
       },
       inFuncClick: function (index) {
 //        点击二级功能块显隐，生成二级、三级功能块
