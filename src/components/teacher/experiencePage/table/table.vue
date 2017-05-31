@@ -34,8 +34,10 @@
               <tr v-for="(data,index) in tableList" :key="data.workExperienceId">
                 <td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'clinicWorkUnit'+index" type="text" v-model.lazy="data.clinicWorkUnit"></td>
                 <td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'workPost'+index" type="text" v-model.lazy="data.workPost"></td>
-                <td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'startTime'+index" type="text" v-model.lazy="data.startTime"></td>
-                <td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'endTime'+index" type="text" v-model.lazy="data.endTime"></td>
+                <!--<td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'startTime'+index" type="text" v-model.lazy="data.startTime"></td>-->
+                <td width="20%"><Date-picker v-model.lazy="data.startTime" :id="'startTime'+index" type="date" placeholder="选择日期" style="width: 6rem;margin-left: 1rem;"></Date-picker></td>
+                <!--<td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'endTime'+index" type="text" v-model.lazy="data.endTime"></td>-->
+                <td width="20%"><Date-picker v-model.lazy="data.endTime" :id="'endTime'+index" type="date" placeholder="选择日期" style="width: 6rem;margin-left: 1rem;"></Date-picker></td>
                 <td width="%20">
                   <img @click="operationClick(index,'save')" class='img'style="display:none;" :src="imgSrc1" :id="'save'+index">
                   <img @click="operationClick(index,'edit')"class='img'style="display:none;" :src="imgSrc2" :id="'edit'+index">
@@ -63,7 +65,7 @@
         id="modalBody"
         :styles="{top:'10rem'}">
         <div style="font-size: 1.1rem;text-align: center;">
-          <p>您确定取消编辑并重置该课程信息吗?</p>
+          <p>您确定取消编辑吗?</p>
         </div>
         <div slot="footer" style="text-align: center">
           <button id="modalBtn" @click="edit(operationIndex)">确定</button>
@@ -98,6 +100,19 @@
           <button id="modalBtn" @click="modal3 = false">取消</button>
         </div>
       </Modal>
+      <Modal
+        v-model="modal4"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>请输入完整信息！</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="modal4 = false">确定</button>
+        </div>
+      </Modal>
     </div>
   </div>
 </template>
@@ -123,6 +138,7 @@
           modal1: false,
           modal2: false,
           modal3: false,
+          modal4: false,
           operationIndex: 0
         }
       },
@@ -147,7 +163,12 @@
           } else if (operation == "del") {
             this.modal2 = true;
           } else if (operation == "save") {
-            this.modal3 = true;
+            if(this.tableList[operationIndex].clinicWorkUnit==''||this.tableList[operationIndex].workPost==''||
+              this.tableList[operationIndex].startTime==''){
+              this.modal4=true;
+            }else {
+              this.modal3 = true;
+            }
           }
         },
         //添加
@@ -157,10 +178,11 @@
         //保存
         save: function (index) {
           this.modal3 = false;
-          var unit = document.getElementById("clinicWorkUnit" + index);
-          if (unit.value != "") {
+//          var unit = document.getElementById("clinicWorkUnit" + index);
+//          if (unit.value != "") {
 //            this.$http.post('../jsonphp/experience.php', {
-                   this.$http.post('./teacherManage/editTeacherWorkInfo',{
+//          alert( this.tableList[index].startTime);
+          this.$http.post('./teacherManage/editTeacherWorkInfo',{
               "clinicWorkUnit": this.tableList[index].clinicWorkUnit,
               "workPost": this.tableList[index].workPost,
               "startTime": this.tableList[index].startTime,
@@ -169,6 +191,7 @@
             }, {"Content-Type": "application/json"}).then(function (response) {
               if (response.body.result == '1') {
                 this.$Message.success('操作成功！');
+                var t=setTimeout(" location.reload();",2000)
               }
             }, function (error) {
               console.log("传递error:");
@@ -187,16 +210,16 @@
             var job = document.getElementById("workPost" + index);
             job.readOnly = true;
             job.style.border = 'none';
-            var begin = document.getElementById("startTime" + index);
-            begin.readOnly = true;
-            begin.style.border = 'none';
-            var last = document.getElementById("endTime" + index);
-            last.readOnly = true;
-            last.style.border = 'none';
-          }
-          else {
-            alert('请输入临床工作单位！');
-          }
+//            var begin = document.getElementById("startTime" + index);
+//            begin.readOnly = true;
+//            begin.style.border = 'none';
+//            var last = document.getElementById("endTime" + index);
+//            last.readOnly = true;
+//            last.style.border = 'none';
+//          }
+//          else {
+//            alert('请输入临床工作单位！');
+//          }
         },
         //取消保存
         edit: function (index) {
@@ -251,12 +274,12 @@
           var job = document.getElementById("workPost" + index);
           job.readOnly = false;
           job.style.border = ' 0.1rem solid #d4d4d9';
-          var begin = document.getElementById("startTime" + index);
-          begin.readOnly = false;
-          begin.style.border = ' 0.1rem solid #d4d4d9';
-          var last = document.getElementById("endTime" + index);
-          last.readOnly = false;
-          last.style.border = ' 0.1rem solid #d4d4d9';
+//          var begin = document.getElementById("startTime" + index);
+//          begin.readOnly = false;
+//          begin.style.border = ' 0.1rem solid #d4d4d9';
+//          var last = document.getElementById("endTime" + index);
+//          last.readOnly = false;
+//          last.style.border = ' 0.1rem solid #d4d4d9';
 
           var save = document.getElementById("save" + index);
           save.style.display = 'inline';

@@ -101,6 +101,7 @@
         ohighestEDU:'',
         ohighestDegree:'',
         modal1: false,
+//        modal3: false,
         modal2: false
       }
     },
