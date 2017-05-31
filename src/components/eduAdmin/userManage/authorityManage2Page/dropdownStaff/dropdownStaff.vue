@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <div id="staffAuthority" class="marginLeft">
+      <div id="staffAuthority">
         <div>
           <p class="topP" id="topStaff">{{roleNameEle}}</p>
           <input type="checkbox" id="all" @click="allCheck()" style="margin-left: 3rem">
@@ -115,9 +115,9 @@
                 {roleId:'12347',roleName:'教研组组长'}
               ],
               roleList:[
-                {roleId:'12345',roleName:'教师'},
-                {roleId:'12346',roleName:'督导'},
-                {roleId:'12347',roleName:'教研组组长'}
+//                {roleId:'12345',roleName:'教师'},
+//                {roleId:'12346',roleName:'督导'},
+//                {roleId:'12347',roleName:'教研组组长'}
               ],
               authorityIdList:['1','4'],
               authorityList:[
@@ -139,8 +139,13 @@
           "Content-Type":"application/json"
         }).then(function (response) {
           console.log(response);
-          this.roleList = response.body.getAllRoleAuthorityList.roleList;
           this.roleEleList = response.body.getAllRoleAuthorityList.roleList;
+          for(var i=0;i<this.roleList.length;i++){
+            this.roleEleList(
+              {roleId:this.roleEleList.roleId,roleName:this.roleEleList.roleName}
+            )
+          }
+//          不可以直接将response.body.getAllRoleAuthorityList.roleList赋值给roleEleList和roleEleList，因为这样赋值只是将指针给数组，会导致两个数据指向同一个指针
           this.authorityList = response.body.getAllRoleAuthorityList.authorityList;
         },function(error){
           console.log("获取error");
@@ -155,6 +160,7 @@
           var deleteImg = document.getElementById("deleteImg"+index);
           var restoreImg = document.getElementById("restoreImg"+index);
           roleNameInput.readOnly = false;
+          roleNameInput.value = "";
           roleNameInput.style.border = "0.1rem solid #d4d4d9";
           editImg.style.display = "none";
           saveImg.style.display = "inline";
@@ -267,7 +273,7 @@
             var addResult = response.body.addNewRoleList.result;
             if(addResult == "1"){
               this.roleList.push(
-                {roleId:"a",roleName:"a"}
+                {roleId:this.newRoleId,roleName:this.newRoleName}
               );
               this.roleEleList.push(
                 {roleId:this.newRoleId,roleName:this.newRoleName}
@@ -372,19 +378,11 @@
     }
     #staffAuthorityAll{
       display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      margin: 2rem auto 2rem 5rem;
-      min-height: 50rem;
-    }
-    .marginLeft{
-      margin-left: 3rem;
-    }
-    .blank{
-      height: 2.9rem;
+      justify-content: space-between;
+      padding: 3.5rem 5rem;
     }
     #dropdownStaff{
-      width: 25rem;
+      width: 20rem;
       min-height: 30rem;
       border: 2px solid #d4d4d9;
     }
@@ -407,7 +405,7 @@
       text-align: center;
     }
     #staffAuthority{
-      width: 45rem;
+      width: 47rem;
       min-height: 30rem;
       border: 2px solid #d4d4d9;
     }
