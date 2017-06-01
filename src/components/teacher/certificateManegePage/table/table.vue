@@ -155,8 +155,8 @@
             }
         },
       beforeMount:function(){
-//        this.$http.post('./teacherManage/getTeacherCertInfo',{},
-        this.$http.post('../jsonphp/certificate.php',{},
+        this.$http.post('./teacherManage/getTeacherCertInfo',{},
+//        this.$http.post('../jsonphp/certificate.php',{},
           {"Content-Type":"application/json"}).then(function (response) {
             console.log(response);
             this.certificates = response.body.certificatemanage;
@@ -259,8 +259,8 @@
 //          预留功能,将data提交到后端,实现删除数据,处理回调
 //            if(confirm("您确定要删除该奖项吗？")){
               console.log(this.certificates[index].certificateId);
-              this.$http.post('../jsonphp/certificate.php',{
-//              this.$http.post('./teacherManage/deleteTeacherCertInfo',{
+//              this.$http.post('../jsonphp/certificate.php',{
+              this.$http.post('./teacherManage/deleteTeacherCertInfo',{
                 "certificateId":this.certificates[index].certificateId
               },{"Content-Type":"application/json"}).then(function (response){
                 if(response.body.result=='1')
@@ -298,8 +298,8 @@
 //            alert(this.certificates[index].certificateName);
 //            alert(this.certificates[index].certificateLevel);
             alert(this.certificates[index].reviewTime);
-//              this.$http.post('./teacherManage/editTeacherCertInfo',{
-                this.$http.post('../jsonphp/certificate.php',{
+              this.$http.post('./teacherManage/editTeacherCertInfo',{
+//                this.$http.post('../jsonphp/certificate.php',{
                 "certificateType":this.certificates[index].certificateType,
                 "certificateNum":this.certificates[index].certificateNum,
                 "certificateName":this.certificates[index].certificateName,

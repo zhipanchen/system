@@ -10,7 +10,7 @@
 
 <script>
   import topTitle from '../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/teacher/makeupClassPage/topBar/topBar3.vue'
+  import topBar from '../../../components/teacher/makeupClassPage/topBar/topBar.vue'
   import tableDiv from '../../../components/teacher/makeupClassPage/table/table.vue'
   export default {
     name: 'makeupClassPage',
