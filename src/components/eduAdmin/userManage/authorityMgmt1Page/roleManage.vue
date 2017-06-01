@@ -11,8 +11,8 @@
 		<div class="roles">
 			<div class="selectCheck">
 				<select v-model="role" style="width:8rem;" @change="selRoleListClick()">
-					<!-- <option disabled>基础角色</option> -->
-			    	<option v-for="selRole in selRoleList" :value="selRole.value">{{ selRole.text }}</option>
+					<option value="0">基础角色</option>
+			    	<option v-for="selRole in selRoleList" :value="selRole.roleId">{{ selRole.roleName }}</option>
 			    </select>
 				<input v-model="userIdOrName" placeholder="输入姓名或ID" style="width:6rem;" @change="inputUser()">
 			</div>
@@ -87,9 +87,9 @@ export default {
 		return {
 			role: '0',	// 选择角色
 			selRoleList: [
-				{text: '基础角色', value: '0'},
-				{text: '教师', value: '2'},
-				{text: '管理员', value: '3'}
+				// {text: '基础角色', value: '0'},
+				// {text: '教师', value: '2'},
+				// {text: '管理员', value: '3'}
 			],
 			userIdOrName: '',	//输入姓名或编码
 			userNameShow: '',
@@ -130,6 +130,7 @@ export default {
             var data = response.body;
             this.userList = data.allteacherList;
             this.roleList = data.allroleList;
+            this.selRoleList = data.allroleList;
             this.allteacherList = data.allteacherList;
         },function(error){
             console.log("获取申请error:");
@@ -139,7 +140,7 @@ export default {
 	methods: {
 		// 下拉框-基础角色选择
 		selRoleListClick: function () {
-			console.log(this.role)
+			// console.log(this.role)
     		if (this.role == "0") {
     			this.role = this.allteacherList;
     		}else {
@@ -333,8 +334,8 @@ export default {
 .roles {
 	width: 20rem;
 	height: 30em;
-	border: 1px solid black;
-	padding: 1rem 1rem;
+	border: 2px solid #D4D4D9;
+	padding: 1rem 0rem;
 	/*margin-right: 4.5rem;*/
 }
 .selectCheck {
@@ -379,12 +380,12 @@ export default {
 .authorities {
 	width: 47rem;
 	height: 30em;
-	border: 1px solid black;
-	padding: 1rem 1rem;
+	border: 2px solid #D4D4D9;
+	padding: 1rem 0rem;
 	/*margin-left: 4.5rem;*/
 }
 .changed {
-	padding: 0.6rem;
+	padding: 0.6rem 1.6rem;
 	line-height: 1.6;
 	border-bottom: 2px solid #158064;
 }

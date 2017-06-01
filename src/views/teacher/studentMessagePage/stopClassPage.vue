@@ -10,7 +10,7 @@
 
   <script>
     import topTitle from '../../../components/public/topTitle/topTitle.vue'
-    import topBar from '../../../components/teacher/teachingEvaluatePage/topBar/topBar3.vue'
+    import topBar from '../../../components/teacher/teachingEvaluatePage/topBar/topBar.vue'
     import tableDiv from '../../../components/teacher/studentMessagePage/table/table.vue'
     export default {
       name: 'stopClass',

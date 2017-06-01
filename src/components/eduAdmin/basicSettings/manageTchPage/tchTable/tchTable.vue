@@ -397,12 +397,13 @@
             if(this.resultMsg==='1'){
               this.teacherSimpleInfoList.splice(this.index,1);
               this.$Message.success("删除成功！");
+            }else{
+              this.modalResultBool = true;
             }
           },function(error){
             console.log("获取error");
           });
           this.modalOperateBool = false;
-          this.modalResultBool = true;
         },
 //        删除教师及其所有信息
         operateCancel:function(){

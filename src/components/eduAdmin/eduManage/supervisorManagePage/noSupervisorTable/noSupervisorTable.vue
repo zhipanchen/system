@@ -13,7 +13,6 @@
         </select>
         <!--课程选择下拉列表-->
         <span><button id="searchFor" class="am-btn am-btn-success am-radius buttonWM" @click="checkNoSupervisorInfoClick()">查找</button></span>
-        <span><button id="leadOut" class="am-btn am-btn-success am-radius buttonWM" @click="downloadClick">下载</button></span>
         <!--查找，下载按钮-->
       </div>
       <div id="noSupervisorTable" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
@@ -59,6 +58,30 @@
             <span><button id="save" class="am-btn am-btn-success am-radius buttonWM" @click="saveSupervisorInfoClick()">保存</button></span>
             <span><button id="cancel" class="am-btn am-btn-success am-radius buttonWM" @click="restoreSupervisorInfoClick()">取消</button></span>
             <!--保存，取消保存督导员设置按钮-->
+          </div>
+          <div>
+            <modal v-model="modalSetBool" width="400" id="modalBody">
+              <div style="text-align: center;font-size: 1.1rem;">
+                <p v-if="operateMsg=='1'">是否确定保存</p>
+                <p v-else-if="operateMsg=='2'">是否确定取消保存</p>
+              </div>
+              <div slot="footer" style="text-align: center">
+                <button v-if="operateMsg=='1'" id="modalBtn" @click="saveOk()">确定</button>
+                <button v-if="operateMsg=='2'" id="modalBtn" @click="cancelOk()">确定</button>
+                <button id="modalBtn" @click="operateCancel">取消</button>
+              </div>
+            </modal>
+            <!--确认保存、删除操作弹窗-->
+            <modal v-model="modalSetResultBool" width="400" id="modalBody">
+              <div style="text-align: center;font-size: 1.1rem;">
+                <p v-if="operateMsg == '1'">保存失败</p>
+                <p v-else>处理出错</p>
+              </div>
+              <div slot="footer" style="text-align: center">
+                <button id="modalBtn" @click="resultOk">确定</button>
+              </div>
+            </modal>
+            <!--操作失败提示弹窗-->
           </div>
         </div>
       </div>
@@ -106,8 +129,35 @@
           <div class="superviseDiv">
             <span><img :id="'arrow'+index" class="superviseImg" @click="tableSlideToggle(index)" :src="arrowright"></span>
             <span class="superviseP" @click="tableSlideToggle(index)">{{superviseInfo.superviseTime}}</span>
+            <!--督导时间下拉导航栏，点击后下拉该时间的督导反馈表格-->
+            <span><button class="superviseButton" @click="cancelSubmitClick()">取消</button></span>
+            <span><button class="superviseButton" @click="submitClick(superviseInfo.superviseTime)">提交</button></span>
+            <!--提交，取消提交教务评价按钮-->
           </div>
-          <!--督导时间下拉导航栏，点击后下拉该时间的督导反馈表格-->
+          <div>
+            <modal v-model="modalSubmitBool" width="400" id="modalBody">
+              <div style="text-align: center;font-size: 1.1rem;">
+                <p v-if="operateSubmitMsg=='1'">是否确定提交</p>
+                <p v-else-if="operateSubmitMsg=='2'">是否确定取消提交</p>
+              </div>
+              <div slot="footer" style="text-align: center">
+                <button v-if="operateSubmitMsg=='1'" id="modalBtn" @click="submitOk()">确定</button>
+                <button v-else-if="operateSubmitMsg=='2'" id="modalBtn" @click="cancelSubmitOk()">确定</button>
+                <button id="modalBtn" @click="operateSubmitCancel">取消</button>
+              </div>
+            </modal>
+            <!--用户提交、取消提交时，弹窗确认-->
+            <modal v-model="modalSubmitResultBool" width="400" id="modalBody">
+              <div style="text-align: center;font-size: 1.1rem;">
+                <p v-if="operateSubmitMsg == '1'">提交失败</p>
+                <p v-else-if="operateSubmitMsg == '3'">您没有输入教务人员意见</p>
+              </div>
+              <div slot="footer" style="text-align: center">
+                <button id="modalBtn" @click="resultSubmitOk">确定</button>
+              </div>
+            </modal>
+            <!--弹窗提示确认提交结果信息-->
+          </div>
           <div :id="'superviseTableDiv' + index" style="display: none">
             <table class="normalTable">
               <tbody>
@@ -133,13 +183,11 @@
             </table>
           </div>
           <!--督导反馈表格-->
-          <div class="buttonDiv">
-            <span><button class="bottomButton am-btn am-btn-success am-radius" @click="submitClick(superviseInfo.superviseTime)">提交</button></span>
-            <span><button class="bottomButton am-btn am-btn-success am-radius" @click="cancelClick()">取消</button></span>
-            <span><button class="bottomButton am-btn am-btn-success am-radius" @click="superviseBackTableGoBackClick()">返回</button></span>
-          </div>
-          <!--提交，取消提交教务评价按钮，返回已设置督导页面按钮-->
         </div>
+        <div class="buttonDiv">
+          <span><button class="bottomButton am-btn am-btn-success am-radius" @click="superviseBackTableGoBackClick()">返回</button></span>
+        </div>
+        <!--返回已设置督导页面按钮-->
       </div>
     </div>
     <!--督导反馈页面-->
@@ -181,7 +229,11 @@
                 {supervisorName:'张继',supervisorId:'222222'},
                 {supervisorName:'李伟',supervisorId:'333333'}
               ],
+              modalSetBool: false,
+              modalSetResultBool: false,
+              operateMsg:'',
               superviseBackinfoKey:{
+                superviseTime:'',
                 supervisorId:'',
                 classId:'',
                 courseId:'',
@@ -230,7 +282,10 @@
                   commentsInfo:'督导意见',
                   forwardInfo:''
                 }
-              ]
+              ],
+              modalSubmitBool:false,
+              modalSubmitResultBool:false,
+              operateSubmitMsg:''
             }
         },
       beforeMount:function() {
@@ -261,10 +316,6 @@
           });
         },
 //        查询未设置督导的课程
-        downloadClick:function(){
-          location.href="./teachingSupervision/exportExcel";
-        },
-//        下载未设置督导对的课程
         teacherClick:function(){
           this.$http.post('./teachingSupervision/noSupervisorTeacherClickJson',{
             "teacherId":this.noSupervisorinfoKey.teacherId
@@ -321,6 +372,16 @@
         },
 //        直接从未设置督导页面跳转到已设置督导页面
         saveSupervisorInfoClick:function(){
+          this.modalSetBool = true;
+          this.operateMsg = '1';
+        },
+//        弹窗确认保存督导设置
+        restoreSupervisorInfoClick:function(){
+          this.modalSetBool = true;
+          this.operateMsg = '2';
+        },
+//        弹窗确认取消督导设置
+        saveOk:function(){
           this.$http.post('./teachingSupervision/setSupervisor',{
             "supervisorId":this.supervisorinfoKey.supervisorId,
             "courseId":this.supervisorinfoKey.courseId,
@@ -333,18 +394,29 @@
             var message = response.body.message;
             if(message==1){
               this.settedSupervisorCourseInfoList = response.body.settedSupervisorCourseInfoList;
+              this.$Message.success("保存成功！");
             }else{
-              alert("保存失败!");
+              this.modalSetResultBool = true;
             }
+            this.modalSetBool = false;
           },function(error){
             console.log("获取error");
           });
         },
 //        保存督导设置
-        restoreSupervisorInfoClick:function(){
-          this.supervisorinfoKey.supervisorName = '';
+        cancelOk:function(){
+          this.supervisorinfoKey.supervisorId = '';
+          this.modalSetBool = false;
         },
 //        取消督导设置
+        operateCancel:function(){
+          this.modalSetBool = false;
+        },
+//        取消掉保存，删除，取消保存等操作
+        resultOk: function(){
+          this.modalSetResultBool = false;
+        },
+//        确认操作失败信息
         checksupervisorBackInfoClick:function(supervisorId,classId,courseId,teacherId){
           var supervisorDiv = document.getElementById("supervisorDiv");
           var superviseBackTable = document.getElementById("superviseBackTable");
@@ -404,12 +476,25 @@
         },
 //        点击督导时间下拉导航栏后下拉该时间的督导反馈表格
         submitClick:function(superviseTime){
+          this.superviseBackinfoKey.superviseTime = superviseTime;
+          this.modalSubmitBool = true;
+          this.operateSubmitMsg = '1';
+        },
+//        提交教务人员意见时弹窗确认
+        cancelSubmitClick:function(){
+          this.modalSubmitBool = true;
+          this.operateSubmitMsg = '2';
+        },
+//        取消提交教务人员意见时弹窗确认
+        submitOk:function(superviseTime){
           if(this.superviseBackinfoKey.forwardInfo.length === 0){
-            alert("您没有输入教务人员意见");
+            this.operateSubmitMsg = '3';
+            this.modalSubmitBool=false;
+            this.modalSubmitResultBool=true;
           }
           else{
             this.$http.post('./teachingSupervision/setFeedbackSupervisionResult',{
-              "superviseTime":superviseTime,
+              "superviseTime":this.superviseBackinfoKey.superviseTime,
               "supervisorId":this.superviseBackinfoKey.supervisorId,
               "classId":this.superviseBackinfoKey.classId,
               "courseId":this.superviseBackinfoKey.courseId,
@@ -419,16 +504,30 @@
               "Content-Type":"application/json"
             }).then(function (response) {
               console.log(response);
+              var resultMsg = response.body.result;
+              if(resultMsg=='1'){
+                this.$Message.success("提交成功！");
+              }else{
+                this.modalSubmitResultBool = true;
+              }
             },function(error){
               console.log("获取error");
             });
           }
         },
 //        提交教务人员意见
-        cancelClick:function(){
+        cancelSubmitOk:function(){
           this.superviseBackinfoKey.forwardInfo = "";
         },
 //        取消保存教务人员意见
+        operateSubmitCancel:function(){
+          this.modalSubmitBool=false;
+        },
+//        取消提交、取消提交操作
+        resultSubmitOk:function(){
+          this.modalSubmitResultBool=false;
+        },
+//        确认提交操作结果
         superviseBackTableGoBackClick:function(){
           var supervisorDiv = document.getElementById("supervisorDiv");
           var superviseBackTable = document.getElementById("superviseBackTable");
@@ -500,6 +599,26 @@
       width: 2rem;
       height: 2rem;
       /*margin-left: 0.7rem;*/
+    }
+    .superviseButton{
+      float: right;
+      margin-top: 0.3rem;
+      margin-right: 5rem;
+      background-color: #1fa573;
+      font-size: 0.8rem;
+      color:#FFF;
+      text-align: center;
+      border-radius: 0.5rem;
+      padding-bottom: 0.1rem;
+      height: 1.4rem;
+      min-width: 5rem;
+      border-color: white;
+      border-style: solid;
+      border-width: 0.1rem;
+      /*更改button的边框属性*/
+    }
+    .superviseButton:hover{
+      background-color: #00a539;
     }
     @media screen and (max-width: 1023px) {
         html {

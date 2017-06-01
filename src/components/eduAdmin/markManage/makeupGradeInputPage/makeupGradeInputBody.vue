@@ -77,6 +77,7 @@
 		    <p v-else-if= "remindResult === '7'">请输入所有成绩！</p>
     		<p v-else-if="remindResult === '8'">请选择年制！</p>
     		<p v-else-if="remindResult === '9'">请选择后进行查询！</p>
+		    <p v-else-if= "remindResult === '10'">请正确输入成绩分值（0-100）！</p>
 		</div>
 	    <div slot="footer" style="text-align:center;">
 	        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -191,18 +192,24 @@ export default {
     	saveAllBtn: function () {
     		var inputGroup = document.getElementById("inputGroup");
     		var input = inputGroup.getElementsByTagName("input");
-    		var emptyNum = 0;
+    		var emptyNum = '0';
+    		var wrongNum = '0';
     		// 判断是否有未输入空值
     		for (var i = 0; i < this.makeUpGradeInputList.length; i++) {
     			this.makeUpGradeInputList[i].makeupGrade = input[i].value;
     			if (input[i].value == "") {
     				emptyNum++;
-    			}
+    			}else if (input[i].value>100) {
+					wrongNum++;
+				}
     		}
     		// 输入非空判断
-    		if (emptyNum == 0) {
+    		if (emptyNum == '0' && wrongNum == '0') {
     			this.modalOperation = true;
     			this.opertaionBool = '1';
+    		}else if (wrongNum != '0') {
+    			this.modalResult = true;
+                this.remindResult = '10';
     		}else {
     			this.modalResult = true;
     			this.remindResult = '7';

@@ -163,8 +163,8 @@ export default {
 				// {},{},{},{}
 			],
 			makeUpAskList: [
-				// {studentName: '李华', courseName: '护理学', makeUpAskTime: '2017-04-10'},
-				// {studentName: '李华', courseName: '护理学', makeUpAskTime: '2017-04-10'}
+				// {studentName: '李华', studentId:'aa', courseId:'123', courseName: '护理学', makeUpAskTime: '2017-04-10'},
+				// {studentName: '李华', studentId:'bb', courseId:'12', courseName: '护理学', makeUpAskTime: '2017-04-10'}
 			],
 			modal1: false,		// 同意所有申请弹出框
 			modal2: false,		// 不同意所有申请弹出框
@@ -231,6 +231,7 @@ export default {
     			this.modalResult = true;
     			this.remindResult = '8';
     		}else {
+    			var findResult = '0';
 	    		// 获取需要补考名单*************************************************
 	  			this.$http.post('./findMakeUpList',{
 		        	"gradeType": this.selGradeType,
@@ -246,9 +247,7 @@ export default {
 		            if (data.scoreList != []) {
 		            	this.scoreList = data.scoreList;
 		            }else{
-				        // this.$Message.error("操作失败！请重试");
-				        this.modalResult = true;
-				        this.remindResult = '5';
+				        findResult++;
 				    }
 		        },function(error){
 		            console.log("获取申请error:");
@@ -269,17 +268,17 @@ export default {
 		            if (data.makeUpAskList != []) {
 		            	this.makeUpAskList = data.makeUpAskList;
 		            }else{
-				        // this.$Message.error("操作失败！请重试");
-				        this.modalResult = true;
-				        this.remindResult = '1';
+				        findResult++;
 				    }
 		        },function(error){
 		            console.log("获取申请error:");
 		            console.log(error);
-	        	});
-				this.checkResult = '1';
+		        });
+	    		if (findResult != '0') {
+		    		this.modalResult = true;
+					this.remindResult = '1';
+	    		}
     		}
-        	
 	    },
 	    // 下载按钮********************************************************************
 	    exportBtn: function () {
