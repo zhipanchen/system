@@ -101,6 +101,8 @@
     text-align: left;
     background-color: white;
     margin: 0 5rem;
+    display: flex;
+    justify-content: space-between;
   }
   #schoolImg{
     /*学校图标*/
@@ -111,11 +113,9 @@
   }
   #userExitDiv{
     /*用户姓名与退出*/
-    float: right;
     display: flex;
     align-items: center;
-    position: relative;
-    top: 0.5rem;
+    margin-left: 5rem;
   }
   #user{
     /*用户姓名*/

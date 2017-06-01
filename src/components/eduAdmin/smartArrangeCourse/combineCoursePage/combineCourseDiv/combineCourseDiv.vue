@@ -283,7 +283,7 @@
         var operationTd = document.getElementById(this.saveId);
 //        var saveButton = document.getElementById("saveButton");
         console.log(this.time);
-        if(this.time != "" && this.time != "选择时间" && this.time != null && this.classroom != "") {
+        if(this.time != "" && this.time != "选择时间" && this.time != null && this.classroom != "" && this.classroom != "选择教室") {
           var index = null;
           for (var i = 0; i < this.informations.length; i++) {
             if (this.informations[i].operationLessonsId == this.saveId) {
@@ -387,19 +387,18 @@
 //        }else{
           this.time = "选择时间";
           this.classroom = "选择教室";
-        this.modal1 = false;
+          this.modal1 = false;
 //        }
       },
       timeChange: function(){
 //        上课时间选择触发教室选择过滤
         this.classrooms = [];
-        this.classroom = "";
         for(var i = 0;i < this.classroomAndTime.length;i++){
           if(this.classroomAndTime[i].time == this.time){
             this.classrooms.push(this.classroomAndTime[i].classroom);
           }
         }
-        this.time = "选择时间";
+        this.classroom = "选择教室";
       },
       reCombineCourse: function (id) {
 //        重置合课编辑
