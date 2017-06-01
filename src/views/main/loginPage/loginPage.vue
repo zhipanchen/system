@@ -23,6 +23,19 @@
       </div>
     </div>
     <Modal
+        v-model="modal"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>{{ errorMessage }}</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="modal = false">确定</button>
+      </div>
+    </Modal>
+    <Modal
         v-model="modal1"
         width="400"
         id="modalBody">
@@ -53,8 +66,17 @@
               img2: require('./images/loginDiv.png'),//登录背景图片
               userId: '',//用户名
               passwordValue: '',//用户密码
-              modal1: false//登录规则
+              modal1: false,//登录规则
+              modal: false, //错误提示对话框
+              errorMessage: ""//错误提示
             }
+        },
+        beforeMount: function () {
+          if(sessionStorage.getItem("userType") == "1"){
+            location.href = '#/login/main/studentHome';
+          }else if(sessionStorage.getItem("userType") != null){
+            location.href = '#/login/main/eduAdminHome';
+          }
         },
         mounted: function() {
           var dom = document.getElementById("login");
@@ -70,7 +92,9 @@
           loginClick: function(){
 //            登录验证
             if(this.userNumValue == "" || this.passwordValue == "" ) {
-              this.$Message.warning("帐号或密码不能为空！");
+//              this.$Message.warning("帐号或密码不能为空！");
+              this.errorMessage = "帐号或密码不能为空!";
+              this.modal = true;
             }else{
               var a = CryptoJS.MD5(this.passwordValue + this.userId + "护士学校");
               a = a.toString().toUpperCase();
@@ -95,11 +119,12 @@
                     location.href = '#/login/main/eduAdminHome';
                   }
                 }else{
-                  this.$Message.error("帐号或密码有误！请确认重试！");
+//                  this.$Message.error("帐号或密码有误，请确认重试！");
+                  this.errorMessage = "帐号或密码有误，请确认重试！";
+                  this.modal = true;
                 }
               }, function (error) {
                 this.$Message.error('连接失败，请重试！',3);
-                console.log(error);
               });
             }
           },
@@ -215,9 +240,9 @@
       cursor: pointer;
     }
     @media screen and (max-width:1200px) {
-        #loginDiv {
-          background-size: 100% 100%;
-          height: 65%;
-        }
+      #loginDiv {
+        background-size: 100% 100%;
+        height: 45rem;
+      }
     }
 </style>

@@ -220,7 +220,7 @@
     height: 2.5rem;
     text-align: center;
   }
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 1025px) {
     html {
     }
   }

@@ -76,14 +76,14 @@
 //        this.$http.post('../testPhp/adjustCouApplySetTrue.php',{},{
           "Content-Type":"application/json"
         }).then(function(response){
+          location.reload();
           this.modal = false;
           this.isClose = true;
+          this.loading = false;
           this.modalMessage =  "您确定进行智能排课吗?";
-          location.reload();
           console.log(response.body);
         },function(error){
-//          this.modal = false;
-//          this.modalMessage =  "您确定进行智能排课吗?";
+          this.modalMessage =  "排课失败，请重试！";
           this.isClose = true;
           this.$Message.error("连接失败，请重试！");
         });
@@ -92,6 +92,8 @@
 //        关闭对话框
         if(this.isClose){
           this.modal = false;
+          this.loading = false;
+          this.modalMessage =  "您确定进行智能排课吗?";
         }
       }
     }
@@ -134,7 +136,7 @@
     margin-top: 0;
     left: 1rem;
   }
-  @media screen and (max-width:1023px) {
+  @media screen and (max-width:1025px) {
     html {
     }
   }

@@ -3,6 +3,7 @@
     <a :href="imgHref"><img id="schoolImg" src="./images/title.png" :alt="imgAlt" ></a>
     <div id="userExitDiv">
       <a id="user" :href="userHref">您好,{{ userName }}!</a>
+      <span style="font-size: 0.8rem;margin-left: 0.5rem;color: red">{{ emailStatus }}</span>
       <a><img id="exitImg" src="./images/exit.png" alt="exitAlt" @click="modal = true"></a>
     </div>
     <Modal
@@ -21,6 +22,19 @@
         <button id="modalBtn" @click="modal = false">取消</button>
       </div>
     </Modal>
+    <Modal
+        v-model="modal1"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>{{ errorMessage }}</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="modal1 = false">确定</button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -30,11 +44,14 @@
     data () {
       return {
         imgHref: 'http://www.samsph.com/hsxx/1092/1/',//医院官网
-        userHref: '',//跳转到主页
+        userHref: '',//点击用户名跳转
         userName: '',//显示用户名
         imgAlt: '四川省医科科学院·四川省人民医院',
         exitAlt: '退出图标',
-        modal: false
+        modal: false,//对话框显隐
+        modal1: false,
+        errorMessage: "",//对话框内容
+        emailStatus: "",//邮箱填写提示
       }
     },
     beforeMount: function() {
@@ -43,22 +60,17 @@
         "Content-Type":"application/json"
       }).then(function(response){
         console.log(response);
-//        if(response.status == "302"){
-//          location.href = "#/login";
-//        }else {
-          if (sessionStorage.getItem("userType") == "1") {
-            this.userHref = "#/student/setting/studentInformation";
-          } else {
-            this.userHref = "#/teacher/personInfo/basicMessage";
-          }
-          this.userName = response.body.currentUserName + "(" + response.body.currentUserId + ") ";
-          sessionStorage.setItem("userInfo", JSON.stringify(response.body));
-//        }
+        if (sessionStorage.getItem("userType") == "1") {
+          this.userHref = "#/student/setting/studentInformation";
+        } else {
+          this.userHref = "#/teacher/personInfo/basicMessage";
+        }
+        if (response.body.emailStatus == 0) {
+          this.emailStatus = "您的邮箱未填写，无法使用密码找回功能，为了您的帐号安全，请尽快填写邮箱地址！";
+        }
+        this.userName = response.body.currentUserName + "(" + response.body.currentUserId + ") ";
+        sessionStorage.setItem("userInfo", JSON.stringify(response.body));
       },function(error){
-//        console.log(error);
-//        if(error.status == "302"){
-//          location.href = "#/login";
-//        }
         this.$Message.error('连接失败，请重试！',3);
       });
     },
@@ -68,6 +80,7 @@
         this.$http.post('./logout',{},{
           "Content-Type":"application/json"
         }).then(function(response){
+          sessionStorage.setItem("userType", null);
           location.href = "#/login";
         },function(error){
           this.$Message.error('连接失败，请重试！',3);
