@@ -226,7 +226,7 @@
          {
            type=1;
          }
-          alert(this.tableList[index].teacherId);
+//          alert(this.tableList[index].teacherId);
 //          this.$http.post('../jsonphp/teachingPlan.php',{
           this.modal1 = false;
           this.$http.post('./courseTeachPlan/doCheckTeachPlan',

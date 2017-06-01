@@ -1,5 +1,5 @@
 <template>
-    <div id="tchingProcess" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
+    <div id="tchingProcess" style="padding: 0.6rem 5rem;margin-top: 2.9rem;background-color: #f3f3f3">
       <div>
         <div class="yearsTypeDiv">
           <!--年制模块下拉导航栏-->

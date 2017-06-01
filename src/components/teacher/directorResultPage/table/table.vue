@@ -3,7 +3,7 @@
     <div  class="positionBar">
       <span>您当前的位置：</span>
       <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-      <span><a href="#/teacher/teach/director" class="returnHome">>督导反馈</a></span>
+      <span>><a href="#/teacher/teach/director" class="returnHome">督导反馈</a></span>
       <span>>督导结果</span>
     </div>
     <div id="table">
@@ -23,18 +23,19 @@
         <tr><td rowspan=8>评分</td>
              <td>学生出勤情况</td><td><input v-model="AttendanceInfo" class="sma" type="text"></td></tr>
         <tr><td>授课内容</td> <td><input v-model="TeachContent" class="sma" type="text"></td></tr>
-        <tr><td>教师素养得分</td> <td><input v-model="TeacherQualityScored" class="sma" type="text"></td></tr>
-        <tr><td>教学目标得分</td> <td><input v-model="TeachGoalsScored" class="sma" type="text"></td></tr>
-        <tr><td>教学内容得分</td> <td><input v-model="TeachContentScored" class="sma" type="text"></td></tr>
-        <tr><td>教学方法得分</td> <td><input v-model="TeachMethodsScored" class="sma" type="text"></td></tr>
-        <tr><td>教学常规得分</td> <td><input v-model="TeachRoutineScored" class="sma" type="text"></td></tr>
-        <tr><td>教学内容得分</td> <td><input v-model="TeachEffectScored" class="sma" type="text"></td></tr>
+        <tr><td>教师素养得分</td> <td><input v-model="TeacherQualityScored" class="sma" type="number"></td></tr>
+        <tr><td>教学目标得分</td> <td><input v-model="TeachGoalsScored" class="sma" type="number"></td></tr>
+        <tr><td>教学内容得分</td> <td><input v-model="TeachContentScored" class="sma" type="number"></td></tr>
+        <tr><td>教学方法得分</td> <td><input v-model="TeachMethodsScored" class="sma" type="number"></td></tr>
+        <tr><td>教学常规得分</td> <td><input v-model="TeachRoutineScored" class="sma" type="number"></td></tr>
+        <tr><td>教学内容得分</td> <td><input v-model="TeachEffectScored" class="sma" type="number"></td></tr>
         <tr><td>督导员意见</td>
              <td colspan=3><input v-model="CommentsInfo" class="big" type="text"></td>
         </tr>
-        <tr><td>教务人员意见(教务人员填写)</td>
-          <td colspan=3><input v-model="ForwardInfo" readonly class="big" type="text"></td>
-        </tr>
+        <!--<tr>-->
+          <!--<td >教务人员意见(教务人员填写)</td>-->
+          <!--<td colspan=3><input style="display: none" v-model="ForwardInfo" readonly class="big" type="text"></td>-->
+        <!--</tr>-->
         <!--<tr><td>教师反馈</td>-->
           <!--<td colspan=3><input class="big" type="text"></td>-->
         <!--</tr>-->
@@ -87,13 +88,27 @@
       id="modalBody"
       :styles="{top:'10rem'}">
       <div style="font-size: 1.1rem;text-align: center;">
-        <p>您确定返回吗？?</p>
+        <p>您确定返回吗？</p>
       </div>
       <div slot="footer" style="text-align: center">
         <button id="modalBtn" @click="cancel()">确定</button>
         <button id="modalBtn" @click="modal2 = false">取消</button>
       </div>
     </Modal>
+      <Modal
+        v-model="modal3"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>请填写完整信息！</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <!--<button id="modalBtn" @click="cancel()">确定</button>-->
+          <button id="modalBtn" @click="modal3 = false">确定</button>
+        </div>
+      </Modal>
   </div>
   </div>
 </template>
@@ -118,6 +133,7 @@
         ForwardInfo:'',
         modal1: false,
         modal2: false,
+        modal3: false,
         oSuperviseTime:'',
         oAttendanceInfo:'',
         oTeachContent:'',
@@ -131,6 +147,7 @@
         oForwardInfo:''
       }
     },
+    //打开页面
     beforeMount:function(){
       var thisURL = document.URL;
       console.log(thisURL);
@@ -172,7 +189,7 @@
       saveDia:function(SuperviseTime,AttendanceInfo,TeachContent,TeacherQualityScored,
                        TeachGoalsScored,TeachContentScored,TeachMethodsScored,TeachRoutineScored,TeachEffectScored,CommentsInfo,ForwardInfo){
           this.oSuperviseTime=SuperviseTime;
-          this.oAttendanceInfo=AttendanceInf;
+          this.oAttendanceInfo=AttendanceInfo;
           this.oTeachContent=TeachContent;
           this.oTeacherQualityScored=TeacherQualityScored;
           this.oTeachGoalsScored=TeachGoalsScored;
@@ -182,7 +199,14 @@
           this.oTeachEffectScored=TeachEffectScored;
           this.oCommentsInfo=CommentsInfo;
           this.oForwardInfo=ForwardInfo;
-          this.modal1 = true;
+          if(SuperviseTime==''||AttendanceInfo==''||TeachContent==''||TeacherQualityScored==''||
+            TeachGoalsScored==''||TeachContentScored==''||TeachMethodsScored==''||TeachRoutineScored==''||
+            TeachEffectScored==''||CommentsInfo==''){
+            this.modal3 = true;
+          }else{
+            this.modal1 = true;
+          }
+
       },
       //打开取消对话框
       cancelDia:function(){

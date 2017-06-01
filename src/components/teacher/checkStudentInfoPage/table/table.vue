@@ -3,7 +3,7 @@
     <div  class="positionBar">
       <span>您当前的位置：</span>
       <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-      <span><a href="#/teacher/class/classList" class="returnHome">>班级管理</a></span>
+      <span>><a href="#/teacher/class/classList" class="returnHome">班级管理</a></span>
       <span>>学生个人信息</span>
     </div>
     <div id="selfInformation">
@@ -32,6 +32,7 @@
             <!--<option  value="生活照" @click="selectClick">生活照</option>-->
           <!--</select>-->
           <img :src="path" class="image" id="picture"/>
+          <span>身份证证件照</span>
           <!--<span class="spanStyle">*图片须小于2M</span>-->
         </div>
       </div>
@@ -52,10 +53,11 @@
               teacherMessage: {}
             }
         },
+      //打开页面获取信息
       beforeMount:function() {
         var thisURL = document.URL;
         var studentId =thisURL.split("?")[1];
-        this.$http.post('./studentManage/getStudentDetailInfo',JSON.stringify({
+        this.$http.post('/studentManage/getStudentDetailInfoByStudentId',JSON.stringify({
           "studentId":studentId
         }),{"Content-Type":"application/json"}).then(function (response) {
           var data = response.body;

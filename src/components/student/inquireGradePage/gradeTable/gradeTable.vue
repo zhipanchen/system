@@ -57,10 +57,12 @@
         messageStr:'是否确定提交补考申请？',
         termEle:'0',
         terms:[
+          /*
           '2014-2015.1',
           '2014-2015.2',
           '2015-2016.1',
           '2015-2016.1'
+          */
         ],
         studentScoreList:[
           {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80',apply:'提交申请'},
@@ -96,6 +98,14 @@
         this.studentScoreList=a;
       },function(error){
         console.log("获取error");
+      });
+    },
+    mounted:function(){
+      this.$http.post('./getYearTermList',{
+      },{
+        "Content-Type":"application/json"
+      }).then(function (response) {
+        this.terms= response.body.yearTerm;
       });
     },
     methods:{

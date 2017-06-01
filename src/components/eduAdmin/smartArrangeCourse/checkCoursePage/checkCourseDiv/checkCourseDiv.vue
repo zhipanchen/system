@@ -200,7 +200,7 @@
         margin-top: 0;
         left: 1rem;
     }
-    @media screen and (max-width:1023px) {
+    @media screen and (max-width:1025px) {
         html {
         }
     }

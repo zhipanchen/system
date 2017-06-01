@@ -69,12 +69,12 @@
 							<tr>
 								<th>学号</th>
 								<th>姓名</th>
-								<th>平时成绩</th>
-								<th>期中成绩</th>
-								<th>期末成绩</th>
-								<th>实验成绩</th>
-								<th>总成绩</th>
-								<th>成绩备注</th>
+								<th width="10%">平时成绩</th>
+								<th width="10%">期中成绩</th>
+								<th width="10%">期末成绩</th>
+								<th width="10%">实验成绩</th>
+								<th width="10%">总成绩</th>
+								<!-- <th>成绩备注</th> -->
 							</tr>
 						</thead>
 						<tbody>
@@ -94,7 +94,7 @@
 									<input id="input4" type="text" :value="areTestScore.practiceGrade" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 								</td>
 								<td v-text="areTestScore.finalGrade"></td>
-								<td v-text="areTestScore.comment"></td>
+								<!-- <td v-text="areTestScore.comment"></td> -->
 							</tr>
 						</tbody>
 					</table>
@@ -127,6 +127,7 @@
 					    <p v-else-if= "remindResult === '5'">提交失败！</p>
 					    <p v-else-if= "remindResult === '6'">请正确输入成绩比率并使其值和为100！</p>
 		    			<p v-else-if= "remindResult === '7'">请输入所有成绩和成绩比率！</p>
+		    			<p v-else-if= "remindResult === '8'">请正确输入成绩分值（0-100）！</p>
 					</div>
 				    <div slot="footer" style="text-align:center;">
 				        <Button id="modalBtn" @click="resultOk()">确认</Button>
@@ -143,8 +144,8 @@ export default {
 	name: 'gradePutBody',
 	data () {
 		return {
-			buttonShow: true,
-			submitShow: true,
+			buttonShow: false,
+			submitShow: false,
 			courseAssociationId: '',
 			inputLesson: '',
 			classes: '',
@@ -218,7 +219,8 @@ export default {
     		var inputRate = submitGrade.getElementsByTagName("input");
     		var inputGroup = document.getElementById("inputGroup");
     		var input = inputGroup.getElementsByTagName("input");
-    		var emptyNum = 0;
+    		var emptyNum = '0';
+    		var wrongNum = '0';
 			var usualRate = Number(this.usualRate);
 			var halfRate = Number(this.halfRate);
 			var finalRate = Number(this.finalRate);
@@ -231,21 +233,29 @@ export default {
     			this.scoreList[i].halfGrade = input[1+i*4].value;
     			this.scoreList[i].finalExamGrade = input[2+i*4].value;
     			this.scoreList[i].practiceGrade = input[3+i*4].value;
+    			// 判断是否有空值
     			if (input[i].value == "") {
     				emptyNum++;
+				}else if (input[i].value>100) {
+					wrongNum++;
 				}
     		}
 			// 判断所有比率之和为100，输入非空判断
-			if (allRate=='100' && emptyNum==0 && this.usualRate!='' && this.halfRate!='' && this.finalRate!='' && this.practiceRate!='') {
+			if (allRate=='100' && emptyNum=='0' && wrongNum=='0' && this.usualRate!='' && this.halfRate!='' && this.finalRate!='' && this.practiceRate!='') {
 				this.modalOperation = true;
 	    		this.opertaionBool = '1';
 	    	}else if (allRate != '100') {
 	    		this.modalResult = true;
                 this.remindResult = '6';
+	    	}else if (wrongNum != '0') {
+    			this.modalResult = true;
+                this.remindResult = '8';
 	    	}else {
 	    		this.modalResult = true;
                 this.remindResult = '7';
 	    	}
+	    	// console.log(emptyNum)
+	    	console.log(wrongNum)
 		},
 		saveOk: function () {
     		this.modalOperation = false;
@@ -253,6 +263,7 @@ export default {
     		var inputRate = submitGrade.getElementsByTagName("input");
 			var inputGroup = document.getElementById("inputGroup");
     		var input = inputGroup.getElementsByTagName("input");
+    		var saveResult = '';
     		for (var j = 0; j < inputRate.length; j++) {
     			inputRate[j].readOnly = true;
     			inputRate[j].style.border = "none";
@@ -279,8 +290,7 @@ export default {
 	            var data = response.body;
 	            if(data.result == "1") {
                     this.$Message.success('保存成功！');
-                    // 获取计算后总成绩
-                    this.scoreList = data.scoreList;
+                    saveResult = data.result;
                 }else {
                     // this.$Message.error('操作失败！请重试');
                     this.modalResult = true;
@@ -290,6 +300,22 @@ export default {
 	            console.log("获取申请error:");
 	            console.log(error);
 	        });
+
+	        // 通过判断是否保存成功，若成功则获取计算后总成绩
+	        if (saveResult == "1") {
+	            // this.scoreList = data.scoreList;
+	            this.$http.post('./getTeachScore',{},{
+		            "Content-Type":"application/json"
+		        }).then(function(response){
+		            console.log("获取申请:");
+		            console.log(response.body);
+		            var data = response.body;
+		            this.scoreList = data.scoreList;
+		        },function(error){
+		            console.log("获取申请error:");
+		            console.log(error);
+		        });
+	        }
 		},
 		// 提交正考成绩，提交后不可再修改************************************************************
 		submitBtn: function () {

@@ -259,7 +259,6 @@
         }, {
           "Content-Type": "application/json"
         }).then(function (response) {
-          console.log(response.body);
           this.classroomAndTime = response.body;
           console.log(this.classroomAndTime);
           this.classTimes = [];
@@ -274,7 +273,6 @@
               this.classTimes.push({time:this.classroomAndTime[i].time,timeInfo:this.classroomAndTime[i].timeInfo});
             }
           }
-          this.time = "选择时间";
           console.log(this.classTimes);
         }, function (error) {
           this.$Message.error('连接失败，请重试！');
@@ -321,6 +319,32 @@
                   this.$Message.success("保存成功！");
                   location.reload();
                 }else{
+                  this.$http.post('./acdeminArrangeCourseReturn', {
+//        this.$http.post('../testPhp/combineCourseSelect.php', {
+                    "coursePlanId": this.informations[index].id,
+                    "teacherSerial": this.informations[index].teacherId,
+                    "weekHour": this.informations[index].period,
+                    "classSerial": this.informations[index].className
+                  }, {
+                    "Content-Type": "application/json"
+                  }).then(function (response) {
+                    this.classroomAndTime = response.body;
+                    console.log(this.classroomAndTime);
+                    this.classTimes = [];
+                    for (var i = 0; i < this.classroomAndTime.length; i++) {
+                      var isExit = false;
+                      for (var n = 0; n < this.classTimes.length; n++) {
+                        if ((this.classroomAndTime[i].time == this.classTimes[n].time) && i > 0) {
+                          isExit = true;
+                        }
+                      }
+                      if (!isExit) {
+                        this.classTimes.push({time:this.classroomAndTime[i].time,timeInfo:this.classroomAndTime[i].timeInfo});
+                      }
+                    }
+                    console.log(this.classTimes);
+                  }, function (error) {
+                  });
                   this.number++;
 //                  this.$Message.success("保存成功！请继续进行该课程其它上课时间的编辑。",3.5);
                   this.errorMessage = "保存成功！请继续进行该课程其它上课时间的编辑。";
@@ -375,6 +399,7 @@
             this.classrooms.push(this.classroomAndTime[i].classroom);
           }
         }
+        this.time = "选择时间";
       },
       reCombineCourse: function (id) {
 //        重置合课编辑
@@ -493,7 +518,7 @@
     /*课时单双周选择过渡效果*/
     opacity: 0
   }
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 1025px) {
     html {
     }
   }

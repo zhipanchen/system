@@ -3,7 +3,7 @@
     <!--导航栏-->
     <router-link to="/eduAdmin/baseSetting/resource/textbookMgmt"><button class="am-btn am-btn-success" style="margin-left: 5rem">教材管理</button></router-link>
     <button class="am-btn am-btn-success btn-active">年级管理</button>
-    <router-link to="/eduAdmin/baseSetting/resource/eduAdminManageClass"><button class="am-btn am-btn-success">学生异动情况</button></router-link>
+    <router-link to="#/eduAdmin/baseSetting/resource/courseTypeMgmt"><button class="am-btn am-btn-success">课程类型维护</button></router-link>
     <router-link to="/eduAdmin/baseSetting/resource/classroomMgmt"><button class="am-btn am-btn-success">教室管理</button></router-link>
   </div>
 </template>
@@ -15,7 +15,27 @@
             return {
                 msg: ''
             }
-        }
+        },
+      mounted: function(){
+        try{
+          var buttons = document.getElementById("mngGradePageTopBar").getElementsByTagName("button");
+          var authorityList = Json.parse(sessionStorage.getItem("authorityList"));
+          for(var i=0;i<buttons.length;i++){
+            buttons[i].style.display="none";
+          }
+          for(var j=0;j<authorityList.length;i++){
+            if(authorityList[j] == "27"){
+              buttons[0].style.display="inline";
+            }else if(authorityList[j] == "21"){
+              buttons[0].style.display="inline";
+            }else if(authorityList[j] == "65"){
+              buttons[0].style.display="inline";
+            }else if(authorityList[j] == "20"){
+              buttons[0].style.display="inline";
+            }
+          }
+        }catch(e){}
+      }
     }
 </script>
 

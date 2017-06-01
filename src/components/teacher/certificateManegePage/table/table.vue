@@ -34,15 +34,25 @@
                     <tr v-for="(certificate,index) in certificates" :id="'InputTr'+index" :key="certificate.certificateId">
                       <td>
                         <select :id="'certificateSelect'+index" v-model="certificate.certificateType" disabled="disabled">
-                          <option>请选择证书类型</option>
+                          <!--<option>请选择证书类型</option>-->
                           <option v-for="certificateType in certificateTypes">{{ certificateType }}</option>
                         </select>
                       </td>
                       <td><input onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" v-model.lazy="certificate.certificateNum" readonly></td>
                       <td><input v-model.lazy="certificate.certificateName" onkeyup="this.value=this.value.replace(/\s+/g,'')"  readonly></td>
-                      <td><input v-model.lazy="certificate.certificateLevel" onkeyup="this.value=this.value.replace(/\s+/g,'')"  readonly></td>
+                      <td>
+                        <!--<input v-model.lazy="certificate.certificateLevel" onkeyup="this.value=this.value.replace(/\s+/g,'')"  readonly>-->
+                        <select :id="'certificateSelect2'+index" v-model="certificate.certificateLevel" disabled="disabled">
+                          <!--<option>请选择证书等级</option>-->
+                          <option v-for="certificateLevel in certificateLevels">{{ certificateLevel }}</option>
+                        </select>
+                      </td>
                       <td><input v-model.lazy="certificate.reviewIstitution" onkeyup="this.value=this.value.replace(/\s+/g,'')"  readonly></td>
-                      <td><input v-model.lazy="certificate.reviewTime" onkeyup="this.value=this.value.replace(/\s+/g,'')"  readonly></td>
+                      <td>
+                        <!--<input v-model.lazy="certificate.reviewTime" onkeyup="this.value=this.value.replace(/\s+/g,'')"  readonly>-->
+                        <Date-picker  v-model.lazy="certificate.reviewTime" type="date" placeholder="选择日期" style="width: 6rem;margin-left: 1rem;"></Date-picker>
+                      </td>
+
                       <td class="operationTd">
                         <!--编辑功能，初始显示，编辑时隐藏-->
                         <img :id="'EditImg'+index" src="./images/edit.png" @click="editClick(index)">
@@ -74,7 +84,7 @@
         id="modalBody"
         :styles="{top:'10rem'}">
         <div style="font-size: 1.1rem;text-align: center;">
-          <p>您确定取消编辑并重置该课程信息吗?</p>
+          <p>您确定取消编辑吗?</p>
         </div>
         <div slot="footer" style="text-align: center">
           <button id="modalBtn" @click="restoreClick(operationIndex)">确定</button>
@@ -109,6 +119,20 @@
           <button id="modalBtn" @click="modal3 = false">取消</button>
         </div>
       </Modal>
+      <Modal
+        v-model="modal4"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>请填写完整信息！</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <!--<button id="modalBtn" @click="saveClick(operationIndex)">确定</button>-->
+          <button id="modalBtn" @click="modal4 = false">确定</button>
+        </div>
+      </Modal>
     </div>
   </div>
 </template>
@@ -122,9 +146,11 @@
                 subtitle2:'证书管理',
                 certificates:[],
                 certificateTypes:['教师资格证','护师职业资格证','医师职业资格证'],
+                certificateLevels:['特级','高级','中级','初级'],
                 modal1: false,
                 modal2: false,
                 modal3: false,
+                modal4:false,
                 operationIndex: 0
             }
         },
@@ -143,6 +169,17 @@
                 this.certificates[i].certificateType="医师职业资格证"
               }
             }
+            for(var i=0;i<response.body.certificatemanage.length;i++){
+              if(response.body.certificatemanage[i].certificateLevel=="1"){
+                this.certificates[i].certificateLevel="特级"
+              }else if(response.body.certificatemanage[i].certificateType=="2"){
+                this.certificates[i].certificateLevel="高级"
+              }else if(response.body.certificatemanage[i].certificateType=="3"){
+                this.certificates[i].certificateLevel="中级"
+              }else if(response.body.certificatemanage[i].certificateType=="4"){
+                this.certificates[i].certificateLevel="初级"
+              }
+            }
           },
           function(error){
             console.log("获取error:");
@@ -158,7 +195,12 @@
             }else if(operation == "delete"){
               this.modal2 = true;
             }else if(operation == "save"){
-              this.modal3 = true;
+              if(this.certificates[operationIndex].certificateType==''||this.certificates[operationIndex].certificateNum==''||
+                this.certificates[operationIndex].certificateName==''||this.certificates[operationIndex].certificateLevel==''||
+                this.certificates[operationIndex].reviewIstitution==''||this.certificates[operationIndex].reviewTime==''){
+                this.modal4=true;
+              }else{
+              this.modal3 = true;}
             }
           },
 //        编辑功能
@@ -166,6 +208,7 @@
             var inputTr = document.getElementById("InputTr"+index);
             var input = inputTr.getElementsByTagName("input");
             var select = document.getElementById("certificateSelect"+index);
+            var select2 = document.getElementById("certificateSelect2"+index);
             var editImg = document.getElementById("EditImg"+index);
             var saveImg = document.getElementById("SaveImg"+index);
             var restoreImg = document.getElementById("RestoreImg"+index);
@@ -174,8 +217,9 @@
 //          使课程信息的输入标签变为可输入，显示边框
             for(i = 0;i<input.length;i++){
               select.disabled = false;
+              select2.disabled = false;
               input[i].readOnly = false;
-              input[i].style.border = "thin solid";
+              input[i].style.border = "0.1rem solid #d4d4d9";
             }
 //        隐藏编辑和删除功能图标,显示保存和重置功能图标
             editImg.style.display = "none";
@@ -240,8 +284,20 @@
               }else if(this.certificates[index].certificateType=="医师职业资格证"){
                 this.certificates[index].certificateType="3"
               }
-
+            if(this.certificates[index].certificateLevel=="特级"){
+              this.certificates[index].certificateLevel="1"
+            }else if(this.certificates[index].certificateLevel=="高级"){
+              this.certificates[index].certificateLevel="2"
+            }else if(this.certificates[index].certificateLevel=="中级"){
+              this.certificates[index].certificateLevel="3"
+            }else if(this.certificates[index].certificateLevel=="初级"){
+              this.certificates[index].certificateLevel="4"
+            }
 //            if(confirm("您确定提交保存该课程吗？")){
+//            alert(this.certificates[index].certificateType);
+//            alert(this.certificates[index].certificateName);
+//            alert(this.certificates[index].certificateLevel);
+            alert(this.certificates[index].reviewTime);
               this.$http.post('./teacherManage/editTeacherCertInfo',{
 //                this.$http.post('../jsonphp/certificate.php',{
                 "certificateType":this.certificates[index].certificateType,
@@ -265,9 +321,20 @@
             }else if(this.certificates[index].certificateType=="3"){
               this.certificates[index].certificateType="医师职业资格证"
             }
+            if(this.certificates[index].certificateLevel=="1"){
+              this.certificates[index].certificateLevel="特级"
+            }else if(this.certificates[index].certificateLevel=="2"){
+              this.certificates[index].certificateLevel="高级"
+            }else if(this.certificates[index].certificateLevel=="3"){
+              this.certificates[index].certificateLevel="中级"
+            }else if(this.certificates[index].certificateLevel=="4"){
+              this.certificates[index].certificateLevel="初级"
+            }
+
               var inputTr = document.getElementById("InputTr"+index);
               var input = inputTr.getElementsByTagName("input");
               var select = document.getElementById("certificateSelect"+index);
+            var select2 = document.getElementById("certificateSelect2"+index);
               var editImg = document.getElementById("EditImg"+index);
               var saveImg = document.getElementById("SaveImg"+index);
               var restoreImg = document.getElementById("RestoreImg"+index);
@@ -277,6 +344,7 @@
               this.certificates[index].certificateNum = input[0].value;
               for(i = 0;i<input.length;i++){
                 select.disabled = true;
+                select2.disabled = true;
                 input[i].readOnly = true;
                 input[i].style.border = "none";
               }
