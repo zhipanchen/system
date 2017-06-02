@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdmin" class="returnHome">课酬模块</a></span>
+		<span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">课酬模块</a></span>
 		<span> > 薪酬单</span>
 	</div>
 	<div class="tableSelect">
@@ -27,9 +27,9 @@
 						<th width="">职称</th>
 						<th width="">所授课程</th>
 						<th width="">授课班级</th>
-						<th width="">课时</th>
+						<th width="">计划课时</th>
 						<th width="">课酬/课时</th>
-						<th width="">总课酬</th>
+						<th width="">总课酬(已签到)</th>
 					</tr>
 				</thead>
 				<tbody>

@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdmin" class="returnHome">权限管理</a></span>
+		<span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">权限管理</a></span>
 		<span> > 角色管理</span>
 	</div>
 	<div id="authorityMgmt">

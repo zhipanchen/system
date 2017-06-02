@@ -15,10 +15,13 @@
       </Menu>
 
       <button class="am-btn am-btn-success am-radius" id="termStartButton" @click="modal1 = true">设置学期开始时间</button>
+      <button class="am-btn am-btn-success am-radius" id="evaluationStartButton" @click="modal2 = true">设置评教起止时间</button>
       <Modal
           v-model="modal1"
           width="400"
-          id="modalBody">
+          :mask-closable="false"
+          id="modalBody"
+          :styles="{top:'10rem'}">
         <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
           <span>设置学期开始时间</span>
         </div>
@@ -28,10 +31,36 @@
             <Date-picker v-model="startDate" format="yyyy年MM月dd日" type="date" placeholder="选择日期" style="width: 12rem"></Date-picker>
             </Col>
           </Row>
+          <select v-model="termSelect" style="margin-left: 1rem">
+            <option disabled>选择学期</option>
+            <option value="1">第一学期</option>
+            <option value="2">第二学期</option>
+          </select>
         </div>
         <div slot="footer" style="text-align: center">
           <button id="modalBtn" @click="termStart()">确定</button>
           <button id="modalBtn" @click="modal1 = false">取消</button>
+        </div>
+      </Modal>
+      <Modal
+          v-model="modal2"
+          width="400"
+          :mask-closable="false"
+          id="modalBody"
+          :styles="{top:'10rem'}">
+        <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
+          <span>设置评教起止时间</span>
+        </div>
+        <div style="font-size: 0.9rem;display: flex;justify-content: center">
+          <Row>
+            <Col span="12">
+            <Date-picker v-model="evaluationDate" format="yyyy年MM月dd日" type="daterange" placeholder="选择日期" style="width: 20rem"></Date-picker>
+            </Col>
+          </Row>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="evaluationStart()">确定</button>
+          <button id="modalBtn" @click="modal2 = false">取消</button>
         </div>
       </Modal>
     </div>
@@ -249,11 +278,16 @@
 //        公告信息
         modal: false,
         modal1: false,
+        modal2: false,
 //        对话框显隐
         errorMessage: "",
 //        对话框内容
         startDate: null,
 //        学期开始时间
+        termSelect: "选择学期",
+//        选择开始学期
+        evaluationDate: null,
+//        评教起止时间
       }
     },
     beforeMount: function() {
@@ -307,7 +341,7 @@
         this.$nextTick(function () {
           try {
             var thisURL = document.URL;
-            if(thisURL.indexOf("?") >= 0) {
+            if(thisURL.indexOf("eduAdminHome?") >= 0) {
               var param = thisURL.split("?")[1];
               if(param != "eduAdmin" && param != "teacher") {
                 this.$http.post('./getRoleAuthority', {
@@ -570,6 +604,18 @@
                         img[i].src = this.courseImg;
                       } else if (img[i].alt == "权限管理") {
                         img[i].src = this.roleImg;
+                      } else if (img[i].alt == "课程信息维护") {
+                        img[i].src = this.informationImg;
+                      } else if (img[i].alt == "班级管理") {
+                        img[i].src = this.baseSettingImg;
+                      } else if (img[i].alt == "教学管理") {
+                        img[i].src = this.manageImg;
+                      } else if (img[i].alt == "课程管理") {
+                        img[i].src = this.roleImg;
+                      } else if (img[i].alt == "个人信息维护") {
+                        img[i].src = this.courseImg;
+                      } else{
+                        img[i].src = this.baseSettingImg;
                       }
                     }
                     if (param == "gradeManage") {
@@ -842,7 +888,7 @@
             }else{
               if(sessionStorage.getItem("lastClickRole") != null){
                 this.roleChange(parseInt(sessionStorage.getItem("lastClickRole")));
-              }else {
+              }else{
                 this.roleChange(this.roleList[0].roleId);
               }
             }
@@ -1085,24 +1131,37 @@
         }
         this.$nextTick(function(){
           var img = document.getElementById("topFuncDiv").getElementsByTagName("img");
-          for (var i = 0; i < img.length; i++) {
-            if (img[i].alt == "基本设置") {
-              img[i].src = this.baseSettingImg;
-            }else if (img[i].alt == "成绩管理") {
-              img[i].src = this.gradeManageImg;
-            }else if (img[i].alt == "教务管理") {
-              img[i].src = this.manageImg;
-            }else if (img[i].alt == "考务管理") {
-              img[i].src = this.eduAdminManageImg;
-            }else if (img[i].alt == "课酬模块") {
-              img[i].src = this.emolumentImg;
-            }else if (img[i].alt == "教务公告") {
-              img[i].src = this.informationImg;
-            }else if (img[i].alt == "智能排课") {
-              img[i].src = this.courseImg;
-            }else if (img[i].alt == "权限管理") {
-              img[i].src = this.roleImg;
-            }
+         for (var i = 0; i < img.length; i++) {
+         if (img[i].alt == "基本设置") {
+         img[i].src = this.baseSettingImg;
+         } else if (img[i].alt == "成绩管理") {
+         img[i].src = this.gradeManageImg;
+         } else if (img[i].alt == "教务管理") {
+         img[i].src = this.manageImg;
+         } else if (img[i].alt == "考务管理") {
+         img[i].src = this.eduAdminManageImg;
+         } else if (img[i].alt == "课酬模块") {
+         img[i].src = this.emolumentImg;
+         } else if (img[i].alt == "教务公告") {
+         img[i].src = this.informationImg;
+         } else if (img[i].alt == "智能排课") {
+         img[i].src = this.courseImg;
+         } else if (img[i].alt == "权限管理") {
+         img[i].src = this.roleImg;
+         } else if (img[i].alt == "课程信息维护") {
+         img[i].src = this.informationImg;
+         } else if (img[i].alt == "班级管理") {
+         img[i].src = this.baseSettingImg;
+         } else if (img[i].alt == "教学管理") {
+         img[i].src = this.manageImg;
+         } else if (img[i].alt == "课程管理") {
+         img[i].src = this.roleImg;
+         } else if (img[i].alt == "个人信息维护") {
+         img[i].src = this.courseImg;
+         } else{
+         img[i].src = this.baseSettingImg;
+         }
+         }
           }
         });*/
       });
@@ -1356,20 +1415,32 @@
             for (var i = 0; i < img.length; i++) {
               if (img[i].alt == "基本设置") {
                 img[i].src = this.baseSettingImg;
-              }else if (img[i].alt == "成绩管理") {
+              } else if (img[i].alt == "成绩管理") {
                 img[i].src = this.gradeManageImg;
-              }else if (img[i].alt == "教务管理") {
+              } else if (img[i].alt == "教务管理") {
                 img[i].src = this.manageImg;
-              }else if (img[i].alt == "考务管理") {
+              } else if (img[i].alt == "考务管理") {
                 img[i].src = this.eduAdminManageImg;
-              }else if (img[i].alt == "课酬模块") {
+              } else if (img[i].alt == "课酬模块") {
                 img[i].src = this.emolumentImg;
-              }else if (img[i].alt == "教务公告") {
+              } else if (img[i].alt == "教务公告") {
                 img[i].src = this.informationImg;
-              }else if (img[i].alt == "智能排课") {
+              } else if (img[i].alt == "智能排课") {
                 img[i].src = this.courseImg;
-              }else if (img[i].alt == "权限管理") {
+              } else if (img[i].alt == "权限管理") {
                 img[i].src = this.roleImg;
+              } else if (img[i].alt == "课程信息维护") {
+                img[i].src = this.informationImg;
+              } else if (img[i].alt == "班级管理") {
+                img[i].src = this.baseSettingImg;
+              } else if (img[i].alt == "教学管理") {
+                img[i].src = this.manageImg;
+              } else if (img[i].alt == "课程管理") {
+                img[i].src = this.roleImg;
+              } else if (img[i].alt == "个人信息维护") {
+                img[i].src = this.courseImg;
+              } else{
+                img[i].src = this.baseSettingImg;
               }
             }
           });
@@ -1379,31 +1450,68 @@
 //          this.functionModels = [];
         });
         sessionStorage.setItem("lastClickRole", this.activeName);
+        console.log(sessionStorage.getItem("lastClickRole"));
 //        纪录最后一次点击角色
       }
     },
     methods:{
       termStart: function () {
-        this.roleChange(2);
         console.log(this.startDate);
-        if(this.startDate == ""){
-          this.errorMessage = "时间不能为空,请重试!";
+        if(this.startDate == "" || this.termSelect == "选择学期"){
+          this.errorMessage = "时间和学期都不能为空,请重试!";
           this.modal = true;
         }else {
           var date = new Date(this.startDate);
-          this.$http.post('./', {
-            "":date.toLocaleDateString()
+          var year = null;
+          if(this.termSelect == 1){
+            year = date.getFullYear() + "-" + (date.getFullYear() + 1) + ".1";
+          }else if(this.termSelect == 2){
+            year = (date.getFullYear() - 1) + "-" + date.getFullYear() +".2";
+          }
+          this.$http.post('./setSchoolStartTime', {
+            "startYearSemester": year,
+            "startTime":date
           }, {
             "Content-Type": "application/json"
-          }).then(function (response) {
+          }).then(function (res) {
             this.modal1 = false;
-            this.$Message.success('学期开始时间设置成功！');
+            if(res.body.result == "1") {
+              this.$Message.success('学期开始时间设置成功！');
+            }else{
+              this.errorMessage = "学期开始时间设置失败，请重试！";
+              this.modal = true;
+            }
           }, function (error) {
             this.modal1 = false;
             this.$Message.error('连接失败，请重试！');
           });
         }
       },//学期开始时间设置
+      evaluationStart: function () {
+        console.log(this.evaluationDate);
+        if(this.evaluationDate[0] == "" || this.evaluationDate[1] == ""){
+          this.errorMessage = "时间区间不能为空,请重试!";
+          this.modal = true;
+        }else {
+          this.$http.post('./setEvaTime', {
+            "startEvaTeachTime": new Date(this.evaluationDate[0]),
+            "endEvaTeachTime": new Date(this.evaluationDate[1])
+          }, {
+            "Content-Type": "application/json"
+          }).then(function (res) {
+            this.modal2 = false;
+            if (res.body.result == "1") {
+              this.$Message.success('评教时间设置成功！');
+            }else{
+              this.errorMessage = res.result;
+              this.modal = true;
+            }
+          }, function (error) {
+            this.modal2 = false;
+            this.$Message.error('连接失败，请重试！');
+          });
+        }
+      },//评教起止时间
       roleChange: function (name) {
 //        角色选择触发绑定变化，触发中间功能块显隐
         this.inFunction = true;
@@ -1668,6 +1776,12 @@
     background-color: transparent;
   }
   #termStartButton{
+    /*学期开始时间设置按钮*/
+    margin-top: 3rem;
+    margin-left: 0.5rem;
+  }
+  #evaluationStartButton{
+    /*评教起止时间设置按钮*/
     margin-top: 3rem;
     margin-left: 0.5rem;
   }

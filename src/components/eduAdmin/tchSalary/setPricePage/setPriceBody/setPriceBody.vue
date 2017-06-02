@@ -2,8 +2,8 @@
 <div>
 	<div class="positionBar">
 		<span>您的当前位置：</span>
-		<span><a href="" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdmin" class="returnHome">课酬模块</a></span>
+		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+		<span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">课酬模块</a></span>
 		<span> > 薪酬管理</span>
 	</div>
 	<div class="tableSelect">
