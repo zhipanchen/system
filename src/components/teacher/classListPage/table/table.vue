@@ -79,7 +79,7 @@
             return {
               classFullName:'',
               classSize:'',
-              tableList:[{name:'李华',num:'1234'},{name:'王明',num:'1235'},{name:'李萌萌',num:'1236'}],
+              tableList:'',
               studentDutys:[
                 '班长',
                 '副班长',

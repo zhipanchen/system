@@ -44,16 +44,16 @@
         <!--table-layout: fixed;固定表格格局-->
         <thead>
         <tr>
-          <th>教师号</th>
-          <th>姓名</th>
-          <th>身份证号</th>
-          <th>性别</th>
-          <th>手机号码</th>
-          <th>聘用校区</th>
-          <th>教学职称</th>
-          <th>工作职称</th>
-          <th>教师类型</th>
-          <th>操作</th>
+          <th width="10%">教师号</th>
+          <th width="10%">姓名</th>
+          <th width="20%">身份证号</th>
+          <th width="8%">性别</th>
+          <th width="10%">手机号码</th>
+          <th width="8%">聘用校区</th>
+          <th width="8%">教学职称</th>
+          <th width="8%">工作职称</th>
+          <th width="8%">教师类型</th>
+          <th width="10%">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -351,6 +351,8 @@
               this.teacherSimpleInfoList[this.index].currentWorkDuty = currentWorkDutySplit[0];
               this.teacherSimpleInfoList[this.index].teacherType = teacherTypeSplit[0];
               this.$Message.success("保存成功！");
+            }else{
+              this.modalResultBool = true;
             }
           },function(error){
             console.log("获取error");
@@ -360,7 +362,6 @@
             select[i-5].style.display = "none";
           }
           this.modalOperateBool = false;
-          this.modalResultBool = true;
           editImg.style.display = "inline";
           saveImg.style.display = "none";
           deleteImg.style.display = "inline";

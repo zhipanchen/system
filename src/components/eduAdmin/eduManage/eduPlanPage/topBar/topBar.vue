@@ -18,17 +18,17 @@
       mounted: function(){
         try{
           var buttons = document.getElementById("eduPlanPageTopBar").getElementsByTagName("button");
-          var authorityList = Json.parse(sessionStorage.getItem("authorityList"));
+          var authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
           for(var i=0;i<buttons.length;i++){
             buttons[i].style.display="none";
           }
-          for(var j=0;j<authorityList.length;i++){
+          for(var j=0;j<authorityList.length;j++){
             if(authorityList[j] == "15"){
               buttons[0].style.display="inline";
             }else if(authorityList[j] == "16"){
-              buttons[0].style.display="inline";
+              buttons[1].style.display="inline";
             }else if(authorityList[j] == "34"){
-              buttons[0].style.display="inline";
+              buttons[2].style.display="inline";
             }
           }
         }catch(e){}

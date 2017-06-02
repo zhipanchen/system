@@ -57,7 +57,7 @@
       beforeMount:function() {
         var thisURL = document.URL;
         var studentId =thisURL.split("?")[1];
-        this.$http.post('/studentManage/getStudentDetailInfoByStudentId',JSON.stringify({
+        this.$http.post('./studentManage/getStudentDetailInfoByStudentId',JSON.stringify({
           "studentId":studentId
         }),{"Content-Type":"application/json"}).then(function (response) {
           var data = response.body;
