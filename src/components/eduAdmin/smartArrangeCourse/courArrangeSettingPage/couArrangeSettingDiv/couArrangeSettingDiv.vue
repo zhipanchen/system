@@ -851,19 +851,20 @@
   }
   .portTd{
     /*下载和导入*/
-    display: flex;
+    /*display: flex;*/
+    padding: 0;
   }
-  .classTd {
+  #upload{
+    display: inline;
+    float: right;
   }
   #downloadButton{
     /*五年制模版下载按钮*/
     height: 2.35rem;
-    margin-right: 1.4rem;
   }
   #downloadButton3{
     /*三年制模版下载按钮*/
     height: 2.35rem;
-    margin-right: 1.4rem;
   }
   .courseTd:hover > span{
     color: red;
@@ -871,9 +872,19 @@
   .teacherTd:hover > span{
     color: red;
   }
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 1117px) {
+    .am-btn{
+
+    }
     #downloadButton{
-      height: 2.47rem;
+      /*五年制模版下载按钮*/
+      width: 4.5rem;
+      padding: 0;
+    }
+    #downloadButton3{
+      /*三年制模版下载按钮*/
+      width: 4.5rem;
+      padding: 0;
     }
   }
 </style>
