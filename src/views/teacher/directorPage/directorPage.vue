@@ -9,7 +9,7 @@
 
 <script>
   import topTitle from '../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/teacher/directorPage/topBar/topBar3.vue'
+  import topBar from '../../../components/teacher/directorPage/topBar/topBar.vue'
   import tableDiv from '../../../components/teacher/directorPage/table/table.vue'
   export default {
     name: 'director',

@@ -9,7 +9,7 @@
 
 <script>
   import topTitle from '../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../components/teacher/messageNoticePage/topBar/topBar3.vue'
+  import topBar from '../../../components/teacher/messageNoticePage/topBar/topBar.vue'
   import tableDiv from '../../../components/teacher/messageNoticePage/table/table.vue'
   export default {
     name: 'messageNotice',
