@@ -1,6 +1,8 @@
 <template>
-  <div id="topBarDiv">
-    <!--<button id="mesNotButton" class="topBarButton" @click="mesNotClick">{{ mesNotButton}}</button>-->
+  <div id="personInfo_topBar" class="topBarDiv am-btn-group">
+    <a href="#/teacher/personInfo/basicMessage">
+      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" >个人信息</button>
+    </a>
   </div>
 </template>
 
@@ -9,23 +11,49 @@
     name: 'topBarDiv',
     data () {
       return {
-        mesNotButton: '个人信息',
-        mesNotUrl: 'http://localhost:8080/',
+
+        checkCouButton: '个人信息',
+        arrInfoNum: '2',
+        adjInfoNum: '0',
+        manualCouUrl: '/teacher/tchManuAdjCl',
+        sendApplyUrl: 'http://localhost:8080/',
+        checkCouUrl: '',
+        authorityList:''
       }
     },
-    methods: {
-      mesNotClick: function () {
-        if(window.location.href == this.mesNotUrl) {
-          var mesNotButton = document.getElementById('mesNotButton');
-          mesNotButton.style.backgroundColor = "#00a539";
+    mounted:function(){
+      try{
+        var buttons=document.getElementById("personInfo_topBar").getElementsByTagName("button");
+        this.authorityList=JSON.parse(sessionStorage.getItem("authorityList"));
+        for(var i=0;i<buttons.length;i++){
+          buttons[i].style.display="none";
         }
-      }}
+        for(var i=0;i<this.authorityList.length;i++){
+          if(this.authorityList[i]=="43"){
+            buttons[0].style.display="block";
+          }
+        }
+      }catch(e){}
+    },
+    methods: {
+
+    }
   }
 </script>
 
-<style lang="css">
-  html{
+<style lang="css" scoped>
+@import '../../../../assets/css/external.css';
+
+  html {
     font-size: 16px;
   }
+  #checkCouButton {
+    margin-left: 5rem;
+  }
 
+  @media screen and (max-width:1023px) {
+    html {
+      font-size: 9px;
+    }
+  }
 </style>

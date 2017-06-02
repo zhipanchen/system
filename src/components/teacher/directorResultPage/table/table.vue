@@ -147,6 +147,7 @@
         oForwardInfo:''
       }
     },
+    //打开页面
     beforeMount:function(){
       var thisURL = document.URL;
       console.log(thisURL);

@@ -218,7 +218,7 @@
     /*操作提示*/
     font-size: 1.2rem;
   }
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 1025px) {
     html {
     }
   }

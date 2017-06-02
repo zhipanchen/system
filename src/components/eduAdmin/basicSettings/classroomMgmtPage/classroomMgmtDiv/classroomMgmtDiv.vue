@@ -601,7 +601,7 @@
     /*四个功能图标*/
     width: 15rem;
   }
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 1025px) {
     html {
     }
   }
