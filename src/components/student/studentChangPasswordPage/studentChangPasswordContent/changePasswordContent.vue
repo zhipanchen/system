@@ -1,7 +1,7 @@
 <template>
     <div id="changePasswordContent">
       <div class="positionBar">
-        <span>你的当前位置：</span>
+        <span>您的当前位置：</span>
         <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
         <span> > 修改密码</span>
       </div>
