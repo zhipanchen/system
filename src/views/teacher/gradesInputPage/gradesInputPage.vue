@@ -1,7 +1,7 @@
 <template>
 	<div id="grdInput">
 		<top-title></top-title>
-    	<top-bar2></top-bar2>
+    	<top-bar></top-bar>
     	
     	<grade-put-body></grade-put-body>
 	</div>
@@ -9,8 +9,8 @@
 
 <script>
 import topTitle from '../../../components/public/topTitle/topTitle'
-import topBar2 from '../../../components/teacher/gradesInputPage/topBar2'
-import gradePutBody from '../../../components/teacher/gradesInputPage/gradePutBody'
+import topBar from '../../../components/teacher/gradesInputPage/topBar/topBar'
+import gradePutBody from '../../../components/teacher/gradesInputPage/gradePutBody/gradePutBody'
 
 export default {
 	name: 'grdInput',
@@ -20,7 +20,7 @@ export default {
 		}
 	},
 	components: {
-		topTitle, topBar2, gradePutBody
+		topTitle, topBar, gradePutBody
 	},
 	methods: {
 
