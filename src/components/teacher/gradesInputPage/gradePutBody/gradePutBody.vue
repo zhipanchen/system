@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/teacher" class="returnHome">班级管理</a></span>
+		<span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">班级管理</a></span>
 		<span> > <a href="#/teacher/class/tchGradesInput" class="returnHome">成绩录入</a></span>
 		<span> > 正考成绩录入</span>
 	</div>
@@ -170,6 +170,7 @@ export default {
 		}
 	},
 	beforeMount: function() {
+		var modifyFlag = null;
 		//分割成字符串  
 		var thisURL = document.URL; 
         var getval =thisURL.split('?')[1];
@@ -187,14 +188,16 @@ export default {
             this.inputLesson = data.canModifyCourInfo.courseName;
             this.classes = data.canModifyCourInfo.className;
             this.scoreList = data.scoreList;
-            if (data.canModifyCourInfo.canModifyGrade == true) {
-            	this.buttonShow = true;
-            	this.submitShow = true;
-            }
+            modifyFlag = data.canModifyCourInfo.canModifyGrade;
         },function(error){
             console.log("获取申请error:");
             console.log(error);
         });
+        // console.log(modifyFlag)
+        if (modifyFlag == true) {
+        	this.buttonShow = true;
+        	this.submitShow = true;
+        }
     },
 	methods: {
 		// 编辑修改补考成绩*****************************************************************

@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdmin" class="returnHome">课酬模块</a></span>
+		<span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">课酬模块</a></span>
 		<span> > <a href="#/eduAdmin/emolument/scheduleList" class="returnHome">上课列表</a></span>
 		<span> > 上课签到</span>
 	</div>
@@ -18,10 +18,10 @@
 			<!-- 弹窗签到操作 -->
 			<Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
 			    <div slot="header" style="font-size:1.6rem; text-align:center; padding:0.2rem 0;" id="modalHeader">
-		            <span>上课日志</span>
+		            <span>上课签到</span>
 		        </div>
-			    <div style="text-align:center; font-size:1.1rem;">
-			    	<span class="modal-select">
+			    <div style="text-align:center; font-size:1.1rem; width:100%">
+			    	<div class="modal-select" style="height:3rem; width:100%;">
 				    	<select v-model="selWeekList" @change="selWeekChange()">
 							<option disabled value="">选择周数</option>
 							<option v-for="weekListOne in weekList" :value="weekListOne">{{weekListOne}}</option>
@@ -30,9 +30,9 @@
 							<option disabled value="">选择上课时间</option>
 							<option v-for="detailsOne in giveLessonsDetailsList" :value="detailsOne.giveLessonsDetailsId">{{detailsOne.timeandplaceInfo}}</option>
 						</select>
-					</span>
-			    	<Input v-model="teachJournalInFoInput" type="textarea" :rows="7" placeholder="请输入..."></Input>
-			    	<p style="text-align:left; font-size:0.9rem; color:red;">请认真核对所写信息！提交教学日志进行签到，并且不可重复签到。</p>
+					</div>
+			    	<!-- <Input v-model="teachJournalInFoInput" type="textarea" :rows="0" placeholder="请输入..."></Input> -->
+			    	<p style="text-align:center; font-size:0.9rem; color:red;">请认真核对所写信息！提交教学日志进行签到，并且不可重复签到。</p>
 			    </div>
 			    <div slot="footer" style="text-align:center;">
 			        <Button id="modalBtn" @click="ok()">提交</Button>
@@ -296,7 +296,7 @@ export default {
 	color: red;
 }
 .modal-select select {
-	float: left;
+	/*float: left;*/
 	margin: 0 0.6rem 1.4rem 1.4rem;
 }
 </style>

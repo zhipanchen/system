@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/teacher" class="returnHome">教学管理</a></span>
+		<span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">教学管理</a></span>
 		<span> > 教学计划</span>
 	</div>
 	<div class="blank">
