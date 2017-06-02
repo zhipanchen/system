@@ -134,7 +134,7 @@
                 modal2: false,
                 errorMessage: "",
                 items:[
-                    {   "className": '高职2013级1班（45人）', "firstCourse":'语文+教师姓名+（教室）+（时间）',
+                    /*{   "className": '高职2013级1班（45人）', "firstCourse":'语文+教师姓名+（教室）+（时间）',
                         "secondCourse": "数学",
                         "thirdCourse": "英语",
                         "fourthCourse": "英语",
@@ -423,7 +423,7 @@
                         "fourteenthCourse": "英语",
                         "fifteenthCourse": "英语",
                         "classroomName": "C105",
-                        "classHeadmaster": "张三"}
+                        "classHeadmaster": "张三"}*/
                 ]
 //                排课结果课表
             }
@@ -518,14 +518,14 @@
         border-collapse: collapse;
         text-align: center;
     }
-    td{
+    #checkCourseTable td{
         border: thin solid #d4d4d9;
         max-width: 3rem;
     }
     .headTr td{
         height: 1rem;
     }
-    td input{
+    #checkCourseTable td input{
         outline: none;
         border: none;
         width: 100%;
@@ -534,7 +534,7 @@
         padding: 0;
         text-align: center;
     }
-    td:hover{
+    #checkCourseTable td:hover{
         cursor: pointer;
     }
     #headTdTime{
@@ -595,7 +595,7 @@
         border-collapse: collapse;
         table-layout: fixed;
     }
-    @media screen and (max-width:1023px) {
+    @media screen and (max-width:1025px) {
         #headTdTime:after{
             width: 0.1rem;
             height: 6.7rem;
@@ -615,7 +615,7 @@
             -moz-transform: rotate(-71.3deg);/* Firefox */
         }
     }
-    @media screen and (min-width:1023px) and (max-width:1173px) {
+    @media screen and (min-width:1025px) and (max-width:1173px) {
         #headTdTime:after{
             width: 0.1rem;
         }

@@ -209,7 +209,7 @@
     /*邮件发送验证按钮*/
     width: 5.6rem;
   }
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 1025px) {
     html {
     }
   }

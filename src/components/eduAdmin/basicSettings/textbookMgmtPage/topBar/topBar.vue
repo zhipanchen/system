@@ -6,12 +6,12 @@
       <button class="am-btn am-btn-success" @click="hrefClick(3)">课程类型管理</button>
       <button class="am-btn am-btn-success" @click="hrefClick(4)">教室管理</button>
     </div>
-    <div class="positionBar">
-      <span>您的当前位置：</span>
-      <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-      <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 资源管理设置 > 教材管理</span>
-    </div>
     <div id="whiteDiv">
+      <div class="positionBar">
+        <span>您的当前位置：</span>
+        <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
+        <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 资源管理设置 > 教材管理</span>
+      </div>
       <div id="buttonDiv">
         <span class="operationSpan"><form action="./textbookManage/exportTextbookInfoTemplet" method="get"><button class="am-btn am-btn-success am-radius" type="submit">下载模版</button></form></span>
         <span id="uploadSpan" class="operationSpan">
@@ -206,13 +206,14 @@
   }
   .positionBar{
     /*首页导航*/
-    position: absolute;
+    position: relative;
   }
   #whiteDiv{
     /*按钮外层区域*/
     background-color: white;
     text-align: center;
     padding-bottom: 0.5rem;
+    display: flex;
   }
   #uploadSpan{
     /*上传按钮外层*/
@@ -222,7 +223,7 @@
     /*按钮*/
     margin-right: 1.6rem;
   }
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 1025px) {
     html {
     }
   }

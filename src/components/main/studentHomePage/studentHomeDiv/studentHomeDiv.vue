@@ -130,7 +130,7 @@
     cursor: pointer;
     color: red;
   }
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 1025px) {
     html {
     }
   }

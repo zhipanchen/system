@@ -551,7 +551,7 @@
         border-collapse: collapse;
         table-layout: fixed;
     }
-    @media screen and (max-width:1023px) {
+    @media screen and (max-width:1025px) {
         #headTdTime:after{
             width: 0.1rem;
             height: 6.7rem;
@@ -571,7 +571,7 @@
             -moz-transform: rotate(-71.3deg);/* Firefox */
         }
     }
-    @media screen and (min-width:1023px) and (max-width:1173px) {
+    @media screen and (min-width:1025px) and (max-width:1173px) {
         #headTdTime:after{
             width: 0.1rem;
         }
