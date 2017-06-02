@@ -1,7 +1,7 @@
 <template>
 	<div id="tchCheckTable">
 		<top-title></top-title>
-    	<top-bar3></top-bar3>
+    	<top-bar></top-bar>
     	
     	<form name="tableInfo"><timetable></timetable></form>
 	</div>
@@ -9,8 +9,8 @@
 
 <script>
 import topTitle from '../../../components/public/topTitle/topTitle'
-import topBar3 from '../../../components/teacher/tchCheckTimetablePage/topBar3'
-import timetable from '../../../components/teacher/tchCheckTimetablePage/timetable'
+import topBar from '../../../components/teacher/tchCheckTimetablePage/topBar/topBar'
+import timetable from '../../../components/teacher/tchCheckTimetablePage/timetable/timetable'
 
 export default {
 	name: 'tchCheckTable',
@@ -20,7 +20,7 @@ export default {
 		}
 	},
 	components: {
-		topTitle, topBar3, timetable
+		topTitle, topBar, timetable
 	},
 	methods: {
 		

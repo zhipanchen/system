@@ -1,7 +1,7 @@
 <template>
 	<div id="salary">
 		<top-title></top-title>
-    <top-bar1></top-bar1>
+    <top-bar></top-bar>
     
     <tch-salary-body></tch-salary-body>
 	</div>
@@ -9,13 +9,13 @@
 
 <script>
 import topTitle from '../../../components/public/topTitle/topTitle'
-import topBar1 from '../../../components/teacher/tchCheckSalaryPage/topBar1'
-import tchSalaryBody from '../../../components/teacher/tchCheckSalaryPage/tchSalaryBody'
+import topBar from '../../../components/teacher/tchCheckSalaryPage/topBar/topBar'
+import tchSalaryBody from '../../../components/teacher/tchCheckSalaryPage/tchSalaryBody/tchSalaryBody'
 
 export default {
 	name: 'salary',
 	components: {
-    	topTitle, topBar1, tchSalaryBody
+    	topTitle, topBar, tchSalaryBody
   },
   methods: {
    
