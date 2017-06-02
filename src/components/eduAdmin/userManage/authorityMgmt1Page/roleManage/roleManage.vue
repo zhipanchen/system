@@ -120,6 +120,7 @@ export default {
 			remindResult: ''
 		}
 	},
+	// 初始化***********************************************
 	beforeMount: function() {
         this.$http.post('./getAllTeacherAndRole',{},{
             "Content-Type":"application/json"
