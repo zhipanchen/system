@@ -90,26 +90,86 @@
                 <td v-text="course.totalHours"></td>
                 <td v-text="course.theoryHours"></td>
                 <td v-text="course.practice"></td>
-                <td v-text="course.term1st"></td>
-                <td v-text="course.term1nd"></td>
-                <td v-text="course.term2st"></td>
-                <td v-text="course.term2nd"></td>
-                <td v-text="course.term3st"></td>
-                <td v-text="course.term3nd"></td>
-                <td v-text="course.term4st"></td>
-                <td v-text="course.term4nd"></td>
-                <td v-text="course.term5st"></td>
-                <td v-text="course.term5nd"></td>
-                <td v-text="course.term6st"></td>
-                <td v-text="course.term6nd"></td>
-                <td v-text="course.term7st"></td>
-                <td v-text="course.term7nd"></td>
-                <td v-text="course.term8st"></td>
-                <td v-text="course.term8nd"></td>
-                <td v-text="course.term9st"></td>
-                <td v-text="course.term9nd"></td>
-                <td v-text="course.term10st"></td>
-                <td v-text="course.term10nd"></td>
+                <td>
+                  <span v-if="course.term1st == 0"></span>
+                  <span v-else>{{course.term1st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term1nd == 0"></span>
+                  <span v-else>{{course.term1nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term2st == 0"></span>
+                  <span v-else>{{course.term2st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term2nd == 0"></span>
+                  <span v-else>{{course.term2nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term3st == 0"></span>
+                  <span v-else>{{course.term3st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term3nd == 0"></span>
+                  <span v-else>{{course.term3nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term4st == 0"></span>
+                  <span v-else>{{course.term4st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term4nd == 0"></span>
+                  <span v-else>{{course.term4nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term5st == 0"></span>
+                  <span v-else>{{course.term5st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term5nd == 0"></span>
+                  <span v-else>{{course.term5nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term6st == 0"></span>
+                  <span v-else>{{course.term6st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term6nd == 0"></span>
+                  <span v-else>{{course.term6nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term7st == 0"></span>
+                  <span v-else>{{course.term7st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term7nd == 0"></span>
+                  <span v-else>{{course.term7nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term8st == 0"></span>
+                  <span v-else>{{course.term8st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term8nd == 0"></span>
+                  <span v-else>{{course.term8nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term9st == 0"></span>
+                  <span v-else>{{course.term9st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term9nd == 0"></span>
+                  <span v-else>{{course.term9nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term10st == 0"></span>
+                  <span v-else>{{course.term10st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term10nd == 0"></span>
+                  <span v-else>{{course.term10nd}}</span>
+                </td>
                 <td v-text="course.checkSemesters"></td>
                 <td v-text="course.examSemesters"></td>
               </tr>
@@ -211,26 +271,86 @@
                 <td v-text="course.totalHours"></td>
                 <td v-text="course.theoryHours"></td>
                 <td v-text="course.practice"></td>
-                <td v-text="course.term1st"></td>
-                <td v-text="course.term1nd"></td>
-                <td v-text="course.term2st"></td>
-                <td v-text="course.term2nd"></td>
-                <td v-text="course.term3st"></td>
-                <td v-text="course.term3nd"></td>
-                <td v-text="course.term4st"></td>
-                <td v-text="course.term4nd"></td>
-                <td v-text="course.term5st"></td>
-                <td v-text="course.term5nd"></td>
-                <td v-text="course.term6st"></td>
-                <td v-text="course.term6nd"></td>
-                <td v-text="course.term7st"></td>
-                <td v-text="course.term7nd"></td>
-                <td v-text="course.term8st"></td>
-                <td v-text="course.term8nd"></td>
-                <td v-text="course.term9st"></td>
-                <td v-text="course.term9nd"></td>
-                <td v-text="course.term10st"></td>
-                <td v-text="course.term10nd"></td>
+                <td>
+                  <span v-if="course.term1st == 0"></span>
+                  <span v-else>{{course.term1st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term1nd == 0"></span>
+                  <span v-else>{{course.term1nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term2st == 0"></span>
+                  <span v-else>{{course.term2st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term2nd == 0"></span>
+                  <span v-else>{{course.term2nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term3st == 0"></span>
+                  <span v-else>{{course.term3st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term3nd == 0"></span>
+                  <span v-else>{{course.term3nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term4st == 0"></span>
+                  <span v-else>{{course.term4st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term4nd == 0"></span>
+                  <span v-else>{{course.term4nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term5st == 0"></span>
+                  <span v-else>{{course.term5st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term5nd == 0"></span>
+                  <span v-else>{{course.term5nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term6st == 0"></span>
+                  <span v-else>{{course.term6st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term6nd == 0"></span>
+                  <span v-else>{{course.term6nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term7st == 0"></span>
+                  <span v-else>{{course.term7st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term7nd == 0"></span>
+                  <span v-else>{{course.term7nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term8st == 0"></span>
+                  <span v-else>{{course.term8st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term8nd == 0"></span>
+                  <span v-else>{{course.term8nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term9st == 0"></span>
+                  <span v-else>{{course.term9st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term9nd == 0"></span>
+                  <span v-else>{{course.term9nd}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term10st == 0"></span>
+                  <span v-else>{{course.term10st}}</span>
+                </td>
+                <td>
+                  <span v-if="course.term10nd == 0"></span>
+                  <span v-else>{{course.term10nd}}</span>
+                </td>
                 <td v-text="course.checkSemesters"></td>
                 <td v-text="course.examSemesters"></td>
               </tr>
@@ -242,6 +362,21 @@
       </div>
     </div>
     <!--3年制培养方案-->
+    <div>
+      <modal v-model="modalDownloadBool" width="400" id="modalBody">
+        <div style="text-align: center;font-size: 1.1rem;">
+          <p v-if="downloadMsg == '1'">文件格式不正确，请上传xls或xlsx表格。</p>
+          <p v-else-if="downloadMsg == '2'">文件太大，不能超过 2M</p>
+          <p v-else-if="downloadMsg == '3'">上传成功!</p>
+          <p v-else-if="downloadMsg == '4'">上传失败!</p>
+          <p v-else>{{downloadMsg}}</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="checkOk">确定</button>
+        </div>
+      </modal>
+    </div>
+    <!--上传文件出错信息提示弹窗-->
   </div>
 </template>
 
@@ -275,7 +410,9 @@
               {courseId:'55347',courseTypeName:'公共基础课',courseName:'经济政治与社会',totalHours:'36',theoryHours:'32',practice:'4',term1st:'36',term1nd:'36',term2st:'',term2nd:'',term3st:'',term3nd:'',term4st:'',term4nd:'',term5st:'',term5nd:'',term6st:'',term6nd:'',term7st:'',term7nd:'',term8st:'',term8nd:'',term9st:'',term9nd:'',term10st:'',term10nd:'',checkSemesters:'3',examSemesters:''}
             ]
           }
-        ]
+        ],
+        modalDownloadBool:false,
+        downloadMsg:''
       }
     },
     beforeMount:function() {
@@ -328,17 +465,13 @@
       },
 //      点击年级下拉该年级培养方案表格
       handleFormatError:function(file){
-        this.$Notice.warning({
-          title: '文件格式不正确',
-          desc: '文件 ' + file.name + ' 格式不正确，请上传xls或xlsx表格。'
-        });
+        this.downloadMsg = '1';
+        this.modalDownloadBool = true;
       },
 //      处理上传文件格式错误问题
       handleSizeError:function(file){
-        this.$Notice.warning({
-          title: '超出文件大小限制',
-          desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
-        });
+        this.downloadMsg = '2';
+        this.modalDownloadBool = true;
       },
 //      处理上传文件大小过大问题
       handleProgress:function(){
@@ -346,18 +479,24 @@
       },
 //      message提示用户文件正在上传
       handleSuccess:function(res){
-        if(res.result===1){
-          this.$Message.success("上传成功！");
+        if(res.result==1){
+          this.downloadMsg = '3';
+          setTimeout("location.reload(true)", 4000); //4秒后刷新页面
         }else{
-          var result = res.result;
-          this.$Message.error(result);
+          var downloadMsg = res.result;
         }
+        this.modalDownloadBool = true;
       },
-//      文件上传成功后，若文件内容没问题，提示上传成功，若文件内容出错，弹窗提示出错信息
+//      文件上传成功后，若文件内容没问题，提示上传成功,4s后刷新页面，若文件内容出错，弹窗提示出错信息
       handleError:function(){
-        this.$Message.error("上传失败");
+        this.downloadMsg = '4';
+        this.modalDownloadBool = true;
       },
 //      弹窗提示文件上传失败
+      checkOk:function(){
+        this.modalDownloadBool = false;
+      },
+//      确认文件上传结果弹窗
       downloadFormClick:function(){
         location.href="./schoolCoursePlan/downloadTemplet";
       },

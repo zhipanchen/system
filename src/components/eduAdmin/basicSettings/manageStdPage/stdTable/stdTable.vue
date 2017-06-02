@@ -263,7 +263,7 @@
         },
 //        提示用户文件正在上传
         handleSuccess:function(res){
-          if(res.result==='1'){
+          if(res.result=='1'){
             this.downloadMsg = "3";
             setTimeout("location.reload(true)", 4000); //4秒后刷新页面
           }else{

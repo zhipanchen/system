@@ -54,8 +54,11 @@
       <div id="staffAuthority">
         <div>
           <p class="topP" id="topStaff">{{roleNameEle}}</p>
-          <input type="checkbox" id="all" @click="allCheck()" style="margin-left: 3rem">
-          <label for="all">全选</label>
+          <input type="checkbox" id="all" @click="allCheck()" style="margin-left: 3rem;">
+          <label style="font-size: 1.2rem" for="all">全选</label>
+          <span><button id="cancel" class="bottomButton am-btn am-btn-success am-radius rightButton" @click="restoreAuthorityClick()">取消</button></span>
+          <span><button id="saveInf" class="bottomButton am-btn am-btn-success am-radius rightButton" @click="saveAuthorityClick()">保存</button></span>
+          <!--权限修改提交或取消按钮-->
           <ul>
             <li  v-for="authorityEle in authorityList">
               <input type="checkbox" :id="authorityEle.authorityId" :value="authorityEle.authorityId" v-model="authorityIdList">
@@ -64,11 +67,6 @@
           </ul>
         </div>
         <!--权限修改div-->
-        <div id="buttonDiv">
-          <span><button id="saveInf" class="bottomButton am-btn am-btn-success am-radius" @click="saveAuthorityClick()">保存</button></span>
-          <span><button id="cancel" class="bottomButton am-btn am-btn-success am-radius" @click="restoreAuthorityClick()">取消</button></span>
-        </div>
-        <!--权限修改提交或取消按钮-->
       </div>
       <div>
         <modal v-model="modalAuthorityOperateBool" width="400" id="modalBody">
@@ -140,9 +138,9 @@
         }).then(function (response) {
           console.log(response);
           this.roleEleList = response.body.getAllRoleAuthorityList.roleList;
-          for(var i=0;i<this.roleList.length;i++){
-            this.roleEleList(
-              {roleId:this.roleEleList.roleId,roleName:this.roleEleList.roleName}
+          for(var i=0;i<this.roleEleList.length;i++){
+            this.roleList(
+              {roleId:this.roleEleList[i].roleId,roleName:this.roleEleList[i].roleName}
             )
           }
 //          不可以直接将response.body.getAllRoleAuthorityList.roleList赋值给roleEleList和roleEleList，因为这样赋值只是将指针给数组，会导致两个数据指向同一个指针
@@ -420,6 +418,7 @@
       text-align: center;
       cursor: pointer;
       color: #158064;
+      font-size: 1.0rem;
     }
     .inputWM:hover{
       color: black;
@@ -427,15 +426,15 @@
     ul li{
       float: left;
       min-height: 2rem;
-      font-size: 0.6rem;
+      font-size: 1.0rem;
       width: 33%;
     }
     .bottomButton{
       margin-right: 1.4rem;
     }
-    #buttonDiv{
-      margin-top: 1rem;
-      text-align: center;
+    .rightButton{
+      float: right;
+      margin-right: 1.4rem;
     }
     @media screen and (max-width: 1023px) {
         html {
