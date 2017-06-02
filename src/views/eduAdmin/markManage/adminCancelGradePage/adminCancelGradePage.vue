@@ -1,15 +1,15 @@
 <template>
 	<div id="adminCancelGrade">
 		<top-title></top-title>
-    	<top-bar2></top-bar2>
+    	<top-bar></top-bar>
     	<cancel-content></cancel-content>
 	</div>
 </template>
 
 <script>
 import topTitle from '../../../../components/public/topTitle/topTitle'
-import topBar2 from '../../../../components/eduAdmin/markManage/adminCancelGradePage/topBar2'
-import cancelContent from '../../../../components/eduAdmin/markManage/adminCancelGradePage/cancelContent'
+import topBar from '../../../../components/eduAdmin/markManage/adminCancelGradePage/topBar/topBar'
+import cancelContent from '../../../../components/eduAdmin/markManage/adminCancelGradePage/cancelContent/cancelContent'
 
 export default {
 	name: 'adminCancelGrade',
@@ -19,7 +19,7 @@ export default {
 		}
 	},
 	components: {
-    	topTitle, topBar2, cancelContent
+    	topTitle, topBar, cancelContent
   	},
   	methods: {
   		checkTableBtn: function () {

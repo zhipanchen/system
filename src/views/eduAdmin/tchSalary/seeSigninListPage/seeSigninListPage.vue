@@ -1,7 +1,7 @@
 <template>
 	<div id="salary">
 		<top-title></top-title>
-    <top-bar1></top-bar1>
+    <top-bar></top-bar>
     
     <see-signin-list-body></see-signin-list-body>
 	</div>
@@ -9,13 +9,13 @@
 
 <script>
 import topTitle from '../../../../components/public/topTitle/topTitle'
-import topBar1 from '../../../../components/eduAdmin/tchSalary/seeSigninListPage/topBar1'
-import seeSigninListBody from '../../../../components/eduAdmin/tchSalary/seeSigninListPage/seeSigninListBody'
+import topBar from '../../../../components/eduAdmin/tchSalary/seeSigninListPage/topBar/topBar'
+import seeSigninListBody from '../../../../components/eduAdmin/tchSalary/seeSigninListPage/seeSigninListBody/seeSigninListBody'
 
 export default {
 	name: 'salary',
 	components: {
-    	topTitle, topBar1, seeSigninListBody
+    	topTitle, topBar, seeSigninListBody
   },
   methods: {
    

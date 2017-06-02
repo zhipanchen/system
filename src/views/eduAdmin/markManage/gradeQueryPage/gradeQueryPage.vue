@@ -1,7 +1,7 @@
 <template>
 	<div id="gradeQuery">
 		<top-title></top-title>
-    	<top-bar2></top-bar2>
+    	<top-bar></top-bar>
     	
     	<grade-content></grade-content>
 	</div>
@@ -9,8 +9,8 @@
 
 <script>
 import topTitle from '../../../../components/public/topTitle/topTitle'
-import topBar2 from '../../../../components/eduAdmin/markManage/gradeQueryPage/topBar2'
-import gradeContent from '../../../../components/eduAdmin/markManage/gradeQueryPage/gradeContent'
+import topBar from '../../../../components/eduAdmin/markManage/gradeQueryPage/topBar/topBar'
+import gradeContent from '../../../../components/eduAdmin/markManage/gradeQueryPage/gradeContent/gradeContent'
 
 export default {
 	name: 'gradeQuery',
@@ -20,7 +20,7 @@ export default {
 		}
 	},
 	components: {
-    	topTitle, topBar2, gradeContent
+    	topTitle, topBar, gradeContent
   	},
   	methods: {
       selYearsBtn: function () {

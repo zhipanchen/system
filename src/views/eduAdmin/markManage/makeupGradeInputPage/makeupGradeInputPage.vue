@@ -1,7 +1,7 @@
 <template>
 	<div id="grdInput">
 		<top-title></top-title>
-    	<top-bar2></top-bar2>
+    	<top-bar></top-bar>
     	
     	<makeup-grade-input></makeup-grade-input>
 	</div>
@@ -9,8 +9,8 @@
 
 <script>
 import topTitle from '../../../../components/public/topTitle/topTitle'
-import topBar2 from '../../../../components/eduAdmin/markManage/makeupGradeInputPage/topBar2'
-import makeupGradeInput from '../../../../components/eduAdmin/markManage/makeupGradeInputPage/makeupGradeInputBody'
+import topBar from '../../../../components/eduAdmin/markManage/makeupGradeInputPage/topBar/topBar'
+import makeupGradeInput from '../../../../components/eduAdmin/markManage/makeupGradeInputPage/makeupGradeInputBody/makeupGradeInputBody'
 
 export default {
 	name: 'makeupGrdInput',
@@ -20,7 +20,7 @@ export default {
 		}
 	},
 	components: {
-		topTitle, topBar2, makeupGradeInput
+		topTitle, topBar, makeupGradeInput
 	},
 	methods: {
 
