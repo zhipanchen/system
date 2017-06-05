@@ -4,7 +4,7 @@
     <div id="userExitDiv">
       <a id="user" :href="userHref">您好,{{ userName }}!</a>
       <span style="font-size: 0.8rem;margin-left: 0.5rem;color: red">{{ emailStatus }}</span>
-      <a><img id="exitImg" src="./images/exit.png" alt="exitAlt" @click="modal = true"></a>
+      <a><img id="exitImg" src="./images/exit.png" alt="exitAlt" @click="modal = true" title="退出"></a>
       <Modal
           v-model="modal"
           width="400"
