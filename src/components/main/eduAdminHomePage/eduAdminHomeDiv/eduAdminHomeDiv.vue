@@ -14,8 +14,8 @@
         </Menu-group>
       </Menu>
 
-      <button class="am-btn am-btn-success am-radius" id="termStartButton" @click="modal1 = true">设置学期开始时间</button>
-      <button class="am-btn am-btn-success am-radius" id="evaluationStartButton" @click="modal2 = true">设置评教起止时间</button>
+      <button class="am-btn am-btn-success am-radius" id="termStartButton" @click="modal1 = true" v-if="isEduAdmin">设置学期开始时间</button>
+      <button class="am-btn am-btn-success am-radius" id="evaluationStartButton" @click="modal2 = true" v-if="isEduAdmin">设置评教起止时间</button>
       <Modal
           v-model="modal1"
           width="400"
@@ -276,6 +276,8 @@
           }*/
         ],
 //        公告信息
+        isEduAdmin: false,
+//        时间设置功能按钮显隐
         modal: false,
         modal1: false,
         modal2: false,
@@ -1170,6 +1172,11 @@
     watch:{
       activeName: function () {
 //        监听角色选择绑定的变化，生成一级功能块
+        if(this.activeName == 3){
+          this.isEduAdmin = true;
+        }else{
+          this.isEduAdmin = false;
+        }
         this.$http.post('./getRoleAuthority',{
           "roleId": this.activeName
         },{

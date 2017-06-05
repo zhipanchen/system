@@ -3,6 +3,9 @@
     <div id="operationDiv">
       <div id="selectDiv">
         <button id="queryButton" @click="modal = true"  class="am-btn am-btn-success am-radius">智能排课</button>
+        <form action="./autoArrangeSeeCurriculumExcel" method="get">
+          <button id="exportButton" class="am-btn am-btn-success am-radius" type="submit" style="margin-left: 1.4rem">导出</button>
+        </form>
       </div>
     </div>
     <div class="positionBar">
@@ -119,6 +122,7 @@
   }
   #selectDiv{
     padding: 0.6rem 5rem;
+    display: flex;
   }
   #tableTipP{
     /*功能页面标题*/
@@ -135,9 +139,5 @@
     position: relative;
     margin-top: 0;
     left: 1rem;
-  }
-  @media screen and (max-width:1025px) {
-    html {
-    }
   }
 </style>

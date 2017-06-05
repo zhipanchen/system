@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/teacher" class="returnHome">课程管理</a></span>
+		<span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">课程管理</a></span>
 		<span> > 调课申请</span>
 	</div>
 	<div class="curSettings">
@@ -211,8 +211,8 @@ export default {
 			isShow: false,
 			//	申请调课列表原始数据
 			courseList: [
-				{className: '对口高职2015护理（9+3）1班', courseName: '护理管理学',courseId: '10301', teacherName: '何平（61742）'},
-				{className: '对口高职2015护理（9+3）1班', courseName: '护理管理学',courseId: '10301', teacherName: '何平（61742）'}
+				// {className: '对口高职2015护理（9+3）1班', courseName: '护理管理学',courseId: '10301', teacherName: '何平（61742）'},
+				// {className: '对口高职2015护理（9+3）1班', courseName: '护理管理学',courseId: '10301', teacherName: '何平（61742）'}
 			],
 			// 表格所选当行变量
 			teacherNameGet: '',
