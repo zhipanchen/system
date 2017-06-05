@@ -157,9 +157,4 @@
     float:left;
   }
 
-  @media screen and (max-width: 1023px) {
-    html {
-      font-size: 56%;
-    }
-  }
 </style>
