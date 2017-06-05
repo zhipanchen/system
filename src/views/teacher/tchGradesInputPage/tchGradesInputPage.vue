@@ -9,8 +9,8 @@
 
 <script>
 import topTitle from '../../../components/public/topTitle/topTitle'
-import topBar from '../../../components/teacher/tchGradesInputPage/topBar2'
-import tchGrdPutBody from '../../../components/teacher/tchGradesInputPage/tchGrdPutBody'
+import topBar from '../../../components/teacher/tchGradesInputPage/topBar/topBar'
+import tchGrdPutBody from '../../../components/teacher/tchGradesInputPage/tchGrdPutBody/tchGrdPutBody'
 
 export default {
 	name: 'tchGrdInput',

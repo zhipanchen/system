@@ -1,7 +1,7 @@
 <template>
   <div id="tchManuCou">
     <top-title></top-title>
-    <top-bar3></top-bar3>
+    <top-bar></top-bar>
     
     <adj-show></adj-show>
   </div>
@@ -9,8 +9,8 @@
 
 <script>
 import topTitle from '../../../components/public/topTitle/topTitle'
-import topBar3 from '../../../components/teacher/tchManuAdjClPage/topBar3'
-import adjShow from '../../../components/teacher/tchManuAdjClPage/adjShow'
+import topBar from '../../../components/teacher/tchManuAdjClPage/topBar/topBar'
+import adjShow from '../../../components/teacher/tchManuAdjClPage/adjShow/adjShow'
 
 export default {
   name: 'tchManuCou',
@@ -20,7 +20,7 @@ export default {
     }
   },
   components: {
-    topTitle, topBar3, adjShow
+    topTitle, topBar, adjShow
   },
   methods: {
     

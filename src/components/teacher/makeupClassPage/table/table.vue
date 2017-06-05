@@ -34,7 +34,7 @@
           <tbody>
             <tr v-for="(data,index) in tableList">
               <td width="10%">
-                <span :id="'show'+index" @click="show(index)">申请补课</span>
+                <span :id="'show'+index" style="text-decoration:underline;cursor: pointer;"  @click="show(index)">申请补课</span>
               </td>
               <td width="15%" v-text="index+1"></td>
               <td width="15%" v-text="data.className"></td>

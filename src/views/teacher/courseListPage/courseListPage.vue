@@ -1,7 +1,7 @@
 <template>
 	<div id="classList">
 		<top-title></top-title>
-    	<top-bar2></top-bar2>
+    	<top-bar></top-bar>
       
       <my-class-list></my-class-list>
 	</div>
@@ -9,8 +9,8 @@
 
 <script>
 import topTitle from '../../../components/public/topTitle/topTitle'
-import topBar2 from '../../../components/teacher/courseListPage/topBar2'
-import myClassList from '../../../components/teacher/courseListPage/myClassList'
+import topBar from '../../../components/teacher/courseListPage/topBar/topBar'
+import myClassList from '../../../components/teacher/courseListPage/myClassList/myClassList'
 
 export default {
 	name: 'classList',
@@ -20,7 +20,7 @@ export default {
     }
   },
 	components: {
-    	topTitle, topBar2, myClassList
+    	topTitle, topBar, myClassList
   }
 }
 </script>

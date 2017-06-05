@@ -1,7 +1,7 @@
 <template>
 	<div id="gradeStat">
 		<top-title></top-title>
-    	<top-bar2></top-bar2>
+    	<top-bar></top-bar>
     	
     	<grade-table></grade-table>
 	</div>
@@ -9,13 +9,13 @@
 
 <script>
 import topTitle from '../../../../components/public/topTitle/topTitle'
-import topBar2 from '../../../../components/eduAdmin/markManage/gradeStatPage/topBar2'
-import gradeTable from '../../../../components/eduAdmin/markManage/gradeStatPage/gradeTable'
+import topBar from '../../../../components/eduAdmin/markManage/gradeStatPage/topBar/topBar'
+import gradeTable from '../../../../components/eduAdmin/markManage/gradeStatPage/gradeTable/gradeTable'
 
 export default {
 	name: 'gradeStat',
 	components: {
-    	topTitle, topBar2, gradeTable
+    	topTitle, topBar, gradeTable
   	}
 }
 </script>
