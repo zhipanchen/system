@@ -44,28 +44,28 @@
                 <td>5-6</td>
             </tr>
             <tr  v-for="(item,index) in items" id="courseTr">
-                <td class="sectionTd">{{ item.className }} </td>
-                <td :id="'first'+index" @click="courseClick('first',index)">{{ item.firstCourse }}</td>
-                <td :id="'second'+index" @click="courseClick('second',index)">{{ item.secondCourse }}</td>
-                <td :id="'third'+index" @click="courseClick('third',index)">{{ item.thirdCourse }}</td>
+                <td class="sectionTd" v-html="item.className"></td>
+                <td :id="'first'+index" @click="courseClick('first',index)" v-html="item.firstCourse"></td>
+                <td :id="'second'+index" @click="courseClick('second',index)" v-html="item.secondCourse"></td>
+                <td :id="'third'+index" @click="courseClick('third',index)" v-html="item.thirdCourse"></td>
                 <!--<td :id="index" @click="courseClick('third',index)"></td>-->
-                <td :id="'fourth'+index" @click="courseClick('fourth',index)">{{ item.fourthCourse }}</td>
-                <td :id="'fifth'+index" @click="courseClick('fifth',index)">{{ item.fifthCourse }}</td>
-                <td :id="'sixth'+index" @click="courseClick('sixth',index)">{{ item.sixthCourse }}</td>
+                <td :id="'fourth'+index" @click="courseClick('fourth',index)" v-html="item.fourthCourse"></td>
+                <td :id="'fifth'+index" @click="courseClick('fifth',index)" v-html="item.fifthCourse"></td>
+                <td :id="'sixth'+index" @click="courseClick('sixth',index)" v-html="item.sixthCourse"></td>
                 <!--<td :id="index" @click="courseClick('third',index)"></td>-->
-                <td :id="'seventh'+index" @click="courseClick('seventh',index)">{{ item.seventhCourse }}</td>
-                <td :id="'eighth'+index" @click="courseClick('eighth',index)">{{ item.eighthCourse }}</td>
-                <td :id="'ninth'+index" @click="courseClick('ninth',index)">{{ item.ninthCourse }}</td>
+                <td :id="'seventh'+index" @click="courseClick('seventh',index)" v-html="item.seventhCourse"></td>
+                <td :id="'eighth'+index" @click="courseClick('eighth',index)" v-html="item.eighthCourse"></td>
+                <td :id="'ninth'+index" @click="courseClick('ninth',index)" v-html="item.ninthCourse"></td>
                 <!--<td :id="index" @click="courseClick('third',index)"></td>-->
-                <td :id="'tenth'+index" @click="courseClick('tenth',index)">{{ item.tenthCourse }}</td>
-                <td :id="'eleventh'+index" @click="courseClick('eleventh',index)">{{ item.eleventhCourse }}</td>
-                <td :id="'twelfth'+index" @click="courseClick('twelfth',index)">{{ item.twelfthCourse }}</td>
+                <td :id="'tenth'+index" @click="courseClick('tenth',index)" v-html="item.tenthCourse"></td>
+                <td :id="'eleventh'+index" @click="courseClick('eleventh',index)" v-html="item.eleventhCourse"></td>
+                <td :id="'twelfth'+index" @click="courseClick('twelfth',index)" v-html="item.twelfthCourse"></td>
                 <!--<td :id="index" @click="courseClick('third',index)"></td>-->
-                <td :id="'thirteenth'+index" @click="courseClick('thirteenth',index)">{{ item.thirteenthCourse }}</td>
-                <td :id="'fourteenth'+index" @click="courseClick('fourteenth',index)">{{ item.fourteenthCourse }}</td>
+                <td :id="'thirteenth'+index" @click="courseClick('thirteenth',index)" v-html="item.thirteenthCourse"></td>
+                <td :id="'fourteenth'+index" @click="courseClick('fourteenth',index)" v-html="item.fourteenthCourse"></td>
                 <td :id="'fifteenth'+index" @click="courseClick('fifteenth',index)">班会</td>
-                <td :id="'classroomName'+index" >{{ item.classroomName }}</td>
-                <td :id="'classHeadmaster'+index">{{ item.classHeadmaster }}</td>
+                <td :id="'classroomName'+index"  v-html="item.classroomName"></td>
+                <td :id="'classHeadmaster'+index" v-html="item.classHeadmaster"></td>
             </tr>
         </table>
         <table id="courseDetailTable" class="normalTable">

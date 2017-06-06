@@ -28,7 +28,7 @@
             </td>
           </tr>
           <tr id="addTr">
-            <td><img src="../../../../../assets/images/add.png" @click="addClick()"></td>
+            <td><img src="../../../../../assets/images/add.png" @click="addClick()" title="添加"></td>
             <td></td>
             <td></td>
           </tr>
@@ -99,10 +99,10 @@
     data () {
       return {
         courseTypeList:[
-          { "courseTypeId":"1", "courseTypeName":"专业必修课" },
+          /*{ "courseTypeId":"1", "courseTypeName":"专业必修课" },
           { "courseTypeId":"2", "courseTypeName":"公共必修课" },
           { "courseTypeId":"3", "courseTypeName":"专业选修课" },
-          { "courseTypeId":"4", "courseTypeName":"公共选修课" }
+          { "courseTypeId":"4", "courseTypeName":"公共选修课" }*/
         ],
         buffer_courseTypeList:[],
         modal1: false,
@@ -169,13 +169,18 @@
         }
 //        从缓存数据中重置数据
 
-        input.readOnly = true;
-        input.style.border = "none";
+        if(this.courseTypeList[index].courseTypeId == ""){
+          this.courseTypeList.splice(index, 1);
+          this.buffer_courseTypeList.splice(index, 1);
+        }else {
+          input.readOnly = true;
+          input.style.border = "none";
 
-        editImg.style.display = "inline-block";
-        deleteImg.style.display = "inline-block";
-        saveImg.style.display = "none";
-        restoreImg.style.display = "none";
+          editImg.style.display = "inline-block";
+          deleteImg.style.display = "inline-block";
+          saveImg.style.display = "none";
+          restoreImg.style.display = "none";
+        }
         this.modal3 = false;
       },
       addClick: function (){
@@ -221,7 +226,7 @@
               deleteImg.style.display = "none";
               saveImg.style.display = "none";
               restoreImg.style.display = "none";
-              setTimeout("location.reload()", 2000);
+              setTimeout("location.reload()", 1500);
 //                退出编辑状态
             } else {
 //              this.$Message.error("操作失败,请重试!");
