@@ -55,18 +55,18 @@
 
                       <td class="operationTd">
                         <!--编辑功能，初始显示，编辑时隐藏-->
-                        <img :id="'EditImg'+index" src="./images/edit.png" @click="editClick(index)">
+                        <img title="编辑" :id="'EditImg'+index" src="./images/edit.png" @click="editClick(index)">
                         <!--保存功能，初始隐藏，编辑时显示-->
-                        <img :id="'SaveImg'+index" class="saveImg" src="./images/save.png" @click="operationClick(index,'save')">
+                        <img title="保存" :id="'SaveImg'+index" class="saveImg" src="./images/save.png" @click="operationClick(index,'save')">
                         <!--取消编辑并重置，初始隐藏，编辑时显示-->
-                        <img :id="'RestoreImg'+index" class="restoreImg" src="./images/restore.png" @click="operationClick(index,'restore')">
+                        <img title="取消" :id="'RestoreImg'+index" class="restoreImg" src="./images/restore.png" @click="operationClick(index,'restore')">
                         <!--删除功能，初始显示，编辑时隐藏-->
-                        <img :id="'DeleteImg'+index" src="./images/delete.png" @click="operationClick(index,'delete')">
+                        <img title="删除" :id="'DeleteImg'+index" src="./images/delete.png" @click="operationClick(index,'delete')">
                       </td>
                     </tr>
                     <tr>
                       <!--增加功能，通过vue增加循环数组元素，但input DOM不会即时创建，所以暂时无法增加的同时处于编辑状态-->
-                      <td><img src="./images/add.png" @click="addClick(certificates)"></td>
+                      <td><img title="添加" src="./images/add.png" @click="addClick(certificates)"></td>
                       <td></td>
                       <td></td>
                       <td></td>

@@ -39,14 +39,14 @@
                 <!--<td width="%20"><input readonly onkeyup="this.value=this.value.replace(/\s+/g,'')"  :id="'endTime'+index" type="text" v-model.lazy="data.endTime"></td>-->
                 <td width="20%"><Date-picker v-model.lazy="data.endTime" :id="'endTime'+index" type="date" placeholder="选择日期" style="width: 6rem;margin-left: 1rem;"></Date-picker></td>
                 <td width="%20">
-                  <img @click="operationClick(index,'save')" class='img'style="display:none;" :src="imgSrc1" :id="'save'+index">
-                  <img @click="operationClick(index,'edit')"class='img'style="display:none;" :src="imgSrc2" :id="'edit'+index">
-                  <img @click="chang(index)" class='img' style="display:inline;" :src="imgSrc3" :id="'chang'+index">
-                  <img @click="operationClick(index,'del')" class='img' style="display:inline;" :src="imgSrc4" :id="'del'+index">
+                  <img title="保存" @click="operationClick(index,'save')" class='img'style="display:none;" :src="imgSrc1" :id="'save'+index">
+                  <img title="取消" @click="operationClick(index,'edit')"class='img'style="display:none;" :src="imgSrc2" :id="'edit'+index">
+                  <img title="编辑" @click="chang(index)" class='img' style="display:inline;" :src="imgSrc3" :id="'chang'+index">
+                  <img title="删除" @click="operationClick(index,'del')" class='img' style="display:inline;" :src="imgSrc4" :id="'del'+index">
                 </td>
               </tr>
               <tr>
-               <td>  <img  @click="add" id='img5'  :src="imgSrc5" ></td>
+               <td>  <img  @click="add" id='img5' title="添加"  :src="imgSrc5" ></td>
                 <td></td>
                 <td></td>
                 <td></td>

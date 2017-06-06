@@ -35,8 +35,8 @@
           <td v-text="data.coursewareType"></td>
           <td v-text="data.uploadTime"></td>
           <td><form action="./courseTeachPlan/leaderDownloadTeachPlan" method="get"><input v-model="data.teacherId" name="teacherId" readonly style="display: none"><input v-model="data.courseId" name="courseId" readonly style="display: none"><input v-model="data.type" name="coursewareType" readonly style="display: none"><button class="am-btn am-btn-success am-radius" :id="'down'+index" type="submit">下载</button></form></td>
-          <td ><button :id="'buttonOne'+index" @click="successDia(index)"  class="circle" >√</button>
-              <button :id="'buttonTwo'+index" @click="failDia(index)"  class="circle" >×</button>
+          <td ><button :id="'buttonOne'+index" @click="successDia(index)" title="通过" class="circle" >√</button>
+              <button :id="'buttonTwo'+index" @click="failDia(index)" title="不通过" class="circle" >×</button>
               <!--<img  height="30" width="30"  :src="Src1">-->
               <!--<img height="30" width="30"   :src="Src2">-->
           </td>
