@@ -140,4 +140,9 @@
     margin-top: 0;
     left: 1rem;
   }
+  @media screen and (max-width:1025px) {
+    html {
+      font-size: 56%;
+    }
+  }
 </style>

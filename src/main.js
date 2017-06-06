@@ -2,7 +2,7 @@ import Vue from 'vue'
 //import Vuex from 'vuex'
 //import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
-import router from './routes/index'
+import router from './routes/index.js'
 import App from './App.vue'
 import iView from 'iview'
 import  './assets/css/iview.css'
@@ -27,6 +27,7 @@ Vue.http.interceptors.push((request, next) => {
       } else if (response.body[0].code == "-666") {
         //this.$Message.error('操作失败，请先登录！',3);
         //setTimeout("location.href ='#/login'", 4000);
+        sessionStorage.removeItem("userType");
         location.href ='#/login';
       }
     }catch (e){}

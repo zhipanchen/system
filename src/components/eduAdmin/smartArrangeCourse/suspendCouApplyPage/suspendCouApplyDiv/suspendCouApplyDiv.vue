@@ -29,10 +29,10 @@
           <td>{{ application.appTime }}</td>
           <td>{{ application.reason }}</td>
           <td>
-            <button class="operationButton" @click="operation(application.lessonsChangeId,'true',index)">√</button>
+            <button class="operationButton" @click="operation(application.lessonsChangeId,'true',index)" title="通过">√</button>
             <!--<button @click="setTrue(index)">√</button>-->
             <!--申请通过批准-->
-            <button class="operationButton" @click="operation(application.lessonsChangeId,'false',index)">×</button>
+            <button class="operationButton" @click="operation(application.lessonsChangeId,'false',index)" title="不通过">×</button>
             <!--申请拒绝-->
           </td>
         </tr>

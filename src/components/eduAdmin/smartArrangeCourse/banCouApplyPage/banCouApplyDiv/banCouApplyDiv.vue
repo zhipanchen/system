@@ -23,9 +23,9 @@
             <td>{{ application.appContent }}</td>
             <td>{{ application.appTime }}</td>
             <td>
-              <button class="operationButton" @click="operation(application.forbiddentimeId,'true',index)">√</button>
+              <button class="operationButton" @click="operation(application.forbiddentimeId,'true',index)" title="通过">√</button>
               <!--申请通过批准-->
-              <button class="operationButton" @click="operation(application.forbiddentimeId,'false',index)">×</button>
+              <button class="operationButton" @click="operation(application.forbiddentimeId,'false',index)" title="不通过">×</button>
               <!--申请拒绝-->
             </td>
           </tr>

@@ -45,7 +45,7 @@
                 <option selected disabled></option>
                 <option v-for="teacher in teachers">{{ teacher }}</option>
               </select>
-              <span class="tipSpan" @click="addPerson('leader')"><img src="./images/addCircle.png"></span>
+              <span class="tipSpan" @click="addPerson('leader')"><img src="./images/addCircle.png" title="添加"></span>
               <div class="personDiv">
               <!--成员显示组件-->
                 <eduResGroupPerson v-for="(leader,index) in leaders" :key="leader" @remove="operationClick(index,'remove',leaders)" :person="leader"></eduResGroupPerson>
@@ -57,7 +57,7 @@
                 <option selected disabled></option>
                 <option v-for="teacher in teachers">{{ teacher }}</option>
               </select>
-              <span class="tipSpan" @click="addPerson('member')"><img src="./images/addCircle.png"></span>
+              <span class="tipSpan" @click="addPerson('member')"><img src="./images/addCircle.png" title="添加"></span>
               <div class="personDiv">
                 <eduResGroupPerson v-for="(member,index) in members" :key="member" @remove="operationClick(index,'remove',members)" :person="member"></eduResGroupPerson>
               </div>
@@ -76,7 +76,7 @@
           id="modalBody"
           :styles="{top:'10rem'}">
         <div style="font-size: 1.1rem;text-align: center;">
-          <p>右侧存在可操作信息，是否继续？</p>
+          <p>右侧存在编辑过的信息，是否继续？</p>
         </div>
         <div slot="footer" style="text-align: center">
           <button id="modalBtn" @click="groupClick(operationIndex)">确定</button>
@@ -173,9 +173,13 @@
               targroupType: "",
               groupNumber: "",
               leaders: [],
+//              组长
               members: [],
+//              组员
               teachers: [],
 //              学校老师信息，用于添加教研组成员
+              isChange: false,
+//              当前教研组信息是否编辑过
               operationObj: null,
               operationIndex: null,
 //        对话框参数传递
@@ -209,13 +213,26 @@
           },function(error){
             this.$Message.error("连接失败，请重试！");
           });
+        }, //    页面dom加载前获取后端数据
+        watch: {
+          groupName: function () {
+            this.isChange = true;
+          },
+          targroupType: function () {
+            this.isChange = true;
+          },
+          leaders: function () {
+            this.isChange = true;
+          },
+          members: function () {
+            this.isChange = true;
+          },
         },
-//    页面dom加载前获取后端数据
         methods: {
           operationClick: function(operationIndex,type,operationObj){
             this.operationIndex = operationIndex;
             if(type == "click"){
-              if(this.groupName != "") {
+              if(this.groupName != "" && this.isChange == true) {
                 this.modal1 = true;
               }else{
                 this.groupClick(operationIndex);
@@ -258,6 +275,7 @@
               }
             }*/
             console.log(this.groups);
+            this.isChange = true;
             if(this.groups[index].index == null){
 //              判断是否为未保存的新增教研组
               /*document.getElementById("groupInput").readOnly = false;

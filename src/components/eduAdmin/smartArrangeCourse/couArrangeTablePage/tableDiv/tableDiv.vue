@@ -1,6 +1,6 @@
 <template>
     <div id="couArrangeTable_tableDiv">
-        <button id="exchangeButton" @click="modal1 = true" class="am-btn am-btn-success am-radius">确认调课</button>
+        <!--<button id="exchangeButton" @click="modal1 = true" class="am-btn am-btn-success am-radius">确认调课</button>-->
         <table id="checkCourseTable">
             <tr class="headTr">
                 <td id="headTdTime">时间</td>
@@ -44,32 +44,32 @@
                 <td>5-6</td>
             </tr>
             <tr  v-for="(item,index) in items" id="courseTr">
-                <td class="sectionTd">{{ item.className }} </td>
-                <td :id="'first'+index" @click="courseClick('first',index)">{{ item.firstCourse }}</td>
-                <td :id="'second'+index" @click="courseClick('second',index)">{{ item.secondCourse }}</td>
-                <td :id="'third'+index" @click="courseClick('third',index)">{{ item.thirdCourse }}</td>
+                <td class="sectionTd" v-html="item.className"></td>
+                <td :id="'first'+index" @click="courseClick('first',index)" v-html="item.firstCourse"></td>
+                <td :id="'second'+index" @click="courseClick('second',index)" v-html="item.secondCourse"></td>
+                <td :id="'third'+index" @click="courseClick('third',index)" v-html="item.thirdCourse"></td>
                 <!--<td :id="index" @click="courseClick('third',index)"></td>-->
-                <td :id="'fourth'+index" @click="courseClick('fourth',index)">{{ item.fourthCourse }}</td>
-                <td :id="'fifth'+index" @click="courseClick('fifth',index)">{{ item.fifthCourse }}</td>
-                <td :id="'sixth'+index" @click="courseClick('sixth',index)">{{ item.sixthCourse }}</td>
+                <td :id="'fourth'+index" @click="courseClick('fourth',index)" v-html="item.fourthCourse"></td>
+                <td :id="'fifth'+index" @click="courseClick('fifth',index)" v-html="item.fifthCourse"></td>
+                <td :id="'sixth'+index" @click="courseClick('sixth',index)" v-html="item.sixthCourse"></td>
                 <!--<td :id="index" @click="courseClick('third',index)"></td>-->
-                <td :id="'seventh'+index" @click="courseClick('seventh',index)">{{ item.seventhCourse }}</td>
-                <td :id="'eighth'+index" @click="courseClick('eighth',index)">{{ item.eighthCourse }}</td>
-                <td :id="'ninth'+index" @click="courseClick('ninth',index)">{{ item.ninthCourse }}</td>
+                <td :id="'seventh'+index" @click="courseClick('seventh',index)" v-html="item.seventhCourse"></td>
+                <td :id="'eighth'+index" @click="courseClick('eighth',index)" v-html="item.eighthCourse"></td>
+                <td :id="'ninth'+index" @click="courseClick('ninth',index)" v-html="item.ninthCourse"></td>
                 <!--<td :id="index" @click="courseClick('third',index)"></td>-->
-                <td :id="'tenth'+index" @click="courseClick('tenth',index)">{{ item.tenthCourse }}</td>
-                <td :id="'eleventh'+index" @click="courseClick('eleventh',index)">{{ item.eleventhCourse }}</td>
-                <td :id="'twelfth'+index" @click="courseClick('twelfth',index)">{{ item.twelfthCourse }}</td>
+                <td :id="'tenth'+index" @click="courseClick('tenth',index)" v-html="item.tenthCourse"></td>
+                <td :id="'eleventh'+index" @click="courseClick('eleventh',index)" v-html="item.eleventhCourse"></td>
+                <td :id="'twelfth'+index" @click="courseClick('twelfth',index)" v-html="item.twelfthCourse"></td>
                 <!--<td :id="index" @click="courseClick('third',index)"></td>-->
-                <td :id="'thirteenth'+index" @click="courseClick('thirteenth',index)">{{ item.thirteenthCourse }}</td>
-                <td :id="'fourteenth'+index" @click="courseClick('fourteenth',index)">{{ item.fourteenthCourse }}</td>
+                <td :id="'thirteenth'+index" @click="courseClick('thirteenth',index)" v-html="item.thirteenthCourse"></td>
+                <td :id="'fourteenth'+index" @click="courseClick('fourteenth',index)" v-html="item.fourteenthCourse"></td>
                 <td :id="'fifteenth'+index" @click="courseClick('fifteenth',index)">班会</td>
-                <td :id="'classroomName'+index" >{{ item.classroomName }}</td>
-                <td :id="'classHeadmaster'+index">{{ item.classHeadmaster }}</td>
+                <td :id="'classroomName'+index"  v-html="item.classroomName"></td>
+                <td :id="'classHeadmaster'+index" v-html="item.classHeadmaster"></td>
             </tr>
         </table>
-        <p id="courseDetailP">尚未排课的课程（请确保排课课程数量设置不超出限制）：</p>
-        <table id="courseDetailTable" class="normalTable">
+        <!--<p id="courseDetailP">尚未排课的课程（请确保排课课程数量设置不超出限制）：</p>-->
+        <!--<table id="courseDetailTable" class="normalTable">
             <thead>
                 <tr>
                     <td></td>
@@ -90,7 +90,7 @@
                     <td></td>
                 </tr>
             </tbody>
-        </table>
+        </table>-->
         <Modal
             v-model="modal1"
             width="400"
@@ -480,7 +480,7 @@
             },
             courseClick: function(name,index){
 //                选择需要调换的课程
-                var td = document.getElementById(name+index);
+                /*var td = document.getElementById(name+index);
                 console.log(td.style.backgroundColor);
                 if (td.style.backgroundColor == "lightskyblue" || td.style.backgroundColor == "rgb(135, 206, 250)") {
                     td.style.backgroundColor = "white";
@@ -490,11 +490,10 @@
                         td.style.backgroundColor = "lightskyblue";
                         this.checked++;
                     }else{
-//                        this.$Message.warning("已选择了需要调换的两门课程！");
                         this.errorMessage = "已选择了需要调换的两门课程！";
                         this.modal2 = true;
                     }
-                }
+                }*/
             }
         }
     }
@@ -520,7 +519,7 @@
     }
     #checkCourseTable td{
         border: thin solid #d4d4d9;
-        max-width: 3rem;
+        /*max-width: 3rem;*/
     }
     .headTr td{
         height: 1rem;
@@ -539,16 +538,16 @@
     }
     #headTdTime{
         text-align: right;
-        border: none;
+        border: none !important;
         width: 8.3rem;
     }
     #headTdCourse{
-        border: none;
+        border: none !important;
     }
     #headTdClass{
         padding-left: 0.5rem;
         text-align: left;
-        border: none;
+        border: none !important;
     }
     #headTdTime:after{
         /*表头分割线*/
