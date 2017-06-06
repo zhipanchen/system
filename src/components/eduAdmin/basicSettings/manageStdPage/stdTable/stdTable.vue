@@ -89,7 +89,7 @@
               <td><input id="input7" :value="studentSimpleInfo.specialityName" readonly="readonly" style="border: none"></td>
               <td><input id="input8" :value="studentSimpleInfo.className" readonly="readonly" style="border: none;"></td>
               <td>
-                <img :id="'deleteImg'+index" src="./images/delete.png" @click="deleteClick(index)">
+                <img :id="'deleteImg'+index" title="删除" src="./images/delete.png" @click="deleteClick(index)">
               </td>
             </tr>
             </tbody>

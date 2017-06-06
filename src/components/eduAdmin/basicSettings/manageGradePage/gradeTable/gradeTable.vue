@@ -9,7 +9,7 @@
             <td><input class="gradeInput" type="text" :value="fiveGrade.studentNum" readonly="readonly"></td>
             <td class="checkGradeInfo" @click="checkGradeInfoClick(firstYearType,fiveGrade.gradeName)"><u>班级管理</u></td>
             <td>
-              <img :id="'fiveDeleteImg'+index" src="./images/delete.png" @click="deleteGradeClick(firstYearType,fiveGrades[index].gradeName,'1',index)">
+              <img :id="'fiveDeleteImg'+index" title="删除" src="./images/delete.png" @click="deleteGradeClick(firstYearType,fiveGrades[index].gradeName,'1',index)">
             </td>
           </tr>
         </table>
@@ -24,7 +24,7 @@
             <td><input class="gradeInput" type="text" :value="threeGrade.studentNum" readonly="readonly"></td>
             <td class="checkGradeInfo" @click="checkGradeInfoClick(secondYearType,threeGrade.gradeName)"><u>班级管理</u></td>
             <td>
-              <img :id="'threeDeleteImg'+index" src="./images/delete.png" @click="deleteGradeClick(secondYearType,threeGrades[index].gradeName,'2',index)">
+              <img :id="'threeDeleteImg'+index" title="删除" src="./images/delete.png" @click="deleteGradeClick(secondYearType,threeGrades[index].gradeName,'2',index)">
             </td>
           </tr>
         </table>
@@ -80,10 +80,10 @@
             <td><input id="input6" :value="classinfoStr.schoolYearType" readonly="readonly" style="border: none"></td>
             <td><input id="input7" :value="classinfoStr.classSize" readonly="readonly" style="border: none"></td>
             <td>
-              <img :id="'editImg'+index" class="btnImg" src="./images/edit.png" @click="editClick(index)">
-              <img :id="'saveImg'+index" class="btnImg" src="./images/save.png" style="display: none" @click="saveClick(index)">
-              <img :id="'deleteImg'+index" class="btnImg" src="./images/delete.png" @click="deleteClick(index)">
-              <img :id="'restoreImg'+index" class="btnImg" src="./images/restore.png" style="display: none" @click="restoreClick(index)">
+              <img :id="'editImg'+index" title="修改" class="btnImg" src="./images/edit.png" @click="editClick(index)">
+              <img :id="'saveImg'+index" title="保存" class="btnImg" src="./images/save.png" style="display: none" @click="saveClick(index)">
+              <img :id="'deleteImg'+index" title="删除" class="btnImg" src="./images/delete.png" @click="deleteClick(index)">
+              <img :id="'restoreImg'+index" title="取消" class="btnImg" src="./images/restore.png" style="display: none" @click="restoreClick(index)">
             </td>
           </tr>
           </tbody>
@@ -498,7 +498,7 @@
     text-align: center;
   }
   .gradeInput{
-    font-size: 0.5rem;
+    font-size: 0.9rem;
     width: 35%;
     border: none;
     outline: none;
