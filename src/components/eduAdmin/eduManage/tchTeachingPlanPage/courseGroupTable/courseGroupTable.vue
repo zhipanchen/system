@@ -57,14 +57,14 @@
             </td>
             <!--下载培养方案的按钮-->
             <td v-if="courseGroupInfo.auditStatus===0">
-              <button class="circleEnd" >×</button>
+              <button title="审核不通过" class="circleEnd" >×</button>
             </td>
             <td v-else-if="courseGroupInfo.auditStatus===1">
-              <button class="circleEnd" >√</button>
+              <button title="审核通过" class="circleEnd" >√</button>
             </td>
             <td v-else-if="courseGroupInfo.auditStatus===2">
-              <button :id="'buttonOne'+index" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'1',index,courseGroupInfo.coursewareType)"  class="circle" >√</button>
-              <button :id="'buttonTwo'+index" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'0',index,courseGroupInfo.coursewareType)"  class="circle" >×</button>
+              <button :id="'buttonOne'+index" title="审核通过" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'1',index,courseGroupInfo.coursewareType)"  class="circle" >√</button>
+              <button :id="'buttonTwo'+index" title="审核不通过" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'0',index,courseGroupInfo.coursewareType)"  class="circle" >×</button>
               <!--<img id="adopt" src="./images/save.png" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'1')">-->
               <!--<img id="notAdopt" src="./images/restore.png" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'1')">-->
             </td>
@@ -88,14 +88,14 @@
             </td>
             <!--下载培养方案的按钮-->
             <td v-if="courseGroupInfo.auditStatus===0">
-              <button class="circleEnd" >×</button>
+              <button title="审核不通过" class="circleEnd" >×</button>
             </td>
             <td v-else-if="courseGroupInfo.auditStatus===1">
-              <button class="circleEnd" >√</button>
+              <button title="审核通过" class="circleEnd" >√</button>
             </td>
             <td v-else-if="courseGroupInfo.auditStatus===2">
-              <button :id="'buttonOne'+index" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'1',index,courseGroupInfo.coursewareType)"  class="circle" >√</button>
-              <button :id="'buttonTwo'+index" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'0',index,courseGroupInfo.coursewareType)"  class="circle" >×</button>
+              <button :id="'buttonOne'+index" title="审核通过" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'1',index,courseGroupInfo.coursewareType)"  class="circle" >√</button>
+              <button :id="'buttonTwo'+index" title="审核不通过" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'0',index,courseGroupInfo.coursewareType)"  class="circle" >×</button>
               <!--<img id="adopt" src="./images/save.png" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'1')">-->
               <!--<img id="notAdopt" src="./images/restore.png" @click="examineTeachingPlanInfoClick(courseGroupInfo.teacherId,courseGroupInfo.courseId,'1')">-->
             </td>

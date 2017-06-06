@@ -3,21 +3,30 @@ import Router from 'vue-router'
 
 //陈志攀（start）
 //***********************************学生*************************************************
-import studentChangPassword from '../views/student/studentChangPasswordPage/studentChangPasswordPage.vue'
+/*import studentChangPassword from '../views/student/studentChangPasswordPage/studentChangPasswordPage.vue'
 import studentLesson from '../views/student/studentLessonPage/studentLessonPage.vue'
 import studentTeacher from '../views/student/studentTeacherPage/studentTeacherPage.vue'
 import educationMessage from '../views/student/studentEducationMessagePage/studentEducationMessagePage.vue'
 import studentInformation from '../views/student/studentInformationPage/studentInformationPage.vue'
 import studentEvaluation from '../views/student/studentEvaluationPage/studentEvaluationPage.vue'
-import studentTestInfo from '../views/student/studentTestInfoPage/studentTeacherPage.vue'
+import studentTestInfo from '../views/student/studentTestInfoPage/studentTeacherPage.vue'*/
+const studentChangPassword = resolve => require(['../views/student/studentChangPasswordPage/studentChangPasswordPage.vue'], resolve);
+const studentLesson = resolve => require(['../views/student/studentLessonPage/studentLessonPage.vue'], resolve);
+const studentTeacher = resolve => require(['../views/student/studentTeacherPage/studentTeacherPage.vue'], resolve);
+const educationMessage = resolve => require(['../views/student/studentEducationMessagePage/studentEducationMessagePage.vue'], resolve);
+const studentInformation = resolve => require(['../views/student/studentInformationPage/studentInformationPage.vue'], resolve);
+const studentEvaluation = resolve => require(['../views/student/studentEvaluationPage/studentEvaluationPage.vue'], resolve);
+const studentTestInfo = resolve => require(['../views/student/studentTestInfoPage/studentTeacherPage.vue'], resolve);
 //***********************************教师*************************************************
-import teacherTestInfo from '../views/teacher/teacherTestInfoPage/teacherTestInfoPage.vue'
+//import teacherTestInfo from '../views/teacher/teacherTestInfoPage/teacherTestInfoPage.vue'
+const teacherTestInfo = resolve => require(['../views/teacher/teacherTestInfoPage/teacherTestInfoPage.vue'], resolve);
 //***********************************教务*************************************************
-import eduAdminManager from '../views/eduAdmin/eduAdminManagerPage/eduAdminManagerPage.vue'
+//import eduAdminManager from '../views/eduAdmin/eduAdminManagerPage/eduAdminManagerPage.vue'
+const eduAdminManager = resolve => require(['../views/eduAdmin/eduAdminManagerPage/eduAdminManagerPage.vue'], resolve);
 //陈志攀（end）
 
 //吴坚（start）
-import stInquireGrade from '../views/student/inquireGradePage/inquireGradePage.vue'
+/*import stInquireGrade from '../views/student/inquireGradePage/inquireGradePage.vue'
 import eduAdminManageStd from '../views/eduAdmin/basicSettings/manageStdPage/manageStdPage.vue'
 import eduAdminManageTch from '../views/eduAdmin/basicSettings/manageTchPage/manageTchPage.vue'
 import eduAdminEduPlan from '../views/eduAdmin/eduManage/eduPlanPage/eduPlanPage.vue'
@@ -27,7 +36,18 @@ import eduAdminManageClass from '../views/eduAdmin/eduManage/manageClassPage/man
 import eduAdminEvaTeachingResult from '../views/eduAdmin/eduManage/evaTeachingResultPage/evaTeachingResultPage.vue'
 import eduAdminSupervisorManage from '../views/eduAdmin/eduManage/supervisorManagePage/supervisorManagePage.vue'
 import eduAdminAuthorityManage2 from '../views/eduAdmin/userManage/authorityManage2Page/authorityManage2Page.vue'
-import eduAdminManageGrade from '../views/eduAdmin/basicSettings/manageGradePage/manageGradePage.vue'
+import eduAdminManageGrade from '../views/eduAdmin/basicSettings/manageGradePage/manageGradePage.vue'*/
+const stInquireGrade = resolve => require(['../views/student/inquireGradePage/inquireGradePage.vue'], resolve);
+const eduAdminManageStd = resolve => require(['../views/eduAdmin/basicSettings/manageStdPage/manageStdPage.vue'], resolve);
+const eduAdminManageTch = resolve => require(['../views/eduAdmin/basicSettings/manageTchPage/manageTchPage.vue'], resolve);
+const eduAdminEduPlan = resolve => require(['../views/eduAdmin/eduManage/eduPlanPage/eduPlanPage.vue'], resolve);
+const eduAdminTeachProcess = resolve => require(['../views/eduAdmin/eduManage/teachProcessPage/teachProcessPage.vue'], resolve);
+const eduAdminTchTeachingPlan = resolve => require(['../views/eduAdmin/eduManage/tchTeachingPlanPage/tchTeachingPlanPage.vue'], resolve);
+const eduAdminManageClass = resolve => require(['../views/eduAdmin/eduManage/manageClassPage/manageClassPage.vue'], resolve);
+const eduAdminEvaTeachingResult = resolve => require(['../views/eduAdmin/eduManage/evaTeachingResultPage/evaTeachingResultPage.vue'], resolve);
+const eduAdminSupervisorManage = resolve => require(['../views/eduAdmin/eduManage/supervisorManagePage/supervisorManagePage.vue'], resolve);
+const eduAdminAuthorityManage2 = resolve => require(['../views/eduAdmin/userManage/authorityManage2Page/authorityManage2Page.vue'], resolve);
+const eduAdminManageGrade = resolve => require(['../views/eduAdmin/basicSettings/manageGradePage/manageGradePage.vue'], resolve);
 // 吴坚（end）
 
 //李西炜（start）
@@ -35,7 +55,7 @@ import login from '../views/main/loginPage/loginPage.vue'
 import eduAdminHome from '../views/main/eduAdminHomePage/eduAdminHomePage.vue'
 import teacherHome from '../views/main/teacherHomePage/teacherHomePage.vue'
 import studentHome from '../views/main/studentHomePage/studentHomePage.vue'
-import forgetPassword from '../views/main/forgetPwPage/forgetPwPage.vue'
+/*import forgetPassword from '../views/main/forgetPwPage/forgetPwPage.vue'
 import resetForgetPassword from '../views/main/resetForgetPwPage/resetForgetPwPage.vue'
 import combineCoursePage from '../views/eduAdmin/smartArrangeCourse/combineCoursePage/combineCoursePage.vue'
 import checkCoursePage from '../views/eduAdmin/smartArrangeCourse/checkCoursePage/checkCoursePage.vue'
@@ -49,11 +69,30 @@ import courseTypeMgmtPage from '../views/eduAdmin/basicSettings/courseTypeMgmtPa
 import eduResGroupMgmtPage from '../views/eduAdmin/basicSettings/eduResGroupMgmtPage/eduResGroupMgmtPage.vue'
 import suspendCouApplyPage from '../views/eduAdmin/smartArrangeCourse/suspendCouApplyPage/suspendCouApplyPage.vue'
 import makeupCouApplyPage from '../views/eduAdmin/smartArrangeCourse/makeupCouApplyPage/makeupCouApplyPage.vue'
-import notifyInformationPage from '../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'
+import notifyInformationPage from '../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'*/
+//const login = resolve => require(['../views/main/loginPage/loginPage.vue'], resolve);
+//const eduAdminHome = resolve => require(['../views/main/eduAdminHomePage/eduAdminHomePage.vue'], resolve);
+//const teacherHome = resolve => require(['../views/main/teacherHomePage/teacherHomePage.vue'], resolve);
+//const studentHome = resolve => require(['../views/main/studentHomePage/studentHomePage.vue'], resolve);
+const forgetPassword = resolve => require(['../views/main/forgetPwPage/forgetPwPage.vue'], resolve);
+const resetForgetPassword = resolve => require(['../views/main/resetForgetPwPage/resetForgetPwPage.vue'], resolve);
+const combineCoursePage = resolve => require(['../views/eduAdmin/smartArrangeCourse/combineCoursePage/combineCoursePage.vue'], resolve);
+const checkCoursePage = resolve => require(['../views/eduAdmin/smartArrangeCourse/checkCoursePage/checkCoursePage.vue'], resolve);
+const adjustCouApplyPage = resolve => require(['../views/eduAdmin/smartArrangeCourse/adjustCouApplyPage/adjustCouApplyPage.vue'], resolve);
+const banCouApplyPage = resolve => require(['../views/eduAdmin/smartArrangeCourse/banCouApplyPage/banCouApplyPage.vue'], resolve);
+const couArrangeSettingPage = resolve => require(['../views/eduAdmin/smartArrangeCourse/couArrangeSettingPage/couArrangeSettingPage.vue'], resolve);
+const couArrangeTablePage = resolve => require(['../views/eduAdmin/smartArrangeCourse/couArrangeTablePage/couArrangeTablePage.vue'], resolve);
+const textbookMgmtPage = resolve => require(['../views/eduAdmin/basicSettings/textbookMgmtPage/textbookMgmtPage.vue'], resolve);
+const classroomMgmtPage = resolve => require(['../views/eduAdmin/basicSettings/classroomMgmtPage/classroomMgmtPage.vue'], resolve);
+const courseTypeMgmtPage = resolve => require(['../views/eduAdmin/basicSettings/courseTypeMgmtPage/courseTypeMgmtPage.vue'], resolve);
+const eduResGroupMgmtPage = resolve => require(['../views/eduAdmin/basicSettings/eduResGroupMgmtPage/eduResGroupMgmtPage.vue'], resolve);
+const suspendCouApplyPage = resolve => require(['../views/eduAdmin/smartArrangeCourse/suspendCouApplyPage/suspendCouApplyPage.vue'], resolve);
+const makeupCouApplyPage = resolve => require(['../views/eduAdmin/smartArrangeCourse/makeupCouApplyPage/makeupCouApplyPage.vue'], resolve);
+const notifyInformationPage = resolve => require(['../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'], resolve);
 //李西炜（end）
 
 //易倩（start）
-import  teachingPlan from '../views/teacher/teachingPlanPage/teachingPlanPage.vue'
+/*import  teachingPlan from '../views/teacher/teachingPlanPage/teachingPlanPage.vue'
 import teachingEvaluate from'../views/teacher/teachingEvaluatePage/teachingEvaluatePage.vue'
 import stopClass from'../views/teacher/stopClassPage/stopClassPage.vue'
 import research from'../views/teacher/researchPage/researchPage.vue'
@@ -71,13 +110,33 @@ import classList from '../views/teacher/classListPage/classListPage.vue'
 import certificateManege from '../views/teacher/certificateManegePage/certificateManegePage.vue'
 import basicMessage from'../views/teacher/basicMessagePage/basicMessagePage.vue'
 import studentMessage from'../views/teacher/studentMessagePage/stopClassPage.vue'
-import checkStudentInfo from'../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'
+import checkStudentInfo from'../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'*/
+const  teachingPlan = resolve => require(['../views/teacher/teachingPlanPage/teachingPlanPage.vue'], resolve);
+const teachingEvaluate = resolve => require(['../views/teacher/teachingEvaluatePage/teachingEvaluatePage.vue'], resolve);
+const stopClass = resolve => require(['../views/teacher/stopClassPage/stopClassPage.vue'], resolve);
+const research = resolve => require(['../views/teacher/researchPage/researchPage.vue'], resolve);
+const requirement = resolve => require(['../views/teacher/requirementPage/requirementPage.vue'], resolve);
+const passwdChange = resolve => require(['../views/teacher/passwdChangePage/passwdChangePage.vue'], resolve);
+const messageNotice = resolve => require(['../views/teacher/messageNoticePage/messageNoticePage.vue'], resolve);
+const makeupClass = resolve => require(['../views/teacher/makeupClassPage/makeupClassPage.vue'], resolve);
+const experience = resolve => require(['../views/teacher/experiencePage/experiencePage.vue'], resolve);
+const educationManege = resolve => require(['../views/teacher/educationManegePage/educationManegePage.vue'], resolve);
+const director = resolve => require(['../views/teacher/directorPage/directorPage.vue'], resolve);
+const directorResult = resolve => require(['../views/teacher/directorResultPage/directorResultPage.vue'], resolve);
+//const directorResultList = resolve => require(['../views/teacher/directorResultListPage/directorResultListPage.vue'], resolve);
+const classManege = resolve => require(['../views/teacher/classManegePage/classManegePage.vue'], resolve);
+const classList = resolve => require(['../views/teacher/classListPage/classListPage.vue'], resolve);
+const certificateManege = resolve => require(['../views/teacher/certificateManegePage/certificateManegePage.vue'], resolve);
+const basicMessage = resolve => require(['../views/teacher/basicMessagePage/basicMessagePage.vue'], resolve);
+const studentMessage = resolve => require(['../views/teacher/studentMessagePage/stopClassPage.vue'], resolve);
+const checkStudentInfo = resolve => require(['../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'], resolve);
+
 //易倩（end）
 
 //蔡玲双（strat）
 // *******************eduAdmin***********************************
 // markManage
-import adminCancelGrade from '../views/eduAdmin/markManage/adminCancelGradePage/adminCancelGradePage.vue'
+/*import adminCancelGrade from '../views/eduAdmin/markManage/adminCancelGradePage/adminCancelGradePage.vue'
 import gradeQuery from '../views/eduAdmin/markManage/gradeQueryPage/gradeQueryPage.vue'
 import gradeStat from '../views/eduAdmin/markManage/gradeStatPage/gradeStatPage.vue'
 import makeupExamAdmin from '../views/eduAdmin/markManage/makeupExamAdminPage/makeupExamAdminPage.vue'
@@ -87,11 +146,23 @@ import setPrice from '../views/eduAdmin/tchSalary/setPricePage/setPricePage.vue'
 import authorityMgmt1 from '../views/eduAdmin/userManage/authorityMgmt1Page/authorityMgmt1Page.vue'
 import noticeManage from '../views/eduAdmin/notice/noticeMgmtPage/noticeManage.vue'
 import noticeSetting from '../views/eduAdmin/notice/noticeSettingPage/noticeSetting.vue'
-import notifyInformation from '../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'
+import notifyInformation from '../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'*/
+const adminCancelGrade = resolve => require(['../views/eduAdmin/markManage/adminCancelGradePage/adminCancelGradePage.vue'], resolve);
+const gradeQuery = resolve => require(['../views/eduAdmin/markManage/gradeQueryPage/gradeQueryPage.vue'], resolve);
+const gradeStat = resolve => require(['../views/eduAdmin/markManage/gradeStatPage/gradeStatPage.vue'], resolve);
+const makeupExamAdmin = resolve => require(['../views/eduAdmin/markManage/makeupExamAdminPage/makeupExamAdminPage.vue'], resolve);
+const makeupGradeInput = resolve => require(['../views/eduAdmin/markManage/makeupGradeInputPage/makeupGradeInputPage.vue'], resolve);
+const salary = resolve => require(['../views/eduAdmin/tchSalary/salaryPage/salaryPage.vue'], resolve);
+const setPrice = resolve => require(['../views/eduAdmin/tchSalary/setPricePage/setPricePage.vue'], resolve);
+const authorityMgmt1 = resolve => require(['../views/eduAdmin/userManage/authorityMgmt1Page/authorityMgmt1Page.vue'], resolve);
+const noticeManage = resolve => require(['../views/eduAdmin/notice/noticeMgmtPage/noticeManage.vue'], resolve);
+const noticeSetting = resolve => require(['../views/eduAdmin/notice/noticeSettingPage/noticeSetting.vue'], resolve);
+const notifyInformation = resolve => require(['../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'], resolve);
 // *******************main***********************************
-import eduAdminHomePage from '../views/main/eduAdminHomePage/eduAdminHomePage.vue'
+//import eduAdminHomePage from '../views/main/eduAdminHomePage/eduAdminHomePage.vue'
+const eduAdminHomePage = resolve => require(['../views/main/eduAdminHomePage/eduAdminHomePage.vue'], resolve);
 // *******************teacher***********************************
-import tchCheckTimetable from '../views/teacher/tchCheckTimetablePage/tchCheckTimetablePage.vue'
+/*import tchCheckTimetable from '../views/teacher/tchCheckTimetablePage/tchCheckTimetablePage.vue'
 import courseList from '../views/teacher/courseListPage/courseListPage.vue'
 import gradesInput from '../views/teacher/gradesInputPage/gradesInputPage.vue'
 import normalSchedule from '../views/teacher/normalSchedulePage/normalSchedulePage.vue'
@@ -99,10 +170,19 @@ import tchGradesInput from '../views/teacher/tchGradesInputPage/tchGradesInputPa
 import tchManuAdjCl from '../views/teacher/tchManuAdjClPage/tchManuAdjClPage.vue'
 import tchCheckSalary from '../views/teacher/tchCheckSalaryPage/tchCheckSalaryPage.vue'
 import scheduleList from '../views/eduAdmin/tchSalary/scheduleListPage/scheduleListPage.vue'		
-import seeSigninList from '../views/eduAdmin/tchSalary/seeSigninListPage/seeSigninListPage.vue'		
-
+import seeSigninList from '../views/eduAdmin/tchSalary/seeSigninListPage/seeSigninListPage.vue'*/
+const tchCheckTimetable = resolve => require(['../views/teacher/tchCheckTimetablePage/tchCheckTimetablePage.vue'], resolve);
+const courseList = resolve => require(['../views/teacher/courseListPage/courseListPage.vue'], resolve);
+const gradesInput = resolve => require(['../views/teacher/gradesInputPage/gradesInputPage.vue'], resolve);
+const normalSchedule = resolve => require(['../views/teacher/normalSchedulePage/normalSchedulePage.vue'], resolve);
+const tchGradesInput = resolve => require(['../views/teacher/tchGradesInputPage/tchGradesInputPage.vue'], resolve);
+const tchManuAdjCl = resolve => require(['../views/teacher/tchManuAdjClPage/tchManuAdjClPage.vue'], resolve);
+const tchCheckSalary = resolve => require(['../views/teacher/tchCheckSalaryPage/tchCheckSalaryPage.vue'], resolve);
+const scheduleList = resolve => require(['../views/eduAdmin/tchSalary/scheduleListPage/scheduleListPage.vue'], resolve);
+const seeSigninList = resolve => require(['../views/eduAdmin/tchSalary/seeSigninListPage/seeSigninListPage.vue'], resolve);
 //蔡玲双（end）
-Vue.use(Router)
+
+Vue.use(Router);
 
 export default new Router({   //将routes里的参数导出
 

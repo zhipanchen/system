@@ -1,7 +1,7 @@
 <template>
 	<div id="makeupExamAdmin">
 		<top-title></top-title>
-    	<top-bar1></top-bar1>
+    	<top-bar></top-bar>
       
       <makeup-list></makeup-list>
 	</div>
@@ -9,13 +9,13 @@
 
 <script>
 import topTitle from '../../../../components/public/topTitle/topTitle'
-import topBar1 from '../../../../components/eduAdmin/markManage/makeupExamAdminPage/topBar1'
-import makeupList from '../../../../components/eduAdmin/markManage/makeupExamAdminPage/makeupList'
+import topBar from '../../../../components/eduAdmin/markManage/makeupExamAdminPage/topBar/topBar'
+import makeupList from '../../../../components/eduAdmin/markManage/makeupExamAdminPage/makeupList/makeupList'
 
 export default {
 	name: 'makeupExamAdmin',
   components: {
-      topTitle, topBar1, makeupList
+      topTitle, topBar, makeupList
   },
   data () {
     return {

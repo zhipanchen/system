@@ -4,37 +4,37 @@
     <div id="userExitDiv">
       <a id="user" :href="userHref">您好,{{ userName }}!</a>
       <span style="font-size: 0.8rem;margin-left: 0.5rem;color: red">{{ emailStatus }}</span>
-      <a><img id="exitImg" src="./images/exit.png" alt="exitAlt" @click="modal = true"></a>
+      <a><img id="exitImg" src="./images/exit.png" alt="exitAlt" @click="modal = true" title="退出"></a>
+      <Modal
+          v-model="modal"
+          width="400"
+          :mask-closable="false"
+          id="modalBody">
+        <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
+          <span>注销登录</span>
+        </div>
+        <div style="font-size: 0.9rem;text-align: left;">
+          <p>您确定要注销并返回登录页面？</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="exitAlert">确定</button>
+          <button id="modalBtn" @click="modal = false">取消</button>
+        </div>
+      </Modal>
+      <Modal
+          v-model="modal1"
+          width="400"
+          :mask-closable="false"
+          id="modalBody"
+          :styles="{top:'10rem'}">
+        <div style="font-size: 1.1rem;text-align: center;">
+          <p>{{ errorMessage }}</p>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="modal1 = false">确定</button>
+        </div>
+      </Modal>
     </div>
-    <Modal
-        v-model="modal"
-        width="400"
-        :mask-closable="false"
-        id="modalBody">
-      <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
-        <span>注销登录</span>
-      </div>
-      <div style="font-size: 0.9rem;text-align: left;">
-        <p>您确定要注销并返回登录页面？</p>
-      </div>
-      <div slot="footer" style="text-align: center">
-        <button id="modalBtn" @click="exitAlert">确定</button>
-        <button id="modalBtn" @click="modal = false">取消</button>
-      </div>
-    </Modal>
-    <Modal
-        v-model="modal1"
-        width="400"
-        :mask-closable="false"
-        id="modalBody"
-        :styles="{top:'10rem'}">
-      <div style="font-size: 1.1rem;text-align: center;">
-        <p>{{ errorMessage }}</p>
-      </div>
-      <div slot="footer" style="text-align: center">
-        <button id="modalBtn" @click="modal1 = false">确定</button>
-      </div>
-    </Modal>
   </div>
 </template>
 

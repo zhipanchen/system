@@ -24,18 +24,18 @@
             <td><input id="classroomInput1" type="text" v-model="classroom.name" readonly="true"></td>
             <td><input id="classroomInput2" type="text" v-model="classroom.number" readonly="true"></td>
             <td class="operationTd">
-              <img :id="'classroomEditImg'+index" src="../../../../../assets/images/edit.png" @click="editClick('classroom',index)">
+              <img :id="'classroomEditImg'+index" src="../../../../../assets/images/edit.png" @click="editClick('classroom',index)" title="编辑">
               <!--编辑功能，初始显示，编辑时隐藏-->
-              <img :id="'classroomSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="operationClick('classroom',index,'save')">
+              <img :id="'classroomSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="operationClick('classroom',index,'save')" title="保存">
               <!--保存功能，初始隐藏，编辑时显示-->
-              <img :id="'classroomRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="operationClick('classroom',index,'restore')">
+              <img :id="'classroomRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="operationClick('classroom',index,'restore')" title="取消">
               <!--取消编辑重置，初始隐藏，编辑时显示-->
-              <img :id="'classroomDeleteImg'+index" src="../../../../../assets/images/delete.png"  @click="operationClick('classroom',index,'delete')">
+              <img :id="'classroomDeleteImg'+index" src="../../../../../assets/images/delete.png"  @click="operationClick('classroom',index,'delete')" title="删除">
               <!--删除功能，初始显示，编辑时隐藏-->
             </td>
           </tr>
           <tr>
-            <td><img src="../../../../../assets/images/add.png" @click="addClick(classrooms,'classroom')"></td>
+            <td><img src="../../../../../assets/images/add.png" @click="addClick(classrooms,'classroom')" title="添加"></td>
             <!--增加功能，通过vue增加循环数组元素，但input DOM不会即时创建，所以暂时无法增加的同时处于编辑状态-->
             <td></td>
             <td></td>
@@ -57,14 +57,14 @@
             <td><input id="engineInput1" type="text" v-model="engineRoom.name" readonly="true"></td>
             <td><input id="engineInput2" type="text" v-model="engineRoom.number" readonly="true"></td>
             <td class="operationTd">
-              <img :id="'engineEditImg'+index" src="../../../../../assets/images/edit.png" @click="editClick('engine',index)">
-              <img :id="'engineSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="operationClick('engine',index,'save')">
-              <img :id="'engineRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="operationClick('engine',index,'restore')">
-              <img :id="'engineDeleteImg'+index" src="../../../../../assets/images/delete.png" @click="operationClick('engine',index,'delete')">
+              <img :id="'engineEditImg'+index" src="../../../../../assets/images/edit.png" @click="editClick('engine',index)" title="编辑">
+              <img :id="'engineSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="operationClick('engine',index,'save')" title="保存">
+              <img :id="'engineRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="operationClick('engine',index,'restore')" title="取消">
+              <img :id="'engineDeleteImg'+index" src="../../../../../assets/images/delete.png" @click="operationClick('engine',index,'delete')" title="删除">
             </td>
           </tr>
           <tr>
-            <td><img src="../../../../../assets/images/add.png" @click="addClick(engineRooms,'engine')"></td>
+            <td><img src="../../../../../assets/images/add.png" @click="addClick(engineRooms,'engine')" title="添加"></td>
             <td></td>
             <td></td>
             <td></td>

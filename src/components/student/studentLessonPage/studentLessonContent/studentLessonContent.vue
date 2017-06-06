@@ -1,7 +1,7 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <div id="myLessonContent">
       <div class="positionBar">
-        <span>你的当前位置：</span>
+        <span>您的当前位置：</span>
         <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
         <span> > 学生个人信息</span>
       </div>
@@ -243,9 +243,4 @@
       text-align: center;
     }
 
-    @media screen and (max-width: 1023px) {
-        html {
-            font-size: 56%;
-        }
-    }
 </style>

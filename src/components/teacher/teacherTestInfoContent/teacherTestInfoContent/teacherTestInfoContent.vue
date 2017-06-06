@@ -1,7 +1,7 @@
 <template>
   <div id="testInfo">
     <div class="positionBar">
-      <span>你的当前位置：</span>
+      <span>您的当前位置：</span>
       <span><a :href="eduAdminPageUrl" class="returnHome">首页</a></span>
       <span> > 教师查看考场</span>
     </div>
@@ -75,12 +75,6 @@
   td{
     min-width: 4rem;
     height: 3rem;
-  }
-
-  @media screen and (max-width: 1023px) {
-    html {
-      font-size: 56%;
-    }
   }
 </style>
 

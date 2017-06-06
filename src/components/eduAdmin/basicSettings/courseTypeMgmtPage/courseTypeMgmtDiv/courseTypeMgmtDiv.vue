@@ -21,10 +21,10 @@
             <td v-text="index+1"></td>
             <td><input :id="'input'+index" type="text" v-model="courseType.courseTypeName" readonly></td>
             <td class="operationTd">
-              <img :id="'editImg'+index" src="../../../../../assets/images/edit.png" @click="editClick(index)">
-              <img :id="'saveImg'+index" style="display: none" src="../../../../../assets/images/save.png" @click="operationClick(index,'save')">
-              <img :id="'restoreImg'+index" style="display: none" src="../../../../../assets/images/restore.png" @click="operationClick(index,'restore')">
-              <img :id="'deleteImg'+index" src="../../../../../assets/images/delete.png" @click="operationClick(index,'delete')">
+              <img :id="'editImg'+index" src="../../../../../assets/images/edit.png" @click="editClick(index)" title="编辑">
+              <img :id="'saveImg'+index" style="display: none" src="../../../../../assets/images/save.png" @click="operationClick(index,'save')" title="保存">
+              <img :id="'restoreImg'+index" style="display: none" src="../../../../../assets/images/restore.png" @click="operationClick(index,'restore')" title="取消">
+              <img :id="'deleteImg'+index" src="../../../../../assets/images/delete.png" @click="operationClick(index,'delete')" title="删除">
             </td>
           </tr>
           <tr id="addTr">
