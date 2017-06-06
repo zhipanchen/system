@@ -4,7 +4,7 @@
       <div id="titleDiv">
         <a :href="imgHref"><img id="schoolImg" src="../../../assets/images/title.png" alt="四川省医科科学院·四川省人民医院·护士学校" ></a>
         <div id="userExitDiv">
-          <a :href="exitHref"><img id="exitImg" src="../../../assets/images/exit.png" alt="退出图标" @click="exitAlert"></a>
+          <a :href="exitHref"><img id="exitImg" src="../../../assets/images/exit.png" alt="退出图标" title="退出"></a>
         </div>
       </div>
       <div id="stepDiv">
@@ -19,6 +19,7 @@
           输入新密码：
           <input type="password" v-model="newPwd">
         </p>
+        <span style="display: none;color: red" id="pwIsNormalP">密码要求为6-15位的数字或字母组成！</span>
         <p class="operationP">
           确认新密码：
           <input type="password" v-model="confirmPwd">
@@ -58,25 +59,36 @@
         confirmPwd: "",//确认密码
         userId: "",//用户帐号
         modal: false,//对话框显隐
-        errorMessage: ""
+        errorMessage: "",
+        isNormal: true,
+//        密码是否符合要求
       }
     },
     mounted: function() {
+      window.onresize = function(){
+        var clientWidth = document.body.clientWidth;
+        if(clientWidth > 319 && clientWidth < 769){
+          document.documentElement.style.fontSize = "30px";
+        }
+      };
+      window.onresize();
 //      dom加载后获取后端的邮箱验证结果
       var dom = document.getElementById("resetForgetPassword");
       dom.style.height = window.innerHeight + "px";
       var thisURL = document.URL;
-      var param =thisURL.split("?")[1];
-      var paramA= param.split("&")[0];
-      var paramB= param.split("&")[1];
-      var sid = null;
-      if(paramA.split("=")[0] == "sid"){
-        sid = paramA.split("=")[1];
-        this.userId = paramB.split("=")[1];
-      }else{
-        this.userId = paramA.split("=")[1];
-        sid = paramB.split("=")[1];
-      }
+      try{
+        var param =thisURL.split("?")[1];
+        var paramA= param.split("&")[0];
+        var paramB= param.split("&")[1];
+        var sid = null;
+        if(paramA.split("=")[0] == "sid"){
+          sid = paramA.split("=")[1];
+          this.userId = paramB.split("=")[1];
+        }else{
+          this.userId = paramA.split("=")[1];
+          sid = paramB.split("=")[1];
+        }
+      }catch (e){}
 //      this.$http.post('../testPhp/loginCheck.php', {
       this.$http.post('./checkLink', {
           "sid": sid,
@@ -103,8 +115,19 @@
         }
       }, function (error) {
         document.getElementById("tipP").innerHTML = "连接失败，请重试！";
-        console.log(error);
       });
+    },
+    watch: {
+      newPwd: function () {
+        var pwIsNormalP = document.getElementById("pwIsNormalP");
+        if(this.newPwd.match(/^[a-zA-Z0-9]{6,10}$/)){
+          this.isNormal = true;
+          pwIsNormalP.style.display = "none";
+        }else{
+          this.isNormal = false;
+          pwIsNormalP.style.display = "block";
+        }
+      }
     },
     methods: {
       nextClick: function(){
@@ -112,8 +135,10 @@
         if(this.newPwd == ""){
           this.errorMessage = "密码不能为空,请确认重试！";
           this.modal = true;
+        }else if(!this.isNormal){
+          this.errorMessage = "密码要求为6-15位的数字或字母组成！";
+          this.modal = true;
         }else if(this.newPwd != this.confirmPwd){
-//          this.$Message.error("两次输入的新密码不相同！");
           this.errorMessage = "两次输入的新密码不相同！";
           this.modal = true;
         }else{
@@ -133,7 +158,7 @@
           }).then(function (response) {
             console.log(response.body);
             if(response.body.result == "1"){
-              this.$Message.success("修改成功，请牢记新密码！5s后跳转到登录……");
+              this.$Message.success("修改成功，请牢记新密码！5s后跳转到登录页面……");
               setTimeout("location.href = '#/login'", 5000);
             }else{
 //              this.$Message.error("修改失败，请确认新密码是否符合要求或验证是否仍有效！")
@@ -150,8 +175,15 @@
 </script>
 
 <style scoped>
+  #resetForgetPassword{
+    min-height: 35rem;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+  }
   #schoolImg{
     /*学校图标*/
+    width: 23rem;
     height: 3rem;
     border-radius: 1rem;
   }
@@ -176,11 +208,9 @@
     border: solid LightGreen;
     background-color: white;
     border-radius: 1rem;
-    height: 55%;
+    height: 26rem;
     width: 50%;
     margin: 0 auto;
-    position: relative;
-    top: 20%;
     padding: 1rem;
   }
   #stepDiv{
@@ -199,7 +229,7 @@
   #inputDiv{
     /*输入区域*/
     border-top: thin solid #f3f3f3;
-    height: inherit;
+    height: 60%;
     margin: 1rem 3rem;
     display: flex;
     flex-direction: column;
@@ -218,8 +248,14 @@
     /*操作提示*/
     font-size: 1.2rem;
   }
-  @media screen and (max-width: 1025px) {
-    html {
+  @media screen and (min-width:320px) and (max-width:769px) {
+    #schoolImg{
+      /*学校图标*/
+      width: 15rem;
+      height: 2rem;
+    }
+    #main{
+      width: 80%;
     }
   }
 </style>

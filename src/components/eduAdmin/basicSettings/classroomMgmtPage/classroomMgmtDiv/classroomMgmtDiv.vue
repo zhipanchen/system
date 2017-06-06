@@ -545,6 +545,10 @@
     /*页面主要内容*/
     margin: 0.5rem 5rem;
   }
+  .amButtom{
+    /*折叠按钮*/
+    cursor: pointer;
+  }
   /*.classroomButton{
     !*下拉显示或隐藏的按钮标题栏*!
     width: 100%;

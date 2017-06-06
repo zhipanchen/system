@@ -71,7 +71,7 @@
         this.userName = response.body.currentUserName + "(" + response.body.currentUserId + ") ";
         sessionStorage.setItem("userInfo", JSON.stringify(response.body));
       },function(error){
-        this.$Message.error('连接失败，请重试！',3);
+//        this.$Message.error('连接失败，请重试！',3);
       });
     },
     methods: {
@@ -80,7 +80,7 @@
         this.$http.post('./logout',{},{
           "Content-Type":"application/json"
         }).then(function(response){
-          sessionStorage.setItem("userType", null);
+          sessionStorage.removeItem("userType");
           location.href = "#/login";
         },function(error){
           this.$Message.error('连接失败，请重试！',3);
