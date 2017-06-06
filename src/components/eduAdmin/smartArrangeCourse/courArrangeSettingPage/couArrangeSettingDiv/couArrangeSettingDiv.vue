@@ -376,6 +376,7 @@
           }
           console.log(a);
           a = a .sort (function(a,b){return a.localeCompare(b)});
+//        按拼音首字母a-z排序
 
           for (var i = 0; i < a.length; i++) {
             for (var n = 0; n < courses.length; n++) {
@@ -405,6 +406,7 @@
           }
           console.log(a);
           a = a .sort (function(a,b){return a.localeCompare(b)});
+//        按拼音首字母a-z排序
 
           for (var i = 0; i < a.length; i++) {
             for (var n = 0; n < courses.length; n++) {
@@ -549,17 +551,34 @@
 //            重置数据
           if(year == "five"){
             this.fiveCourses.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_fiveCourses[index])));
+            if(this.fiveCourses[index].coursePlanId == ""){
+              this.fiveCourses.splice(index, 1);
+              this.buffer_fiveCourses.splice(index, 1);
+            }else{
+              for(i = 0;i<select.length;i++){
+                select[i].disabled = true;
+              }
+              editImg.style.display = "inline";
+              saveImg.style.display = "none";
+              deleteImg.style.display = "inline";
+              restoreImg.style.display = "none";
+            }
           }
           if(year == "three"){
             this.threeCourses.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_threeCourses[index])));
+            if(this.threeCourses[index].coursePlanId == ""){
+              this.threeCourses.splice(index, 1);
+              this.buffer_threeCourses.splice(index, 1);
+            }else{
+              for(i = 0;i<select.length;i++){
+                select[i].disabled = true;
+              }
+              editImg.style.display = "inline";
+              saveImg.style.display = "none";
+              deleteImg.style.display = "inline";
+              restoreImg.style.display = "none";
+            }
           }
-          for(i = 0;i<select.length;i++){
-            select[i].disabled = true;
-          }
-          editImg.style.display = "inline";
-          saveImg.style.display = "none";
-          deleteImg.style.display = "inline";
-          restoreImg.style.display = "none";
 //        }
           this.modal1 = false;
       },
@@ -739,6 +758,16 @@
         courses.push(
             { id:"",name:"", "number":"", "teacher":"", "teacherId":"", "classId":"选择班级", className:"", coursePlanId:""}
         );
+        this.$nextTick(function () {
+          var editImg = null;
+          if (year == "five") {
+            editImg = document.getElementById("fiveEditImg" + (courses.length - 1));
+          }
+          if (year == "three") {
+            editImg = document.getElementById("threeEditImg" + (courses.length - 1));
+          }
+          editImg.click();
+        });
         if (year == "five") {
           this.buffer_fiveCourses.push(
               { id:"",name:"", "number":"", "teacher":"", "teacherId":"", "classId":"选择班级", className:"", coursePlanId:""}

@@ -1465,10 +1465,14 @@
       },
       modal2: function () {
         if(this.modal2){
-          this.$http.post('./',{},{
+          this.$http.post('./getEvaTime',{},{
             "Content-Type":"application/json"
           }).then(function(response){
-            this.latelyEvaTime = "最近的评教时间为：" + response.body;
+            if(response.body.result == "1") {
+              this.latelyEvaTime = "最近的评教时间为：" + response.body.evaTime.startEvaTeachTime + "-" + response.body.evaTime.endEvaTeachTime;
+            }else if(response.body.result == "0") {
+              this.latelyEvaTime = "";
+            }
           },function(error){
           });
         }

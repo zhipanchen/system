@@ -105,7 +105,11 @@
       },{
         "Content-Type":"application/json"
       }).then(function (response) {
-        this.terms= response.body.yearTerm;
+        var a=[];
+        for(var i=0;i<response.body.yearTerm.length;i++){
+          a.push(response.body.yearTerm[i].startYearSemester);
+        }
+        this.terms= a;
       });
     },
     methods:{

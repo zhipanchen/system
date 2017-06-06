@@ -475,7 +475,7 @@
     }
     td{
         border: thin solid #d4d4d9;
-        max-width: 3rem;
+        /*max-width: 3rem;*/
     }
     .headTr td{
         /*表头单元格*/

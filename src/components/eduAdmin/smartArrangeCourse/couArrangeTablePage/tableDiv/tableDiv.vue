@@ -1,6 +1,6 @@
 <template>
     <div id="couArrangeTable_tableDiv">
-        <button id="exchangeButton" @click="modal1 = true" class="am-btn am-btn-success am-radius">确认调课</button>
+        <!--<button id="exchangeButton" @click="modal1 = true" class="am-btn am-btn-success am-radius">确认调课</button>-->
         <table id="checkCourseTable">
             <tr class="headTr">
                 <td id="headTdTime">时间</td>
@@ -68,8 +68,8 @@
                 <td :id="'classHeadmaster'+index" v-html="item.classHeadmaster"></td>
             </tr>
         </table>
-        <p id="courseDetailP">尚未排课的课程（请确保排课课程数量设置不超出限制）：</p>
-        <table id="courseDetailTable" class="normalTable">
+        <!--<p id="courseDetailP">尚未排课的课程（请确保排课课程数量设置不超出限制）：</p>-->
+        <!--<table id="courseDetailTable" class="normalTable">
             <thead>
                 <tr>
                     <td></td>
@@ -90,7 +90,7 @@
                     <td></td>
                 </tr>
             </tbody>
-        </table>
+        </table>-->
         <Modal
             v-model="modal1"
             width="400"
@@ -480,7 +480,7 @@
             },
             courseClick: function(name,index){
 //                选择需要调换的课程
-                var td = document.getElementById(name+index);
+                /*var td = document.getElementById(name+index);
                 console.log(td.style.backgroundColor);
                 if (td.style.backgroundColor == "lightskyblue" || td.style.backgroundColor == "rgb(135, 206, 250)") {
                     td.style.backgroundColor = "white";
@@ -490,11 +490,10 @@
                         td.style.backgroundColor = "lightskyblue";
                         this.checked++;
                     }else{
-//                        this.$Message.warning("已选择了需要调换的两门课程！");
                         this.errorMessage = "已选择了需要调换的两门课程！";
                         this.modal2 = true;
                     }
-                }
+                }*/
             }
         }
     }
@@ -520,7 +519,7 @@
     }
     #checkCourseTable td{
         border: thin solid #d4d4d9;
-        max-width: 3rem;
+        /*max-width: 3rem;*/
     }
     .headTr td{
         height: 1rem;
@@ -540,7 +539,7 @@
     #headTdTime{
         text-align: right;
         border: none !important;
-        min-width: 8.3rem;
+        width: 8.3rem;
     }
     #headTdCourse{
         border: none !important;

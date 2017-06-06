@@ -123,6 +123,12 @@
     text-decoration: none;
     font-size: 1rem;
   }
+  #msgImg{
+    /*信息图标*/
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+  }
   #exitImg{
     /*退出图标*/
     position: relative;
