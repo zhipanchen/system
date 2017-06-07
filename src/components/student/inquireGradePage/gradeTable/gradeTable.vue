@@ -29,11 +29,11 @@
         </thead>
         <tbody>
         <tr v-for="(studentScore,index) in studentScoreList">
-          <td v-text="studentScore.term"></td>
+          <td v-text="studentScore.yearTerm"></td>
           <td v-text="studentScore.courseId"></td>
           <td v-text="studentScore.courseName"></td>
           <td v-text="studentScore.courseType"></td>
-          <td v-text="studentScore.grade"></td>
+          <td v-text="studentScore.endGrade"></td>
           <td v-text="studentScore.makeUpGrade"></td>
           <td v-text="studentScore.finalGrade"></td>
           <td><a class="point" @click="applyClick(index)">{{studentScore.apply}}</a></td>
@@ -60,6 +60,7 @@
         modal2:false,
         nowIndex:0,//值为0无法执行，为1可以执行
         messageStr:'是否确定提交补考申请？',
+        studentPageUrl:'#/login/main/studentHome',
         termEle:'0',
         terms:[
           /*
@@ -70,9 +71,11 @@
           */
         ],
         studentScoreList:[
-          {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80',apply:'提交申请'},
-          {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80',apply:'--'},
-          {term:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',grade:'80',makeUpGrade:'--',finalGrade:'80',apply:'提交申请'}
+          /*
+          {yearTerm:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',endGrade:'80',makeUpGrade:'--',finalGrade:'80',apply:'提交申请'},
+          {yearTerm:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',endGrade:'80',makeUpGrade:'--',finalGrade:'80',apply:'--'},
+          {yearTerm:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',endGrade:'80',makeUpGrade:'--',finalGrade:'80',apply:'提交申请'}
+          */
         ]
       }
     },
@@ -84,8 +87,8 @@
       }).then(function (response) {
         var a= response.body.studentScoreList;
         for(var i=0;i<a.length;i++){
-          if(a[i].grade<60) {
-            if(a[i].makeupExam>1) {
+          if(a[i].endGrade<60) {
+            if(a[i].makeupExamNum>1) {
               if(a[i].applyMakeup==0) {
                 a[i]['apply'] = '提交申请';
               }else if(a[i].applyMakeup==1){
@@ -146,8 +149,8 @@
         }).then(function (response) {
           var a= response.body.studentScoreList;
           for(var i=0;i<a.length;i++){
-            if(a[i].grade<60) {
-              if(a[i].makeupExam>1) {
+            if(a[i].endGrade<60) {
+              if(a[i].makeupExamNum>1) {
                 if(a[i].applyMakeup==0) {
                   a[i]['apply'] = '提交申请';
                 }else if(a[i].applyMakeup==1){
@@ -175,8 +178,8 @@
         }).then(function (response) {
           var a= response.body.studentScoreList;
           for(var i=0;i<a.length;i++){
-            if(a[i].grade<60) {
-              if(a[i].makeupExam>1) {
+            if(a[i].endGrade<60) {
+              if(a[i].makeupExamNum>1) {
                 if(a[i].applyMakeup==0) {
                   a[i]['apply'] = '提交申请';
                 }else if(a[i].applyMakeup==1){
