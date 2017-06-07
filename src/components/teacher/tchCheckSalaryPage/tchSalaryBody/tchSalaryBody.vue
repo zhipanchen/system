@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">课程信息维护</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">课程信息维护</a></span> -->
 		<span> > 查看课酬</span>
 	</div>
 	<div class="tableSelect">

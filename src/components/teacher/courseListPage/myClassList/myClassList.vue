@@ -3,13 +3,13 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">教学管理</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">教学管理</a></span> -->
 		<span> > 教学计划</span>
 	</div>
 	<div class="blank">
         <div class="lpart">
-            <span class="textWeight">我的上课列表</span>
-        	<span class="textBlue">（注：请在上课后五天内填写）</span>
+            <span class="textWeight">我的教案</span>
+        	<!-- <span class="textBlue">（注：请在上课后五天内填写）</span> -->
         </div>
         <!-- <div class="rpart">
         	<span>{{semester}}</span>
@@ -21,13 +21,13 @@
 			<table class="operationTable">
 				<thead>
 					<tr>
-						<th width="17%">课程名称</th>
-						<th width="17%">授课班级</th>
+						<th width="15%">课程名称</th>
+						<th width="13%">授课班级</th>
 						<th width="10%">计划课时</th>
 						<th width="10%">已上课时</th>
-						<th width="12%">课件</th>
+						<!-- <th width="12%">课件</th> -->
 						<th width="12%">教学计划</th>
-						<th width="12%">签到</th>
+						<!-- <th width="12%">签到</th> -->
 					</tr>
 				</thead>
 				<tbody>
@@ -38,7 +38,7 @@
 						<td>{{data.takedHours}}</td>
 						<td class="textBtn">
 							<!-- 课件 -->
-							<span><a :id="'optCourseware'+index" @click="optCoursewareClick(index)">操作</a></span>
+							<!-- <span><a :id="'optCourseware'+index" @click="optCoursewareClick(index)">操作</a></span>
 							<span v-show="optHide1" :id="'upload1'+index">
 								<Upload
 									ref="upload"
@@ -52,7 +52,7 @@
 						            :on-success="handleSuccess1"
 						            :on-error="handleError1"
 									action="./courseTeachPlan/uploadCourseware">
-						            <!-- :on-progress="handleProgress1" -->
+						            :on-progress="handleProgress1"
 									<a :id="'signIn1'+index">上传</a>
 								</Upload>
 							</span>
@@ -63,7 +63,7 @@
 								<a @click="submitClick1(index)">提交</a>
 							</span>
 						</td>
-						<td class="textBtn">
+						<td class="textBtn"> -->
 							<!-- 教学计划 -->
 							<span><a :id="'optTeachPlan'+index" @click="optTeachPlanClick(index)">操作</a></span>
 							<span v-show="optHide2" :id="'upload2'+index">
@@ -90,10 +90,10 @@
 								<a @click="submitClick2(index)">提交</a>
 							</span>
 						</td>
-						<td class="textBtn" :value="data.courseAssociationId">
-							<!-- 跳转到教师签到页面 -->
+						<!-- <td class="textBtn" :value="data.courseAssociationId">
+							跳转到教师签到页面
 							<a :href="'#/teacher/teach/normalSchedule?courseAssociationId='+data.courseAssociationId+'&'+'courseName='+encodeURIComponent(data.courseName)+'&'+'className='+encodeURIComponent(data.className)">签到</a>
-						</td>
+						</td> -->
 					</tr>
 				</tbody>
 			</table>
@@ -164,15 +164,15 @@ export default {
 			remindResult: '',
 			uploadResult: '',
 			teachJournalList: [
-				// {courseId: 'GGBX0001', className: '一班', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
-				// {courseId: 'GGBX0001', className: '一班', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
+				{courseId: 'GGBX0001', className: '一班', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
+				{courseId: 'GGBX0001', className: '一班', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
 			],
 			// 下载课件列表
 			// uploadList: [{coursewareName:'123',coursewareId:'aaaa'},{coursewareName:'123',coursewareId:'aaaa'}],
 			courseIdPost: '',
 			uploadState: '',		// 上传状态
 			fileName: '',
-			optHide1: false,		// 初始化时操作隐藏
+			// optHide1: true,		// 初始化时操作隐藏
 			optHide2: false,		// 初始化时操作隐藏
 			index: ''
 		}
