@@ -32,9 +32,9 @@
             <tr v-for="(data,index) in evaluationResult" :key="data.courseId">
               <td v-text="data.courseId"></td>
               <td v-text="data.courseName"></td>
-              <td v-text="data.courseType"></td>
-              <td v-text="data.evaNum"></td>
-              <td v-text="data.multiplyScore"></td>
+              <td v-text="data.courseTypeName"></td>
+              <td v-text="data.evaStudentCount"></td>
+              <td v-text="data.evaRecord"></td>
               <td><span :id="'stuMessage'+index" style="text-decoration: underline; cursor: pointer"  @click="stuMessage(index)">查看学生留言</span></td>
               <!--<td v-text="data.grade"></td>-->
             </tr>
@@ -53,38 +53,48 @@
             return {
               semesterList:[],
               option1:'',
-              evaluationResult:[{courseId:"123",courseName:"护理",courseType:"必修",evaNum:"23",multiplyScore:"98"}]
+              evaluationResult:''
             }
         },
       beforeMount:function(){
-        this.$http.post('../jsonphp/teachingEvaluate.php',{},
-//        this.$http.post('./studentEvaluation/showEvaluation',{},
+//        this.$http.post('../jsonphp/teachingEvaluate.php',{},
+        this.$http.post('./teacherCheckEvaResultNew',{},
           {"Content-Type":"application/json"}).then(function(response){
             console.log(response.body);
-            this.evaluationResult = response.body.evaluationResult;
-            this.semesterList = response.body.semesterList;
+            this.evaluationResult = response.body.evaResult;
             this.option1 = response.body.currentSemester;
           },
           function(error){
-            console.log("审核通过error:");
+            console.log(error);
+          });
+        this.$http.post('./getYearTermList',{},
+          {"Content-Type":"application/json"}).then(function(response){
+            console.log(response.body);
+          for(var i=0;i<response.body.yearTerm.length;i++){
+            this.semesterList.push(response.body.yearTerm[i].startYearSemester);
+          }
+
+          },
+          function(error){
             console.log(error);
           });
       },
       methods:{
         //选择学期
         chooseTerm:function(value){
-          this.$http.post('../jsonphp/teachingEvaluate.php',{
-//          this.$http.post('./studentEvaluation/showEvaluation',{
+//          this.$http.post('../jsonphp/teachingEvaluate.php',{
+          this.$http.post('./teacherCheckEvaResult',{
 //            "appTeacherSerial": "0301",
-            "semester": value
+            "yearTerm": value
           },{"Content-Type":"application/json"}).then(function (response) {
               console.log("结果");
               console.log(response.body);
-              if(response.body.result=="success")
+              if(response.body.evaResult!='')
               { this.$Message.success('操作成功！');
-                this.evaluationResult = response.body.evaluationResult;}
+                this.evaluationResult = response.body.evaResult;}
               else
-              {this.$Message.error('操作失败！');}
+              { this.$Message.error('暂无数据！');
+                this.evaluationResult = response.body.evaResult;}
             },
             function(error){
               console.log("结果error:");
@@ -93,7 +103,7 @@
         },
         //查看学生留言
         stuMessage:function(index){
-          var id=this.evaluationResult[index].courseId;
+          var id=this.evaluationResult[index].courseAssociationId;
           location.href='#/teacher/studentMessage?'+id;
         }
       }

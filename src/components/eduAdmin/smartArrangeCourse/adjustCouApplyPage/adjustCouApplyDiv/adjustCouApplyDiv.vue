@@ -29,10 +29,10 @@
                         <td>{{ application.applicationTime }}</td>
                         <td>{{ application.mediationReason }}</td>
                         <td>
-                            <button class="operationButton" @click="operation(index,'true')">√</button>
+                            <button class="operationButton" @click="operation(index,'true')" title="通过">√</button>
                             <!--<button @click="setTrue(index)">√</button>-->
                             <!--申请通过批准-->
-                            <button class="operationButton" @click="operation(index,'false')">×</button>
+                            <button class="operationButton" @click="operation(index,'false')" title="不通过">×</button>
                             <!--申请拒绝-->
                         </td>
                     </tr>

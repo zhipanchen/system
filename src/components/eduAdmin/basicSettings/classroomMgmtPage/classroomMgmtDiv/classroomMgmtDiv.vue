@@ -316,22 +316,40 @@
         var restoreImg = document.getElementById(type+"RestoreImg"+index);
         var deleteImg = document.getElementById(type+"DeleteImg"+index);
         var i = null;
-        if(type == "classroom"){
+        if (type == "classroom") {
           this.classrooms.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_classrooms[index])));
-        }
-        if(type == "engine"){
+          if(this.classrooms[index].name == "") {
+            this.classrooms.splice(index, 1);
+            this.buffer_classrooms.splice(index, 1);
+          }else {
+            for (i = 0; i < input.length; i++) {
+//          使教室信息的输入标签变为不可输入，隐藏边框
+              input[i].readOnly = true;
+              input[i].style.border = "none";
+            }
+            editImg.style.display = "inline";
+            deleteImg.style.display = "inline";
+            saveImg.style.display = "none";
+            restoreImg.style.display = "none";
+          }
+        }else if (type == "engine") {
           this.engineRooms.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_engineRooms[index])));
+          if(this.engineRooms[index].name == "") {
+            this.engineRooms.splice(index, 1);
+            this.buffer_engineRooms.splice(index, 1);
+          }else {
+            for (i = 0; i < input.length; i++) {
+//          使教室信息的输入标签变为不可输入，隐藏边框
+              input[i].readOnly = true;
+              input[i].style.border = "none";
+            }
+            editImg.style.display = "inline";
+            deleteImg.style.display = "inline";
+            saveImg.style.display = "none";
+            restoreImg.style.display = "none";
+          }
         }
 //        从缓存数据中重置数据
-        for(i = 0;i<input.length;i++){
-//          使教室信息的输入标签变为不可输入，隐藏边框
-          input[i].readOnly = true;
-          input[i].style.border = "none";
-        }
-        editImg.style.display = "inline";
-        deleteImg.style.display = "inline";
-        saveImg.style.display = "none";
-        restoreImg.style.display = "none";
         this.modal1 = false;
       },
       deleteClick: function(type,index){
@@ -514,8 +532,17 @@
 //        if(classroom[classroom.length - 1].id != "请编辑后保存"){
           classroom.push(
               { id:"请编辑后保存", name:"", number:"请编辑后保存" }
-
           );
+          this.$nextTick(function () {
+            var editImg = null;
+            if (type == "classroom") {
+              editImg = document.getElementById("classroomEditImg" + (classroom.length - 1));
+            }
+            if (type == "engine") {
+              editImg = document.getElementById("engineEditImg" + (classroom.length - 1));
+            }
+            editImg.click();
+          });
           if (type == "classroom") {
             this.buffer_classrooms.push(
                 { id:"请编辑后保存", name:"", number:"请编辑后保存" }
@@ -544,6 +571,10 @@
   .dropDown{
     /*页面主要内容*/
     margin: 0.5rem 5rem;
+  }
+  .amButtom{
+    /*折叠按钮*/
+    cursor: pointer;
   }
   /*.classroomButton{
     !*下拉显示或隐藏的按钮标题栏*!

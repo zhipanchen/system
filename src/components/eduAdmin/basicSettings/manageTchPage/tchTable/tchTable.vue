@@ -104,10 +104,10 @@
             </select>
           </td>
           <td>
-            <img :id="'editImg'+index" src="./images/edit.png" @click="editClick(index)">
-            <img :id="'saveImg'+index" src="./images/save.png" style="display: none" @click="saveClick(index)">
-            <img :id="'deleteImg'+index" src="./images/delete.png" @click="deleteClick(index)">
-            <img :id="'restoreImg'+index" src="./images/restore.png" style="display: none" @click="restoreClick(index)">
+            <img :id="'editImg'+index" title="修改" src="./images/edit.png" @click="editClick(index)">
+            <img :id="'saveImg'+index" title="保存" src="./images/save.png" style="display: none" @click="saveClick(index)">
+            <img :id="'deleteImg'+index" title="删除" src="./images/delete.png" @click="deleteClick(index)">
+            <img :id="'restoreImg'+index" title="取消" src="./images/restore.png" style="display: none" @click="restoreClick(index)">
           </td>
         </tr>
         </tbody>

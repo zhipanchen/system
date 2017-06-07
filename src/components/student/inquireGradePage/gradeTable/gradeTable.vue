@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="positionBar">
+      <span>您的当前位置：</span>
+      <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
+      <span> > 学生成绩信息</span>
+    </div>
     <div id="stdInquireGradeChangeTerm">
       <select class="selectWM" v-model="termEle">
         <option value="0">选择学期</option>
@@ -105,7 +110,11 @@
       },{
         "Content-Type":"application/json"
       }).then(function (response) {
-        this.terms= response.body.yearTerm;
+        var a=[];
+        for(var i=0;i<response.body.yearTerm.length;i++){
+          a.push(response.body.yearTerm[i].startYearSemester);
+        }
+        this.terms= a;
       });
     },
     methods:{

@@ -207,6 +207,10 @@
     position: relative;
     top: 0.6rem;
   }
+  .amButtom{
+    /*折叠按钮*/
+    cursor: pointer;
+  }
   table{
     /*教材信息*/
     width: 100%;

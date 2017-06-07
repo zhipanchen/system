@@ -73,9 +73,4 @@
       width: 8rem;
       font-size: 1rem;
     }
-    @media screen and (max-width: 1023px) {
-        html {
-            font-size: 56%;
-        }
-    }
 </style>
