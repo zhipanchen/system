@@ -108,9 +108,9 @@ import directorResult from'../views/teacher/directorResultPage/directorResultPag
 import classManege from'../views/teacher/classManegePage/classManegePage.vue'
 import classList from '../views/teacher/classListPage/classListPage.vue'
 import certificateManege from '../views/teacher/certificateManegePage/certificateManegePage.vue'
-import basicMessage from'../views/teacher/basicMessagePage/basicMessagePage.vue'
-import studentMessage from'../views/teacher/studentMessagePage/stopClassPage.vue'
-import checkStudentInfo from'../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'*/
+import basicMessage from '../views/teacher/basicMessagePage/basicMessagePage.vue'
+import studentMessage from '../views/teacher/studentMessagePage/studentMessagePage.vue'
+import checkStudentInfo from '../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'*/
 const  teachingPlan = resolve => require(['../views/teacher/teachingPlanPage/teachingPlanPage.vue'], resolve);
 const teachingEvaluate = resolve => require(['../views/teacher/teachingEvaluatePage/teachingEvaluatePage.vue'], resolve);
 const stopClass = resolve => require(['../views/teacher/stopClassPage/stopClassPage.vue'], resolve);
@@ -128,7 +128,7 @@ const classManege = resolve => require(['../views/teacher/classManegePage/classM
 const classList = resolve => require(['../views/teacher/classListPage/classListPage.vue'], resolve);
 const certificateManege = resolve => require(['../views/teacher/certificateManegePage/certificateManegePage.vue'], resolve);
 const basicMessage = resolve => require(['../views/teacher/basicMessagePage/basicMessagePage.vue'], resolve);
-const studentMessage = resolve => require(['../views/teacher/studentMessagePage/stopClassPage.vue'], resolve);
+const studentMessage = resolve => require(['../views/teacher/studentMessagePage/studentMessagePage.vue'], resolve);
 const checkStudentInfo = resolve => require(['../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'], resolve);
 
 //易倩（end）
@@ -484,11 +484,18 @@ export default new Router({   //将routes里的参数导出
       path: '/teacher/class/teachingEvaluate',
       component: teachingEvaluate
     },
-    {//班级列表
+	 {
+	    //教师查看学生评教留言
+      path: '/teacher/studentMessage',
+      component:studentMessage
+    },
+    {
+	    //班级列表
       path: '/teacher/class/classList',
       component:classList
     },
-    {//班主任查看学生个人信息
+    {
+	    //班主任查看学生个人信息
       path: '/teacher/class/checkStudentInfo',
       component:checkStudentInfo
     },
