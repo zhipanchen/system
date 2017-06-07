@@ -12,13 +12,17 @@
          <thead>
            <tr>
              <th style="border-color: white">序号</th>
+             <th style="border-color: white">评教分数</th>
+             <th style="border-color: white">评教时间</th>
              <th style="border-color: white"><img class="Img"  :src="iconSrc1">学生留言</th>
            </tr>
          </thead>
          <tbody>
            <tr v-for="(data,index) in resultList">
              <td>{{index+1}}</td>
-             <td v-text="data.result"></td>
+             <td v-text="data.record"></td>
+             <td v-text="data.evaDate"></td>
+             <td v-text="data.textEva"></td>
            </tr>
          </tbody>
        </table>
@@ -35,18 +39,18 @@
         data () {
             return {
                 iconSrc1:icon1,
-                resultList: [{result:"讲得很好！！！！"},{result:"讲的啥玩意儿！！！"}]
+                resultList:''
             }
         },
         beforeMount:function(){
           var thisURL = document.URL;
           var courseId =thisURL.split("?")[1];
-          this.$http.post('../jsonphp/teachingEvaluate.php',JSON.stringify({
-              "courseId":courseId
+          this.$http.post('./teacherCheckEvaResultText',JSON.stringify({
+              "courseAssociationId":courseId
             }),
             {"Content-Type":"application/json"}).then(function(response){
               console.log(response.body);
-              this.resultList = response.body.resultList;
+              this.resultList = response.body.evaResultText;
             },
             function(error){
               console.log("审核通过error:");
