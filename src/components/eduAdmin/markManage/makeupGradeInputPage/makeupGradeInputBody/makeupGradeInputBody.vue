@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span> -->
 		<span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">补考</a></span>
 		<span> > 补考成绩录入</span>
 	</div>
@@ -22,9 +22,9 @@
 			<option v-for="courseNameOne in courseInfo" :value="courseNameOne.courseId">{{courseNameOne.courseName}}</option>
 		</select>
 		<button class="am-btn am-btn-success am-radius" v-on:click="findBtn()">查询</button>
-		<button class="am-btn am-btn-success am-radius rightBtn" v-show="submitShow" @click="submitBtn()">提交</button>
-		<button class="am-btn am-btn-success am-radius rightBtn" v-show="buttonShow" @click="saveAllBtn()">保存</button>
-		<button class="am-btn am-btn-success am-radius rightBtn" v-show="buttonShow" @click="compileBtn()">编辑</button>
+		<button class="am-btn am-btn-success am-radius rightBtn" id="submitBtn" @click="submitBtn()">提交</button>
+		<button class="am-btn am-btn-success am-radius rightBtn" id="saveAllBtn" @click="saveAllBtn()">保存</button>
+		<button class="am-btn am-btn-success am-radius rightBtn" id="compileBtn" @click="compileBtn()">编辑</button>
 	</div>
 
 	<div id="makeupGradeInputBody">
@@ -161,8 +161,11 @@ export default {
 	                    this.makeUpGradeInputList = data.makeUpGradeInputList;
 	                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
 	                    if (this.makeUpGradeInputList != []) {
-	                    	this.buttonShow = true;
-	                    	this.submitShow = true;
+	                    	// this.buttonShow = true;
+	                    	// this.submitShow = true;
+	                    	document.getElementById("submitBtn").disabled = true;
+				        	document.getElementById("saveAllBtn").disabled = true;
+				        	document.getElementById("compileBtn").disabled = true;
 	                    }else {
 	                    	this.modalResult = true;
 	                    	this.remindResult = '6';

@@ -108,9 +108,9 @@ import directorResult from'../views/teacher/directorResultPage/directorResultPag
 import classManege from'../views/teacher/classManegePage/classManegePage.vue'
 import classList from '../views/teacher/classListPage/classListPage.vue'
 import certificateManege from '../views/teacher/certificateManegePage/certificateManegePage.vue'
-import basicMessage from'../views/teacher/basicMessagePage/basicMessagePage.vue'
-import studentMessage from'../views/teacher/studentMessagePage/stopClassPage.vue'
-import checkStudentInfo from'../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'*/
+import basicMessage from '../views/teacher/basicMessagePage/basicMessagePage.vue'
+import studentMessage from '../views/teacher/studentMessagePage/studentMessagePage.vue'
+import checkStudentInfo from '../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'*/
 const  teachingPlan = resolve => require(['../views/teacher/teachingPlanPage/teachingPlanPage.vue'], resolve);
 const teachingEvaluate = resolve => require(['../views/teacher/teachingEvaluatePage/teachingEvaluatePage.vue'], resolve);
 const stopClass = resolve => require(['../views/teacher/stopClassPage/stopClassPage.vue'], resolve);
@@ -128,7 +128,7 @@ const classManege = resolve => require(['../views/teacher/classManegePage/classM
 const classList = resolve => require(['../views/teacher/classListPage/classListPage.vue'], resolve);
 const certificateManege = resolve => require(['../views/teacher/certificateManegePage/certificateManegePage.vue'], resolve);
 const basicMessage = resolve => require(['../views/teacher/basicMessagePage/basicMessagePage.vue'], resolve);
-const studentMessage = resolve => require(['../views/teacher/studentMessagePage/stopClassPage.vue'], resolve);
+const studentMessage = resolve => require(['../views/teacher/studentMessagePage/studentMessagePage.vue'], resolve);
 const checkStudentInfo = resolve => require(['../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'], resolve);
 
 //易倩（end）
@@ -170,7 +170,8 @@ import tchGradesInput from '../views/teacher/tchGradesInputPage/tchGradesInputPa
 import tchManuAdjCl from '../views/teacher/tchManuAdjClPage/tchManuAdjClPage.vue'
 import tchCheckSalary from '../views/teacher/tchCheckSalaryPage/tchCheckSalaryPage.vue'
 import scheduleList from '../views/eduAdmin/tchSalary/scheduleListPage/scheduleListPage.vue'		
-import seeSigninList from '../views/eduAdmin/tchSalary/seeSigninListPage/seeSigninListPage.vue'*/
+import seeSigninList from '../views/eduAdmin/tchSalary/seeSigninListPage/seeSigninListPage.vue'
+import tchSignin from '../views/teacher/tchSigninPage/tchSigninPage.vue'*/
 const tchCheckTimetable = resolve => require(['../views/teacher/tchCheckTimetablePage/tchCheckTimetablePage.vue'], resolve);
 const courseList = resolve => require(['../views/teacher/courseListPage/courseListPage.vue'], resolve);
 const gradesInput = resolve => require(['../views/teacher/gradesInputPage/gradesInputPage.vue'], resolve);
@@ -180,6 +181,7 @@ const tchManuAdjCl = resolve => require(['../views/teacher/tchManuAdjClPage/tchM
 const tchCheckSalary = resolve => require(['../views/teacher/tchCheckSalaryPage/tchCheckSalaryPage.vue'], resolve);
 const scheduleList = resolve => require(['../views/eduAdmin/tchSalary/scheduleListPage/scheduleListPage.vue'], resolve);
 const seeSigninList = resolve => require(['../views/eduAdmin/tchSalary/seeSigninListPage/seeSigninListPage.vue'], resolve);
+const tchSignin = resolve => require(['../views/teacher/tchSigninPage/tchSigninPage.vue'], resolve);
 //蔡玲双（end）
 
 Vue.use(Router);
@@ -482,11 +484,18 @@ export default new Router({   //将routes里的参数导出
       path: '/teacher/class/teachingEvaluate',
       component: teachingEvaluate
     },
-    {//班级列表
+	 {
+	    //教师查看学生评教留言
+      path: '/teacher/studentMessage',
+      component:studentMessage
+    },
+    {
+	    //班级列表
       path: '/teacher/class/classList',
       component:classList
     },
-    {//班主任查看学生个人信息
+    {
+	    //班主任查看学生个人信息
       path: '/teacher/class/checkStudentInfo',
       component:checkStudentInfo
     },
@@ -636,11 +645,17 @@ export default new Router({   //将routes里的参数导出
       component: courseList
     },
     {
-      // 教师-上课签到
+      // 教师-上课签到课程表
       path: '/teacher/teach/normalSchedule',
       name: 'normalSchedule',
       component: normalSchedule
     },
+	{
+	  // 教师-上课签到页面
+	  path: '/teacher/teach/tchSignin',
+	  name: 'tchSignin',
+	  component: tchSignin
+	},
     {
       // 教师-正考成绩输入
       path: '/teacher/class/gradesInput',

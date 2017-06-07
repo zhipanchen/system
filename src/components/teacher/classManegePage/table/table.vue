@@ -27,15 +27,15 @@
                <span>查看</span>
            </td>
            <td>
-              <img @click="save(index)" class='img'style="display:inline;" :src="imgSrc1" :id="'save'+index">
-            <img @click="edit(index)" class='img'style="display:inline;" :src="imgSrc2" :id="'edit'+index">
-             <img @click="change(index)" class='img' style="display:none;" :src="imgSrc4" :id="'change'+index">
-             <img @click="del(index)" class='img' style="display:none;" :src="imgSrc5" :id="'del'+index">
+              <img title="保存" @click="save(index)" class='img'style="display:inline;" :src="imgSrc1" :id="'save'+index">
+            <img title="取消" @click="edit(index)" class='img'style="display:inline;" :src="imgSrc2" :id="'edit'+index">
+             <img title="编辑" @click="change(index)" class='img' style="display:none;" :src="imgSrc4" :id="'change'+index">
+             <img title="删除" @click="del(index)" class='img' style="display:none;" :src="imgSrc5" :id="'del'+index">
            </td>
          </tr>
         </tbody>
       </table>
-        <img  @click="add" id='img3'  :src="imgSrc3" >
+        <img title="添加"  @click="add" id='img3'  :src="imgSrc3" >
       </div>
     </div>
    </div>

@@ -6,6 +6,9 @@
     <a href="#/teacher/teach/director">
       <button  class="topBarButton am-btn am-btn-success btn-active" >督导反馈</button>
     </a>
+    <a href="#/teacher/teach/normalSchedule">
+      <button  class="topBarButton am-btn am-btn-success " >教师签到</button>
+    </a>
   </div>
 </template>
 
@@ -37,6 +40,8 @@
             buttons[0].style.display="block";
           }else if(this.authorityList[i]=="52"){
             buttons[1].style.display="block";
+          }else if(this.authorityList[i]=="37"){
+            buttons[2].style.display="block";
           }
         }
       }catch(e){}

@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">班级管理</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">班级管理</a></span> -->
 		<span> > <a href="#/teacher/class/tchGradesInput" class="returnHome">成绩录入</a></span>
 		<span> > 正考成绩录入</span>
 	</div>
@@ -31,9 +31,9 @@
 			</span>
 			<span>
 				<button class="am-btn am-btn-success am-radius rightBtn" @click="downloadTemplate()">下载模板</button>
-				<button class="am-btn am-btn-success am-radius rightBtn" v-show="submitShow" @click="submitBtn()">提交</button>
-				<button class="am-btn am-btn-success am-radius rightBtn" v-show="buttonShow" @click="saveAllBtn()">保存</button>
-				<button class="am-btn am-btn-success am-radius rightBtn" v-show="buttonShow" @click="compileBtn()">编辑</button>
+				<button class="am-btn am-btn-success am-radius rightBtn" id="submitBtn" @click="submitBtn()">提交</button>
+				<button class="am-btn am-btn-success am-radius rightBtn" id="saveAllBtn" @click="saveAllBtn()">保存</button>
+				<button class="am-btn am-btn-success am-radius rightBtn" id="compileBtn" @click="compileBtn()">编辑</button>
 			</span>
 		</div>
 	</div>
@@ -188,16 +188,18 @@ export default {
             this.inputLesson = data.canModifyCourInfo.courseName;
             this.classes = data.canModifyCourInfo.className;
             this.scoreList = data.scoreList;
-            modifyFlag = data.canModifyCourInfo.canModifyGrade;
+	        modifyFlag = data.canModifyCourInfo.canModifyGrade;
+	        if (modifyFlag == false) {
+	        	// this.buttonShow = true;
+	        	// this.submitShow = true;
+	        	document.getElementById("submitBtn").disabled = true;
+	        	document.getElementById("saveAllBtn").disabled = true;
+	        	document.getElementById("compileBtn").disabled = true;
+	        }
         },function(error){
             console.log("获取申请error:");
             console.log(error);
         });
-        // console.log(modifyFlag)
-        if (modifyFlag == true) {
-        	this.buttonShow = true;
-        	this.submitShow = true;
-        }
     },
 	methods: {
 		// 编辑修改补考成绩*****************************************************************

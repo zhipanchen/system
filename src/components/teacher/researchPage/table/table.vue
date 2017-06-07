@@ -30,7 +30,7 @@
            <option disabled selected="selected">选择教师</option>
            <option v-for="teacher in teacherList" >{{ teacher.teacherName }}</option>
          </select>
-         <span class="tipSpan" @click="addPerson('member',members)"><img id="tipSpan" :src="imgSrc1"></span>
+         <span class="tipSpan" @click="addPerson('member',members)"><img id="tipSpan" title="添加" :src="imgSrc1"></span>
        <div class="personDiv">
          <eduResGroupPerson v-for="(member,index) in members" :key="member" @remove="removePerson(index,members)" :person="member"></eduResGroupPerson>
        </div>

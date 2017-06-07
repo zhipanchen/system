@@ -79,6 +79,13 @@
           }
         },
         mounted: function() {
+          window.onresize = function(){
+            var clientWidth = document.body.clientWidth;
+            if(clientWidth > 319 && clientWidth < 1025){
+              document.documentElement.style.fontSize = "24px";
+            }
+          };
+          window.onresize();
           var dom = document.getElementById("login");
           dom.style.height = window.innerHeight + "px";
         },
@@ -137,8 +144,6 @@
 </script>
 
 <style scoped>
-    html{
-    }
     #login{
       /*页面*/
       /*text-align: center;*/
@@ -153,6 +158,8 @@
     #loginDiv{
       /*登录模块*/
       width: 50%;
+      height: 70%;
+      min-height: 27rem;
       background-repeat: no-repeat;
       background-size: cover;
       box-shadow: 0 0 0.5rem;
@@ -163,8 +170,8 @@
     }
     #schoolImg{
       /*学校图标*/
-      width: 50%;
-      /*height: 15%;*/
+      width: 23rem;
+      height: 3rem;
     }
     #hospitalMottoP{
       /*医训*/
@@ -231,10 +238,21 @@
     #forgetSpan:hover{
       cursor: pointer;
     }
-    @media screen and (max-width:1200px) {
+    @media screen and (min-width:320px) and (max-width:1025px) {
+      #schoolImg{
+        width: 19rem;
+        height: 2.5rem;
+        position: relative;
+        right: 2.5rem;
+      }
+      #login{
+        align-items: flex-start;
+      }
       #loginDiv {
+        margin-top: 3rem;
         background-size: 100% 100%;
-        height: 45rem;
+        width: 75%;
+        height: 50%;
       }
     }
 </style>

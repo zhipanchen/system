@@ -3,25 +3,55 @@
       <div class="positionBar">
         <span>您的当前位置：</span>
         <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
-        <span> > 学生个人信息</span>
+        <span> > 个人信息</span>
       </div>
+      <span class="spanStyles"> *信息为可编辑修改</span>
       <div class="tableBox">
         <table id="tableDiv" class="normalTable" border="1">
           <tr><td>姓名</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.studentName"></td><td>身份证</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.studentIDcard"/></td></tr>
-          <tr><td>曾用名</td><td><input type="text" class="inputStyle" v-model="teacherMessage.formerName"/></td><td>高考准考证号</td><td><input type="text" class="inputStyle" readonly readonly v-model="teacherMessage.NCEERegistrationId"/></td></tr>
-          <tr><td>性别</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.studentGender"/></td><td>生源地</td><td><input type="text" class="inputStyle" v-model="teacherMessage.originOfStudent"/></td></tr>
-          <tr><td>目前状态</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.currentState"/></td><td>学生邮箱</td><td><input type="text" class="inputStyle" v-model="teacherMessage.emailAddress"/></td></tr>
-          <tr><td>出生日期</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.birthdate"/></td><td>学生手机</td><td><input type="text" class="inputStyle" v-model="teacherMessage.phoneNumber"/></td></tr>
-          <tr><td>入学日期</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.admissionDate"/></td><td>学生电话</td><td><input type="text" class="inputStyle" v-model="teacherMessage.homeTelephone"/></td></tr>
-          <tr><td>婚否</td><td><input type="text" class="inputStyle" v-model="teacherMessage.maritalStatus"/></td><td>家庭地址</td><td><input type="text" class="inputStyle" v-model="teacherMessage.houseAddress"/></td></tr>
-          <tr><td>籍贯</td><td><input type="text" class="inputStyle" v-model="teacherMessage.nativePlace"/></td><td>班级职务</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.classDuty"/></td></tr>
-          <tr><td>学制</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.schoolYearType"/></td><td>文化程度</td><td><input type="text" class="inputStyle" v-model="teacherMessage.literacyLevels"/></td></tr>
+          <tr><td>*曾用名</td><td><input type="text" class="inputStyle" v-model="teacherMessage.formerName"/></td><td>高考准考证号</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.NCEERegistrationId"/></td></tr>
+          <tr><td>性别</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.studentGender"/></td><td>*生源地</td><td><input type="text" class="inputStyle" v-model="teacherMessage.originOfStudent"/></td></tr>
+          <tr><td>目前状态</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.currentState"/></td><td>*学生邮箱</td><td><input type="text" class="inputStyle" v-model="teacherMessage.emailAddress"/></td></tr>
+          <tr><td>出生日期</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.birthdate"/></td><td>*学生手机</td><td><input type="text" class="inputStyle" v-model="teacherMessage.phoneNumber"/></td></tr>
+          <tr><td>入学日期</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.admissionDate"/></td><td>*学生电话</td><td><input type="text" class="inputStyle" v-model="teacherMessage.homeTelephone"/></td></tr>
+          <tr><td>*婚否</td>
+            <td>
+              <select class="selectStyle" v-model="teacherMessage.maritalStatus">
+                <option  value="否" selected @click="selectClick">否</option>
+                <option  value="是" @click="selectClick">是</option>
+                <option  value="离异" @click="selectClick">离异</option>
+              </select>
+            </td>
+            <td>*家庭地址</td><td><input type="text" class="inputStyle" v-model="teacherMessage.houseAddress"/></td></tr>
+          <tr><td>*籍贯</td><td><input type="text" class="inputStyle" v-model="teacherMessage.nativePlace"/></td><td>班级职务</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.classDuty"/></td></tr>
+          <tr><td>学制</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.schoolYearType"/></td>
+            <td>*文化程度</td>
+            <td>
+            <select class="selectStyle" v-model="teacherMessage.literacyLevels" @click="selectChange">
+              <option  value="小学" selected @click="selectClick">小学</option>
+              <option  value="初中" @click="selectClick">初中</option>
+              <option  value="中专" @click="selectClick">中专</option>
+              <option  value="高中" @click="selectClick">高中</option>
+              <option  value="大专" @click="selectClick">大专</option>
+            </select>
+            </td>
+          </tr>
           <tr><td>学校层次</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.schoolLevel"/></td><td>毕业时间</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.graduationTime"/></td></tr>
-          <tr><td>入学成绩</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.entranceScores"/></td><td>毕业证号</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.graduationNum"/></td></tr>
-          <tr><td>体重</td><td><input type="text" class="inputStyle" v-model="teacherMessage.weight"/></td><td>教学班</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.className"/></td></tr>
-          <tr><td>身高</td><td><input type="text" class="inputStyle" v-model="teacherMessage.height"/></td><td>专业</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.specialityName"/></td></tr>
-          <tr><td>学号</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.studentId"/></td><td>政治面貌</td><td><input type="text" class="inputStyle" v-model="teacherMessage.politicalStatus"/></td></tr>
-          <tr><td>学习形式</td><td><input type="text" class="inputStyle" v-model="teacherMessage.studyMode"/></td><td>备注</td><td><input type="text" class="inputStyle"/></td></tr>
+          <tr><td>入学成绩(分)</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.entranceScores"/></td><td>毕业证号</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.graduationNum"/></td></tr>
+          <tr><td>*体重(kg)</td><td><input type="text" class="inputStyle" v-model="teacherMessage.weight"/></td><td>教学班</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.className"/></td></tr>
+          <tr><td>*身高(cm)</td><td><input type="text" class="inputStyle" v-model="teacherMessage.height"/></td><td>专业</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.specialityName"/></td></tr>
+          <tr>
+            <td>学号</td><td><input type="text" class="inputStyle" readonly v-model="teacherMessage.studentId"/></td>
+            <td>*政治面貌</td>
+            <td>
+              <select class="selectStyle" v-model="teacherMessage.politicalStatus" @click="selectChange">
+                <option  value="群众" selected @click="selectClick">群众</option>
+                <option  value="团员" @click="selectClick">团员</option>
+                <option  value="党员" @click="selectClick">党员</option>
+              </select>
+            </td>
+          </tr>
+          <tr><td>*学习形式</td><td><input type="text" class="inputStyle" v-model="teacherMessage.studyMode"/></td><td>*备注</td><td><input type="text" class="inputStyle"/></td></tr>
         </table>
         <div class="updatePicture" align="center">
           <select class="selectStyle" v-model="selected" @change="selectChange">
@@ -70,7 +100,11 @@
               selected:'身份证照',
               filePathRequest:'./studentManage/uploadStudentIDcardPhoto',
               path:'',//图片路径
-              teacherMessage: {},
+              teacherMessage: {
+                maritalStatus:"否",
+                literacyLevels:"小学",
+                politicalStatus:"群众"
+              },
               modal1:false,
               modal2:false,
               okValue:0,//值为0无法执行，为1可以执行
@@ -78,7 +112,6 @@
             }
         },
       beforeMount:function() {
-
         this.$http.post('./studentManage/getStudentDetailInfo').then(function (response) {
           var data = response.body;
           this.teacherMessage=data.studentMessage;
@@ -128,6 +161,12 @@
           }
         },
         updateInforClick:function(){
+
+          this.numberCheck(this.teacherMessage.weight,"体重数据不合理");
+          this.numberCheck(this.teacherMessage.height,"身高数据不合理");
+          this.numberCheck(this.teacherMessage.phoneNumber,"手机号码数据不合理");
+          this.numberCheck(this.teacherMessage.homeTelephone,"电话号码不合理");
+
           this.$http.post('./studentManage/editStudentDetailInfo', {
             studentId:this.teacherMessage.studentId,
             studentIDcard:this.teacherMessage.studentIDcard,
@@ -218,6 +257,17 @@
             this.teacherMessage.livePhoto=this.path;
           }
         },
+        numberCheck:function(str,message){
+          if(str==null){
+            //nothing(未填写)
+          }else {
+            var reg = new RegExp("^[0-9]*$");
+            if (!/^[0-9,.]*$/.test(str)) {
+              this.modal2=true;
+              this.messageStr=message;
+            }
+          }
+        }
       }
     }
 </script>
@@ -276,5 +326,9 @@
     #upload {
 
     }
+  .spanStyles{
+    margin-left:5rem;
+
+  }
 
 </style>
