@@ -63,7 +63,7 @@
             return {
               imgAlt: '四川省医科科学院·四川省人民医院·护士学校',//学校图标
               img1: require('../../../assets/images/login-background.jpg'),//页面背景图片
-              img2: require('./images/loginDiv.png'),//登录背景图片
+              img2: require('./images/loginDiv.jpg'),//登录背景图片
               userId: '',//用户名
               passwordValue: '',//用户密码
               modal1: false,//登录规则
@@ -79,6 +79,13 @@
           }
         },
         mounted: function() {
+          window.onresize = function(){
+            var clientWidth = document.body.clientWidth;
+            if(clientWidth > 319 && clientWidth < 1025){
+              document.documentElement.style.fontSize = "24px";
+            }
+          };
+          window.onresize();
           var dom = document.getElementById("login");
           dom.style.height = window.innerHeight + "px";
         },
@@ -137,13 +144,12 @@
 </script>
 
 <style scoped>
-    html{
-    }
     #login{
       /*页面*/
       /*text-align: center;*/
       font-family: 微软雅黑;
       background-repeat: no-repeat;
+      background-size: cover;
       display: flex;
       min-height: 45.9rem;
       align-items: center;
@@ -153,6 +159,7 @@
       /*登录模块*/
       width: 50%;
       height: 70%;
+      min-height: 27rem;
       background-repeat: no-repeat;
       background-size: cover;
       box-shadow: 0 0 0.5rem;
@@ -163,8 +170,8 @@
     }
     #schoolImg{
       /*学校图标*/
-      width: 50%;
-      /*height: 15%;*/
+      width: 23rem;
+      height: 3rem;
     }
     #hospitalMottoP{
       /*医训*/
@@ -210,14 +217,6 @@
       left: 1.5rem;
       background-color: white;
     }
-    #rememberCheckbox{
-      /*记住我*/
-      outline: none;
-    }
-    #rememberLabel{
-      /*记住我*/
-      font-size: 0.7rem;
-    }
     #loginButton{
       /*登录按钮*/
       min-width: 5rem;
@@ -239,10 +238,21 @@
     #forgetSpan:hover{
       cursor: pointer;
     }
-    @media screen and (max-width:1200px) {
+    @media screen and (min-width:320px) and (max-width:1025px) {
+      #schoolImg{
+        width: 19rem;
+        height: 2.5rem;
+        position: relative;
+        right: 2.5rem;
+      }
+      #login{
+        align-items: flex-start;
+      }
       #loginDiv {
+        margin-top: 3rem;
         background-size: 100% 100%;
-        height: 45rem;
+        width: 75%;
+        height: 50%;
       }
     }
 </style>

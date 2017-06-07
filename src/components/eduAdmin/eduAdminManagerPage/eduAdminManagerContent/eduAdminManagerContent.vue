@@ -187,19 +187,20 @@
 
         ],
         courses: [
-
+          /*
           '课程01',
           '课程02',
           '课程03',
           '课程04',
           '课程05',
-
+          */
         ],
         informations: [
           //未完成课表
-
+          /*
           { courseAssociationId:'0',edit:'编辑',id:'1',courseName:'护理管理学',className: '护理二班', teacherName:'何平', classPersonNumber: '135', testTime: '2016.10.9{19:00-21:00}', testTeacherName:'李晓红',testRoom:'教学楼408,409'},
           { courseAssociationId:'1',edit:'编辑',id:'2',courseName:'护理管理学',className: '护理一班', teacherName:'何平', classPersonNumber: '135', testTime: '2016.10.9{19:00-21:00}', testTeacherName:'肖老师',testRoom:'教学楼408,409'},
+          */
 
         ],
         informationsFinish: [
@@ -209,11 +210,13 @@
           */
         ],
         terms:[
+          /*
 
           '2016-2017-1',
           '2016-2017-2',
           '2017-2018-1',
           '2017-2018-2',
+          */
 
         ],
         times:[
@@ -229,24 +232,30 @@
           {world:'下午 第一场（14:00-16:00）',number:'30'}
         ],
         teachers1:[
+          /*
 
           '老师1',
           '老师2',
           '老师3',
+          */
 
         ],
         teachers2:[
+          /*
 
           '老师1',
           '老师2',
           '老师3',
+          */
 
         ],
         rooms:[
+          /*
 
           '教室1',
           '教室2',
           '教室3',
+          */
 
         ],
         todos:[
@@ -582,7 +591,6 @@
       for(var i=0;i<this.informations.length;i++) {
         this.informations[i].edit = '编辑';
       }
-      this.informationsFinish=finishInfo;//完成表格
 
       this.setting=false;
       this.dateSelect='选择日期（必选项）';//日期默认值
@@ -678,10 +686,4 @@
     /*background-color: white;*/
   }
 
-
-  @media screen and (max-width: 1023px) {
-    html {
-      font-size: 56%;
-    }
-  }
 </style>

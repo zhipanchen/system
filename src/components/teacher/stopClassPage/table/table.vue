@@ -30,7 +30,7 @@
           <tbody>
           <tr v-for="(data,index) in tableList">
             <td>
-              <span :id="'show'+index" @click="show(index)">申请停课</span>
+              <span :id="'show'+index" @click="show(index)" style="text-decoration:underline;cursor: pointer;" >申请停课</span>
             </td>
             <td v-text="index+1"></td>
             <td  v-text="data.className+data.classSerial"></td>

@@ -4,7 +4,7 @@
     <div id="userExitDiv">
       <a id="user" :href="userHref">您好,{{ userName }}!</a>
       <span style="font-size: 0.8rem;margin-left: 0.5rem;color: red">{{ emailStatus }}</span>
-      <a><img id="exitImg" src="./images/exit.png" alt="exitAlt" @click="modal = true"></a>
+      <a><img id="exitImg" src="./images/exit.png" alt="exitAlt" @click="modal = true" title="退出"></a>
       <Modal
           v-model="modal"
           width="400"
@@ -71,7 +71,7 @@
         this.userName = response.body.currentUserName + "(" + response.body.currentUserId + ") ";
         sessionStorage.setItem("userInfo", JSON.stringify(response.body));
       },function(error){
-        this.$Message.error('连接失败，请重试！',3);
+//        this.$Message.error('连接失败，请重试！',3);
       });
     },
     methods: {
@@ -80,7 +80,7 @@
         this.$http.post('./logout',{},{
           "Content-Type":"application/json"
         }).then(function(response){
-          sessionStorage.setItem("userType", null);
+          sessionStorage.removeItem("userType");
           location.href = "#/login";
         },function(error){
           this.$Message.error('连接失败，请重试！',3);
@@ -122,6 +122,12 @@
     color: black;
     text-decoration: none;
     font-size: 1rem;
+  }
+  #msgImg{
+    /*信息图标*/
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
   }
   #exitImg{
     /*退出图标*/

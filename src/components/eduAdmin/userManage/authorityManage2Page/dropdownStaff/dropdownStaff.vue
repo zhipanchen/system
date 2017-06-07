@@ -7,15 +7,15 @@
             <tr v-for="(role,index) in roleEleList">
               <td><input :id="'roleNameInput'+index" class="inputWM" v-model="role.roleName" readonly="readonly" style="border: none"@click="checkStaffAuthorityClick(index)"></td>
               <td>
-                <img :id="'editImg'+index" src="./images/edit.png" @click="editClick(index)">
-                <img :id="'saveImg'+index" src="./images/save.png" style="display: none" @click="saveClick(index)">
-                <img :id="'deleteImg'+index" src="./images/delete.png" @click="deleteClick(index)">
-                <img :id="'restoreImg'+index" src="./images/restore.png" style="display: none" @click="restoreClick(index)">
+                <img :id="'editImg'+index" title="修改" src="./images/edit.png" @click="editClick(index)">
+                <img :id="'saveImg'+index" title="保存" src="./images/save.png" style="display: none" @click="saveClick(index)">
+                <img :id="'deleteImg'+index" title="删除" src="./images/delete.png" @click="deleteClick(index)">
+                <img :id="'restoreImg'+index" title="取消" src="./images/restore.png" style="display: none" @click="restoreClick(index)">
               </td>
               <!--修改，保存，删除，取消保存按钮-->
             </tr>
             <tr>
-              <td width="30%"><img :id="AddImg" src="./images/add.png" @click="addClick()"></td>
+              <td width="30%"><img :id="AddImg" title="添加" src="./images/add.png" @click="addClick()"></td>
               <td width="70%"></td>
             </tr>
             <!--添加新角色按钮-->
@@ -139,7 +139,7 @@
           console.log(response);
           this.roleEleList = response.body.getAllRoleAuthorityList.roleList;
           for(var i=0;i<this.roleEleList.length;i++){
-            this.roleList(
+            this.roleList.push(
               {roleId:this.roleEleList[i].roleId,roleName:this.roleEleList[i].roleName}
             )
           }

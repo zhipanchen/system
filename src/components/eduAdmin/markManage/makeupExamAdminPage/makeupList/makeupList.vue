@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span> -->
 		<span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">补考</a></span>
 		<span> > 补考成绩管理</span>
 	</div>
@@ -85,9 +85,9 @@
 									<!-- <img class="rightImg" width="25px" height="25px" @click="rightBtn(index)">
 									<img class="wrongImg" width="25px" height="25px" @click="wrongBtn(index)"> -->
 		                            <!--申请通过批准-->
-									<button class="operationBtn" @click="rightBtn(index)">√</button>
+									<button class="operationBtn" @click="rightBtn(index)" title="申请批准">√</button>
 		                            <!--申请拒绝-->
-									<button class="operationBtn" @click="wrongBtn(index)">×</button>
+									<button class="operationBtn" @click="wrongBtn(index)" title="申请拒绝">×</button>
 								</td>
 							</tr>
 						</tbody>

@@ -14,8 +14,8 @@
         </Menu-group>
       </Menu>
 
-      <button class="am-btn am-btn-success am-radius" id="termStartButton" @click="modal1 = true">设置学期开始时间</button>
-      <button class="am-btn am-btn-success am-radius" id="evaluationStartButton" @click="modal2 = true">设置评教起止时间</button>
+      <button class="am-btn am-btn-success am-radius" id="termStartButton" @click="modal1 = true" v-if="isEduAdmin">设置学期开始时间</button>
+      <button class="am-btn am-btn-success am-radius" id="evaluationStartButton" @click="modal2 = true" v-if="isEduAdmin">设置评教起止时间</button>
       <Modal
           v-model="modal1"
           width="400"
@@ -51,7 +51,8 @@
         <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
           <span>设置评教起止时间</span>
         </div>
-        <div style="font-size: 0.9rem;display: flex;justify-content: center">
+        <div style="font-size: 0.9rem;display: flex;flex-direction: column;align-items: center">
+          <span style="margin-bottom: 0.5rem" v-text="latelyEvaTime"></span>
           <Row>
             <Col span="12">
             <Date-picker v-model="evaluationDate" format="yyyy年MM月dd日" type="daterange" placeholder="选择日期" style="width: 20rem"></Date-picker>
@@ -276,6 +277,8 @@
           }*/
         ],
 //        公告信息
+        isEduAdmin: false,
+//        时间设置功能按钮显隐
         modal: false,
         modal1: false,
         modal2: false,
@@ -288,6 +291,8 @@
 //        选择开始学期
         evaluationDate: null,
 //        评教起止时间
+        latelyEvaTime: "",
+//        最近的评教时间
       }
     },
     beforeMount: function() {
@@ -1170,6 +1175,11 @@
     watch:{
       activeName: function () {
 //        监听角色选择绑定的变化，生成一级功能块
+        if(this.activeName == 3){
+          this.isEduAdmin = true;
+        }else{
+          this.isEduAdmin = false;
+        }
         this.$http.post('./getRoleAuthority',{
           "roleId": this.activeName
         },{
@@ -1452,7 +1462,21 @@
         sessionStorage.setItem("lastClickRole", this.activeName);
         console.log(sessionStorage.getItem("lastClickRole"));
 //        纪录最后一次点击角色
-      }
+      },
+      modal2: function () {
+        if(this.modal2){
+          this.$http.post('./getEvaTime',{},{
+            "Content-Type":"application/json"
+          }).then(function(response){
+            if(response.body.result == "1") {
+              this.latelyEvaTime = "最近的评教时间为：" + response.body.evaTime.startEvaTeachTime + "-" + response.body.evaTime.endEvaTeachTime;
+            }else if(response.body.result == "0") {
+              this.latelyEvaTime = "";
+            }
+          },function(error){
+          });
+        }
+      },
     },
     methods:{
       termStart: function () {
@@ -1779,11 +1803,13 @@
     /*学期开始时间设置按钮*/
     margin-top: 3rem;
     margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
   #evaluationStartButton{
     /*评教起止时间设置按钮*/
     margin-top: 3rem;
     margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
   .ivu-menu-item-selected{
     /*角色被选中的背景色*/

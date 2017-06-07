@@ -3,7 +3,7 @@
       <div class="positionBar">
         <span>您的当前位置：</span>
         <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
-        <span> > 学生个人信息</span>
+        <span> > 学生课表信息</span>
       </div>
       <div class="blank">
       <select class="selectStyle1" v-model="yearSelect">
@@ -243,9 +243,4 @@
       text-align: center;
     }
 
-    @media screen and (max-width: 1023px) {
-        html {
-            font-size: 56%;
-        }
-    }
 </style>

@@ -44,7 +44,8 @@
         name: 'table',
         data () {
             return {
-              tableList:[{courseName:"护理",className:"101",teacherName:"李华",courseTime:"201-01-02",status:"1"}]
+//              tableList:[{courseName:"护理",className:"101",teacherName:"李华",courseTime:"201-01-02",status:"1"}]
+            tableList:''
             }
         },
       beforeMount:function(){

@@ -40,7 +40,7 @@
           }else if(this.authorityList[i]=="33"){
             buttons[1].style.display="block";
           }else if(this.authorityList[i]=="54"){
-            buttons[1].style.display="block";
+            buttons[2].style.display="block";
           }
         }
       }catch(e){}

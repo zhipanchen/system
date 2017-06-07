@@ -4,7 +4,7 @@
       <div id="titleDiv">
         <a :href="imgHref"><img id="schoolImg" src="../../../assets/images/title.png" alt="四川省医科科学院·四川省人民医院·护士学校" ></a>
         <div id="userExitDiv">
-          <a :href="exitHref"><img id="exitImg" src="../../../assets/images/exit.png" alt="退出图标" @click="exitAlert"></a>
+          <a :href="exitHref"><img id="exitImg" src="../../../assets/images/exit.png" alt="退出图标" title="退出"></a>
         </div>
       </div>
       <div id="stepDiv">
@@ -71,7 +71,14 @@
       }
     },
     mounted: function() {
-//      dom加载后调整页面高度
+//      dom加载后调整页面高度和字体大小
+      window.onresize = function(){
+        var clientWidth = document.body.clientWidth;
+        if(clientWidth > 319 && clientWidth < 769){
+          document.documentElement.style.fontSize = "30px";
+        }
+      };
+      window.onresize();
       var dom = document.getElementById("forgetPassword");
       dom.style.height = window.innerHeight + "px";
     },
@@ -149,8 +156,15 @@
 </script>
 
 <style scoped>
+  #forgetPassword{
+    min-height: 35rem;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+  }
   #schoolImg{
     /*学校图标*/
+    width: 23rem;
     height: 3rem;
     border-radius: 1rem;
   }
@@ -175,11 +189,9 @@
     border: solid LightGreen;
     background-color: white;
     border-radius: 1rem;
-    height: 55%;
+    height: 26rem;
     width: 50%;
     margin: 0 auto;
-    position: relative;
-    top: 20%;
     padding: 1rem;
   }
   #stepDiv{
@@ -198,7 +210,7 @@
   #inputDiv{
     /*输入区域*/
     border-top: thin solid #f3f3f3;
-    height: inherit;
+    height: 60%;
     margin: 1rem 3rem;
     display: flex;
     flex-direction: column;
@@ -209,8 +221,14 @@
     /*邮件发送验证按钮*/
     width: 5.6rem;
   }
-  @media screen and (max-width: 1025px) {
-    html {
+  @media screen and (min-width:320px) and (max-width:769px) {
+    #schoolImg{
+      /*学校图标*/
+      width: 15rem;
+      height: 2rem;
+    }
+    #main{
+      width: 80%;
     }
   }
 </style>

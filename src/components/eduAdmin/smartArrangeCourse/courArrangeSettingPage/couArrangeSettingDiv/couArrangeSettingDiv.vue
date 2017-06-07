@@ -14,9 +14,9 @@
         <table id="fiveYearTable" v-show="fiveYearTable">
           <thead>
             <tr class="headTr">
-            <td class="courseTd" style="cursor: pointer" @click="sortInfo('five','course')">课程名称<span class="sortSpan">↓</span></td>
+            <td class="courseTd" style="cursor: pointer" @click="sortInfo('five','course')" title="排序">课程名称<span class="sortSpan">↓</span></td>
             <td>课程编号</td>
-            <td class="teacherTd" style="cursor: pointer" @click="sortInfo('five','teacher')">任课教师<span class="sortSpan">↓</span></td>
+            <td class="teacherTd" style="cursor: pointer" @click="sortInfo('five','teacher')" title="排序">任课教师<span class="sortSpan">↓</span></td>
             <td>教师编号</td>
             <td>班级</td>
             <!--<td class="operationTd"><button class="importButton" @click="ImportClick('five')">导入</button></td>-->
@@ -69,18 +69,18 @@
               </td>
               <td class="operationTd">
                 <!--编辑功能，初始显示，编辑时隐藏-->
-                <img :id="'fiveEditImg'+index" src="../../../../../assets/images/edit.png" @click="editClick('five',index)">
+                <img :id="'fiveEditImg'+index" src="../../../../../assets/images/edit.png" @click="editClick('five',index)" title="编辑">
                 <!--保存功能，初始隐藏，编辑时显示-->
-                <img :id="'fiveSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="operationClick('five',index,'save')">
+                <img :id="'fiveSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="operationClick('five',index,'save')" title="保存">
                 <!--取消编辑并重置，初始隐藏，编辑时显示-->
-                <img :id="'fiveRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="operationClick('five',index,'restore')">
+                <img :id="'fiveRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="operationClick('five',index,'restore')" title="取消">
                 <!--删除功能，初始显示，编辑时隐藏-->
-                <img :id="'fiveDeleteImg'+index" src="../../../../../assets/images/delete.png" @click="operationClick('five',index,'delete')">
+                <img :id="'fiveDeleteImg'+index" src="../../../../../assets/images/delete.png" @click="operationClick('five',index,'delete')" title="删除">
               </td>
             </tr>
             <tr>
               <!--增加功能，通过vue增加循环数组元素，但input DOM不会即时创建，所以暂时无法增加的同时处于编辑状态-->
-              <td><img src="../../../../../assets/images/add.png" @click="addClick(fiveCourses,'five')"></td>
+              <td><img src="../../../../../assets/images/add.png" @click="addClick(fiveCourses,'five')" title="添加"></td>
               <td></td>
               <td></td>
               <td></td>
@@ -95,9 +95,9 @@
         <table id="threeYearTable" v-show="threeYearTable">
           <thead>
             <tr class="headTr">
-            <td class="courseTd" style="cursor: pointer" @click="sortInfo('three','course')">课程名称<span class="sortSpan">↓</span></td>
+            <td class="courseTd" style="cursor: pointer" @click="sortInfo('three','course')" title="排序">课程名称<span class="sortSpan">↓</span></td>
             <td>课程编号</td>
-            <td class="teacherTd" style="cursor: pointer" @click="sortInfo('three','teacher')">任课教师<span class="sortSpan">↓</span></td>
+            <td class="teacherTd" style="cursor: pointer" @click="sortInfo('three','teacher')" title="排序">任课教师<span class="sortSpan">↓</span></td>
             <td >教师编号</td>
             <td>班级</td>
             <td class="portTd">
@@ -147,14 +147,14 @@
                 </select>-->
               </td>
               <td class="operationTd">
-                <img :id="'threeEditImg'+index" src="../../../../../assets/images/edit.png" @click="editClick('three',index)">
-                <img :id="'threeSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="operationClick('three',index,'save')">
-                <img :id="'threeRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="operationClick('three',index,'restore')">
-                <img :id="'threeDeleteImg'+index" src="../../../../../assets/images/delete.png" @click="operationClick('three',index,'delete')">
+                <img :id="'threeEditImg'+index" src="../../../../../assets/images/edit.png" @click="editClick('three',index)" title="编辑">
+                <img :id="'threeSaveImg'+index" class="saveImg" src="../../../../../assets/images/save.png" @click="operationClick('three',index,'save')" title="保存">
+                <img :id="'threeRestoreImg'+index" class="restoreImg" src="../../../../../assets/images/restore.png" @click="operationClick('three',index,'restore')" title="取消">
+                <img :id="'threeDeleteImg'+index" src="../../../../../assets/images/delete.png" @click="operationClick('three',index,'delete')" title="删除">
               </td>
             </tr>
             <tr>
-              <td><img src="../../../../../assets/images/add.png" @click="addClick(threeCourses,'three')"></td>
+              <td><img src="../../../../../assets/images/add.png" @click="addClick(threeCourses,'three')" title="添加"></td>
               <td></td>
               <td></td>
               <td></td>
@@ -366,19 +366,21 @@
           for (var i = 0; i < courses.length; i++) {
             var isExist = false;
             for (var n = 0; n < a.length; n++) {
-              if(a[n] == courses[i].number){
+              if(a[n] == courses[i].name){
                 isExist = true;
               }
             }
             if(!isExist){
-              a.push(JSON.parse(JSON.stringify(courses[i].number)));
+              a.push(JSON.parse(JSON.stringify(courses[i].name)));
             }
           }
           console.log(a);
+          a = a .sort (function(a,b){return a.localeCompare(b)});
+//        按拼音首字母a-z排序
 
           for (var i = 0; i < a.length; i++) {
             for (var n = 0; n < courses.length; n++) {
-              if(courses[n].number == a[i]){
+              if(courses[n].name == a[i]){
                 b.push(JSON.parse(JSON.stringify(courses[n])));
               }
             }
@@ -394,19 +396,21 @@
           for (var i = 0; i < courses.length; i++) {
             var isExist = false;
             for (var n = 0; n < a.length; n++) {
-              if(a[n] == courses[i].teacherId){
+              if(a[n] == courses[i].teacher){
                 isExist = true;
               }
             }
             if(!isExist){
-              a.push(JSON.parse(JSON.stringify(courses[i].teacherId)));
+              a.push(JSON.parse(JSON.stringify(courses[i].teacher)));
             }
           }
           console.log(a);
+          a = a .sort (function(a,b){return a.localeCompare(b)});
+//        按拼音首字母a-z排序
 
           for (var i = 0; i < a.length; i++) {
             for (var n = 0; n < courses.length; n++) {
-              if(courses[n].teacherId == a[i]){
+              if(courses[n].teacher == a[i]){
                 b.push(JSON.parse(JSON.stringify(courses[n])));
               }
             }
@@ -547,17 +551,34 @@
 //            重置数据
           if(year == "five"){
             this.fiveCourses.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_fiveCourses[index])));
+            if(this.fiveCourses[index].coursePlanId == ""){
+              this.fiveCourses.splice(index, 1);
+              this.buffer_fiveCourses.splice(index, 1);
+            }else{
+              for(i = 0;i<select.length;i++){
+                select[i].disabled = true;
+              }
+              editImg.style.display = "inline";
+              saveImg.style.display = "none";
+              deleteImg.style.display = "inline";
+              restoreImg.style.display = "none";
+            }
           }
           if(year == "three"){
             this.threeCourses.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_threeCourses[index])));
+            if(this.threeCourses[index].coursePlanId == ""){
+              this.threeCourses.splice(index, 1);
+              this.buffer_threeCourses.splice(index, 1);
+            }else{
+              for(i = 0;i<select.length;i++){
+                select[i].disabled = true;
+              }
+              editImg.style.display = "inline";
+              saveImg.style.display = "none";
+              deleteImg.style.display = "inline";
+              restoreImg.style.display = "none";
+            }
           }
-          for(i = 0;i<select.length;i++){
-            select[i].disabled = true;
-          }
-          editImg.style.display = "inline";
-          saveImg.style.display = "none";
-          deleteImg.style.display = "inline";
-          restoreImg.style.display = "none";
 //        }
           this.modal1 = false;
       },
@@ -737,6 +758,16 @@
         courses.push(
             { id:"",name:"", "number":"", "teacher":"", "teacherId":"", "classId":"选择班级", className:"", coursePlanId:""}
         );
+        this.$nextTick(function () {
+          var editImg = null;
+          if (year == "five") {
+            editImg = document.getElementById("fiveEditImg" + (courses.length - 1));
+          }
+          if (year == "three") {
+            editImg = document.getElementById("threeEditImg" + (courses.length - 1));
+          }
+          editImg.click();
+        });
         if (year == "five") {
           this.buffer_fiveCourses.push(
               { id:"",name:"", "number":"", "teacher":"", "teacherId":"", "classId":"选择班级", className:"", coursePlanId:""}
@@ -808,6 +839,10 @@
   .dropDown{
     /*页面主要内容*/
     margin: 0.5rem 5rem;
+  }
+  .amButtom{
+    /*折叠按钮*/
+    cursor: pointer;
   }
   table{
     width: 100%;
