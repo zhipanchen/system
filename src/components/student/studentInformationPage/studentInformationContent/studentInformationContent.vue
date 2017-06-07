@@ -3,7 +3,7 @@
       <div class="positionBar">
         <span>您的当前位置：</span>
         <span><a :href="studentPageUrl" class="returnHome">首页</a></span>
-        <span> > 学生个人信息</span>
+        <span> > 个人信息</span>
       </div>
       <div class="tableBox">
         <table id="tableDiv" class="normalTable" border="1">
