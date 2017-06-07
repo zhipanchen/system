@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">课酬模块</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">课酬模块</a></span> -->
 		<span> > 薪酬管理</span>
 	</div>
 	<div class="tableSelect">
@@ -17,7 +17,7 @@
 				<button class="amButtom">
 					<span class="subtitle">教学职称</span>
 				</button>
-				<img id="teacherArrow" class="iconImg" :src="icon2" style="position:absolute; left:6rem;">
+				<img id="teacherArrow" class="iconImg" :src="icon2" @click="teacherClick()" style="position:absolute; left:6rem;">
 				<button class="amButtom" @click="teacherClick()" style="background-color:#1fa573; cursor:pointer;">
 					<span class="subtitle" style="left:2rem;">教师</span>
 				</button>
@@ -36,10 +36,10 @@
 								<input id="input1" type="text" :value="teacherOne.payPerCourse" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 							</td>
 							<td class="operations" :value="teacherOne.jobtitleId">	<!-- :value="teacherOne.opts" -->
-								<img :id="'teacherEditImg'+index" width="25px" height="25px" class="editImg" src="../../../../public/images/edit.png" @click="editClick('teacher',index)">
-				                <img :id="'teacherSaveImg'+index" width="25px" height="25px" class="saveImg" src="../../../../public/images/save.png" @click="saveClick('teacher',index)">
-				                <img :id="'teacherRestoreImg'+index" width="25px" height="25px" class="restoreImg" src="../../../../public/images/restore.png" @click="restoreClick('teacher',index)">
-				                <img :id="'teacherDeleteImg'+index" width="25px" height="25px" class="deleteImg" src="../../../../public/images/delete.png" @click="deleteClick('teacher',index)">
+								<img :id="'teacherEditImg'+index" width="25px" height="25px" class="editImg" src="../../../../public/images/edit.png" @click="editClick('teacher',index)" title="编辑">
+				                <img :id="'teacherSaveImg'+index" width="25px" height="25px" class="saveImg" src="../../../../public/images/save.png" @click="saveClick('teacher',index)" title="保存修改">
+				                <img :id="'teacherRestoreImg'+index" width="25px" height="25px" class="restoreImg" src="../../../../public/images/restore.png" @click="restoreClick('teacher',index)" title="取消修改">
+				                <img :id="'teacherDeleteImg'+index" width="25px" height="25px" class="deleteImg" src="../../../../public/images/delete.png" @click="deleteClick('teacher',index)" title="删除">
 							</td>
 						</tr>
 					</tbody>
@@ -51,7 +51,7 @@
 				<button class="amButtom">
 					<span class="subtitle">工作职称</span>
 				</button>
-				<img id="doctorArrow" class="iconImg" :src="icon1" style="position:absolute; left:6rem;">
+				<img id="doctorArrow" class="iconImg" :src="icon1" @click="doctorClick()" style="position:absolute; left:6rem;">
 				<button class="amButtom" @click="doctorClick()" style="background-color:#1fa573; cursor:pointer;">
 					<span class="subtitle" style="left:2rem;">医生</span>
 				</button>
@@ -70,17 +70,17 @@
 								<input id="input1" type="text" :value="doctorOne.payPerCourse" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 							</td>
 							<td class="operations" :value="doctorOne.jobtitleId">
-								<img :id="'doctorEditImg'+index" width="25px" height="25px" class="editImg" src="../../../../public/images/edit.png" @click="editClick('doctor',index)">
-				                <img :id="'doctorSaveImg'+index" width="25px" height="25px" class="saveImg" src="../../../../public/images/save.png" @click="saveClick('doctor',index)">
-				                <img :id="'doctorRestoreImg'+index" width="25px" height="25px" class="restoreImg" src="../../../../public/images/restore.png" @click="restoreClick('doctor',index)">
-				                <img :id="'doctorDeleteImg'+index" width="25px" height="25px" class="deleteImg" src="../../../../public/images/delete.png" @click="deleteClick('doctor',index)">
+								<img :id="'doctorEditImg'+index" width="25px" height="25px" class="editImg" src="../../../../public/images/edit.png" @click="editClick('doctor',index)" title="编辑">
+				                <img :id="'doctorSaveImg'+index" width="25px" height="25px" class="saveImg" src="../../../../public/images/save.png" @click="saveClick('doctor',index)" title="保存修改">
+				                <img :id="'doctorRestoreImg'+index" width="25px" height="25px" class="restoreImg" src="../../../../public/images/restore.png" @click="restoreClick('doctor',index)" title="取消修改">
+				                <img :id="'doctorDeleteImg'+index" width="25px" height="25px" class="deleteImg" src="../../../../public/images/delete.png" @click="deleteClick('doctor',index)" title="删除">
 							</td>
 						</tr>
 					</tbody>
 				</table>
 
 				<!-- 护士职务课酬设置 -->
-				<img id="nurseArrow" class="iconImg" :src="icon1" style="position:absolute; left:6rem;">
+				<img id="nurseArrow" class="iconImg" :src="icon1" @click="nurseClick()" style="position:absolute; left:6rem;">
 				<button class="amButtom" @click="nurseClick()" style="background-color:#1fa573; cursor:pointer;">
 					<span class="subtitle" style="left:2rem;">护士</span>
 				</button>
@@ -99,10 +99,10 @@
 								<input id="input1" type="text" :value="nurseOne.payPerCourse" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 							</td>
 							<td class="operations" :value="nurseOne.jobtitleId">
-								<img :id="'nurseEditImg'+index" width="25px" height="25px" class="editImg" src="../../../../public/images/edit.png" @click="editClick('nurse',index)">
-				                <img :id="'nurseSaveImg'+index" width="25px" height="25px" class="saveImg" src="../../../../public/images/save.png" @click="saveClick('nurse',index)">
-				                <img :id="'nurseRestoreImg'+index" width="25px" height="25px" class="restoreImg" src="../../../../public/images/restore.png" @click="restoreClick('nurse',index)">
-				                <img :id="'nurseDeleteImg'+index" width="25px" height="25px" class="deleteImg" src="../../../../public/images/delete.png" @click="deleteClick('nurse',index)">
+								<img :id="'nurseEditImg'+index" width="25px" height="25px" class="editImg" src="../../../../public/images/edit.png" @click="editClick('nurse',index)" title="编辑">
+				                <img :id="'nurseSaveImg'+index" width="25px" height="25px" class="saveImg" src="../../../../public/images/save.png" @click="saveClick('nurse',index)" title="保存修改">
+				                <img :id="'nurseRestoreImg'+index" width="25px" height="25px" class="restoreImg" src="../../../../public/images/restore.png" @click="restoreClick('nurse',index)" title="取消修改">
+				                <img :id="'nurseDeleteImg'+index" width="25px" height="25px" class="deleteImg" src="../../../../public/images/delete.png" @click="deleteClick('nurse',index)" title="删除">
 							</td>
 						</tr>
 					</tbody>
