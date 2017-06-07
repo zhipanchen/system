@@ -192,9 +192,15 @@ export default {
 	        if (modifyFlag == false) {
 	        	// this.buttonShow = true;
 	        	// this.submitShow = true;
-	        	document.getElementById("submitBtn").disabled = true;
-	        	document.getElementById("saveAllBtn").disabled = true;
-	        	document.getElementById("compileBtn").disabled = true;
+	        	var submitBtn = document.getElementById("submitBtn")
+	        	submitBtn.disabled = true;
+	        	submitBtn.className = 'hideBtn';
+	        	var saveAllBtn = document.getElementById("saveAllBtn")
+	        	saveAllBtn.disabled = true;
+	        	saveAllBtn.className = 'hideBtn';
+	        	var compileBtn = document.getElementById("compileBtn")
+	        	compileBtn.disabled = true;
+	        	compileBtn.className = 'hideBtn';
 	        }
         },function(error){
             console.log("获取申请error:");
@@ -506,4 +512,24 @@ export default {
   display: none;
 }
 
+/*灰掉按钮*/
+.hideBtn {
+	float: right;
+	margin-bottom: 0;
+	margin-top: 0;
+	padding: 0.6rem 1.1rem;
+	font-size: 0.9rem;
+	font-weight: normal;
+	line-height: 1.2;
+	text-align: center;
+	white-space: nowrap;
+	background-image: none;
+	border: 0;
+	color: rgba(0,0,0,.3);
+	background-color: rgba(0,0,0,.18);
+	border-color: rgba(0,0,0,.18);
+	border-radius: 0.3rem;
+	outline: none;
+	font-family: "Microsoft YaHei";
+}
 </style>

@@ -25,12 +25,12 @@
 					<table class="operationTable">
 						<thead>
 							<tr>
-								<th width="7%">输入</th>
-								<th width="5%">序号</th>
-								<th width="12%">学年学期</th>
+								<th width="10%">输入</th>
+								<th width="7%">序号</th>
+								<!-- <th width="12%">学年学期</th> -->
 								<th width="11%">教师</th>
 								<th width="34%">班级名称</th>
-								<th width="10%">课程名称</th>
+								<th width="18%">课程名称</th>
 								<th width="9%">导出成绩</th>
 							</tr>
 						</thead>				
@@ -38,7 +38,7 @@
 							<tr v-for="(data, index) in scoreInputList" >
 								<td class="textBtn" :value="data.courseAssociationId"><a :href="'#/teacher/class/gradesInput?courseAssociationId='+data.courseAssociationId">成绩输入</a></td>
 								<td v-text="index + 1"></td>
-								<td>{{preSemester}}</td>
+								<!-- <td>{{preSemester}}</td> -->
 								<td v-text="data.teacherName"></td>
 								<td v-text="data.className"></td>
 								<td v-text="data.courseName"></td>
@@ -73,7 +73,7 @@ export default {
 			preSemester: '',
 			// warmPrompt: '按排课信息输入成绩（若单科成绩输入时间长，请15分钟保持一次）',
 			scoreInputList: [
-				{courseAssociationId: '1', semester: '2016-2017学年第一学期', teacherName: '何平', className: '对口高职2015护理（9+3）1班', courseName: '护理管理学'}
+				// {courseAssociationId: '1', semester: '2016-2017学年第一学期', teacherName: '何平', className: '对口高职2015护理（9+3）1班', courseName: '护理管理学'}
 			],
 			modalResult: false,
 			remindResult: ''
@@ -87,7 +87,7 @@ export default {
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.preSemester = data.preSemester;	// 返回当前学期
+            this.preSemester = data.currentSemester;	// 返回当前学期
 			this.scoreInputList = data.scoreInputList;
         },function(error){
             console.log("获取申请error:");
