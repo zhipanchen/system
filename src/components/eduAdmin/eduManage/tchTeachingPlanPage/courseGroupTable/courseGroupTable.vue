@@ -243,6 +243,9 @@
             console.log(response);
             this.courseGroupInfosOne = response.body.courseGroupInfosOne;
             this.courseGroupInfosTwo = response.body.courseGroupInfosTwo;
+            if(this.courseGroupInfosOne.length == 0 && this.courseGroupInfosTwo.length == 0){
+              this.$Message.warning("查询不到相关课程");
+            }
           },function(error){
             console.log("获取error");
           });
