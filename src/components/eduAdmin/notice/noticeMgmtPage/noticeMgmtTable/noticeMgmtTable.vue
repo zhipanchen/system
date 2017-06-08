@@ -73,9 +73,9 @@ export default {
 	data () {
 		return {
 			announcementList: [
-				{announcementName: 'aaaaa'},
-				{announcementName: 'bbbb'},
-				{announcementName: 'dddd'}
+				// {announcementName: 'aaaaa'},
+				// {announcementName: 'bbbb'},
+				// {announcementName: 'dddd'}
 			],
 			modal1: false,
     		modal2: false,//我添加的对话框
