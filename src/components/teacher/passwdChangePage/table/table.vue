@@ -27,12 +27,13 @@
           </tr>
           <tr>
             <td>新密码：</td>
-            <td><input onkeyup="this.value=this.value.replace(/\s+/g,'')"  type="password" v-model="neww" /></td>
+            <td><input onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"   type="password" v-model="neww" /></td>
           </tr>
           <tr>
             <td>确认密码：</td>
-            <td><input onkeyup="this.value=this.value.replace(/\s+/g,'')"  type="password" v-model="connew" /></td>
+            <td><input onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"   type="password" v-model="connew" /></td>
           </tr>
+          <tr><span style="font-size: 0.8rem;color:#158064;">注：密码长度6-15位，由数字或者字母组成。</span></tr>
         </table>
       </div>
       <div id="buttonDiv">
@@ -113,6 +114,7 @@
         this.modal1 = false;
         var idNum= JSON.parse(sessionStorage.getItem("userInfo")).currentUserId;
         if(newone==connewone){
+          if(newone.length>=6&&newone.length<=15){
           var a=CryptoJs.MD5(oldone+idNum+"护士学校");//md5加密
           a = a.toString().toUpperCase();//转16进制字符串，大写
           var b=CryptoJs.MD5(newone+idNum+"护士学校");//md5加密
@@ -142,7 +144,12 @@
           function(error){
             console.log("获取error:");
             console.log(error);
-          });}else{this.$Message.error('密码不一致！');}
+          });}else{
+            this.$Message.error('密码长度不正确！');
+          }
+        }
+        else{
+          this.$Message.error('密码不一致！');}
       },
       //取消
       cancel:function(){

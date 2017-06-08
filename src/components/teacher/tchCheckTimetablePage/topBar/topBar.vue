@@ -28,7 +28,7 @@
     },
     mounted: function () {
       try{
-        var buttons = document.getElementById("tchCheckTimetable_topBar").getElementByTagName("button");
+        var buttons = document.getElementById("tchCheckTimetable_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
         for (var i = 0; i < buttons.length; i++) {
           buttons[i].style.display = "none";

@@ -134,10 +134,10 @@ export default {
 	                var data = response.body;
 	                if(data.scoreCommitList != []) {
 	                    this.scoreCommitList = data.scoreCommitList;
-	                }else{
-	                    // this.$Message.error("操作失败！请重试");
-	                    this.modalResult = true;
-	                    this.remindResult = '2';
+	                }else if(data.scoreCommitList == []) {
+	                    this.$Message.warning("未找到所查询内容！");
+	                    // this.modalResult = true;
+	                    // this.remindResult = '2';
 	                }
 	  			});
   			}

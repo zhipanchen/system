@@ -10,7 +10,8 @@
       <span><input type="text" id="stdName" class="inputWM" placeholder="请输入姓名" v-model="statechangeKey.studentName"></span>
       <!--学号，姓名输入框-->
       <span><button id="searchFor" class="am-btn am-btn-success am-radius buttonWM" @click="searchChangeInfo()">查询</button></span>
-      <!--查询按钮-->
+      <span><button id="leadOut" class="am-btn am-btn-success am-radius buttonWM" @click="leadOutInfo()">下载</button></span>
+      <!--查询,导出按钮-->
     </div>
     <div id="stdInfoTable" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
       <table id="stdInfoTableSy" class="normalTable" style="table-layout: fixed;">
@@ -33,10 +34,9 @@
           <td v-text="statechangeinfoStr.className"></td>
           <td v-text="statechangeinfoStr.studentId"></td>
           <td v-text="statechangeinfoStr.studentName"></td>
-          <td v-if="statechangeinfoStr.changeType === '1'">在读</td>
-          <td v-else-if="statechangeinfoStr.changeType === '2'">停课</td>
-          <td v-else-if="statechangeinfoStr.changeType === '3'">休学</td>
-          <td v-else-if="statechangeinfoStr.changeType === '4'">退学</td>
+          <td v-if="statechangeinfoStr.changeType == '1'">在读</td>
+          <td v-else-if="statechangeinfoStr.changeType == '2'">休学</td>
+          <td v-else-if="statechangeinfoStr.changeType == '3'">退学</td>
           <td v-else>未知</td>
           <td v-text="statechangeinfoStr.changeReason"></td>
           <td v-text="statechangeinfoStr.changeDate"></td>
@@ -99,8 +99,12 @@
           },function(error){
             console.log("获取error");
           });
-        }
+        },
 //        查询学生异动情况
+        leadOutInfo: function(){
+          location.href="./stateManage/exportStateChangeInfo";
+        }
+//        导出学生异动情况
       }
     }
 </script>
