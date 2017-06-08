@@ -39,7 +39,7 @@
                     </tr>
                     <tr>
                         <td>出生年月：</td>
-                        <td><input type="text" v-model="birthdate" /></td>
+                        <td><Date-picker  v-model.lazy="birthdate" type="date" placeholder="选择日期" style="width: 8.5rem;"></Date-picker></td>
                     </tr>
                     <tr>
                         <td>身份证号;</td>
@@ -47,7 +47,7 @@
                     </tr>
                     <tr>
                         <td>参加工作时间：</td>
-                        <td><input onkeyup="this.value=this.value.replace(/\s+/g,'')" type="text" v-model="worktime" /></td>
+                        <td><Date-picker  v-model.lazy="worktime" type="date" placeholder="选择日期" style="width: 8.5rem;"></Date-picker></td>
                     </tr>
                     <tr>
                         <td>当前工作单位：</td>

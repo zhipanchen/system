@@ -106,10 +106,8 @@
   }
   #schoolImg{
     /*学校图标*/
-    /*width: 18rem;*/
     height: 3rem;
-    border-right: 0.1rem solid whitesmoke;
-    /*padding: 0.5rem;*/
+    /*border-right: 0.1rem solid whitesmoke;*/
   }
   #userExitDiv{
     /*用户姓名与退出*/

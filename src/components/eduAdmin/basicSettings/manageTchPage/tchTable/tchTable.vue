@@ -5,7 +5,7 @@
       <span><input type="text" id="tchID" class="inputWM" placeholder="请输入编号" v-model="teacherinfoKey.teacherId" @click="tchIdClick"></span>
       <!--教师姓名，编号输入框-->
       <span><button id="searchFor" class="am-btn am-btn-success am-radius buttonWM" @click="checkTchInfoClick()">查找</button></span>
-      <span><button id="downloadForm" class="am-btn am-btn-success am-radius buttonWM" @click="downloadFormClick">下载模板</button></span>
+      <span><button id="downloadForm" class="am-btn am-btn-success am-radius buttonWM" @click="downloadFormClick()">下载模板</button></span>
       <span style="display: inline-block">
         <Upload
           ref="upload"

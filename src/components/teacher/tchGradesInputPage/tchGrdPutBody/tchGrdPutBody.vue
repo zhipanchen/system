@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">班级管理</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">班级管理</a></span> -->
 		<span> > 成绩录入</span>
 	</div>
 	<div class="blank">
@@ -25,12 +25,12 @@
 					<table class="operationTable">
 						<thead>
 							<tr>
-								<th width="7%">输入</th>
-								<th width="5%">序号</th>
-								<th width="12%">学年学期</th>
+								<th width="10%">输入</th>
+								<th width="7%">序号</th>
+								<!-- <th width="12%">学年学期</th> -->
 								<th width="11%">教师</th>
 								<th width="34%">班级名称</th>
-								<th width="10%">课程名称</th>
+								<th width="18%">课程名称</th>
 								<th width="9%">导出成绩</th>
 							</tr>
 						</thead>				
@@ -38,7 +38,7 @@
 							<tr v-for="(data, index) in scoreInputList" >
 								<td class="textBtn" :value="data.courseAssociationId"><a :href="'#/teacher/class/gradesInput?courseAssociationId='+data.courseAssociationId">成绩输入</a></td>
 								<td v-text="index + 1"></td>
-								<td>{{preSemester}}</td>
+								<!-- <td>{{preSemester}}</td> -->
 								<td v-text="data.teacherName"></td>
 								<td v-text="data.className"></td>
 								<td v-text="data.courseName"></td>
@@ -87,7 +87,7 @@ export default {
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.preSemester = data.preSemester;	// 返回当前学期
+            this.preSemester = data.currentSemester;	// 返回当前学期
 			this.scoreInputList = data.scoreInputList;
         },function(error){
             console.log("获取申请error:");

@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">班级管理</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">班级管理</a></span> -->
 		<span> > <a href="#/teacher/class/tchGradesInput" class="returnHome">成绩录入</a></span>
 		<span> > 正考成绩录入</span>
 	</div>
@@ -31,9 +31,9 @@
 			</span>
 			<span>
 				<button class="am-btn am-btn-success am-radius rightBtn" @click="downloadTemplate()">下载模板</button>
-				<button class="am-btn am-btn-success am-radius rightBtn" v-show="submitShow" @click="submitBtn()">提交</button>
-				<button class="am-btn am-btn-success am-radius rightBtn" v-show="buttonShow" @click="saveAllBtn()">保存</button>
-				<button class="am-btn am-btn-success am-radius rightBtn" v-show="buttonShow" @click="compileBtn()">编辑</button>
+				<button class="am-btn am-btn-success am-radius rightBtn" id="submitBtn" @click="submitBtn()">提交</button>
+				<button class="am-btn am-btn-success am-radius rightBtn" id="saveAllBtn" @click="saveAllBtn()">保存</button>
+				<button class="am-btn am-btn-success am-radius rightBtn" id="compileBtn" @click="compileBtn()">编辑</button>
 			</span>
 		</div>
 	</div>
@@ -188,16 +188,24 @@ export default {
             this.inputLesson = data.canModifyCourInfo.courseName;
             this.classes = data.canModifyCourInfo.className;
             this.scoreList = data.scoreList;
-            modifyFlag = data.canModifyCourInfo.canModifyGrade;
+	        modifyFlag = data.canModifyCourInfo.canModifyGrade;
+	        if (modifyFlag == false) {
+	        	// this.buttonShow = true;
+	        	// this.submitShow = true;
+	        	var submitBtn = document.getElementById("submitBtn")
+	        	submitBtn.disabled = true;
+	        	submitBtn.className = 'hideBtn';
+	        	var saveAllBtn = document.getElementById("saveAllBtn")
+	        	saveAllBtn.disabled = true;
+	        	saveAllBtn.className = 'hideBtn';
+	        	var compileBtn = document.getElementById("compileBtn")
+	        	compileBtn.disabled = true;
+	        	compileBtn.className = 'hideBtn';
+	        }
         },function(error){
             console.log("获取申请error:");
             console.log(error);
         });
-        // console.log(modifyFlag)
-        if (modifyFlag == true) {
-        	this.buttonShow = true;
-        	this.submitShow = true;
-        }
     },
 	methods: {
 		// 编辑修改补考成绩*****************************************************************
@@ -504,4 +512,24 @@ export default {
   display: none;
 }
 
+/*灰掉按钮*/
+.hideBtn {
+	float: right;
+	margin-bottom: 0;
+	margin-top: 0;
+	padding: 0.6rem 1.1rem;
+	font-size: 0.9rem;
+	font-weight: normal;
+	line-height: 1.2;
+	text-align: center;
+	white-space: nowrap;
+	background-image: none;
+	border: 0;
+	color: rgba(0,0,0,.3);
+	background-color: rgba(0,0,0,.18);
+	border-color: rgba(0,0,0,.18);
+	border-radius: 0.3rem;
+	outline: none;
+	font-family: "Microsoft YaHei";
+}
 </style>
