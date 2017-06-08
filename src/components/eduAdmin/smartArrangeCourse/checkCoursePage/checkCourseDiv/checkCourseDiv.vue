@@ -94,8 +94,10 @@
                     { "name":"2017-2018 第2学期", "value":"2017-2018.2" }*/
                 ],
 //                学期选择
-                modal: false
+                modal: false,
 //                对话框显隐
+                errorMessage: "",
+//                对话框内容
             }
         },
         components: {

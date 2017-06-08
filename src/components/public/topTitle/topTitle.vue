@@ -55,6 +55,10 @@
       }
     },
     beforeMount: function() {
+      if(sessionStorage.getItem("needReload") == 1){
+        sessionStorage.removeItem("needReload");
+        location.reload();
+      }
 //      this.$http.post('',{},{
       this.$http.post('./getCurrentUser',{},{
         "Content-Type":"application/json"
@@ -81,6 +85,8 @@
           "Content-Type":"application/json"
         }).then(function(response){
           sessionStorage.removeItem("userType");
+          sessionStorage.removeItem("lastClickRole");
+          sessionStorage.removeItem("userInfo");
           location.href = "#/login";
         },function(error){
           this.$Message.error('连接失败，请重试！',3);

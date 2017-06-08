@@ -28,6 +28,8 @@ Vue.http.interceptors.push((request, next) => {
         //this.$Message.error('操作失败，请先登录！',3);
         //setTimeout("location.href ='#/login'", 4000);
         sessionStorage.removeItem("userType");
+        sessionStorage.removeItem("lastClickRole");
+        sessionStorage.removeItem("userInfo");
         location.href ='#/login';
       }
     }catch (e){}

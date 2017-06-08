@@ -244,9 +244,9 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
-		            if (data.makeUpList != []) {
+		            if (data.makeUpList.length != 0) {
 		            	this.makeUpList = data.makeUpList;
-		            }else if (data.makeUpList == []) {
+		            }else {
 				        // findResult++;
 				        this.$Message.warning("未找到所查询内容！");
 				    }
@@ -266,9 +266,9 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
-		            if (data.makeUpAskList != []) {
+		            if (data.makeUpAskList.length != 0) {
 		            	this.makeUpAskList = data.makeUpAskList;
-		            }else if (data.makeUpAskList == []) {
+		            }else {
 				        // findResult++;
 				        this.$Message.warning("未找到所查询内容！");
 				    }

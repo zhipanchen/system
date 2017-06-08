@@ -132,9 +132,9 @@ export default {
 	  				console.log("通过申请:");
 	                console.log(response);
 	                var data = response.body;
-	                if(data.scoreCommitList != []) {
+	                if(data.scoreCommitList.length != 0) {
 	                    this.scoreCommitList = data.scoreCommitList;
-	                }else if(data.scoreCommitList == []) {
+	                }else {
 	                    this.$Message.warning("未找到所查询内容！");
 	                    // this.modalResult = true;
 	                    // this.remindResult = '2';

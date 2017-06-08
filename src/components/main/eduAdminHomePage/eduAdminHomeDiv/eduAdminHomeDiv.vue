@@ -25,17 +25,21 @@
         <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
           <span>设置学期开始时间</span>
         </div>
-        <div style="font-size: 0.9rem;display: flex;justify-content: center">
-          <Row>
-            <Col span="12">
-            <Date-picker v-model="startDate" format="yyyy年MM月dd日" type="date" placeholder="选择日期" style="width: 12rem"></Date-picker>
-            </Col>
-          </Row>
-          <select v-model="termSelect" style="margin-left: 1rem">
-            <option disabled>选择学期</option>
-            <option value="1">第一学期</option>
-            <option value="2">第二学期</option>
-          </select>
+        <div style="font-size: 0.9rem;">
+          <div style="display: flex;align-items: center;justify-content: center">第一学期：
+            <Row>
+              <Col span="12">
+                <Date-picker v-model="firstDate" format="yyyy年MM月dd日" type="date" placeholder="选择日期" style="width: 12rem"></Date-picker>
+              </Col>
+            </Row>
+          </div>
+          <div style="display: flex;align-items: center;justify-content: center;margin-top: 1rem">第二学期：
+            <Row>
+              <Col span="12">
+                <Date-picker v-model="secondDate" format="yyyy年MM月dd日" type="date" placeholder="选择日期" style="width: 12rem"></Date-picker>
+              </Col>
+            </Row>
+          </div>
         </div>
         <div slot="footer" style="text-align: center">
           <button id="modalBtn" @click="termStart()">确定</button>
@@ -130,7 +134,7 @@
         gradeManageImg: require("./images/成绩管理.png"),
         manageImg: require("./images/教务管理.png"),
         eduAdminManageImg: require("./images/考务管理.png"),
-        emolumentImg: require("./images/课酬模块.png"),
+        emolumentImg: require("./images/课酬管理.png"),
         informationImg: require("./images/教务公告.png"),
         courseImg: require("./images/智能排课.png"),
         roleImg: require("./images/权限管理.png"),
@@ -289,10 +293,12 @@
 //        对话框显隐
         errorMessage: "",
 //        对话框内容
-        startDate: null,
-//        学期开始时间
-        termSelect: "选择学期",
-//        选择开始学期
+        firstDate: "",
+//        第一学期开始时间
+        secondDate: "",
+//        第二学期开始时间
+        dateError: "",
+//        学期设置失败回调
         evaluationDate: null,
 //        评教起止时间
         latelyEvaTime: "",
@@ -346,6 +352,11 @@
       this.$http.post('./getCurrentUser',{},{
         "Content-Type":"application/json"
       }).then(function(response){
+        for (var i = 0; i < response.body.currentRoleList.length; i++) {
+          if(response.body.currentRoleList[i].roleId == 1){
+            location.href = '#/login/main/studentHome';
+          }
+        }
         this.roleList = response.body.currentRoleList;
         this.$nextTick(function () {
           try {
@@ -427,12 +438,12 @@
                     } else if (this.authorityList[i] == 5 || this.authorityList[i] == 22) {
                       var isExist = false;
                       for (var a = 0; a < this.functionModels.length; a++) {
-                        if (this.functionModels[a] == "课酬模块") {
+                        if (this.functionModels[a] == "课酬管理") {
                           isExist = true;
                         }
                       }
                       if (!isExist) {
-                        this.functionModels.push("课酬模块");
+                        this.functionModels.push("课酬管理");
                       }
                     } else if (this.authorityList[i] == 19) {
                       this.functionModels.push("教务公告");
@@ -562,8 +573,8 @@
                       }
                     }else if(this.functionModels[i] == "考务管理") {
                       this.authorityModels.push({ name:"考务管理", msgNum:"0" });
-                    }else if(this.functionModels[i] == "课酬模块") {
-                      this.authorityModels.push({ name:"课酬模块", msgNum:"0" });
+                    }else if(this.functionModels[i] == "课酬管理") {
+                      this.authorityModels.push({ name:"课酬管理", msgNum:"0" });
                     }else if(this.functionModels[i] == "教务公告") {
                       this.authorityModels.push({ name:"教务公告", msgNum:"0" });
                     }else if(this.functionModels[i] == "排课操作" || this.functionModels[i] == "排课信息") {
@@ -605,7 +616,7 @@
                         img[i].src = this.manageImg;
                       } else if (img[i].alt == "考务管理") {
                         img[i].src = this.eduAdminManageImg;
-                      } else if (img[i].alt == "课酬模块") {
+                      } else if (img[i].alt == "课酬管理") {
                         img[i].src = this.emolumentImg;
                       } else if (img[i].alt == "教务公告") {
                         img[i].src = this.informationImg;
@@ -975,12 +986,12 @@
           }else if(this.authorityList[i] == 5 || this.authorityList[i] == 22){
             var isExist = false;
             for (var a = 0; a < this.functionModels.length; a++) {
-              if(this.functionModels[a] == "课酬模块") {
+              if(this.functionModels[a] == "课酬管理") {
                 isExist = true;
               }
             }
             if(!isExist){
-              this.functionModels.push("课酬模块");
+              this.functionModels.push("课酬管理");
             }
           }else if(this.authorityList[i] == 19){
             this.functionModels.push("教务公告");
@@ -1110,8 +1121,8 @@
             }
           }else if(this.functionModels[i] == "考务管理") {
             this.authorityModels.push({ name:"考务管理", msgNum:"0" });
-          }else if(this.functionModels[i] == "课酬模块") {
-            this.authorityModels.push({ name:"课酬模块", msgNum:"0" });
+          }else if(this.functionModels[i] == "课酬管理") {
+            this.authorityModels.push({ name:"课酬管理", msgNum:"0" });
           }else if(this.functionModels[i] == "教务公告") {
             this.authorityModels.push({ name:"教务公告", msgNum:"0" });
           }else if(this.functionModels[i] == "排课操作" || this.functionModels[i] == "排课信息") {
@@ -1151,7 +1162,7 @@
               img[i].src = this.manageImg;
             } else if (img[i].alt == "考务管理") {
               img[i].src = this.eduAdminManageImg;
-            } else if (img[i].alt == "课酬模块") {
+            } else if (img[i].alt == "课酬管理") {
               img[i].src = this.emolumentImg;
             } else if (img[i].alt == "教务公告") {
               img[i].src = this.informationImg;
@@ -1263,12 +1274,12 @@
             }else if(this.authorityList[i] == 5 || this.authorityList[i] == 22){
               var isExist = false;
               for (var a = 0; a < this.functionModels.length; a++) {
-                if(this.functionModels[a] == "课酬模块") {
+                if(this.functionModels[a] == "课酬管理") {
                   isExist = true;
                 }
               }
               if(!isExist){
-                this.functionModels.push("课酬模块");
+                this.functionModels.push("课酬管理");
               }
             }else if(this.authorityList[i] == 19){
               this.functionModels.push("教务公告");
@@ -1398,8 +1409,8 @@
               }
             }else if(this.functionModels[i] == "考务管理") {
               this.authorityModels.push({ name:"考务管理", msgNum:"0" });
-            }else if(this.functionModels[i] == "课酬模块") {
-              this.authorityModels.push({ name:"课酬模块", msgNum:"0" });
+            }else if(this.functionModels[i] == "课酬管理") {
+              this.authorityModels.push({ name:"课酬管理", msgNum:"0" });
             }else if(this.functionModels[i] == "教务公告") {
               this.authorityModels.push({ name:"教务公告", msgNum:"0" });
             }else if(this.functionModels[i] == "排课操作" || this.functionModels[i] == "排课信息") {
@@ -1439,7 +1450,7 @@
                 img[i].src = this.manageImg;
               } else if (img[i].alt == "考务管理") {
                 img[i].src = this.eduAdminManageImg;
-              } else if (img[i].alt == "课酬模块") {
+              } else if (img[i].alt == "课酬管理") {
                 img[i].src = this.emolumentImg;
               } else if (img[i].alt == "教务公告") {
                 img[i].src = this.informationImg;
@@ -1488,33 +1499,54 @@
     },
     methods:{
       termStart: function () {
-        console.log(this.startDate);
-        if(this.startDate == "" || this.termSelect == "选择学期"){
-          this.errorMessage = "时间和学期都不能为空,请重试!";
+        var firstDate = new Date(this.firstDate);
+        var secondDate = new Date(this.secondDate);
+        if(this.firstDate == "" || this.secondDate == ""){
+          this.errorMessage = "时间不能为空,请重试!";
+          this.modal = true;
+        }else if(firstDate >= secondDate){
+          this.errorMessage = "第一学期开始时间必须早于第二学期，请重试！";
+          this.modal = true;
+        }else if((secondDate - firstDate) / (1000 * 3600 * 24) < 120){
+          this.errorMessage = "学期间隔时间太短，请重试！";
           this.modal = true;
         }else {
-          var date = new Date(this.startDate);
-          var year = null;
-          if(this.termSelect == 1){
-            year = date.getFullYear() + "-" + (date.getFullYear() + 1) + ".1";
-          }else if(this.termSelect == 2){
-            year = (date.getFullYear() - 1) + "-" + date.getFullYear() +".2";
-          }
+          this.dateError = "";
+          var firstYear = firstDate.getFullYear() + "-" + (firstDate.getFullYear() + 1) + ".1";
           this.$http.post('./setSchoolStartTime', {
-            "startYearSemester": year,
-            "startTime":date
+            "startYearSemester": firstYear,
+            "startTime": firstDate
           }, {
             "Content-Type": "application/json"
           }).then(function (res) {
             this.modal1 = false;
-            if(res.body.result == "1") {
+            if (res.body.result == "1") {
               this.$Message.success('学期开始时间设置成功！');
-            }else{
-              this.errorMessage = "学期开始时间设置失败，请重试！";
+            } else {
+              this.dateError += res.body.result + "，请重试！";
+              this.errorMessage = this.dateError;
               this.modal = true;
             }
           }, function (error) {
+            this.$Message.error('连接失败，请重试！');
+          });
+
+          var secondYear = (secondDate.getFullYear() - 1) + "-" + secondDate.getFullYear() + ".2";
+          this.$http.post('./setSchoolStartTime', {
+            "startYearSemester": secondYear,
+            "startTime": secondDate
+          }, {
+            "Content-Type": "application/json"
+          }).then(function (res) {
             this.modal1 = false;
+            if (res.body.result == "1") {
+              this.$Message.success('学期开始时间设置成功！');
+            } else {
+              this.dateError += res.body.result + "，请重试！";
+              this.errorMessage = this.dateError;
+              this.modal = true;
+            }
+          }, function (error) {
             this.$Message.error('连接失败，请重试！');
           });
         }
@@ -1635,13 +1667,16 @@
           }
         }else if(this.authorityModels[index].name == "考务管理"){
           location.href = "#/eduAdmin/eduAdminManage";
-        }else if(this.authorityModels[index].name == "课酬模块"){
+        }else if(this.authorityModels[index].name == "课酬管理"){
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 5){
+              location.href = "#/eduAdmin/emolument/salary";
+              break;
+            }
+          }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 22){
               location.href = "#/eduAdmin/emolument/setPrice";
-              break;
-            }else if(this.authorityList[i] == 5){
-              location.href = "#/eduAdmin/emolument/salary";
               break;
             }
           }
@@ -1682,18 +1717,24 @@
             if(this.authorityList[i] == 1){
               location.href = "#/eduAdmin/role/authorityMgmt1";
               break;
-            }else if(this.authorityList[i] == 2){
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 2){
               location.href = "#/eduAdmin/role/eduAdminAuthorityManage2";
               break;
             }
           }
         }else if(this.authorityModels[index].name == "组别管理"){
           for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 56){
+              location.href = "#/teacher/group/eduAdminTchTeachingPlan";
+              break;
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 55){
               location.href = "#/teacher/group/research";
-              break;
-            }else if(this.authorityList[i] == 56){
-              location.href = "#/teacher/group/eduAdminTchTeachingPlan";
               break;
             }
           }
@@ -1702,13 +1743,22 @@
             if(this.authorityList[i] == 41){
               location.href = "#/teacher/course/makeupClass";
               break;
-            }else if(this.authorityList[i] == 40){
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 40){
               location.href = "#/teacher/course/tchManuAdjCl";
               break;
-            }else if(this.authorityList[i] == 39){
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 39){
               location.href = "#/teacher/course/stopClass";
               break;
-            }else if(this.authorityList[i] == 38){
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 38){
               location.href = "#/teacher/course/requirement";
               break;
             }
@@ -1718,21 +1768,36 @@
             if(this.authorityList[i] == 36){
               location.href = "#/teacher/teach/courseList";
               break;
-            }else if(this.authorityList[i] == 52){
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 52){
               location.href = "#/teacher/teach/director";
+              break;
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 37){
+              location.href = "#/teacher/teach/normalSchedule";
               break;
             }
           }
         }else if(this.authorityModels[index].name == "班级管理"){
           for (var i = 0; i < this.authorityList.length; i++) {
-            if(this.authorityList[i] == 54){
-              location.href = "#/teacher/class/classList";
-              break;
-            }else if(this.authorityList[i] == 63){
+            if(this.authorityList[i] == 63){
               location.href = "#/teacher/class/teachingEvaluate";
               break;
-            }else if(this.authorityList[i] == 33){
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 33){
               location.href = "#/teacher/class/tchGradesInput";
+              break;
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 54){
+              location.href = "#/teacher/class/classList";
               break;
             }
           }
@@ -1741,10 +1806,16 @@
             if(this.authorityList[i] == 39){
               location.href = "#/teacher/classInfo/tchCheckTimetable";
               break;
-            }else if(this.authorityList[i] == 25){
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 25){
               location.href = "#/teacher/classInfo/teacherTestInfo";
               break;
-            }else if(this.authorityList[i] == 35){
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 35){
               location.href = "#/teacher/classInfo/tchCheckSalary";
               break;
             }
@@ -1754,17 +1825,29 @@
             if(this.authorityList[i] == 43){
               location.href = "#/teacher/personInfo/basicMessage";
               break;
-            }else if(this.authorityList[i] == 59){
-              location.href = "#/teacher/personInfo/passwdChange";
-              break;
-            }else if(this.authorityList[i] == 46){
-              location.href = "#/teacher/info/certificateManege";
-              break;
-            }else if(this.authorityList[i] == 44){
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 44){
               location.href = "#/teacher/info/educationManege";
               break;
-            }else if(this.authorityList[i] == 45){
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 46){
+              location.href = "#/teacher/info/certificateManege";
+              break;
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 45){
               location.href = "#/teacher/info/experience";
+              break;
+            }
+          }
+          for (var i = 0; i < this.authorityList.length; i++) {
+            if(this.authorityList[i] == 59){
+              location.href = "#/teacher/personInfo/passwdChange";
               break;
             }
           }
@@ -1804,6 +1887,7 @@
   #menuDiv{
     /*左侧功能栏*/
     width: 13rem;
+    min-width: 13rem;
     background-color: #EEF3FA;
     border: thin solid #EEF3FA;
   }
@@ -1854,6 +1938,7 @@
   .pageSpan{
     /*功能块*/
     width: 20%;
+    min-width: 5rem;
     padding-bottom: 0.5rem;
     display: flex;
     align-items: center;
@@ -2021,6 +2106,11 @@
   @media screen and (max-width: 1384px) {
     .announcementName{
       width: 10.5rem;
+    }
+  }
+  @media screen and (min-width:320px) and (max-width:769px) {
+    #menuDiv{
+      min-width: 11rem;
     }
   }
 </style>

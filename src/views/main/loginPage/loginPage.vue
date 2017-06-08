@@ -11,7 +11,7 @@
         <span class="inputSpan">帐号</span><br/>
         <input id="userNumInput" class="loginInput" type="text" v-model="userId">
       </div>
-      <div id="PasswordDiv" class="inputDiv">
+      <div id="passwordDiv" class="inputDiv">
         <span class="inputSpan">密码</span><br/>
         <input id="passwordInput" class="loginInput" type="password" v-model="passwordValue" @keyup.enter="loginClick()">
       </div>
@@ -79,13 +79,6 @@
           }
         },
         mounted: function() {
-          window.onresize = function(){
-            var clientWidth = document.body.clientWidth;
-            if(clientWidth > 319 && clientWidth < 1025){
-              document.documentElement.style.fontSize = "24px";
-            }
-          };
-          window.onresize();
           var dom = document.getElementById("login");
           dom.style.height = window.innerHeight + "px";
         },
@@ -120,6 +113,7 @@
                 console.log(response.body);
                 if(response.body.result == "1"){
                   sessionStorage.setItem("userType", response.body.userType);
+                  sessionStorage.removeItem("lastClickRole");
                   if(response.body.userType == "1"){
                     location.href = '#/login/main/studentHome';
                   }else{
@@ -146,8 +140,6 @@
 <style scoped>
     #login{
       /*页面*/
-      /*text-align: center;*/
-      font-family: 微软雅黑;
       background-repeat: no-repeat;
       background-size: cover;
       display: flex;
@@ -161,7 +153,7 @@
       height: 70%;
       min-height: 27rem;
       background-repeat: no-repeat;
-      background-size: cover;
+      background-size: 100% 100%;
       box-shadow: 0 0 0.5rem;
       display: flex;
       flex-direction: column;
@@ -170,7 +162,7 @@
     }
     #schoolImg{
       /*学校图标*/
-      width: 23rem;
+      width: 21rem;
       height: 3rem;
     }
     #hospitalMottoP{
@@ -238,21 +230,81 @@
     #forgetSpan:hover{
       cursor: pointer;
     }
-    @media screen and (min-width:320px) and (max-width:1025px) {
-      #schoolImg{
-        width: 19rem;
-        height: 2.5rem;
-        position: relative;
-        right: 2.5rem;
-      }
+    @media screen and (max-width:1025px) {
       #login{
+        /*页面*/
+        display: flex;
         align-items: flex-start;
+        justify-content: center;
+        min-height: 114.75rem;
       }
-      #loginDiv {
-        margin-top: 3rem;
-        background-size: 100% 100%;
+      #loginDiv{
+        /*登录模块*/
+        margin-top: 7.5rem;
         width: 75%;
         height: 50%;
+        padding: 5rem 7.5rem;
+        box-shadow: 0 0 1.25rem;
+        min-height: 67.5rem;
+      }
+      #schoolImg{
+        /*学校图标*/
+        width: 47.5rem;
+        height: 6.25rem;
+        position: relative;
+        right: 6.25rem;
+      }
+      #hospitalMottoP{
+        font-size: 2.67rem;
+      }
+      #loginTitleP{
+        /*用户登录*/
+        font-size: 3.75rem;
+      }
+      #loginTipSpan{
+        /*规则查看*/
+        font-size: 2.15rem;
+        bottom: 2.5rem;
+      }
+      .inputDiv{
+        /*帐号密码div*/
+        height: 10rem;
+        width: 37.5rem;
+      }
+      .loginInput{
+        /*帐号密码输入框*/
+        height: 6.25rem;
+        width: 37.5rem;
+      }
+      input{
+        border-radius: 0.8rem;
+        padding: 0.75rem 1.25rem;
+      }
+      .inputSpan{
+        /*帐号密码*/
+        font-size: 2.67rem;
+        top: 1.75rem;
+        left: 3.75rem;
+      }
+      #passwordDiv{
+        margin-bottom: 6rem;
+      }
+      #loginButton{
+        /*登录按钮*/
+        min-width: 12.5rem;
+        min-height: 5.75rem;
+        height: 5.84rem;
+        width: 20rem;
+        padding: 1.5rem 2.75rem;
+        border-radius: 0.8rem;
+        line-height: 1.2;
+        font-size: 2.67rem;
+      }
+      #forgetSpan{
+        /*忘记密码*/
+        font-size: 1.875rem;
+        position: relative;
+        left: 2.67rem;
       }
     }
 </style>
