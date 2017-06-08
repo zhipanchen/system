@@ -182,9 +182,9 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
-		            if (data.scoreListByStuNo != []) {
+		            if (data.scoreListByStuNo.length != 0) {
 		            	this.scoreListByStuNo = data.scoreListByStuNo;
-		            }else if (data.scoreListByStuNo == []) {
+		            }else {
 		            	this.$Message.warning("未找到所查询内容！");
 				        // this.modalResult = true;
 				        // this.resultBool = '1';

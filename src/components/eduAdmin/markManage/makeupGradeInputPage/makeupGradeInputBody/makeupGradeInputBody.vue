@@ -160,10 +160,10 @@ export default {
 		            // if(data.result == "1") {
 	                    this.makeUpGradeInputList = data.makeUpGradeInputList;
 	                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
-	                    if (this.makeUpGradeInputList != []) {
+	                    if (this.makeUpGradeInputList.length != 0) {
 	                    	this.buttonShow = true;
 	                    	this.submitShow = true;
-	                    }else if (this.makeUpGradeInputList == []) {
+	                    }else {
 	                    	this.modalResult = true;
 	                    	this.remindResult = '6';
 	                    }
