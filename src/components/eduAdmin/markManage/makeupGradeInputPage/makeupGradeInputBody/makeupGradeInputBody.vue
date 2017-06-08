@@ -163,7 +163,7 @@ export default {
 	                    if (this.makeUpGradeInputList != []) {
 	                    	this.buttonShow = true;
 	                    	this.submitShow = true;
-	                    }else {
+	                    }else if (this.makeUpGradeInputList == []) {
 	                    	this.modalResult = true;
 	                    	this.remindResult = '6';
 	                    }

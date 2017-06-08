@@ -59,8 +59,8 @@ export default {
 			remindResult: '',
 			uploadResult: '',
 			teachJournalList: [
-				{courseId: 'GGBX0001', className: '一班', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
-				{courseId: 'GGBX0001', className: '一班', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
+				// {courseId: 'GGBX0001', className: '一班', courseName: '基础护理技术', courseHours: '76', takedHours: '12'},
+				// {courseId: 'GGBX0001', className: '一班', courseName: '基础护理技术', courseHours: '76', takedHours: '12'}
 			],
 			// 下载课件列表
 			// uploadList: [{coursewareName:'123',coursewareId:'aaaa'},{coursewareName:'123',coursewareId:'aaaa'}],
