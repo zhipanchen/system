@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span> -->
 		<span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">成绩</a></span>
 		<span> > 成绩查询</span>
 	</div>
@@ -184,9 +184,10 @@ export default {
 		            var data = response.body;
 		            if (data.scoreListByStuNo != []) {
 		            	this.scoreListByStuNo = data.scoreListByStuNo;
-		            }else{
-				        this.modalResult = true;
-				        this.resultBool = '1';
+		            }else if (data.scoreListByStuNo == []) {
+		            	this.$Message.warning("未找到所查询内容！");
+				        // this.modalResult = true;
+				        // this.resultBool = '1';
 				    }
 		        },function(error){
 		            console.log("获取申请error:");

@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span> -->
 		<span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">成绩</a></span>
 		<span> > 成绩撤销</span>
 	</div>
@@ -134,10 +134,10 @@ export default {
 	                var data = response.body;
 	                if(data.scoreCommitList != []) {
 	                    this.scoreCommitList = data.scoreCommitList;
-	                }else{
-	                    // this.$Message.error("操作失败！请重试");
-	                    this.modalResult = true;
-	                    this.remindResult = '2';
+	                }else if(data.scoreCommitList == []) {
+	                    this.$Message.warning("未找到所查询内容！");
+	                    // this.modalResult = true;
+	                    // this.remindResult = '2';
 	                }
 	  			});
   			}

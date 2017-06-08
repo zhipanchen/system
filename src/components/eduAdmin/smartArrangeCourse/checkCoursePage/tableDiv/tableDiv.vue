@@ -43,7 +43,7 @@
                 <td>3-4</td>
                 <td>5-6</td>
             </tr>
-            <tr  v-for="(item,index) in items" id="courseTr">
+            <tr v-for="(item,index) in items" id="courseTr">
                 <td class="sectionTd" v-html="item.className"></td>
                 <td :id="'first'+index" @click="courseClick('first',index)" v-html="item.firstCourse"></td>
                 <td :id="'second'+index" @click="courseClick('second',index)" v-html="item.secondCourse"></td>
@@ -109,7 +109,7 @@
             return {
                 checked: 0,
                 items:[
-                    /*{   "className": '高职2013级1班（45人）', "firstCourse":'语文+教师姓名+（教室）+（时间）',
+                    /*{   "className": '高职2013级1班（45人）', "firstCourse":'语文<br>教师姓名<br>（教室）<br>（时间）',
                         "secondCourse": "数学",
                         "thirdCourse": "英语",
                         "fourthCourse": "英语",
@@ -408,9 +408,21 @@
         watch: {
             queryCourse: function () {
                 this.items = this.queryCourse;
+                for (var i = 0; i < this.items.length; i++) {
+                    for ( var key in this.items[i]){
+                        if(this.items[i][key].indexOf("br") > 0){
+                            console.log(this.items[i][key]);
+                            var first = this.items[i][key].split("<br>");
+                            this.items[i][key] = first[0];
+                            for (var j = 0; j < first.length - 1; j++) {
+                                this.items[i][key] += "<br>"+first[j+1];
+                            }
+                        }
+                    }
+                }
 //                查找课表替换
             }
-        }
+        },
         /*methods: {
             exchangeClick: function(){
                 var td = document.getElementsByTagName("td");

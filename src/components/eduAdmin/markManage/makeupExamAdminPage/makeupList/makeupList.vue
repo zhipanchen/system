@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span> -->
 		<span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">补考</a></span>
 		<span> > 补考成绩管理</span>
 	</div>
@@ -85,9 +85,9 @@
 									<!-- <img class="rightImg" width="25px" height="25px" @click="rightBtn(index)">
 									<img class="wrongImg" width="25px" height="25px" @click="wrongBtn(index)"> -->
 		                            <!--申请通过批准-->
-									<button class="operationBtn" @click="rightBtn(index)">√</button>
+									<button class="operationBtn" @click="rightBtn(index)" title="申请批准">√</button>
 		                            <!--申请拒绝-->
-									<button class="operationBtn" @click="wrongBtn(index)">×</button>
+									<button class="operationBtn" @click="wrongBtn(index)" title="申请拒绝">×</button>
 								</td>
 							</tr>
 						</tbody>
@@ -231,7 +231,7 @@ export default {
     			this.modalResult = true;
     			this.remindResult = '8';
     		}else {
-    			var findResult = '0';
+    			// var findResult = '0';
 	    		// 获取需要补考名单*************************************************
 	  			this.$http.post('./findMakeUpList',{
 		        	"gradeType": this.selGradeType,
@@ -246,8 +246,9 @@ export default {
 		            var data = response.body;
 		            if (data.makeUpList != []) {
 		            	this.makeUpList = data.makeUpList;
-		            }else{
-				        findResult++;
+		            }else if (data.makeUpList == []) {
+				        // findResult++;
+				        this.$Message.warning("未找到所查询内容！");
 				    }
 		        },function(error){
 		            console.log("获取申请error:");
@@ -267,17 +268,18 @@ export default {
 		            var data = response.body;
 		            if (data.makeUpAskList != []) {
 		            	this.makeUpAskList = data.makeUpAskList;
-		            }else{
-				        findResult++;
+		            }else if (data.makeUpAskList == []) {
+				        // findResult++;
+				        this.$Message.warning("未找到所查询内容！");
 				    }
 		        },function(error){
 		            console.log("获取申请error:");
 		            console.log(error);
 		        });
-	    		if (findResult != '0') {
-		    		this.modalResult = true;
-					this.remindResult = '1';
-	    		}
+	    // 		if (findResult != '0') {
+		   //  		this.modalResult = true;
+					// this.remindResult = '1';
+	    // 		}
     		}
 	    },
 	    // 下载按钮********************************************************************

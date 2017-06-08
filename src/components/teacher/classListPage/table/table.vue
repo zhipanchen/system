@@ -90,8 +90,8 @@
               modal1: false,
               currentStates:[
                 '在读',
-                '休学',
-                '退学'
+                '申请休学',
+                '申请退学'
               ]
             }
         },
@@ -107,9 +107,9 @@
               if(response.body.studentAndStateList[i].currentState=="1"){
                 this.tableList[i].currentState="在读"
               }else if(response.body.studentAndStateList[i].currentState=="2"){
-                this.tableList[i].currentState="休学"
+                this.tableList[i].currentState="申请休学"
               }else if(response.body.studentAndStateList[i].currentState=="3"){
-                this.tableList[i].currentState="退学"
+                this.tableList[i].currentState="申请退学"
               }
           }
               for(var n=0;n<response.body.studentAndStateList.length;n++){
@@ -149,9 +149,9 @@
           for(var i=0;i<this.tableList.length;i++){
             if(this.tableList[i].currentState=="在读"){
               this.tableList[i].currentState="1"
-            }else if( this.tableList[i].currentState=="休学"){
+            }else if( this.tableList[i].currentState=="申请休学"){
               this.tableList[i].currentState="2"
-            }else if( this.tableList[i].currentState=="退学"){
+            }else if( this.tableList[i].currentState=="申请退学"){
               this.tableList[i].currentState="3"
             }
           }

@@ -3,7 +3,7 @@
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">课程信息维护</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">课程信息维护</a></span> -->
 		<span> > 教师课表</span>
 	</div>
 	<div class="tableSelect">
@@ -40,33 +40,33 @@
 				<tbody>
 					<tr>
 						<td>第一节<br>8:30-9:15</td>
-						<td v-text="firstCourse" rowspan="2"></td>
-						<td v-text="fourthCourse" rowspan="2"></td>
-						<td v-text="seventhCourse" rowspan="2"></td>
-						<td v-text="tenthCourse" rowspan="2"></td>
-						<td v-text="thirteenthCourse" rowspan="2"></td>
+						<td v-html="firstCourse" rowspan="2"></td>
+						<td v-html="fourthCourse" rowspan="2"></td>
+						<td v-html="seventhCourse" rowspan="2"></td>
+						<td v-html="tenthCourse" rowspan="2"></td>
+						<td v-html="thirteenthCourse" rowspan="2"></td>
 					</tr>
 					<tr>
 						<td>第二节<br>9:20-10:05</td>
 					</tr>
 					<tr>
 						<td>第三节<br>10:20-11:05</td>
-						<td v-text="secondCourse" rowspan="2"></td>
-						<td v-text="fifthCourse" rowspan="2"></td>
-						<td v-text="eightCourse" rowspan="2"></td>
-						<td v-text="eleventhCourse" rowspan="2"></td>
-						<td v-text="fourteenthCourse" rowspan="2"></td>
+						<td v-html="secondCourse" rowspan="2"></td>
+						<td v-html="fifthCourse" rowspan="2"></td>
+						<td v-html="eightCourse" rowspan="2"></td>
+						<td v-html="eleventhCourse" rowspan="2"></td>
+						<td v-html="fourteenthCourse" rowspan="2"></td>
 					</tr>
 					<tr>
 						<td>第四节<br>11:10-11:55</td>
 					</tr>
 					<tr>
 						<td>第五节<br>14:30-15:15</td>
-						<td v-text="thirdCourse" rowspan="2"></td>
-						<td v-text="sixthCourse" rowspan="2"></td>
-						<td v-text="ninthCourse" rowspan="2"></td>
-						<td v-text="twelfthCourse" rowspan="2"></td>
-						<td v-text="classmeeting" rowspan="2">班会</td>
+						<td v-html="thirdCourse" rowspan="2"></td>
+						<td v-html="sixthCourse" rowspan="2"></td>
+						<td v-html="ninthCourse" rowspan="2"></td>
+						<td v-html="twelfthCourse" rowspan="2"></td>
+						<td v-html="classmeeting" rowspan="2">班会</td>
 					</tr>
 					<tr>
 						<td>第六节<br>15:20-16:05</td>
