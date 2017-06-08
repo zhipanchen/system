@@ -26,12 +26,11 @@
 						<td>{{notice.announcementType}}</td>
 						<td>{{notice.announcementTime}}</td>
 						<td>{{notice.announcementUserName}}</td>
-						<td>
+						<td id="deleteImg">
 							<img width="25px" height="25px" class="deleteImg" src="../../../../../assets/images/delete.png" @click="deleteClick(index)">
-							<!-- 弹窗操作 -->
 						</td>
 					</tr>
-					<tr>
+					<tr id="addImg">
 						<td>
 							<img src="../../../../../assets/images/add.png" width="25px" height="25px" @click="addClick()">
 						</td>
@@ -39,6 +38,8 @@
 				</tbody>
 			</table>
 		</div>
+
+		<!-- 弹窗操作 -->
 		<Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
 			<p style="text-align:center; font-size:1.1rem;">您确定要删除吗？</p>
 			<div slot="footer" style="text-align:center;">
@@ -79,15 +80,16 @@ export default {
 			modal1: false,
     		modal2: false,//我添加的对话框
 			modalResult: false,
-			index: ''
+			index: '',
+			currentRoleList: ''
 		}
 	},
 	beforeMount: function() {
-    //这里是跳转过来后从URL里获得后端传递给我的信息，来提示发布的结果
-    var thisURL = document.URL;
-    var result =thisURL.split("?")[1];
-    if(result=="0"){this.modal2=true;}else if(result=="1"){this.$Message.success('发布成功！');}
-    this.$http.post('./announcementManage/getAllAnnouncement',{},{
+	    //这里是跳转过来后从URL里获得后端传递给我的信息，来提示发布的结果
+	    var thisURL = document.URL;
+	    var result =thisURL.split("?")[1];
+	    if(result=="0"){this.modal2=true;}else if(result=="1"){this.$Message.success('发布成功！');}
+	    this.$http.post('./announcementManage/getAllAnnouncement',{},{
             "Content-Type":"application/json"
         }).then(function(response){
             console.log("获取申请:");
@@ -98,6 +100,20 @@ export default {
             console.log("获取申请error:");
             console.log(error);
         });
+    },
+    // 判断用户角色是否是学生，若是，则没有公告添加和删除权限
+    mounted: function () {
+      try{
+        var deleteImg = document.getElementById("deleteImg");
+        var addImg = document.getElementById("addImg");
+        this.currentRoleList = JSON.parse(sessionStorage.getItem("userInfo")).currentRoleList;
+        for (var i = 0; i < this.currentRoleList.length; i++) {
+        	if (this.currentRoleList[i].roleId == "1") {
+            	deleteImg.style.display = "none";
+            	addImg.style.display = "none";
+        	}
+        }
+      }catch(e) {}
     },
     methods: {
     	// 点击删除该行信息弹出对话框
