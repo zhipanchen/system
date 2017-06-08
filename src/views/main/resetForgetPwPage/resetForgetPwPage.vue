@@ -65,13 +65,6 @@
       }
     },
     mounted: function() {
-      window.onresize = function(){
-        var clientWidth = document.body.clientWidth;
-        if(clientWidth > 319 && clientWidth < 769){
-          document.documentElement.style.fontSize = "30px";
-        }
-      };
-      window.onresize();
 //      dom加载后获取后端的邮箱验证结果
       var dom = document.getElementById("resetForgetPassword");
       dom.style.height = window.innerHeight + "px";
@@ -235,6 +228,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    align-content: center;
   }
   .operationP{
     /*输入区域*/
@@ -248,14 +242,14 @@
     /*操作提示*/
     font-size: 1.2rem;
   }
-  @media screen and (min-width:320px) and (max-width:769px) {
+  /*@media screen and (max-width:769px) {
     #schoolImg{
-      /*学校图标*/
+      !*学校图标*!
       width: 15rem;
       height: 2rem;
     }
     #main{
       width: 80%;
     }
-  }
+  }*/
 </style>

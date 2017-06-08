@@ -35,11 +35,19 @@
           </tr>
           <tr>
             <td>最高学历：</td>
-            <td><input type="text" onkeyup="this.value=this.value.replace(/\s+/g,'')" v-model="highestEDU" /></td>
+            <td>
+                  <select style="width:11.3rem;" v-model="highestEDU">
+                    <option v-for="EDU in EDUs">{{ EDU }}</option>
+                  </select>
+            </td>
           </tr>
           <tr>
             <td>最高学位：</td>
-            <td><input type="text" onkeyup="this.value=this.value.replace(/\s+/g,'')" v-model="highestDegree" /></td>
+            <td>
+              <select style="width:11.3rem;" v-model="highestDegree">
+                <option v-for="degree in degrees">{{ degree }}</option>
+              </select>
+            </td>
           </tr>
         </table>
 
@@ -90,6 +98,8 @@
       return {
         subtitle1:'个人信息',
         subtitle2:'教育管理',
+        EDUs:['中专','高中','专科','本科','硕士研究生','博士研究生'],
+        degrees:['学士','硕士','博士'],
         graduateSchool:'',
         secialty:'',
         schoolSystem:'',
@@ -137,7 +147,8 @@
       //保存
       save:function(graduateSchool,secialty,schoolSystem,highestEDU,highestDegree){
         this.modal1 = false;
-        console.log(graduateSchool);
+        console.log(highestEDU);
+        console.log(highestDegree);
 //        this.$http.post('../jsonphp/education.php',{
         this.$http.post('./teacherManage/editTeacherEduInfo',{
          "graduateSchool":graduateSchool,

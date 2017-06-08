@@ -98,6 +98,8 @@
               }else if(a[i].applyMakeup==3){
                 a[i]['apply'] = '审核未通过';
               }
+            }else{
+              a[i]["apply"] = '--';
             }
           }else{
             a[i]['apply'] = '--';
@@ -152,17 +154,19 @@
             if(a[i].endGrade<60) {
               if(a[i].makeupExamNum>1) {
                 if(a[i].applyMakeup==0) {
-                  a[i]['apply'] = '提交申请';
+                  a[i]["apply"] = '提交申请';
                 }else if(a[i].applyMakeup==1){
-                  a[i]['apply'] = '审核中';
+                  a[i]["apply"] = '审核中';
                 }else if(a[i].applyMakeup==2){
-                  a[i]['apply'] = '审核通过';
+                  a[i]["apply"] = '审核通过';
                 }else if(a[i].applyMakeup==3){
-                  a[i]['apply'] = '审核未通过';
+                  a[i]["apply"] = '审核未通过';
                 }
+              }else{
+                a[i]["apply"] = '--';
               }
             }else{
-              a[i]['apply'] = '--';
+              a[i]["apply"] = '--';
             }
           }
           this.studentScoreList=a;
@@ -181,17 +185,19 @@
             if(a[i].endGrade<60) {
               if(a[i].makeupExamNum>1) {
                 if(a[i].applyMakeup==0) {
-                  a[i]['apply'] = '提交申请';
+                  a[i]["apply"] = '提交申请';
                 }else if(a[i].applyMakeup==1){
-                  a[i]['apply'] = '审核中';
+                  a[i]["apply"] = '审核中';
                 }else if(a[i].applyMakeup==2){
-                  a[i]['apply'] = '审核通过';
+                  a[i]["apply"] = '审核通过';
                 }else if(a[i].applyMakeup==3){
-                  a[i]['apply'] = '审核未通过';
+                  a[i]["apply"] = '审核未通过';
                 }
+              }else{
+                a[i]["apply"] = '--';
               }
             }else{
-              a[i]['apply'] = '--';
+              a[i]["apply"] = '--';
             }
           }
           this.studentScoreList=a;

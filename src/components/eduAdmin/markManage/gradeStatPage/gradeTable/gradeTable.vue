@@ -178,16 +178,16 @@ export default {
 		            var data = response.body;
 		            if (data.scoreList != []) {
 		            	this.scoreList = data.scoreList;
-		            }else{
-				        this.modalResult = true;
-				        this.resultBool = '1';
+		            }else if (data.scoreList == []) {
+		            	this.$Message.warning("未找到所查询内容！");
+				        // this.modalResult = true;
+				        // this.resultBool = '1';
 				    }
 		        },function(error){
 		            console.log("获取申请error:");
 		            console.log(error);
 	        	});
     		}
-    		
     	},
     	// 导出按钮
 		exportBtn: function () {

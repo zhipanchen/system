@@ -53,6 +53,7 @@
             return {
               semesterList:[],
               option1:'',
+              currentSemester: '',
               evaluationResult:''
             }
         },
@@ -62,18 +63,18 @@
           {"Content-Type":"application/json"}).then(function(response){
             console.log(response.body);
             this.evaluationResult = response.body.evaResult;
-            this.option1 = response.body.currentSemester;
-          },
-          function(error){
-            console.log(error);
-          });
-        this.$http.post('./getYearTermList',{},
-          {"Content-Type":"application/json"}).then(function(response){
-            console.log(response.body);
-          for(var i=0;i<response.body.yearTerm.length;i++){
-            this.semesterList.push(response.body.yearTerm[i].startYearSemester);
-          }
-
+            this.currentSemester = response.body.currentSemester;
+            this.$http.post('./getYearTermList',{},
+              {"Content-Type":"application/json"}).then(function(response){
+                console.log(response.body);
+                for(var i=0;i<response.body.yearTerm.length;i++){
+                  this.semesterList.push(response.body.yearTerm[i].startYearSemester);
+                }
+                this.option1 = this.currentSemester;
+              },
+              function(error){
+                console.log(error);
+              });
           },
           function(error){
             console.log(error);

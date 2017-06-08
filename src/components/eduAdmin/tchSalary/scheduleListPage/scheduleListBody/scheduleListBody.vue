@@ -20,9 +20,9 @@
 				<thead>
 					<tr>
 						<th width="15%">课程名称</th>
-						<th width="15%">班级名称</th>
-						<th width="12%">计划课时</th>
-						<th width="12%">已上课时</th>
+						<th width="13%">授课班级</th>
+						<th width="10%">计划课时</th>
+						<th width="10%">已上课时</th>
 						<th width="12%">签到</th>
 					</tr>
 				</thead>
@@ -34,7 +34,7 @@
 						<td>{{data.takedHours}}</td>
 						<td class="textBtn" :value="data.courseAssociationId">
 							<!-- 跳转到教务查看签到页面 -->
-							<a :href="'#/eduAdmin/emolument/seeSigninList?courseAssociationId='+data.courseAssociationId">签到</a>
+							<a :href="'#/eduAdmin/emolument/seeSigninList?courseAssociationId='+data.courseAssociationId+'&'+'courseName='+encodeURIComponent(data.courseName)+'&'+'className='+encodeURIComponent(data.className)">签到</a>
 						</td>
 					</tr>
 				</tbody>

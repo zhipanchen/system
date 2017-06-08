@@ -231,7 +231,7 @@ export default {
     			this.modalResult = true;
     			this.remindResult = '8';
     		}else {
-    			var findResult = '0';
+    			// var findResult = '0';
 	    		// 获取需要补考名单*************************************************
 	  			this.$http.post('./findMakeUpList',{
 		        	"gradeType": this.selGradeType,
@@ -246,8 +246,9 @@ export default {
 		            var data = response.body;
 		            if (data.makeUpList != []) {
 		            	this.makeUpList = data.makeUpList;
-		            }else{
-				        findResult++;
+		            }else if (data.makeUpList == []) {
+				        // findResult++;
+				        this.$Message.warning("未找到所查询内容！");
 				    }
 		        },function(error){
 		            console.log("获取申请error:");
@@ -267,17 +268,18 @@ export default {
 		            var data = response.body;
 		            if (data.makeUpAskList != []) {
 		            	this.makeUpAskList = data.makeUpAskList;
-		            }else{
-				        findResult++;
+		            }else if (data.makeUpAskList == []) {
+				        // findResult++;
+				        this.$Message.warning("未找到所查询内容！");
 				    }
 		        },function(error){
 		            console.log("获取申请error:");
 		            console.log(error);
 		        });
-	    		if (findResult != '0') {
-		    		this.modalResult = true;
-					this.remindResult = '1';
-	    		}
+	    // 		if (findResult != '0') {
+		   //  		this.modalResult = true;
+					// this.remindResult = '1';
+	    // 		}
     		}
 	    },
 	    // 下载按钮********************************************************************
