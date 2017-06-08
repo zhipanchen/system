@@ -172,11 +172,11 @@
             for(var i=0;i<response.body.certificatemanage.length;i++){
               if(response.body.certificatemanage[i].certificateLevel=="1"){
                 this.certificates[i].certificateLevel="特级"
-              }else if(response.body.certificatemanage[i].certificateType=="2"){
+              }else if(response.body.certificatemanage[i].certificateLevel=="2"){
                 this.certificates[i].certificateLevel="高级"
-              }else if(response.body.certificatemanage[i].certificateType=="3"){
+              }else if(response.body.certificatemanage[i].certificateLevel=="3"){
                 this.certificates[i].certificateLevel="中级"
-              }else if(response.body.certificatemanage[i].certificateType=="4"){
+              }else if(response.body.certificatemanage[i].certificateLevel=="4"){
                 this.certificates[i].certificateLevel="初级"
               }
             }
@@ -297,7 +297,7 @@
 //            alert(this.certificates[index].certificateType);
 //            alert(this.certificates[index].certificateName);
 //            alert(this.certificates[index].certificateLevel);
-            alert(this.certificates[index].reviewTime);
+//            alert(this.certificates[index].reviewTime);
               this.$http.post('./teacherManage/editTeacherCertInfo',{
 //                this.$http.post('../jsonphp/certificate.php',{
                 "certificateType":this.certificates[index].certificateType,
