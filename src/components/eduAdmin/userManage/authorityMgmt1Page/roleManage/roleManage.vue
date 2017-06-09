@@ -34,7 +34,13 @@
 				<span :value="userIdGet">当前选择：{{userNameShow}}</span>
 			</div>
 			<div class="changedTable">
-				<table>
+				<ul>
+					<li v-for="(authority, index) in roleList" :key="authority">
+						<input type="checkbox" :value="authority.roleId" v-model="authorityRoleId">
+						<label :for="authority.roleId">{{authority.roleName}}</label>
+					</li>
+				</ul>
+				<!-- <table>
 					<tbody>
 						<tr v-for="(authority, index) in roleList" :key="authority">
 							<td>
@@ -43,7 +49,7 @@
 							<td :for="authority.roleId">{{authority.roleName}}</td>
 						</tr>
 					</tbody>
-				</table>
+				</table> -->
 			</div>
 			<!-- 弹窗操作 -->
 			<div class="changedBtn">
@@ -109,6 +115,10 @@ export default {
 			],
 			roleList: [		// 一人的全部角色数据
 				// {roleName: '教师', roleId: '1'},
+				// {roleName: '督导', roleId: '2'},
+				// {roleName: '督导', roleId: '2'},
+				// {roleName: '督导', roleId: '2'},
+				// {roleName: '督导', roleId: '2'},
 				// {roleName: '督导', roleId: '2'},
 				// {roleName: '自定义角色', roleId: '3'}
 			],
@@ -390,7 +400,8 @@ export default {
 }
 .changedTable {
 	padding: 0.6rem 1.6rem;
-	height: 20rem;
+	height: 23rem;
+	overflow: auto;
 }
 .changedTable td {
 	padding-right: 1rem;
@@ -411,6 +422,18 @@ export default {
 }
 .tableRowClick > tbody > tr > td {
 	font-size: 1rem;
+}
+ul {
+	overflow:hidden;
+	width:100%;
+	padding: 0;
+	padding-left: 1rem;
+	text-align: left;
+}
+ul li {
+	width:25%;
+	float:left;
+	line-height: 2rem;
 }
 
 @media screen and (max-width:1023px){

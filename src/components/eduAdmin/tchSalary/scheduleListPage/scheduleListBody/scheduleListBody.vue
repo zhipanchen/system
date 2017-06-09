@@ -4,7 +4,7 @@
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
 		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">课酬模块</a></span> -->
-		<span> > 上课列表</span>
+		<span> > 查看签到</span>
 	</div>
 	<div class="tableSelect">
       	<select v-model="selTeacher">

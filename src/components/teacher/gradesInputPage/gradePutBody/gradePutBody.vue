@@ -26,7 +26,7 @@
 					action="./importScoreList">
 					<!-- :data="{'courseAssociationId': this.courseAssociationId}" -->
 		            <!-- :on-progress="handleProgress" -->
-					<button class="am-btn am-btn-success am-radius rightBtn" v-show="buttonShow">导入</button>
+					<button class="am-btn am-btn-success am-radius rightBtn" id="uploadBtn">导入</button>
 				</Upload>
 			</span>
 			<span>
@@ -201,6 +201,9 @@ export default {
 	        	var compileBtn = document.getElementById("compileBtn")
 	        	compileBtn.disabled = true;
 	        	compileBtn.className = 'hideBtn';
+	        	var uploadBtn = document.getElementById("uploadBtn")
+	        	uploadBtn.disabled = true;
+	        	uploadBtn.className = 'hideBtn';
 	        }
         },function(error){
             console.log("获取申请error:");
@@ -274,7 +277,7 @@ export default {
     		var inputRate = submitGrade.getElementsByTagName("input");
 			var inputGroup = document.getElementById("inputGroup");
     		var input = inputGroup.getElementsByTagName("input");
-    		var saveResult = '';
+    		// var saveResult = '';
     		for (var j = 0; j < inputRate.length; j++) {
     			inputRate[j].readOnly = true;
     			inputRate[j].style.border = "none";
@@ -301,7 +304,8 @@ export default {
 	            var data = response.body;
 	            if(data.result == "1") {
                     this.$Message.success('保存成功！');
-                    saveResult = data.result;
+                    // saveResult = data.result;
+                    window.location.reload();
                 }else {
                     // this.$Message.error('操作失败！请重试');
                     this.modalResult = true;
@@ -312,21 +316,21 @@ export default {
 	            console.log(error);
 	        });
 
-	        // 通过判断是否保存成功，若成功则获取计算后总成绩
-	        if (saveResult == "1") {
-	            // this.scoreList = data.scoreList;
-	            this.$http.post('./getTeachScore',{},{
-		            "Content-Type":"application/json"
-		        }).then(function(response){
-		            console.log("获取申请:");
-		            console.log(response.body);
-		            var data = response.body;
-		            this.scoreList = data.scoreList;
-		        },function(error){
-		            console.log("获取申请error:");
-		            console.log(error);
-		        });
-	        }
+	        // // 通过判断是否保存成功，若成功则获取计算后总成绩
+	        // if (saveResult == "1") {
+	        //     // this.scoreList = data.scoreList;
+	        //     this.$http.post('./getTeachScore',{},{
+		       //      "Content-Type":"application/json"
+		       //  }).then(function(response){
+		       //      console.log("获取申请:");
+		       //      console.log(response.body);
+		       //      var data = response.body;
+		       //      this.scoreList = data.scoreList;
+		       //  },function(error){
+		       //      console.log("获取申请error:");
+		       //      console.log(error);
+		       //  });
+	        // }
 		},
 		// 提交正考成绩，提交后不可再修改************************************************************
 		submitBtn: function () {
