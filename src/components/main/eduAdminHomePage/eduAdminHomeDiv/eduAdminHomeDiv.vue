@@ -16,6 +16,7 @@
 
       <button class="am-btn am-btn-success am-radius" id="termStartButton" @click="modal1 = true" v-if="isEduAdmin">设置学期开始时间</button>
       <button class="am-btn am-btn-success am-radius" id="evaluationStartButton" @click="modal2 = true" v-if="isEduAdmin">设置评教起止时间</button>
+      <button class="am-btn am-btn-success am-radius" id="gradeStartButton" @click="modal3 = true" v-if="isEduAdmin">设置成绩录入时间</button>
       <Modal
           v-model="modal1"
           width="400"
@@ -66,6 +67,28 @@
         <div slot="footer" style="text-align: center">
           <button id="modalBtn" @click="evaluationStart()">确定</button>
           <button id="modalBtn" @click="modal2 = false">取消</button>
+        </div>
+      </Modal>
+      <Modal
+          v-model="modal3"
+          width="400"
+          :mask-closable="false"
+          id="modalBody"
+          :styles="{top:'10rem'}">
+        <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
+          <span>设置成绩录入时间</span>
+        </div>
+        <div style="font-size: 0.9rem;display: flex;flex-direction: column;align-items: center">
+          <span style="margin-bottom: 0.5rem" v-text="latelyGradeTime"></span>
+          <Row>
+            <Col span="12">
+            <Date-picker v-model="gradeDate" format="yyyy年MM月dd日" type="daterange" placeholder="选择日期" style="width: 20rem"></Date-picker>
+            </Col>
+          </Row>
+        </div>
+        <div slot="footer" style="text-align: center">
+          <button id="modalBtn" @click="gradeStart()">确定</button>
+          <button id="modalBtn" @click="modal3 = false">取消</button>
         </div>
       </Modal>
     </div>
@@ -138,6 +161,10 @@
         informationImg: require("./images/教务公告.png"),
         courseImg: require("./images/智能排课.png"),
         roleImg: require("./images/权限管理.png"),
+        courseInfoImg: require("./images/课程信息维护.png"),
+        teachMgmtImg: require("./images/教学管理.png"),
+        courseMgmtImg: require("./images/课程管理.jpg"),
+        personInfoImg: require("./images/个人信息维护.jpg"),
 //        一级功能块图标地址
         inFunction: true,
         roleList: [
@@ -285,11 +312,12 @@
           }*/
         ],
 //        公告信息
-        isEduAdmin: false,
+        isEduAdmin: true,
 //        时间设置功能按钮显隐
         modal: false,
         modal1: false,
         modal2: false,
+        modal3: false,
 //        对话框显隐
         errorMessage: "",
 //        对话框内容
@@ -301,8 +329,12 @@
 //        学期设置失败回调
         evaluationDate: null,
 //        评教起止时间
+        gradeDate: null,
+//        成绩录入起止时间
         latelyEvaTime: "",
 //        最近的评教时间
+        latelyGradeTime: "",
+//        最近的成绩录入时间
       }
     },
     beforeMount: function() {
@@ -362,7 +394,7 @@
           try {
             var thisURL = document.URL;
             if(thisURL.indexOf("eduAdminHome?") >= 0) {
-              var param = thisURL.split("?")[1];
+              var param = thisURL.split("eduAdminHome?")[1];
               if(param != "eduAdmin" && param != "teacher") {
                 this.$http.post('./getRoleAuthority', {
                   "roleId": 3
@@ -625,15 +657,15 @@
                       } else if (img[i].alt == "权限管理") {
                         img[i].src = this.roleImg;
                       } else if (img[i].alt == "课程信息维护") {
-                        img[i].src = this.informationImg;
+                        img[i].src = this.courseInfoImg;
                       } else if (img[i].alt == "班级管理") {
                         img[i].src = this.baseSettingImg;
                       } else if (img[i].alt == "教学管理") {
-                        img[i].src = this.manageImg;
+                        img[i].src = this.teachMgmtImg;
                       } else if (img[i].alt == "课程管理") {
-                        img[i].src = this.roleImg;
+                        img[i].src = this.courseMgmtImg;
                       } else if (img[i].alt == "个人信息维护") {
-                        img[i].src = this.courseImg;
+                        img[i].src = this.personInfoImg;
                       } else{
                         img[i].src = this.baseSettingImg;
                       }
@@ -919,7 +951,7 @@
         });
       },function(error){
         this.$Message.error('连接失败，请重试！',3);
-        /*this.authorityList = [1,2,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,26,27,28,29,30,31,32,34,57,62,64,65];
+        /*this.authorityList = [1,2,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,26,27,28,29,30,31,32,34,57,62,64,65,3, 25, 33, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 54,59,63]
         for (var i = 0; i < this.authorityList.length; i++) {
 //            生成权限名称列表
           if(this.authorityList[i] == 28 || this.authorityList[i] == 29 || this.authorityList[i] == 32){
@@ -1171,26 +1203,25 @@
             } else if (img[i].alt == "权限管理") {
               img[i].src = this.roleImg;
             } else if (img[i].alt == "课程信息维护") {
-              img[i].src = this.informationImg;
+              img[i].src = this.courseInfoImg;
             } else if (img[i].alt == "班级管理") {
               img[i].src = this.baseSettingImg;
             } else if (img[i].alt == "教学管理") {
-              img[i].src = this.manageImg;
+              img[i].src = this.teachMgmtImg;
             } else if (img[i].alt == "课程管理") {
-              img[i].src = this.roleImg;
+              img[i].src = this.courseMgmtImg;
             } else if (img[i].alt == "个人信息维护") {
-              img[i].src = this.courseImg;
+              img[i].src = this.personInfoImg;
             } else{
               img[i].src = this.baseSettingImg;
             }
-         }
+          }
           for (var i = 0; i < this.authorityModels.length; i++) {
             this.authorityModels[i].msgNum = String(parseInt(Math.random()*101, 10));
           }
         });*/
       });
     },//判断是否为“您的当前位置”跳转过来，并进行对应显示改变，或根据最后一次点击进行显示改变
-
     watch:{
       activeName: function () {
 //        监听角色选择绑定的变化，生成一级功能块
@@ -1459,15 +1490,15 @@
               } else if (img[i].alt == "权限管理") {
                 img[i].src = this.roleImg;
               } else if (img[i].alt == "课程信息维护") {
-                img[i].src = this.informationImg;
+                img[i].src = this.courseInfoImg;
               } else if (img[i].alt == "班级管理") {
                 img[i].src = this.baseSettingImg;
               } else if (img[i].alt == "教学管理") {
-                img[i].src = this.manageImg;
+                img[i].src = this.teachMgmtImg;
               } else if (img[i].alt == "课程管理") {
-                img[i].src = this.roleImg;
+                img[i].src = this.courseMgmtImg;
               } else if (img[i].alt == "个人信息维护") {
-                img[i].src = this.courseImg;
+                img[i].src = this.personInfoImg;
               } else{
                 img[i].src = this.baseSettingImg;
               }
@@ -1488,9 +1519,23 @@
             "Content-Type":"application/json"
           }).then(function(response){
             if(response.body.result == "1") {
-              this.latelyEvaTime = "最近的评教时间为：" + response.body.evaTime.startEvaTeachTime + "-" + response.body.evaTime.endEvaTeachTime;
+              this.latelyEvaTime = "最近的评教时间为：" + response.body.evaTime.startEvaTeachTime + "到" + response.body.evaTime.endEvaTeachTime;
             }else if(response.body.result == "0") {
               this.latelyEvaTime = "";
+            }
+          },function(error){
+          });
+        }
+      },
+      modal3: function () {
+        if(this.modal3){
+          this.$http.post('./getScoreInputTime',{},{
+            "Content-Type":"application/json"
+          }).then(function(response){
+            if(response.body.result == "1") {
+              this.latelyGradeTime = "最近的成绩录入时间为：" + response.body.scoreInputTime.startScoreInputTime + "到" + response.body.scoreInputTime.endScoreInputTime;
+            }else if(response.body.result == "0") {
+              this.latelyGradeTime = "";
             }
           },function(error){
           });
@@ -1576,6 +1621,29 @@
           });
         }
       },//评教起止时间
+      gradeStart: function () {
+        if(this.gradeDate[0] == "" || this.gradeDate[1] == ""){
+          this.errorMessage = "时间区间不能为空,请重试!";
+          this.modal = true;
+        }else {
+          this.$http.post('./setScoreInputTime', {
+            "startScoreInputTime": new Date(this.gradeDate[0]),
+            "endScoreInputTime": new Date(this.gradeDate[1])
+          }, {
+            "Content-Type": "application/json"
+          }).then(function (res) {
+            this.modal3 = false;
+            if (res.body.result == "1") {
+              this.$Message.success('成绩录入时间设置成功！');
+            }else{
+              this.errorMessage = res.result;
+              this.modal = true;
+            }
+          }, function (error) {
+            this.$Message.error('连接失败，请重试！');
+          });
+        }
+      },//成绩录入起止时间
       roleChange: function (name) {
 //        角色选择触发绑定变化，触发中间功能块显隐
         this.inFunction = true;
@@ -1671,13 +1739,13 @@
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 5){
               location.href = "#/eduAdmin/emolument/salary";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 22){
               location.href = "#/eduAdmin/emolument/setPrice";
-              break;
+              return;
             }
           }
         }else if(this.authorityModels[index].name == "教务公告"){
@@ -1716,139 +1784,139 @@
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 1){
               location.href = "#/eduAdmin/role/authorityMgmt1";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 2){
               location.href = "#/eduAdmin/role/eduAdminAuthorityManage2";
-              break;
+              return;
             }
           }
         }else if(this.authorityModels[index].name == "组别管理"){
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 56){
               location.href = "#/teacher/group/eduAdminTchTeachingPlan";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 55){
               location.href = "#/teacher/group/research";
-              break;
+              return;
             }
           }
         }else if(this.authorityModels[index].name == "课程管理"){
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 41){
               location.href = "#/teacher/course/makeupClass";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 40){
               location.href = "#/teacher/course/tchManuAdjCl";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 39){
               location.href = "#/teacher/course/stopClass";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 38){
               location.href = "#/teacher/course/requirement";
-              break;
+              return;
             }
           }
         }else if(this.authorityModels[index].name == "教学管理"){
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 36){
               location.href = "#/teacher/teach/courseList";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 52){
               location.href = "#/teacher/teach/director";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 37){
               location.href = "#/teacher/teach/normalSchedule";
-              break;
+              return;
             }
           }
         }else if(this.authorityModels[index].name == "班级管理"){
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 63){
               location.href = "#/teacher/class/teachingEvaluate";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 33){
               location.href = "#/teacher/class/tchGradesInput";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 54){
               location.href = "#/teacher/class/classList";
-              break;
+              return;
             }
           }
         }else if(this.authorityModels[index].name == "课程信息维护"){
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 39){
               location.href = "#/teacher/classInfo/tchCheckTimetable";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 25){
               location.href = "#/teacher/classInfo/teacherTestInfo";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 35){
               location.href = "#/teacher/classInfo/tchCheckSalary";
-              break;
+              return;
             }
           }
         }else if(this.authorityModels[index].name == "个人信息维护"){
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 43){
               location.href = "#/teacher/personInfo/basicMessage";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 44){
               location.href = "#/teacher/info/educationManege";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 46){
               location.href = "#/teacher/info/certificateManege";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 45){
               location.href = "#/teacher/info/experience";
-              break;
+              return;
             }
           }
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == 59){
-              location.href = "#/teacher/personInfo/passwdChange";
-              break;
+              location.href = "#/teacher/info/passwdChange";
+              return;
             }
           }
         }
@@ -1896,13 +1964,18 @@
   }
   #termStartButton{
     /*学期开始时间设置按钮*/
-    margin-top: 3rem;
+    margin-top: 2rem;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }
   #evaluationStartButton{
     /*评教起止时间设置按钮*/
-    margin-top: 3rem;
+    margin-top: 2rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  #gradeStartButton{
+    margin-top: 2rem;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }

@@ -277,6 +277,7 @@
         width: 37.5rem;
       }
       input{
+        font-size: 2.67rem;
         border-radius: 0.8rem;
         padding: 0.75rem 1.25rem;
       }
