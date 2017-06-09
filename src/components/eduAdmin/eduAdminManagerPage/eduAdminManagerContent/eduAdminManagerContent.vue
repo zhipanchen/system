@@ -70,25 +70,23 @@
         </select>
 
         <ul class="ulStyle">
-          <li class="listyle" v-for="(todo, index) in todos">
 
+          <li class="listyle" v-for="(todo,index) in todos">
             <div class="teacher">
-              {{todo}}<button class="buttonStyle" @click="roomRemoveClick">X</button>
+              {{todo}}<button class="buttonStyle" @click="roomRemoveClick(index)">X</button>
 
-              <!--label class="spanStyle">监考老师1:</label-->
-              <select class="selectStyle1" v-model="teacherSelects[2*index]" @change="teacherClick1">
+              <select class="selectStyle1" v-model="teacherSelects[2*index]" @change="teacherClick1(index)">
                 <option value="监考老师1（必选项）" disabled selected>监考老师1（必选项）</option>
-                <option v-for="teacher1 in teachers1" v-bind:value="teacher1">{{teacher1}}</option>
+                <option v-for="teacher in teachers" v-bind:value="teacher">{{teacher}}</option>
               </select>
 
-              <!--span class="spanStyle">监考老师2:</span-->
-              <select class="selectStyle1" v-model="teacherSelects[2*index+1]" @change="teacherClick2">
+              <select class="selectStyle1" v-model="teacherSelects[2*index+1]" @change="teacherClick2(index)">
                 <option value="监考老师2（必选项）" disabled selected>监考老师2（必选项）</option>
-                <option v-for="teacher2 in teachers2" v-bind:value="teacher2">{{teacher2}}</option>
+                <option v-for="teacher in teachers" v-bind:value="teacher">{{teacher}}</option>
               </select>
             </div>
-
           </li>
+
         </ul>
       </div>
 
@@ -156,7 +154,7 @@
           'teacherSelect5',
           'teacherSelect6',
           'teacherSelect7',
-          'teacherSelect8'
+          'teacherSelect8',
         ],
         setting:false,//编辑状态栏的显隐
         nowIndex:-1,//当前选中index
@@ -167,57 +165,40 @@
 
         dateSelect:'选择日期（必选项）',//日期默认值
         timesSelect:'选择场次（必选项）',//场次默认值
-        teacherSelect1:'监考老师1（必选项）',//监考老师1默认值
-        teacherSelect2:'监考老师2（必选项）',//教考老师2默认值
-        teacherSelect3:'监考老师1（必选项）',//监考老师1默认值
-        teacherSelect4:'监考老师2（必选项）',//监考老师1默认值
-        teacherSelect5:'监考老师1（必选项）',//监考老师1默认值
-        teacherSelect6:'监考老师2（必选项）',//监考老师1默认值
-        teacherSelect7:'监考老师1（必选项）',//监考老师1默认值
-        teacherSelect8:'监考老师2（必选项）',//监考老师1默认值
         roomSelect:'选择教室（必选项）',//教室默认值
+        teacherList:[],//教师名数组
         years:[
           '三年制',
           '五年制',
         ],
         grades:[
-
           '一年级',
           '二年级',
-
         ],
         courses: [
-          /*
           '课程01',
           '课程02',
           '课程03',
           '课程04',
           '课程05',
-          */
         ],
         informations: [
           //未完成课表
-          /*
           { courseAssociationId:'0',edit:'编辑',id:'1',courseName:'护理管理学',className: '护理二班', teacherName:'何平', classPersonNumber: '135', testTime: '2016.10.9{19:00-21:00}', testTeacherName:'李晓红',testRoom:'教学楼408,409'},
           { courseAssociationId:'1',edit:'编辑',id:'2',courseName:'护理管理学',className: '护理一班', teacherName:'何平', classPersonNumber: '135', testTime: '2016.10.9{19:00-21:00}', testTeacherName:'肖老师',testRoom:'教学楼408,409'},
-          */
-
         ],
         informationsFinish: [
-          /*完成课表
+          //完成课表
            { courseAssociationId:'0',remove:'删除',id:'1',courseName:'护理管理学',className: '护理二班', teacherName:'何平', classPersonNumber: '135', examTime: '2016.10.9{19:00-21:00}', examTeacher:'李晓红',examClassroom:'教学楼408,409'},
            { courseAssociationId:'1',remove:'删除',id:'2',courseName:'护理管理学',className: '护理一班', teacherName:'何平', classPersonNumber: '135', examTime: '2016.10.9{19:00-21:00}', examTeacher:'肖老师',examClassroom:'教学楼408,409'},
-          */
         ],
         terms:[
           /*
-
           '2016-2017-1',
           '2016-2017-2',
           '2017-2018-1',
           '2017-2018-2',
           */
-
         ],
         times:[
           '周一',
@@ -231,40 +212,17 @@
           {world:'上午 第二场（10:20-11:50',number:'20'},
           {world:'下午 第一场（14:00-16:00）',number:'30'}
         ],
-        teachers1:[
-          /*
-
+        teachers:[
           '老师1',
           '老师2',
           '老师3',
-          */
-
-        ],
-        teachers2:[
-          /*
-
-          '老师1',
-          '老师2',
-          '老师3',
-          */
-
         ],
         rooms:[
-          /*
-
           '教室1',
           '教室2',
           '教室3',
-          */
-
         ],
-        todos:[
-          /*
-          '教室a',
-          '教室b',
-          '教室c'
-          */
-        ],
+        todos:[],
       }
     },
   methods:
@@ -462,16 +420,58 @@
       });
     },
     //教师1选择
-    teacherClick1:function(){
+    teacherClick1:function(index){
       //nothing
+      var count=0;
+      for(var i=0;i<=this.teacherList.length;i++){
+        if(this.teacherList[i]==this.teacherSelects[2 * index]){
+          count=1;
+        }
+      }
+      if(count==0) {
+        this.teacherList.push(this.teacherSelects[2 * index])
+      }else{
+        this.modal2=true;
+        this.messageStr="教师已安排考试";
+        this.okValue=0;
+        this.teacherSelects[2 * index]='监考老师1（必选项）';
+      }
     },
     //教师2选择
-    teacherClick2:function(){
+    teacherClick2:function(index){
       //nothing
+      var count=0;
+      for(var i=0;i<=this.teacherList.length;i++){
+        if(this.teacherList[i]==this.teacherSelects[2 * index+1]){
+          count=1;
+        }
+      }
+      if(count==0) {
+        this.teacherList.push(this.teacherSelects[2 * index+1])
+      }else{
+        this.modal2=true;
+        this.messageStr="教师已安排考试";
+        this.okValue=0;
+        this.teacherSelects[2 * index+1]='监考老师2（必选项）';
+      }
     },
     //添加教室选择
     roomAddClick:function(){
-      this.todos.push(this.roomSelect);
+      var count=0;
+      for(var i=0;i<this.todos.length;i++){
+        if(this.roomSelect==this.todos[i]){
+          count=1;
+        }
+      }
+      if(count==0) {
+        this.todos.push(this.roomSelect);
+        this.teacherSelects[2 * (this.todos.length-1)]='监考老师1（必选项）';
+        this.teacherSelects[2 * (this.todos.length-1)+1] = '监考老师2（必选项）';
+      }else{
+        this.modal2=true;
+        this.messageStr="教室设置重复！";
+        this.okValue=0;
+      }
     },
     //删除教室
     roomRemoveClick:function(index){
@@ -573,10 +573,17 @@
           this.nowIndex = -1;
           this.dateSelect = '选择日期（必选项）';//日期默认值
           this.timesSelect = '选择场次（必选项）';//场次默认值
-          this.teacherSelect1 = '监考老师1（必选项）';//监考老师1默认值
-          this.teacherSelect2 = '监考老师2（可选项）';//教考老师2默认值
+
+          for(var a=1;a<=8;a++){
+            if(a%2==1) {
+              this.teacherSelects[a] = '监考老师1（必选项）';
+            }else{
+              this.teacherSelects[a] = '监考老师2（必选项）';
+            }
+          }
           this.roomSelect = '选择教室（必选项）';//教室默认值
           this.todos = [];
+          this.teacherList=[];
         } else if (result.result == 0) {
           //this.$Message.error('保存失败！');
           this.modal2 = true;
@@ -595,10 +602,14 @@
       this.setting=false;
       this.dateSelect='选择日期（必选项）';//日期默认值
       this.timesSelect='选择场次（必选项）';//场次默认值
-      this.teacherSelect1='监考老师1（必选项）';//监考老师1默认值
-      this.teacherSelect2='监考老师2（必选项）';//教考老师2默认值
+
+      for(var a=0;a<=3;a++){//默认值
+          this.teacherSelects[2 * a]='监考老师1（必选项）';
+          this.teacherSelects[2 * a + 1] = '监考老师2（必选项）';
+      }
       this.roomSelect='选择教室（必选项）';//教室默认值
       this.todos=[];
+      this.teacherList=[];
     }
    }
   }
