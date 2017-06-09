@@ -1,6 +1,7 @@
 <template>
   <div id="studentHomeDiv">
     <div id="menuDiv">
+      <p style="margin-left: 0.5rem">公告：</p>
       <div id="announcementDiv">
         <!--制造边框-->
         <ul id="nameUl">
@@ -36,7 +37,7 @@
       <div id="firstDiv" class="pageDiv">
         <span class="pageSpan">
           <ul>
-            <a href="#/student/query/studentLesson"><li>课表查询</li></a>
+            <a href="#/student/query/studentLesson"><img src="./images/课表查询.png" class="pageImg"><li>课表查询</li></a>
           </ul>
         </span>
         <span class="pageSpan">
@@ -51,7 +52,7 @@
         </span>
         <span class="pageSpan">
           <ul>
-            <a href="#/student/query/stInquireGrade"><li>成绩查询</li></a>
+            <a href="#/student/query/stInquireGrade"><img src="./images/成绩查询.png" class="pageImg"><li>成绩查询</li></a>
           </ul>
         </span>
       </div>
@@ -64,12 +65,12 @@
         </span>
         <span class="pageSpan">
           <ul>
-            <a href="#/student/setting/studentInformation"><li>个人信息维护</li></a>
+            <a href="#/student/setting/studentInformation"><img src="./images/个人信息维护.jpg" class="pageImg"><li>个人信息维护</li></a>
           </ul>
         </span>
         <span class="pageSpan">
           <ul>
-            <a href="#/student/setting/studentEvaluation"><li>学生评教</li></a>
+            <a href="#/student/setting/studentEvaluation"><img src="./images/学生评教.png" class="pageImg"><li>学生评教</li></a>
           </ul>
         </span>
       </div>
@@ -355,7 +356,6 @@
     /*功能块*/
     width: 15%;
     font-weight: normal;
-    line-height: 6.5rem;
     cursor: pointer;
     border: thick solid #E9ECF2;
     /*width: 10rem;*/
@@ -382,7 +382,7 @@
   }
   .announcementName{
     /*公告*/
-    width: 9rem;
+    width: 8rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -416,6 +416,12 @@
   #backButton{
     margin-left: 30%;
     margin-top: 0.5rem;
+  }
+  .pageImg{
+    font-weight: 400;
+    font-size: 0.7rem;
+    height: 5rem;
+    width: 5rem;
   }
   @media screen and (max-width: 1025px) {
     html {
