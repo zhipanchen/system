@@ -132,7 +132,7 @@
       <!--制造边框-->
       <p id="detail"><a href="#/eduAdmin/information/noticeManage">详情</a></p>
     </div>
-    <Back-top :height="200" :bottom="50"></Back-top>
+    <Back-top :height="100" :bottom="50"></Back-top>
     <Modal
         v-model="modal"
         width="400"
@@ -530,7 +530,7 @@
                       if (!isExist) {
                         this.functionModels.push("课程管理");
                       }
-                    } else if (this.authorityList[i] == 36 || this.authorityList[i] == 52) {
+                    } else if (this.authorityList[i] == 36 || this.authorityList[i] == 52 || this.authorityList[i] == 66) {
                       var isExist = false;
                       for (var a = 0; a < this.functionModels.length; a++) {
                         if (this.functionModels[a] == "教学管理") {
@@ -952,7 +952,7 @@
         });
       },function(error){
         this.$Message.error('连接失败，请重试！',3);
-        /*this.authorityList = [1,2,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,26,27,28,29,30,31,32,34,57,62,64,65,3, 25, 33, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 54,59,63]
+        /*this.authorityList = [1,2,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,26,27,28,29,30,31,32,34,57,62,64,65,66,3, 25, 33, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 54,59,63]
         for (var i = 0; i < this.authorityList.length; i++) {
 //            生成权限名称列表
           if(this.authorityList[i] == 28 || this.authorityList[i] == 29 || this.authorityList[i] == 32){
@@ -1078,7 +1078,7 @@
             if(!isExist){
               this.functionModels.push("课程管理");
             }
-          }else if(this.authorityList[i] == 36 || this.authorityList[i] == 52){
+          }else if(this.authorityList[i] == 36 || this.authorityList[i] == 52 || this.authorityList[i] == 66){
             var isExist = false;
             for (var a = 0; a < this.functionModels.length; a++) {
               if(this.functionModels[a] == "教学管理") {
@@ -1365,7 +1365,7 @@
               if(!isExist){
                 this.functionModels.push("课程管理");
               }
-            }else if(this.authorityList[i] == 36 || this.authorityList[i] == 52){
+            }else if(this.authorityList[i] == 36 || this.authorityList[i] == 52 || this.authorityList[i] == 66){
               var isExist = false;
               for (var a = 0; a < this.functionModels.length; a++) {
                 if(this.functionModels[a] == "教学管理") {

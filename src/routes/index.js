@@ -439,11 +439,6 @@ export default new Router({   //将routes里的参数导出
       component: makeupCouApplyPage
       //  补课申请处理页面
     },
-    {
-      path: '/eduAdmin/information/notifyInformation',
-      name: '/eduAdmin/information/notifyInformation',
-      component: notifyInformationPage
-    },
     //*******************************************************************（李西炜end）
 
     //*******************************************************************（易倩start）
