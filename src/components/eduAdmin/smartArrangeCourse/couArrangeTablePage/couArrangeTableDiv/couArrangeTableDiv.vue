@@ -25,7 +25,7 @@
         :mask-closable="false"
         id="modalBody"
         :closable="closable"
-        :style="{top:'10rem'}">
+        :styles="{top:'10rem'}">
       <div style="font-size: 1.1rem;text-align: center;">
         <p>{{ modalMessage }}</p>
       </div>

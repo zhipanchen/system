@@ -24,7 +24,6 @@
             <th class="headTh">学制</th>
             <th class="headTh">专业</th>
             <th class="headTh">班级</th>
-            <th class="headTh">异动类型</th>
             <th class="headTh">异动原因</th>
             <th class="headTh">生效时间</th>
             <th class="headTh">操作</th>
@@ -37,7 +36,6 @@
             <td>{{ application.schoolYearType }}</td>
             <td>{{ application.speciality }}</td>
             <td>{{ application.className }}</td>
-            <td>{{ application.changeType }}</td>
             <td>{{ application.changeReason }}</td>
             <td>{{ application.changeDate }}</td>
             <td>
@@ -52,11 +50,37 @@
         </table>
       </div>
     <Modal
+        v-model="modal4"
+        width="400"
+        :mask-closable="false"
+        id="modalBody"
+        :styles="{top:'10rem'}">
+      <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
+        <span>分配复学新班级</span>
+      </div>
+      <div style="font-size: 1.1rem;text-align: center;">
+        请选择年级：
+        <select v-model="gradeId">
+          <option v-for="grade in gradeList" :value="grade.gradeId">{{ grade.gradeName }}</option>
+        </select>
+        <div v-if="gradeId != ''" style="margin-top: 1rem">
+          请选择班级：
+          <select v-model="classId">
+            <option v-for="classEach in classList" :value="classEach.classId">{{ classEach.className }}</option>
+          </select>
+        </div>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="modal1 = true">确定</button>
+        <button id="modalBtn" @click="modal4 = false">取消</button>
+      </div>
+    </Modal>
+    <Modal
         v-model="modal1"
         width="400"
         :mask-closable="false"
         id="modalBody"
-        :style="{top:'10rem'}">
+        :styles="{top:'10rem'}">
       <div style="font-size: 1.1rem;text-align: center;">
         <p>您确定通过该申请吗?</p>
       </div>
@@ -109,18 +133,57 @@
             "className": "123",
             "studentId": "123",
             "studentName": "123",
-            "changeType": "123",
+            "changeType": "2",
+            "changeReason": "123",
+            "changeDate": "123"
+          },
+          {
+            "schoolYearType": "3",
+            "speciality": "123",
+            "className": "123",
+            "studentId": "456",
+            "studentName": "456",
+            "changeType": "3",
+            "changeReason": "123",
+            "changeDate": "123"
+          },
+          {
+            "schoolYearType": "3",
+            "speciality": "123",
+            "className": "123",
+            "studentId": "789",
+            "studentName": "789",
+            "changeType": "4",
             "changeReason": "123",
             "changeDate": "123"
           }
         ],
-//                申请信息
+//        申请信息
+        gradeList:[
+          /*{
+            "gradeId":"20165",
+            "gradeName":"2016"
+          }*/
+        ],
+//        年级列表
+        classList:[
+          /*{
+          "classId":"201653",
+          "className":" 高2016 级3 班"
+          }*/
+        ],
+//        班级列表
+        gradeId: "",
+//        复学年级
+        classId: "",
+//        复学班级
         operationIndex: null,
 //        对话框参数传递
         modal1: false,
 //        对话框显隐
         modal2: false,
         modal3: false,
+        modal4: false,
         errorMessage: ""
       }
     },
@@ -150,7 +213,6 @@
         this.$http.post(url,{},{
           "Content-Type":"application/json"
         }).then(function(response){
-          console.log("获取申请:");
           console.log(response.body);
           var data = response.body;
           if(this.applicationType == "2"){
@@ -167,20 +229,59 @@
       operation: function(operationIndex,type){
 //                对话框参数传递，触发对应对话框
         this.operationIndex = operationIndex;
-        if(type == "true"){
-          this.modal1 = true;
-        }else{
+        if (type == "true") {
+          if(this.applications[operationIndex].changeType == "4"){
+            this.$http.post('./stateManage/getGradeList',{
+              "studentId":this.applications[operationIndex].studentId
+            },{
+              "Content-Type":"application/json"
+            }).then(function(response){
+              this.gradeList = response.body.gradeList;
+            },function(error){
+              this.$Message.error('连接失败，请重试！');
+            });
+            this.modal4 = true;
+          }else {
+            this.modal1 = true;
+          }
+        } else {
           this.modal2 = true;
         }
       },
       setTrue: function(applications,index){
         var url = null;
-        if(this.applicationType == "2"){
-          url = "./stateManage/pendReinstating";
+        if(applications[index].changeType == "4"){
+          if(this.classId == ""){
+            this.errorMessage = "选择不能为空,请重试!";
+            this.modal3 = true;
+            this.modal1 = false;
+          }else {
+            this.$http.post("./stateManage/pendReinstating", {
+              "studentId": applications[index].studentId,
+              "pendResult": "1",
+              "classId": this.classId
+            }, {
+              "Content-Type": "application/json"
+            }).then(function (response) {
+              this.modal1 = false;
+              console.log(response);
+              var data = response.body;
+              if (data.result == "1") {
+                applications.splice(index, 1);
+                this.$Message.success('申请审批成功！');
+              } else {
+                this.errorMessage = "操作失败,请重试!";
+                this.modal3 = true;
+              }
+            }, function (error) {
+              this.modal1 = false;
+              this.$Message.error('连接失败，请重试！');
+            });
+          }
         }else {
-          if (this.applicationType == "3") {
+          if (applications[index].changeType == "2") {
             url = "./stateManage/pendQuitStudent";
-          } else if (this.applicationType == "4") {
+          } else if (applications[index].changeType == "3") {
             url = "./stateManage/pendDropStudent";
           }
           this.$http.post(url, {
@@ -194,7 +295,6 @@
             var data = response.body;
             if (data.result == "1") {
               applications.splice(index, 1);
-              this.$Message.success('申请审批成功！');
             } else {
               this.errorMessage = "操作失败,请重试!";
               this.modal3 = true;
@@ -206,9 +306,9 @@
         }
       },
       setFalse: function(applications,index){
-        if(this.applicationType == "2"){
-          url = "./stateManage/pendReinstating";
-          this.$http.post(url, {
+        var url = null;
+        if(applications[index].changeType == "4"){
+          this.$http.post("./stateManage/pendReinstating", {
             "studentId": applications[index].studentId,
             "pendResult": "0",
             "classId":""
@@ -230,21 +330,21 @@
             this.$Message.error('连接失败，请重试！');
           });
         }else {
-          if (this.applicationType == "3") {
+          if (applications[index].changeType == "2") {
             url = "./stateManage/pendQuitStudent";
-          } else if (this.applicationType == "4") {
+          } else if (applications[index].changeType == "3") {
             url = "./stateManage/pendDropStudent";
           }
           this.$http.post(url, {
             "studentId": applications[index].studentId,
-            "pendResult": "1"
+            "pendResult": "0"
           }, {
             "Content-Type": "application/json"
           }).then(function (response) {
             this.modal1 = false;
             console.log(response);
             var data = response.body;
-            if (data.result == "1") {
+            if (data.result == "0") {
               applications.splice(index, 1);
             } else {
               this.errorMessage = "操作失败,请重试!";
