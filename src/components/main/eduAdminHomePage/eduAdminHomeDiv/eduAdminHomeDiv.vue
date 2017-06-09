@@ -132,6 +132,7 @@
       <!--制造边框-->
       <p id="detail"><a href="#/eduAdmin/information/noticeManage">详情</a></p>
     </div>
+    <Back-top :height="200" :bottom="50"></Back-top>
     <Modal
         v-model="modal"
         width="400"
@@ -312,7 +313,7 @@
           }*/
         ],
 //        公告信息
-        isEduAdmin: true,
+        isEduAdmin: false,
 //        时间设置功能按钮显隐
         modal: false,
         modal1: false,
@@ -1612,7 +1613,7 @@
             if (res.body.result == "1") {
               this.$Message.success('评教时间设置成功！');
             }else{
-              this.errorMessage = res.result;
+              this.errorMessage = res.body.result;
               this.modal = true;
             }
           }, function (error) {
@@ -1636,7 +1637,7 @@
             if (res.body.result == "1") {
               this.$Message.success('成绩录入时间设置成功！');
             }else{
-              this.errorMessage = res.result;
+              this.errorMessage = res.body.result;
               this.modal = true;
             }
           }, function (error) {

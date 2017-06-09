@@ -69,7 +69,7 @@ import courseTypeMgmtPage from '../views/eduAdmin/basicSettings/courseTypeMgmtPa
 import eduResGroupMgmtPage from '../views/eduAdmin/basicSettings/eduResGroupMgmtPage/eduResGroupMgmtPage.vue'
 import suspendCouApplyPage from '../views/eduAdmin/smartArrangeCourse/suspendCouApplyPage/suspendCouApplyPage.vue'
 import makeupCouApplyPage from '../views/eduAdmin/smartArrangeCourse/makeupCouApplyPage/makeupCouApplyPage.vue'
-import notifyInformationPage from '../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'*/
+import stdStatusChangeExamPage from '../views/eduAdmin/basicSettings/stdStatusChangeExamPage/stdStatusChangeExam.vue'*/
 //const login = resolve => require(['../views/main/loginPage/loginPage.vue'], resolve);
 //const eduAdminHome = resolve => require(['../views/main/eduAdminHomePage/eduAdminHomePage.vue'], resolve);
 //const teacherHome = resolve => require(['../views/main/teacherHomePage/teacherHomePage.vue'], resolve);
@@ -88,7 +88,7 @@ const courseTypeMgmtPage = resolve => require(['../views/eduAdmin/basicSettings/
 const eduResGroupMgmtPage = resolve => require(['../views/eduAdmin/basicSettings/eduResGroupMgmtPage/eduResGroupMgmtPage.vue'], resolve);
 const suspendCouApplyPage = resolve => require(['../views/eduAdmin/smartArrangeCourse/suspendCouApplyPage/suspendCouApplyPage.vue'], resolve);
 const makeupCouApplyPage = resolve => require(['../views/eduAdmin/smartArrangeCourse/makeupCouApplyPage/makeupCouApplyPage.vue'], resolve);
-const notifyInformationPage = resolve => require(['../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'], resolve);
+const stdStatusChangeExamPage = resolve => require(['../views/eduAdmin/basicSettings/stdStatusChangeExamPage/stdStatusChangeExam.vue'], resolve);
 //李西炜（end）
 
 //易倩（start）
