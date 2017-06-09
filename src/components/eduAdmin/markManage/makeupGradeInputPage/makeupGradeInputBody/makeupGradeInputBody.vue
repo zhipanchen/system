@@ -43,7 +43,7 @@
 						<td v-text="makeupScore.studentId"></td>
 						<td v-text="makeupScore.studentName"></td>
 						<td>
-							<input id="input1" type="text" :value="makeupScore.makeupGrade" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+							<input id="input1" type="text" :value="makeupScore.makeUpGrade" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
 						</td>
 					</tr>
 				</tbody>
@@ -102,8 +102,8 @@ export default {
 			yearTerm: [],		// 选择学期
 			courseInfo: [],		// 选择课程
 			makeUpGradeInputList: [
-				// {studentId: '010203', studentName: '何平', makeupGrade: '75'},
-				// {studentId: '010203', studentName: '何平', makeupGrade: '75'}
+				// {studentId: '010203', studentName: '何平', makeUpGrade: '75'},
+				// {studentId: '010203', studentName: '何平', makeUpGrade: '75'}
 			],
 			modalOperation: false,
 			modalResult: false,

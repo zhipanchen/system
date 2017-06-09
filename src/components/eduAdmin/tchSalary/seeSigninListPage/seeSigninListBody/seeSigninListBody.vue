@@ -4,7 +4,7 @@
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
 		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">教学管理</a></span> -->
-		<span> > <a href="#/eduAdmin/emolument/scheduleList" class="returnHome">上课列表</a></span>
+		<span> > <a href="#/eduAdmin/emolument/scheduleList" class="returnHome">查看签到</a></span>
 		<span> > 上课签到</span>
 	</div>
 	<div class="spanButton">
@@ -192,7 +192,7 @@ export default {
 	methods: {
 		// 返回到教师签到页面
 		returnBtn: function () {
-			window.location.href = "#/teacher/teach/normalSchedule"
+			window.location.href = "#/eduAdmin/emolument/scheduleList"
 		},
 		// 编辑出勤情况按钮********************************************************
 		attend: function (index) {

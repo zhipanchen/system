@@ -43,9 +43,9 @@
         <span>登录规则</span>
       </div>
       <div style="font-size: 0.9rem;text-align: left;">
-        <p>123456</p>
-        <p>123456</p>
-        <p>123456</p>
+        <p>用户帐号通过教师或学生信息生成，一般为学号或者职工号。</p>
+        <p>密码限制为6-15位数字或字母的组合。</p>
+        <p>找回功能必须预先设置邮箱。</p>
       </div>
       <div slot="footer" style="text-align: center">
         <button id="modalBtn" @click="ok1">确定</button>
