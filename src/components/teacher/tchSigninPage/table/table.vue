@@ -15,40 +15,6 @@
         <div class="rpart">
 			<button class="am-btn am-btn-success am-radius rightBtn" @click="returnBtn()">返回</button>
 		</div>
-			<!-- <button class="am-btn am-btn-success am-radius rightBtn" @click="signInBtn()">签到</button>
-			弹窗签到
-			<Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
-			    <div slot="header" style="font-size:1.6rem; text-align:center; padding:0.2rem 0;" id="modalHeader">
-		            <span>上课日志</span>
-		        </div>
-			    <div style="text-align:center; font-size:1.1rem;">
-			    	<span class="modal-select">
-				    	<select v-model="selWeekList" @change="selWeekChange()">
-							<option disabled value="">选择周数</option>
-							<option v-for="weekListOne in weekList" :value="weekListOne">{{weekListOne}}</option>
-						</select>
-						<select v-model="selGiveLessonsDetailsList">
-							<option disabled value="">选择上课时间</option>
-							<option v-for="detailsOne in giveLessonsDetailsList" :value="detailsOne.giveLessonsDetailsId">{{detailsOne.timeandplaceInfo}}</option>
-						</select>
-					</span>
-			    	<Input v-model="teachJournalInFoInput" type="textarea" :rows="7" placeholder="请输入..."></Input>
-			    	<p style="text-align:left; font-size:0.9rem; color:red;">请认真核对所写信息！提交教学日志进行签到，并且不可重复签到。</p>
-			    </div>
-			    <div slot="footer" style="text-align:center;">
-			        <Button id="modalBtn" @click="ok()">提交</Button>
-			        <Button id="modalBtn" @click="cancel()">取消</Button>
-			    </div>
-			</Modal> -->
-
-		<!-- 二次确认提交 -->
-		<!-- <Modal v-model="modalSubmit" id="modalBody" :styles="{top:'10rem'}">
-		    <p style="text-align:center; font-size:1.1rem;">您确定要提交吗？</p>
-		    <div slot="footer" style="text-align:center;">
-		        <Button id="modalBtn" @click="submitOk()">确认</Button>
-		        <Button id="modalBtn" @click="submitCancel()">取消</Button>
-		    </div>
-		</Modal> -->
 	</div>
 
 	<!-- 已签到上课列表 -->
@@ -59,9 +25,9 @@
 					<tr>
 						<td width="5%">周数</td>
 						<td width="5%">星期</td>
-						<td width="20%">上课节数</td>
-						<td width="20%">教室</td>
-						<td width="10%">签到日期</td>
+						<td width="14%">上课节数</td>
+						<td width="14%">教室</td>
+						<td width="18%">签到日期</td>
 						<td width="10%">出勤情况</td>
 						<td width="10%">教学日志</td>
 						<td width="7%">状态</td>
@@ -74,22 +40,22 @@
 						<td>{{data.weekdays}}</td>
 						<td>第 {{data.lessonNum}} 大节</td>
 						<td>{{data.classroomId}}</td>
-						<td>{{data.signDate}}</td>
+						<td>{{data.signInTime}}</td>
 						<td class="textBtn" :value="data.attendanceInfo">
-							<a @click="attend(index)" v-if="data.signInStatus==='0'">考勤</a>
-							<a @click="seeAttend(index)" v-else-if="data.signInStatus==='1'">查看考勤</a>
+							<a @click="attend(index)" v-if="data.signInStatus==0">考勤</a>
+							<a @click="seeAttend(index)" v-else-if="data.signInStatus==1">查看考勤</a>
 						</td>
 						<td class="textBtn" :value="data.teachJournalInFo">
-							<a @click="journal(index)" v-if="data.signInStatus==='0'">上课日志</a>
-							<a @click="seeJournal(index)" v-else-if="data.signInStatus==='1'">查看日志</a>
+							<a @click="journal(index)" v-if="data.signInStatus==0">上课日志</a>
+							<a @click="seeJournal(index)" v-else-if="data.signInStatus==1">查看日志</a>
 						</td>
 						<td :value="data.signInStatus">
-							<span v-if="data.signInStatus==='0'">未确认</span>
-							<span v-else-if="data.signInStatus==='1'">已确认</span>
+							<span v-if="data.signInStatus==0">未确认</span>
+							<span v-else-if="data.signInStatus==1">已确认</span>
 						</td>
-						<td class="textBtn" :id="'signinBtn'+index">
-							<button @click="signInBtn(index)" v-if="data.signInStatus==='0'">确认</button>
-							<button disabled="true" v-else-if="data.signInStatus==='1'">确认</button>
+						<td class="textBtn">
+							<button :id="'signinBtn'+index" @click="signInBtn(index)" v-if="data.signInStatus==0">确认</button>
+							<button disabled="true" v-else-if="data.signInStatus==1" style="cursor:default;">确认</button>
 						</td>
 					</tr>
 				</tbody>
@@ -100,7 +66,7 @@
 	<!-- 考勤弹窗*************************************************************************************************************** -->
 	<Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
 	    <div slot="header" style="font-size:1.6rem; text-align:center; padding:0.2rem 0;" id="modalHeader">
-            <span>出勤情况</span>
+            <span>缺勤情况</span>
         </div>
 	    <div style="text-align:center; font-size:0.8rem;">
 	    	<!-- 弹窗形式编辑出勤情况并提交 -->
@@ -136,7 +102,7 @@
 			</div>
 			<!-- 弹窗形式查看所编辑的上课日志 -->
 			<div v-else-if="journalStatus==='1'">
-	    		<span>{{getTeachJournalInFo}}</span>
+				<Input v-model="getTeachJournalInFo" type="textarea" :rows="7" readonly="true"></Input>
 	    	</div>
 	    </div>
 	    <div slot="footer" style="text-align:center;">
@@ -196,10 +162,6 @@ export default {
 			getTeachJournalInFo: '',
 			attendanceStudentList: [],	// 出勤情况选择
 			attendanceReturn: [],
-			// attendShow: true,
-			// journalShow: true,
-			// seeAttendShow: false,
-			// seeJournalShow: false,
 			index: ''
 		}
 	},
@@ -221,26 +183,7 @@ export default {
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.teachJournalDetailList = data.teachJournalDetailList;
-            // 判断每一堂课是否已签到，若签到状态为1，则状态“未确认”变为“已确认”
-            // for (var i = 0; i < this.teachJournalDetailList.length; i++) {
-            // 	if (this.teachJournalDetailList[i].signInStatus == '1') {
-            // 		var status = document.getElementById("status"+i);
-            // 		var attendance = document.getElementById("attendance"+i);
-            // 		var seeAttendance = document.getElementById("seeAttendance"+i);
-            // 		var journal = document.getElementById("journal"+i);
-            // 		var seeJournal = document.getElementById("seeJournal"+i);
-            // 		status.innerHTML = "已确认";
-            // 		attendance.style.display = "none";
-            // 		seeAttendance.style.display = "inline-block";
-            // 		journal.style.display = "none";
-            // 		seeJournal.style.display = "inline-block";
-            // 		// 确认按钮失效，不可点击签到
-            // 		var signinBtn = document.getElementById("signinBtn"+i);
-            // 		var signInButton = signinBtn.getElementsByTagName("button");
-            // 		signInButton.disabled = true;
-            // 	}
-            // }
+            this.teachJournalDetailList = JSON.stringify(JSON.parse(data.teachJournalDetailList));
         },function(error){
             console.log("获取申请error:");
             console.log(error);
@@ -273,7 +216,11 @@ export default {
 		seeAttend: function (index) {
 			this.modal1 = true;
 			this.attendStatus = '1';
-			this.getAttendanceInfo = data.teachJournalDetailList[index].attendanceInfo;
+			if (data.teachJournalDetailList[index].attendanceInfo == null) {
+				this.getAttendanceInfo = "无";
+			}else {
+				this.getAttendanceInfo = data.teachJournalDetailList[index].attendanceInfo;
+			}
 		},
 		// 编辑上课日志按钮*********************************************************
 		journal: function (index) {
@@ -291,22 +238,10 @@ export default {
 		signInBtn: function (index) {
 			this.modalSignin = true;
 			this.index = index;
-			// this.$http.post('./teachJournalSignIn',{
-	  //       	"courseAssociationId": this.courseAssociationId
-	  //       },{
-	  //           "Content-Type":"application/json"
-	  //       }).then(function(response){
-	  //           console.log("获取申请:");
-	  //           console.log(response.body);
-	  //           var data = response.body;
-	  //           this.weekList = data.weekList;
-	  //       },function(error){
-	  //           console.log("获取申请error:");
-	  //           console.log(error);
-	  //       });
 		},
 		// 二次确认签到**************************************************
 		submitOk: function () {
+			var signinBtn = document.getElementById("signinBtn"+this.index);
         	this.modalSignin = false;
 			this.$http.post('./signInCourseByTeacher',{
             	"execWeek": this.teachJournalDetailList[this.index].execWeek,
@@ -323,6 +258,8 @@ export default {
             	this.modalSubmit = false;
             	if (data.result == 1) {
             		this.$Message.success('签到成功！');
+            		signinBtn.disabled = true;
+					signinBtn.style.cursor = 'default';
             	}else {
             		// this.$Message.error(data.result);
             		this.modalResult = true;

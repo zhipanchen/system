@@ -1,8 +1,13 @@
 <template>
   <div id="evaTeachingResultPageTopBar" class="topBarDiv am-btn-group">
     <!--导航栏-->
-    <router-link to="/eduAdmin/manage/examination/eduAdminTchTeachingPlan"><button class="am-btn am-btn-success" style="margin-left: 5rem">教学计划</button></router-link>
+    <router-link to="/eduAdmin/manage/examination/eduAdminTchTeachingPlan"><button class="am-btn am-btn-success" style="margin-left: 5rem">教学计划审核</button></router-link>
+    <router-link to="/eduAdmin/manage/examination/adjustCouApply"><button class="am-btn am-btn-success">调课审批</button></router-link>
+    <router-link to="/eduAdmin/manage/examination/makeupCouApply"><button class="am-btn am-btn-success">补课审批</button></router-link>
+    <router-link to="/eduAdmin/manage/examination/suspendCouApply"><button class="am-btn am-btn-success">停课审批</button></router-link>
+    <router-link to="/eduAdmin/manage/examination/banCouApply"><button class="am-btn am-btn-success">禁排审批</button></router-link>
     <button class="am-btn am-btn-success btn-active">教务查看评教</button>
+    <router-link to="/eduAdmin/manage/examination/makeupExamAdmin"><button class="am-btn am-btn-success">补考审批</button></router-link>
   </div>
 </template>
 

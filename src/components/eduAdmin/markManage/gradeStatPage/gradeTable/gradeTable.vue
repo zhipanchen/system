@@ -176,9 +176,9 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
-		            if (data.scoreList != []) {
+		            if (data.scoreList.length != 0) {
 		            	this.scoreList = data.scoreList;
-		            }else if (data.scoreList == []) {
+		            }else {
 		            	this.$Message.warning("未找到所查询内容！");
 				        // this.modalResult = true;
 				        // this.resultBool = '1';

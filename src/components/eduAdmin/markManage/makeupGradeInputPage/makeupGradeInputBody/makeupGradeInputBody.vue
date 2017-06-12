@@ -43,7 +43,7 @@
 						<td v-text="makeupScore.studentId"></td>
 						<td v-text="makeupScore.studentName"></td>
 						<td>
-							<input id="input1" type="text" :value="makeupScore.makeupGrade" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+							<input id="input1" type="text" :value="makeupScore.makeUpGrade" readonly="true" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
 						</td>
 					</tr>
 				</tbody>
@@ -102,8 +102,8 @@ export default {
 			yearTerm: [],		// 选择学期
 			courseInfo: [],		// 选择课程
 			makeUpGradeInputList: [
-				// {studentId: '010203', studentName: '何平', makeupGrade: '75'},
-				// {studentId: '010203', studentName: '何平', makeupGrade: '75'}
+				// {studentId: '010203', studentName: '何平', makeUpGrade: '75'},
+				// {studentId: '010203', studentName: '何平', makeUpGrade: '75'}
 			],
 			modalOperation: false,
 			modalResult: false,
@@ -160,10 +160,10 @@ export default {
 		            // if(data.result == "1") {
 	                    this.makeUpGradeInputList = data.makeUpGradeInputList;
 	                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
-	                    if (this.makeUpGradeInputList != []) {
+	                    if (this.makeUpGradeInputList.length != 0) {
 	                    	this.buttonShow = true;
 	                    	this.submitShow = true;
-	                    }else if (this.makeUpGradeInputList == []) {
+	                    }else {
 	                    	this.modalResult = true;
 	                    	this.remindResult = '6';
 	                    }

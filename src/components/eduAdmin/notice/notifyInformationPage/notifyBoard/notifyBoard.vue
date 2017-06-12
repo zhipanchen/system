@@ -20,7 +20,7 @@
             <td style="text-align: left;font-size: 0.8rem;color: #00a539">发布时间:{{announcementTime}}&nbsp&nbsp&nbsp&nbsp&nbsp发布类型:{{announcementType}}&nbsp&nbsp&nbsp&nbsp&nbsp作者:{{announcementUserName}}</td>
           </tr>
           <tr>
-            <td style="text-align: left;text-indent: 3rem;font-size: 1.1rem">{{announcementContent}}</td>
+            <td style="text-align: left;text-indent: 3rem;font-size: 1.1rem" v-html="announcementContent"></td>
           </tr>
           <tr>
             <td class="download" @click="downloadNoticeClick">{{fileName}}</td>

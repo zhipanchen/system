@@ -80,7 +80,7 @@
 						            :on-error="handleError2"
 							 		action="./courseTeachPlan/uploadTeachPlan">
 						            <!-- :on-progress="handleProgress2" -->
-									<a :id="'signIn2'+index">上传</a>
+									<a :id="'signIn2'+index" title="请上传xls/xlsx/doc/docx文件">上传</a>
 								</Upload>
 							</span>
 							<span v-show="optHide2" :id="'check2'+index">
