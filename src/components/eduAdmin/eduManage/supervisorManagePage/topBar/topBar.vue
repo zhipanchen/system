@@ -21,12 +21,8 @@
             buttons[i].style.display="none";
           }
           for(var j=0;j<authorityList.length;j++){
-            if(authorityList[j] == "15"){
+            if(authorityList[j] == "34"){
               buttons[0].style.display="inline";
-            }else if(authorityList[j] == "16"){
-              buttons[1].style.display="inline";
-            }else if(authorityList[j] == "34"){
-              buttons[2].style.display="inline";
             }
           }
         }catch(e){}

@@ -11,6 +11,7 @@
       <!--学号，姓名输入框-->
       <span><button id="searchFor" class="am-btn am-btn-success am-radius buttonWM" @click="searchChangeInfo()">查询</button></span>
       <span><button id="leadOut" class="am-btn am-btn-success am-radius buttonWM" @click="leadOutInfo()">下载</button></span>
+      <span><a href="#/eduAdmin/person/manageClassPage/stdStatusChangeExam"><button id="checkOut" class="am-btn am-btn-success am-radius buttonWM">异动审核</button></a></span>
       <!--查询,导出按钮-->
     </div>
     <div id="stdInfoTable" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
