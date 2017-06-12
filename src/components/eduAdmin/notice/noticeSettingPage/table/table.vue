@@ -34,7 +34,7 @@
               <input type="file" name="file">
               <input v-model="announcementName" name="announcementName" readonly style="display: none">
               <input v-model="announcementType"  name="announcementType"  readonly style="display: none">
-              <input v-model="announcementContent"  name="announcementContent"  readonly style="display: none">
+              <textarea v-model="announcementContent"  name="announcementContent"  readonly style="display: none"></textarea>
               <span style="position: relative;" class="am-btn am-btn-success am-radius" @click="dia(announcementContent)">发布</span>
               <button id="sub" style="display: none" type="submit"></button>
               <Modal

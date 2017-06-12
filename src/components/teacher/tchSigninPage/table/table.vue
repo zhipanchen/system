@@ -40,22 +40,22 @@
 						<td>{{data.weekdays}}</td>
 						<td>第 {{data.lessonNum}} 大节</td>
 						<td>{{data.classroomId}}</td>
-						<td>{{data.signDate}}</td>
+						<td>{{data.signInTime}}</td>
 						<td class="textBtn" :value="data.attendanceInfo">
-							<a @click="attend(index)" v-if="data.signInStatus=='0'">考勤</a>
-							<a @click="seeAttend(index)" v-else-if="data.signInStatus=='1'">查看考勤</a>
+							<a @click="attend(index)" v-if="data.signInStatus==0">考勤</a>
+							<a @click="seeAttend(index)" v-else-if="data.signInStatus==1">查看考勤</a>
 						</td>
 						<td class="textBtn" :value="data.teachJournalInFo">
-							<a @click="journal(index)" v-if="data.signInStatus=='0'">上课日志</a>
-							<a @click="seeJournal(index)" v-else-if="data.signInStatus=='1'">查看日志</a>
+							<a @click="journal(index)" v-if="data.signInStatus==0">上课日志</a>
+							<a @click="seeJournal(index)" v-else-if="data.signInStatus==1">查看日志</a>
 						</td>
 						<td :value="data.signInStatus">
-							<span v-if="data.signInStatus=='0'">未确认</span>
-							<span v-else-if="data.signInStatus=='1'">已确认</span>
+							<span v-if="data.signInStatus==0">未确认</span>
+							<span v-else-if="data.signInStatus==1">已确认</span>
 						</td>
 						<td class="textBtn">
-							<button :id="'signinBtn'+index" @click="signInBtn(index)" v-if="data.signInStatus=='0'">确认</button>
-							<button disabled="true" v-else-if="data.signInStatus=='1'" style="cursor:default;">确认</button>
+							<button :id="'signinBtn'+index" @click="signInBtn(index)" v-if="data.signInStatus==0">确认</button>
+							<button disabled="true" v-else-if="data.signInStatus==1" style="cursor:default;">确认</button>
 						</td>
 					</tr>
 				</tbody>
@@ -183,7 +183,7 @@ export default {
             console.log("获取申请:");
             console.log(response.body);
             var data = response.body;
-            this.teachJournalDetailList = data.teachJournalDetailList;
+            this.teachJournalDetailList = JSON.stringify(JSON.parse(data.teachJournalDetailList));
         },function(error){
             console.log("获取申请error:");
             console.log(error);

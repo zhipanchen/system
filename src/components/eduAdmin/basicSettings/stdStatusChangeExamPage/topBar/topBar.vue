@@ -1,5 +1,5 @@
 <template>
-  <div id="eduResearchGroupManagement_topBar" class="topBarDiv am-btn-group">
+  <div id="studentStatusChangeExamination_topBar" class="topBarDiv am-btn-group">
     <button id="topBarButton" class="am-btn am-btn-success btn-active" @click="hrefClick(1)">教研组管理</button>
     <button class="am-btn am-btn-success" @click="hrefClick(2)">学生管理</button>
     <button class="am-btn am-btn-success" @click="hrefClick(3)">教师管理</button>
@@ -9,7 +9,7 @@
 
 <script>
   export default {
-    name: 'eduResearchGroupManagement_topBar',
+    name: 'studentStatusChangeExamination_topBar',
     data () {
       return {
         msg: ''
@@ -17,9 +17,8 @@
     },
     mounted: function() {
       try{
-        var buttons = document.getElementById("eduResearchGroupManagement_topBar").getElementsByTagName("button");
+        var buttons = document.getElementById("studentStatusChangeExamination_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
-//        console.log(this.authorityList);
         for (var i = 0; i < buttons.length; i++) {
           buttons[i].style.display = "none";
         }

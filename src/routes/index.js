@@ -53,9 +53,9 @@ const eduAdminManageGrade = resolve => require(['../views/eduAdmin/basicSettings
 //李西炜（start）
 import login from '../views/main/loginPage/loginPage.vue'
 import eduAdminHome from '../views/main/eduAdminHomePage/eduAdminHomePage.vue'
-import teacherHome from '../views/main/teacherHomePage/teacherHomePage.vue'
 import studentHome from '../views/main/studentHomePage/studentHomePage.vue'
-/*import forgetPassword from '../views/main/forgetPwPage/forgetPwPage.vue'
+/*import teacherHome from '../views/main/teacherHomePage/teacherHomePage.vue'
+import forgetPassword from '../views/main/forgetPwPage/forgetPwPage.vue'
 import resetForgetPassword from '../views/main/resetForgetPwPage/resetForgetPwPage.vue'
 import combineCoursePage from '../views/eduAdmin/smartArrangeCourse/combineCoursePage/combineCoursePage.vue'
 import checkCoursePage from '../views/eduAdmin/smartArrangeCourse/checkCoursePage/checkCoursePage.vue'
@@ -69,7 +69,7 @@ import courseTypeMgmtPage from '../views/eduAdmin/basicSettings/courseTypeMgmtPa
 import eduResGroupMgmtPage from '../views/eduAdmin/basicSettings/eduResGroupMgmtPage/eduResGroupMgmtPage.vue'
 import suspendCouApplyPage from '../views/eduAdmin/smartArrangeCourse/suspendCouApplyPage/suspendCouApplyPage.vue'
 import makeupCouApplyPage from '../views/eduAdmin/smartArrangeCourse/makeupCouApplyPage/makeupCouApplyPage.vue'
-import notifyInformationPage from '../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'*/
+import stdStatusChangeExamPage from '../views/eduAdmin/basicSettings/stdStatusChangeExamPage/stdStatusChangeExam.vue'*/
 //const login = resolve => require(['../views/main/loginPage/loginPage.vue'], resolve);
 //const eduAdminHome = resolve => require(['../views/main/eduAdminHomePage/eduAdminHomePage.vue'], resolve);
 //const teacherHome = resolve => require(['../views/main/teacherHomePage/teacherHomePage.vue'], resolve);
@@ -88,7 +88,7 @@ const courseTypeMgmtPage = resolve => require(['../views/eduAdmin/basicSettings/
 const eduResGroupMgmtPage = resolve => require(['../views/eduAdmin/basicSettings/eduResGroupMgmtPage/eduResGroupMgmtPage.vue'], resolve);
 const suspendCouApplyPage = resolve => require(['../views/eduAdmin/smartArrangeCourse/suspendCouApplyPage/suspendCouApplyPage.vue'], resolve);
 const makeupCouApplyPage = resolve => require(['../views/eduAdmin/smartArrangeCourse/makeupCouApplyPage/makeupCouApplyPage.vue'], resolve);
-const notifyInformationPage = resolve => require(['../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'], resolve);
+const stdStatusChangeExamPage = resolve => require(['../views/eduAdmin/basicSettings/stdStatusChangeExamPage/stdStatusChangeExam.vue'], resolve);
 //李西炜（end）
 
 //易倩（start）
@@ -121,8 +121,6 @@ const messageNotice = resolve => require(['../views/teacher/messageNoticePage/me
 const makeupClass = resolve => require(['../views/teacher/makeupClassPage/makeupClassPage.vue'], resolve);
 const experience = resolve => require(['../views/teacher/experiencePage/experiencePage.vue'], resolve);
 const educationManege = resolve => require(['../views/teacher/educationManegePage/educationManegePage.vue'], resolve);
-const director = resolve => require(['../views/teacher/directorPage/directorPage.vue'], resolve);
-const directorResult = resolve => require(['../views/teacher/directorResultPage/directorResultPage.vue'], resolve);
 //const directorResultList = resolve => require(['../views/teacher/directorResultListPage/directorResultListPage.vue'], resolve);
 const classManege = resolve => require(['../views/teacher/classManegePage/classManegePage.vue'], resolve);
 const classList = resolve => require(['../views/teacher/classListPage/classListPage.vue'], resolve);
@@ -130,7 +128,10 @@ const certificateManege = resolve => require(['../views/teacher/certificateManeg
 const basicMessage = resolve => require(['../views/teacher/basicMessagePage/basicMessagePage.vue'], resolve);
 const studentMessage = resolve => require(['../views/teacher/studentMessagePage/studentMessagePage.vue'], resolve);
 const checkStudentInfo = resolve => require(['../views/teacher/checkStudentInfoPage/checkStudentInfoPage.vue'], resolve);
-
+const teacherDirector = resolve => require(['../views/teacher/teacherDirectorPage/teacherDirectorPage.vue'], resolve);
+const teacherDirectorResult = resolve => require(['../views/teacher/teacherdirectorResultPage/teacherdirectorResultPage.vue'], resolve);
+const directorDirector = resolve => require(['../views/teacher/directorPage/directorPage.vue'], resolve);
+const directorResult = resolve => require(['../views/teacher/directorResultPage/directorResultPage.vue'], resolve);
 //易倩（end）
 
 //蔡玲双（strat）
@@ -160,7 +161,7 @@ const noticeSetting = resolve => require(['../views/eduAdmin/notice/noticeSettin
 const notifyInformation = resolve => require(['../views/eduAdmin/notice/notifyInformationPage/notifyInformationPage.vue'], resolve);
 // *******************main***********************************
 //import eduAdminHomePage from '../views/main/eduAdminHomePage/eduAdminHomePage.vue'
-const eduAdminHomePage = resolve => require(['../views/main/eduAdminHomePage/eduAdminHomePage.vue'], resolve);
+// const eduAdminHomePage = resolve => require(['../views/main/eduAdminHomePage/eduAdminHomePage.vue'], resolve);
 // *******************teacher***********************************
 /*import tchCheckTimetable from '../views/teacher/tchCheckTimetablePage/tchCheckTimetablePage.vue'
 import courseList from '../views/teacher/courseListPage/courseListPage.vue'
@@ -169,7 +170,7 @@ import normalSchedule from '../views/teacher/normalSchedulePage/normalSchedulePa
 import tchGradesInput from '../views/teacher/tchGradesInputPage/tchGradesInputPage.vue'
 import tchManuAdjCl from '../views/teacher/tchManuAdjClPage/tchManuAdjClPage.vue'
 import tchCheckSalary from '../views/teacher/tchCheckSalaryPage/tchCheckSalaryPage.vue'
-import scheduleList from '../views/eduAdmin/tchSalary/scheduleListPage/scheduleListPage.vue'		
+import scheduleList from '../views/eduAdmin/tchSalary/scheduleListPage/scheduleListPage.vue'
 import seeSigninList from '../views/eduAdmin/tchSalary/seeSigninListPage/seeSigninListPage.vue'
 import tchSignin from '../views/teacher/tchSigninPage/tchSigninPage.vue'*/
 const tchCheckTimetable = resolve => require(['../views/teacher/tchCheckTimetablePage/tchCheckTimetablePage.vue'], resolve);
@@ -229,7 +230,7 @@ export default new Router({   //将routes里的参数导出
     },
     {
       //学生评教界面
-      path: '/student/setting/studentEvaluation',
+      path: '/student/studentEvaluation',
       name: 'studentEvaluation',
       component: studentEvaluation
     },
@@ -241,7 +242,7 @@ export default new Router({   //将routes里的参数导出
     },
     {
       //教师查看考场
-      path: '/teacher/classInfo/teacherTestInfo',
+      path: '/teacher/teach/teacherTestInfo',
       name: 'teacherTestInfo',
       component: teacherTestInfo
     },
@@ -252,7 +253,7 @@ export default new Router({   //将routes里的参数导出
       component: eduAdminManager
     },
     //*******************************************************************（陈志攀end）
-    //*******************************************************************（吴坚start）
+      //*******************************************************************（吴坚start）
     {
       //学生查询成绩界面
       path: '/student/query/stInquireGrade',
@@ -332,117 +333,118 @@ export default new Router({   //将routes里的参数导出
     {
       //教务教师首页界面
       path: '/login/main/eduAdminHome',
-      name: '/eduAdminHome',
+      name: '/login/main/eduAdminHome',
       component: eduAdminHome
     },
     /*
     {
       //教师首页界面
       path: '/login/main/teacherHome',
-      name: '/teacherHome',
+      name: '/login/main/teacherHome',
       component: teacherHome
     },
     */
     {
       //学生首页界面
       path: '/login/main/studentHome',
-      name: '/studentHome',
+      name: '/login/main/studentHome',
       component: studentHome
     },
     {
-      path: '/eduAdmin/course/courseInfo/checkCourse',
-      name: '/eduAdmin/course/courseInfo/checkCourse',
+      path: '/eduAdmin/checkCourse',
+      name: '/eduAdmin/checkCourse',
       component: checkCoursePage
-      //  教务查看课表页面
+      //  教务查看全校课表页面
     },
     {
-      path: '/eduAdmin/course/courseInfo/adjustCouApply',
-      name: '/eduAdmin/course/courseInfo/adjustCouApply',
+      path: '/eduAdmin/examination/adjustCouApply',
+      name: '/eduAdmin/examination/adjustCouApply',
       component: adjustCouApplyPage
-      //  教务员调课申请处理页面
+      //  教务调课审批页面
     },
     {
       path: '/login',
-      name: 'login',
+      name: '/login',
       component: login
       //  登录页面
     },
     {
       path: '/login/operation/forgetPassword',
-      name: 'forgetPassword',
+      name: '/login/operation/forgetPassword',
       component: forgetPassword
       //  忘记密码找回页面
     },
     {
       path: '/login/operation/resetForgetPassword',
-      name: 'resetForgetPassword',
+      name: '/login/operation/resetForgetPassword',
       component: resetForgetPassword
       //  忘记密码重置页面
     },
     {
-      path: '/eduAdmin/course/courseOperation/combineCourse',
-      name: '/eduAdmin/course/courseOperation/combineCourse',
+      path: '/eduAdmin/course/combineCourse',
+      name: '/eduAdmin/course/combineCourse',
       component: combineCoursePage
-      //  教务员合课界面
+      //  教务员合课设置界面
     },
     {
-      path: '/eduAdmin/course/courseOperation/banCouApply',
-      name: '/eduAdmin/course/courseOperation/banCouApply',
+      path: '/eduAdmin/examination/banCouApply',
+      name: '/eduAdmin/examination/banCouApply',
       component: banCouApplyPage
-      //  课程禁排申请处理页面
+      //  禁排审批页面
     },
     {
-      path: '/eduAdmin/course/courseOperation/couArrangeSetting',
-      name: '/eduAdmin/course/courseOperation/couArrangeSetting',
+      path: '/eduAdmin/course/couArrangeSetting',
+      name: '/eduAdmin/course/couArrangeSetting',
       component: couArrangeSettingPage
-      //  排课课程管理页面
+      //  排课课程设置页面
     },
     {
-      path: '/eduAdmin/course/courseOperation/couArrangeTable',
-      name: '/eduAdmin/course/courseOperation/couArrangeTable',
+      path: '/eduAdmin/course/couArrangeTable',
+      name: '/eduAdmin/course/couArrangeTable',
       component: couArrangeTablePage
-      //  排课结果课表页面
+      //  排课执行页面
     },
     {
-      path: '/eduAdmin/baseSetting/resource/textbookMgmt',
-      name: '/eduAdmin/baseSetting/resource/textbookMgmt',
+      path: '/eduAdmin/resource/textbookMgmt',
+      name: '/eduAdmin/resource/textbookMgmt',
       component: textbookMgmtPage
-      //  教材信息管理页面
+      //  教材管理页面
     },
     {
-      path: '/eduAdmin/baseSetting/resource/classroomMgmt',
-      name: '/eduAdmin/baseSetting/resource/classroomMgmt',
+      path: '/eduAdmin/resource/classroomMgmt',
+      name: '/eduAdmin/resource/classroomMgmt',
       component: classroomMgmtPage
-      //  教室信息管理页面
+      //  教室管理页面
     },
 	{
-      path: '/eduAdmin/baseSetting/resource/courseTypeMgmt',
-      name: '/eduAdmin/baseSetting/resource/courseTypeMgmt',
+      path: '/eduAdmin/resource/courseTypeMgmt',
+      name: '/eduAdmin/resource/courseTypeMgmt',
       component: courseTypeMgmtPage
       //  课程类型管理页面
     },
     {
-      path: '/eduAdmin/baseSetting/person/eduResGroupMgmt',
-      name: '/eduAdmin/baseSetting/person/eduResGroupMgmt',
+      path: '/eduAdmin/person/eduResGroupMgmt',
+      name: '/eduAdmin/person/eduResGroupMgmt',
       component: eduResGroupMgmtPage
-      //  教研组信息管理页面
+      //  教研组管理页面
     },
     {
-      path: '/eduAdmin/course/courseInfo/suspendCouApply',
-      name: '/eduAdmin/course/courseInfo/suspendCouApply',
+      path: '/eduAdmin/person/manageClassPage/stdStatusChangeExam',
+      name: '/eduAdmin/person/manageClassPage/stdStatusChangeExam',
+      component: stdStatusChangeExamPage
+      //  异动审批页面
+    },
+    {
+      path: '/eduAdmin/examination/suspendCouApply',
+      name: '/eduAdmin/examination/suspendCouApply',
       component: suspendCouApplyPage
-      //  停课申请处理页面
+      //  停课审批页面
     },
     {
-      path: '/eduAdmin/course/courseInfo/makeupCouApply',
-      name: '/eduAdmin/course/courseInfo/makeupCouApply',
+      path: '/eduAdmin/examination/makeupCouApply',
+      name: '/eduAdmin/examination/makeupCouApply',
       component: makeupCouApplyPage
-      //  补课申请处理页面
-    },
-    {
-      path: '/eduAdmin/information/notifyInformation',
-      name: '/eduAdmin/information/notifyInformation',
-      component: notifyInformationPage
+      //  补课审批页面
     },
     //*******************************************************************（李西炜end）
 
@@ -471,28 +473,40 @@ export default new Router({   //将routes里的参数导出
       path: '/teacher/course/requirement',
       component:requirement
     },
-    {//督导反馈
-      path: '/teacher/teach/director',
-      component:director
-    },
-    {//督导结果
-      path:'/teacher/directorResult',
-      component:directorResult
-    },
+
     {
       //查看评教
-      path: '/teacher/class/teachingEvaluate',
+      path: '/teacher/teach/teachingEvaluate',
       component: teachingEvaluate
     },
-	 {
+	  {
 	    //教师查看学生评教留言
       path: '/teacher/studentMessage',
       component:studentMessage
     },
     {
-	    //班级列表
-      path: '/teacher/class/classList',
+	    //班主任 班级列表
+      path: '/teacher/classList',
       component:classList
+    },
+    //教师查看督导结果列表**************
+    {
+      path: '/teacher/teach/teacherDirector',
+      component:teacherDirector
+    },
+    {//教师查看督导结果列表的跳转********************
+      path:'/teacher/teach/directorResult',
+      component:teacherDirectorResult
+    },
+    {
+      //督导员反馈***********************************
+      path: '/teacher/director',
+      component:directorDirector
+    },
+    {
+      //督导员填写反馈结果  前一个页面的跳转**********************
+      path: '/teacher/directorResult',
+      component:directorResult
     },
     {
 	    //班主任查看学生个人信息
@@ -509,10 +523,7 @@ export default new Router({   //将routes里的参数导出
       path: '/teacher/teach/messageNotice',
       component:  messageNotice
     },
-    {//教务发布通知
-      path: '/eduAdmin/noticeManage',
-      component:  noticeManages
-    },
+
     */
     {//教师基本信息
       path: '/teacher/personInfo/basicMessage',
@@ -531,10 +542,7 @@ export default new Router({   //将routes里的参数导出
       path:'/teacher/directorResultList',
       component:directorResultList
     },
-    {//废弃
-      path: '/teacher/classManege',
-      component:classManege
-    },
+
     */
     {//证书管理
       path: '/teacher/info/certificateManege',
@@ -546,31 +554,31 @@ export default new Router({   //将routes里的参数导出
     //eduAdmin
     {
       // 教务-管理员撤销成绩
-      path: '/eduAdmin/gradeManage/grade/adminCancelGrade',
+      path: '/eduAdmin/gradeManage/adminCancelGrade',
       name: 'adminCancelGrade',
       component: adminCancelGrade
     },
     {
       // 教务-成绩查询（学号查询）
-      path: '/eduAdmin/gradeManage/grade/gradeQuery',
+      path: '/eduAdmin/gradeManage/gradeQuery',
       name: 'gradeQuery',
       component: gradeQuery
     },
     {
       // 教务-成绩统计（分数段查询）
-      path: '/eduAdmin/gradeManage/grade/gradeStat',
+      path: '/eduAdmin/gradeManage/gradeStat',
       name: 'gradeStat',
       component: gradeStat
     },
     {
       // 教务-补考成绩管理
-      path: '/eduAdmin/gradeManage/makeupExam/makeupExamAdmin',
+      path: '/eduAdmin/examination/makeupExamAdmin',
       name: 'makeupExamAdmin',
       component: makeupExamAdmin
     },
     {
       // 教务-补考成绩输入
-      path: '/eduAdmin/gradeManage/makeupExam/makeupGradeInput',
+      path: '/eduAdmin/gradeManage/makeupGradeInput',
       name: 'makeupGradeInput',
       component: makeupGradeInput
     },
@@ -628,7 +636,7 @@ export default new Router({   //将routes里的参数导出
     // teacher
     {
       // 教师-查看教师课表
-      path: '/teacher/classInfo/tchCheckTimetable',
+      path: '/teacher/course/tchCheckTimetable',
       name: 'tchCheckTimetable',
       component: tchCheckTimetable
     },

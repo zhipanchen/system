@@ -275,28 +275,34 @@
               }
             }*/
             console.log(this.groups);
-            this.isChange = true;
             if(this.groups[index].index == null){
 //              判断是否为未保存的新增教研组
               /*document.getElementById("groupInput").readOnly = false;
               document.getElementById("groupInput").style.border = "0.1rem solid #d4d4d9";*/
               this.isAdd = true;
               this.groupId = index;
-              this.groupName = this.groups[index].name;
-              this.groupNumber = this.groups[index].id;
+              this.groupName = JSON.parse(JSON.stringify(this.groups[index].name));
+              this.groupNumber = JSON.parse(JSON.stringify(this.groups[index].id));
               this.targroupType = "";
               this.leaders = [];
               this.members = [];
+              this.$nextTick(function () {
+                this.isChange = false;
+              });
             }else{
-              var n = this.groups[index].index;
+              this.isAdd = false;
+              var n = JSON.parse(JSON.stringify(this.groups[index].index));
               this.groupId = index;
-              this.groupName = this.TARgroupInfoList[n].targroupName;
-              this.groupNumber = this.TARgroupInfoList[n].targroupId;
-              this.targroupType = this.TARgroupInfoList[n].targroupType;
-              this.leaders = this.TARgroupInfoList[n].targroupLeader;
-              this.members = this.TARgroupInfoList[n].targroupTeacher;
+              this.groupName = JSON.parse(JSON.stringify(this.TARgroupInfoList[n].targroupName));
+              this.groupNumber = JSON.parse(JSON.stringify(this.TARgroupInfoList[n].targroupId));
+              this.targroupType = JSON.parse(JSON.stringify(this.TARgroupInfoList[n].targroupType));
+              this.leaders = JSON.parse(JSON.stringify(this.TARgroupInfoList[n].targroupLeader));
+              this.members = JSON.parse(JSON.stringify(this.TARgroupInfoList[n].targroupTeacher));
               document.getElementById("groupInput").readOnly = true;
               document.getElementById("groupInput").style.border = "none";
+              this.$nextTick(function () {
+                this.isChange = false;
+              });
             }
             this.modal1 = false;
           },
