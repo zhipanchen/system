@@ -440,12 +440,15 @@ export default new Router({   //将routes里的参数导出
       component: suspendCouApplyPage
       //  停课审批页面
     },
+<<<<<<< HEAD
     {
       path: '/eduAdmin/examination/makeupCouApply',
       name: '/eduAdmin/examination/makeupCouApply',
       component: makeupCouApplyPage
       //  补课审批页面
     },
+=======
+>>>>>>> origin/master
     //*******************************************************************（李西炜end）
 
     //*******************************************************************（易倩start）
