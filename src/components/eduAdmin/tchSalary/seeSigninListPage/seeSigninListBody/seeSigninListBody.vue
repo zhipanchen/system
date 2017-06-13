@@ -40,22 +40,22 @@
 						<td>{{data.weekdays}}</td>
 						<td>第 {{data.lessonNum}} 大节</td>
 						<td>{{data.classroomId}}</td>
-						<td>{{data.signDate}}</td>
+						<td>{{data.signInTime}}</td>
 						<td class="textBtn" :value="data.attendanceInfo">
-							<a @click="attend(index)" v-if="data.signInStatus=='0'">考勤</a>
-							<a @click="seeAttend(index)" v-else-if="data.signInStatus=='1'">查看考勤</a>
+							<a @click="attend(index)" v-if="data.signInStatus==0">考勤</a>
+							<a @click="seeAttend(index)" v-else-if="data.signInStatus==1">查看考勤</a>
 						</td>
 						<td class="textBtn" :value="data.teachJournalInFo">
-							<a @click="journal(index)" v-if="data.signInStatus=='0'">上课日志</a>
-							<a @click="seeJournal(index)" v-else-if="data.signInStatus=='1'">查看日志</a>
+							<a @click="journal(index)" v-if="data.signInStatus==0">上课日志</a>
+							<a @click="seeJournal(index)" v-else-if="data.signInStatus==1">查看日志</a>
 						</td>
 						<td :value="data.signInStatus">
-							<span v-if="data.signInStatus=='0'">未确认</span>
-							<span v-else-if="data.signInStatus=='1'">已确认</span>
+							<span v-if="data.signInStatus==0">未确认</span>
+							<span v-else-if="data.signInStatus==1">已确认</span>
 						</td>
 						<td class="textBtn">
-							<button :id="'signinBtn'+index" @click="signInBtn(index)" v-if="data.signInStatus=='0'">确认</button>
-							<button disabled="true" v-else-if="data.signInStatus=='1'" style="cursor:default;">确认</button>
+							<button :id="'signinBtn'+index" @click="signInBtn(index)" v-if="data.signInStatus==0">确认</button>
+							<button disabled="true" v-else-if="data.signInStatus==1" style="cursor:default;">确认</button>
 						</td>
 					</tr>
 				</tbody>
@@ -72,9 +72,9 @@
 	    	<!-- 弹窗形式编辑出勤情况并提交 -->
 	    	<div v-if="attendStatus==='0'" style="overflow: auto; height: 13rem;">
 	    		<ul>
-	    			<li v-for="stuData in attendanceStudentList">
-	    				<input type="checkbox" :value="stuData.studentIdAndName" v-model="attendanceReturn">
-	    				<label :for="stuData.studentIdAndName">{{stuData.studentIdAndName}}</label>
+	    			<li v-for="stuData in studentIdAndNameList">
+	    				<input type="checkbox" :value="stuData" v-model="attendanceReturn">
+	    				<label :for="stuData">{{stuData}}</label>
 	    			</li>
 	    		</ul>
 			</div>
@@ -184,6 +184,7 @@ export default {
             console.log(response.body);
             var data = response.body;
             this.teachJournalDetailList = data.teachJournalDetailList;
+            // this.teachJournalDetailList = JSON.parse(JSON.stringify(data.teachJournalDetailList));
         },function(error){
             console.log("获取申请error:");
             console.log(error);
@@ -258,6 +259,7 @@ export default {
             	this.modalSubmit = false;
             	if (data.result == 1) {
             		this.$Message.success('签到成功！');
+            		window.location.reload();
             		signinBtn.disabled = true;
 					signinBtn.style.cursor = 'default';
             	}else {

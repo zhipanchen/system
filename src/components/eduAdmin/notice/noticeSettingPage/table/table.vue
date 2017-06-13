@@ -123,7 +123,6 @@
       dia: function (announcementContent) {
 
 //        this.announcementContent=announcementContent.replace('<br />','/n');
-        this.announcementContent=announcementContent.replace(/\n|\r\n/g,"<br>");
         if(this.announcementName==''||this.announcementType==''||this.announcementContent==''){
           this.modal2 = true;
         }else{
@@ -131,6 +130,7 @@
         }
       },
       subm:function(){
+        this.announcementContent=announcementContent.replace(/\n|\r\n/g,"<br>");
         document.getElementById("sub").click();
       }
 //      publish: function () {
