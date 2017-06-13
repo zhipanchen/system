@@ -4,7 +4,7 @@
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
 		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span> -->
-		<span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">成绩</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">成绩</a></span> -->
 		<span> > 成绩撤销</span>
 	</div>
 	<div class="tableSelect">

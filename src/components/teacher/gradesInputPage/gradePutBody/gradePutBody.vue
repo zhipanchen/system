@@ -13,7 +13,7 @@
 			<span class="blankSpan">上课班级：{{classes}}</span>
 		</div>
 		<div class="rpart">
-			<span>
+			<span id="uploadBtn">
 				<Upload
 					ref="upload"
 					:show-upload-list="false"
@@ -26,7 +26,7 @@
 					action="./importScoreList">
 					<!-- :data="{'courseAssociationId': this.courseAssociationId}" -->
 		            <!-- :on-progress="handleProgress" -->
-					<button class="am-btn am-btn-success am-radius rightBtn" id="uploadBtn">导入</button>
+					<button class="am-btn am-btn-success am-radius rightBtn">导入</button>
 				</Upload>
 			</span>
 			<span>
@@ -305,7 +305,7 @@ export default {
 	            if(data.result == "1") {
                     this.$Message.success('保存成功！');
                     // saveResult = data.result;
-                    window.location.reload();
+                    // window.location.reload();
                 }else {
                     // this.$Message.error('操作失败！请重试');
                     this.modalResult = true;
@@ -334,9 +334,47 @@ export default {
 		},
 		// 提交正考成绩，提交后不可再修改************************************************************
 		submitBtn: function () {
-    		this.modalOperation = true;
-    		this.opertaionBool = '2';
+			var submitGrade = document.getElementById("submitGrade");
+    		var inputRate = submitGrade.getElementsByTagName("input");
+    		var inputGroup = document.getElementById("inputGroup");
+    		var input = inputGroup.getElementsByTagName("input");
+    		var emptyNum = '0';
+    		var wrongNum = '0';
+			var usualRate = Number(this.usualRate);
+			var halfRate = Number(this.halfRate);
+			var finalRate = Number(this.finalRate);
+			var practiceRate = Number(this.practiceRate);
+			var allRate = usualRate+halfRate+finalRate+practiceRate;
+			// console.log(allRate);
+			// console.log(input.length);
+			for (var i = 0; i < this.scoreList.length; i++) {
+				this.scoreList[i].ususallyGrade = input[0+i*4].value;
+    			this.scoreList[i].halfGrade = input[1+i*4].value;
+    			this.scoreList[i].finalExamGrade = input[2+i*4].value;
+    			this.scoreList[i].practiceGrade = input[3+i*4].value;
+    			// 判断是否有空值
+    			if (input[i].value == "") {
+    				emptyNum++;
+				}else if (input[i].value>100) {
+					wrongNum++;
+				}
+    		}
+			// 判断所有比率之和为100，输入非空判断
+			if (allRate=='100' && emptyNum=='0' && wrongNum=='0' && this.usualRate!='' && this.halfRate!='' && this.finalRate!='' && this.practiceRate!='') {
+	    		this.modalOperation = true;
+	    		this.opertaionBool = '2';
+	    	}else if (allRate != '100') {
+	    		this.modalResult = true;
+                this.remindResult = '6';
+	    	}else if (wrongNum != '0') {
+    			this.modalResult = true;
+                this.remindResult = '8';
+	    	}else {
+	    		this.modalResult = true;
+                this.remindResult = '7';
+	    	}
 		},
+		// 二次确认提交******************************************
 		submitOk: function () {
     		this.modalOperation = false;
 			this.$http.post('./saveScore',{
@@ -357,6 +395,7 @@ export default {
 	            var data = response.body;
 	            if(data.result == "1") {
                     this.$Message.success('提交成功！成绩将不可再修改。');
+                    window.location.reload();
                     this.buttonShow = false;
                 }else {
                     // this.$Message.error('操作失败！请重试');
