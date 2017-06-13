@@ -3,7 +3,7 @@
       <div class="positionBar">
         <span>您的当前位置：</span>
         <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-        <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 人员管理设置 > 教研组管理</span>
+        <span> > 人员管理设置 > 教研组管理</span>
       </div>
       <div id="mainDiv">
         <div id="groupDiv">
@@ -250,35 +250,9 @@
           },
 //          教研组点击监听，用于展示相应的教研组详细信息
           groupClick: function(index){
-            /*for(var i = 0;i < this.TARgroupInfoList.length;i++){
-              if(this.TARgroupInfoList[i].targroupId == this.groups[index].id){
-                n = i;
-                console.log(this.TARgroupInfoList[n].targroupId);
-                this.groupId = index;
-                this.groupName = this.TARgroupInfoList[n].targroupName;
-                this.groupNumber = this.TARgroupInfoList[n].targroupId;
-                this.targroupType = this.TARgroupInfoList[n].targroupType;
-                this.leaders = this.TARgroupInfoList[n].targroupLeader;
-                this.members = this.TARgroupInfoList[n].targroupTeacher;
-                break;
-              }
-              if(i = this.TARgroupInfoList.length - 1){
-                document.getElementById("groupInput").readOnly = false;
-                document.getElementById("groupInput").style.border = "0.1rem solid #d4d4d9";
-                this.isAdd = true;
-                this.groupId = index;
-                this.groupName = this.groups[index].name;
-                this.groupNumber = this.groups[index].id;
-                this.targroupType = "";
-                this.leaders = "";
-                this.members = "";
-              }
-            }*/
             console.log(this.groups);
             if(this.groups[index].index == null){
 //              判断是否为未保存的新增教研组
-              /*document.getElementById("groupInput").readOnly = false;
-              document.getElementById("groupInput").style.border = "0.1rem solid #d4d4d9";*/
               this.isAdd = true;
               this.groupId = index;
               this.groupName = JSON.parse(JSON.stringify(this.groups[index].name));
@@ -289,6 +263,11 @@
               this.$nextTick(function () {
                 this.isChange = false;
               });
+              try{
+//                选择框清空
+                document.getElementById("leaderSelect").value = "";
+                document.getElementById("memberSelect").value = "";
+              }catch (e){}
             }else{
               this.isAdd = false;
               var n = JSON.parse(JSON.stringify(this.groups[index].index));
@@ -303,6 +282,11 @@
               this.$nextTick(function () {
                 this.isChange = false;
               });
+              try{
+//                选择框清空
+                document.getElementById("leaderSelect").value = "";
+                document.getElementById("memberSelect").value = "";
+              }catch (e){}
             }
             this.modal1 = false;
           },
@@ -372,8 +356,7 @@
 //          删除功能
           addClick: function(){
             for (var i = 0; i < this.groups.length; i++) {
-              if (this.groups[i].name == "请编辑后保存") {
-//                this.$Message.warning("请不要多次添加未编辑录入的教研组！");
+              if (this.groups[i].id == "") {
                 this.errorMessage = "请不要多次添加未编辑录入的教研组！";
                 this.modal6 = true;
                 return;
@@ -486,7 +469,6 @@
               if(type == "member") {
                 for(var i = 0;i < this.members.length;i++){
                   if(select.value == this.members[i]){
-//                    this.$Message.warning("请勿重复添加！");
                     this.errorMessage = "请勿重复添加！";
                     this.modal6 = true;
                     return;
@@ -496,7 +478,6 @@
               }else{
                 for(var i = 0;i < this.leaders.length;i++){
                   if(select.value == this.leaders[i]){
-//                    this.$Message.warning("请勿重复添加！");
                     this.errorMessage = "请勿重复添加！";
                     this.modal6 = true;
                     return;
@@ -519,90 +500,89 @@
           },
 //          教研组成员删除功能
           save: function(){
-//            if(confirm("您确定保存修改吗？")){
-              if(this.leaders.length == 0 || this.members.length == 0){
-//                this.$Message.warning("组长和成员不能为空！");
-                this.modal4 = false;
-                this.errorMessage = "组长和成员不能为空！";
-                this.modal6 = true;
-              }else {
-                var operationDiv = document.getElementById("operationDiv");
-                operationDiv.style.display = "none";
-                if(this.isAdd) {
+            if(this.targroupType == ""){
+              this.modal4 = false;
+              this.errorMessage = "教研组类别不能为空！";
+              this.modal6 = true;
+            }else if(this.leaders.length == 0 || this.members.length == 0){
+              this.modal4 = false;
+              this.errorMessage = "组长和成员不能为空！";
+              this.modal6 = true;
+            }else {
+              var operationDiv = document.getElementById("operationDiv");
+              operationDiv.style.display = "none";
+              if(this.isAdd) {
 //                  判断是否为未保存的新增教研组
 //                  this.$http.post('../testPhp/classroomMgmtSave.php', {
-                  this.$http.post('./targroupManage/addTargroup', {
-                    "targroupId": this.groupNumber,
-                    "targroupName": this.groupName,
-                    "targroupType": this.targroupType,
-                    "targroupLeader": this.leaders,
-                    "targroupTeacher": this.members
-                  }, {
-                    "Content-Type": "application/json"
-                  }).then(function (response) {
-                    this.modal4 = false;
-                    console.log("添加教研组:");
-                    console.log(response.body);
-                    var data = null;
-                    data = response.body;
-                    if (data.result == "1") {
-                      this.isAdd = false;
-                      this.$Message.success("保存成功!");
-                      setTimeout("location.reload()",2000);
-                    } else {
-                      operationDiv.style.display = "block";
-                      this.modal4 = false;
-//                      this.$Message.error("操作失败，请重试！");
-                      this.errorMessage = "操作失败，请重试！";
-                      this.modal6 = true;
-                    }
-                  }, function (error) {
+                this.$http.post('./targroupManage/addTargroup', {
+                  "targroupId": this.groupNumber,
+                  "targroupName": this.groupName,
+                  "targroupType": this.targroupType,
+                  "targroupLeader": this.leaders,
+                  "targroupTeacher": this.members
+                }, {
+                  "Content-Type": "application/json"
+                }).then(function (response) {
+                  this.modal4 = false;
+                  console.log("添加教研组:");
+                  console.log(response.body);
+                  var data = null;
+                  data = response.body;
+                  if (data.result == "1") {
+                    this.isAdd = false;
+                    this.$Message.success("保存成功!");
+                    setTimeout("location.reload()",2000);
+                  } else {
                     operationDiv.style.display = "block";
                     this.modal4 = false;
-                    this.$Message.error("连接失败，请重试！");
-                  });
-                }else{
+//                      this.$Message.error("操作失败，请重试！");
+                    this.errorMessage = "操作失败，请重试！";
+                    this.modal6 = true;
+                  }
+                }, function (error) {
+                  operationDiv.style.display = "block";
+                  this.modal4 = false;
+                  this.$Message.error("连接失败，请重试！");
+                });
+              }else{
 //                  this.$http.post('../testPhp/classroomMgmtSave.php', {
-                  this.$http.post('./targroupManage/editTargroup', {
-                    "targroupId": this.groupNumber,
-                    "targroupName": this.groupName,
-                    "targroupType": this.targroupType,
-                    "targroupLeader": this.leaders,
-                    "targroupTeacher": this.members
-                  }, {
-                    "Content-Type": "application/json"
-                  }).then(function (response) {
-                    this.modal4 = false;
-                    console.log("保存教研组:");
-                    console.log(response.body);
-                    var data = null;
-                    data = response.body;
-                    if (data.result == "1") {
-                      this.isAdd = false;
-                      this.$Message.success("保存成功!");
-                      setTimeout("location.reload()",2000);
-                    } else {
-                      operationDiv.style.display = "block";
-                      this.modal4 = false;
-//                      this.$Message.error("操作失败，请重试！");
-                      this.errorMessage = "操作失败，请重试！";
-                      this.modal6 = true;
-                    }
-                  }, function (error) {
+                this.$http.post('./targroupManage/editTargroup', {
+                  "targroupId": this.groupNumber,
+                  "targroupName": this.groupName,
+                  "targroupType": this.targroupType,
+                  "targroupLeader": this.leaders,
+                  "targroupTeacher": this.members
+                }, {
+                  "Content-Type": "application/json"
+                }).then(function (response) {
+                  this.modal4 = false;
+                  console.log("保存教研组:");
+                  console.log(response.body);
+                  var data = null;
+                  data = response.body;
+                  if (data.result == "1") {
+                    this.isAdd = false;
+                    this.$Message.success("保存成功!");
+                    setTimeout("location.reload()",2000);
+                  } else {
                     operationDiv.style.display = "block";
                     this.modal4 = false;
-                    this.$Message.error("连接失败，请重试！");
-                  });
-                }
+//                      this.$Message.error("操作失败，请重试！");
+                    this.errorMessage = "操作失败，请重试！";
+                    this.modal6 = true;
+                  }
+                }, function (error) {
+                  operationDiv.style.display = "block";
+                  this.modal4 = false;
+                  this.$Message.error("连接失败，请重试！");
+                });
               }
-//            }
+            }
           },
 //          教研组成员删除功能
           cancel: function(){
-//            if(confirm("您确定取消修改并刷新页面吗？")){
             location.reload();
             this.modal5 = false;
-//            }
           }
         }
     }
