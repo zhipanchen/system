@@ -23,7 +23,7 @@
             <td style="text-align: left;text-indent: 3rem;font-size: 1.1rem" v-html="announcementContent"></td>
           </tr>
           <tr>
-            <td class="download" @click="downloadNoticeClick">{{fileName}}</td>
+            <td class="download" v-if="fileName!=''" @click="downloadNoticeClick">{{fileName}}</td>
           </tr>
           </tbody>
         </table>
@@ -43,7 +43,7 @@
               announcementType:'',
               announcementUserName:'',
               announcementContent:'',
-              fileName:'例附件'
+              fileName:''
             }
         },
       beforeMount:function(){

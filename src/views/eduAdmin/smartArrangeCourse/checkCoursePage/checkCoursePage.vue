@@ -11,7 +11,7 @@
 
 <script>
     import topTitle from './../../../../components/public/topTitle/topTitle.vue'
-    import topBar from '../../../../components/public/couStaffTopBar/couStaffTopBar.vue'
+    import topBar from '../../../../components/eduAdmin/smartArrangeCourse/checkCoursePage/topBar/topBar.vue'
     import checkCourseDiv from '../../../../components/eduAdmin/smartArrangeCourse/checkCoursePage/checkCourseDiv/checkCourseDiv.vue'
     export default {
         name: 'checkCourse',

@@ -1,5 +1,8 @@
 <template>
   <div id="tchManuAdjCl_topBar" class="topBarDiv am-btn-group">
+    <a :href="courseMgmtUrl">
+      <button id="courseMgmtBtn" class="topBarButton am-btn am-btn-success">{{ courseMgmtBtn }}</button>
+    </a>
     <a :href="makeupLessonUrl">
       <button id="makeupLessonBtn" class="am-btn am-btn-success">{{ makeupLessonBtn }}</button>
     </a>
@@ -19,10 +22,12 @@
   export default {
     data () {
       return {
+        courseMgmtBtn: '课表查询',
         makeupLessonBtn: '补课申请',
         adjustCourseBtn: '调课申请',
         stopCourseBtn: '停课申请',
         banAdjustBtn: '禁排申请',
+        courseMgmtUrl: '#/teacher/course/tchCheckTimetable',
         makeupLessonUrl: '#/teacher/course/makeupClass',
         adjustCourseUrl: '#/teacher/course/tchManuAdjCl',
         stopCourseUrl: '#/teacher/course/stopClass',
@@ -38,14 +43,16 @@
           buttons[i].style.display = "none";
         }
         for (var i = 0; i < this.authorityList.length; i++) {
-          if (this.authorityList[i] == "42") {
+          if (this.authorityList[i] == "39") {
             buttons[0].style.display = "block";
-          }else if (this.authorityList[i] == "41") {
+          }else if (this.authorityList[i] == "42") {
             buttons[1].style.display = "block";
-          }else if (this.authorityList[i] == "40") {
+          }else if (this.authorityList[i] == "41") {
             buttons[2].style.display = "block";
-          }else if (this.authorityList[i] == "38") {
+          }else if (this.authorityList[i] == "40") {
             buttons[3].style.display = "block";
+          }else if (this.authorityList[i] == "38") {
+            buttons[4].style.display = "block";
           }
         }
       }catch(e) {}
@@ -57,7 +64,7 @@
 </script>
 
 <style lang="css" scoped>
-  #makeupLessonBtn {
+  #courseMgmtBtn {
     margin-left: 5rem;
   }
 </style>

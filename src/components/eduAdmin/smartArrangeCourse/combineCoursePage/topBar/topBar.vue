@@ -1,9 +1,8 @@
 <template>
     <div id="combineCourse_topBar" class="topBarDiv am-btn-group">
-        <button id="topBarButton" class="am-btn am-btn-success" @click="hrefClick(1)">查看禁排申请</button>
-        <button class="am-btn am-btn-success" @click="hrefClick(2)">排课课程设置</button>
-        <button class="am-btn am-btn-success btn-active" @click="hrefClick(3)">合课设置</button>
-        <button class="am-btn am-btn-success" @click="hrefClick(4)">排课结果课表</button>
+        <button id="topBarButton" class="am-btn am-btn-success" @click="hrefClick(1)">课程设置</button>
+        <button class="am-btn am-btn-success btn-active" @click="hrefClick(2)">合课设置</button>
+        <button class="am-btn am-btn-success" @click="hrefClick(3)">排课执行</button>
     </div>
 </template>
 
@@ -24,14 +23,12 @@
                     buttons[i].style.display = "none";
                 }
                 for (var i = 0; i < this.authorityList.length; i++) {
-                    if(this.authorityList[i] == "8"){
+                    if(this.authorityList[i] == "14"){
                         buttons[0].style.display = "block";
-                    }else if(this.authorityList[i] == "14"){
-                        buttons[1].style.display = "block";
                     }else if(this.authorityList[i] == "9"){
-                        buttons[2].style.display = "block";
+                        buttons[1].style.display = "block";
                     }else if(this.authorityList[i] == "7"){
-                        buttons[3].style.display = "block";
+                        buttons[2].style.display = "block";
                     }
                 }
             }catch(e){}
@@ -40,13 +37,11 @@
         methods: {
             hrefClick: function (num) {
                 if (num == 1) {
-                    location.href = "#/eduAdmin/course/courseOperation/banCouApply"
+                    location.href = "#/eduAdmin/course/couArrangeSetting"
                 } else if (num == 2) {
-                    location.href = "#/eduAdmin/course/courseOperation/couArrangeSetting"
+                    location.href = "#/eduAdmin/course/combineCourse"
                 } else if (num == 3) {
-                    location.href = "#/eduAdmin/course/courseOperation/combineCourse"
-                } else if (num == 4) {
-                    location.href = "#/eduAdmin/course/courseOperation/couArrangeTable"
+                    location.href = "#/eduAdmin/course/couArrangeTable"
                 }
             }
 //      路由跳转
