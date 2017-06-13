@@ -1,8 +1,8 @@
 <template>
-  <div id="makeupCouApply_topBar" class="topBarDiv am-btn-group">
+  <div id="adjustCouApply_topBar" class="topBarDiv am-btn-group">
     <button id="topBarButton" class="am-btn am-btn-success" @click="hrefClick(1)">教学计划审批</button>
-    <button class="am-btn am-btn-success" @click="hrefClick(2)">调课审批</button>
-    <button class="am-btn am-btn-success btn-active" @click="hrefClick(3)">补课审批</button>
+    <button class="am-btn am-btn-success btn-active" @click="hrefClick(2)">调课审批</button>
+    <button class="am-btn am-btn-success" @click="hrefClick(3)">补课审批</button>
     <button class="am-btn am-btn-success" @click="hrefClick(4)">停课审批</button>
     <button class="am-btn am-btn-success" @click="hrefClick(5)">禁排审批</button>
     <button class="am-btn am-btn-success" @click="hrefClick(6)">教务查看评教</button>
@@ -12,7 +12,7 @@
 
 <script>
   export default {
-    name: 'makeupCouApply_topBar',
+    name: 'adjustCouApply_topBar',
     data () {
       return {
         msg: ''
@@ -20,7 +20,7 @@
     },
     mounted: function() {
       try{
-        var buttons = document.getElementById("makeupCouApply_topBar").getElementsByTagName("button");
+        var buttons = document.getElementById("adjustCouApply_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
         for (var i = 0; i < buttons.length; i++) {
           buttons[i].style.display = "none";

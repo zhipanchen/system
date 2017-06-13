@@ -99,21 +99,21 @@
     name: '',
     data () {
       return {
-        modal1:false,
-        modal2:false,//弹窗显示吟唱
+        modal1:false,//模态对话框1隐藏
+        modal2:false,//模态对话框2隐藏
         okValue:0,//值为0无法执行，为1可以执行
-        picked:true,
         nowIndex:0,//当前选中数组第几项
         txt:false,//文字输入框隐藏
-        studentPageUrl:'#/login/main/studentHome',
+        studentPageUrl:'#/login/main/studentHome',//学生首页url
         termSelect:'选择学期',//选择学期默认选项
-        all:false,
+        all:false,//提交所有申请的按钮作废，暂时隐藏
         val1:0,//评教1分值
         val2:0,//评教2分值
         val3:0,//评教3分值
         val4:0,//评教4分值
         val5:0,//评教5分值
         terms:[
+          //学期数组
           /*
           '2016-2017-1',
           '2016-2017-2',
@@ -126,6 +126,7 @@
           */
         ],
         evalutions: [
+          //评教表格数组
           /*
           {courseId: 'k2201710', courseName: '企业课I',  teacherName: '兰刚',teacherId:'1',classId:'1',evaTeach:false,result: '未评教',studentId:'1'},
           {courseId: 'k2210710', courseName: '硬件设计', teacherName: '兰刚',teacherId:'2',classId:'1',evaTeach:false,result: '未评教',studentId:'1'},
@@ -145,13 +146,15 @@
       });
     },
     methods: {
-      ok2 () {//弹框确定按钮
+      ok2 () {//模态对话框确认按钮
         if(this.okValue==0) {
-          if (this.val1 == 0 || this.val2 == 0 || this.val3 == 0 || this.val4 == 0 || this.val5 == 0) {//未选完
+          //过滤评教点选按钮是否选完
+          if (this.val1 == 0 || this.val2 == 0 || this.val3 == 0 || this.val4 == 0 || this.val5 == 0) {
             this.$Message.error("存在未选项！");
-          } else {//选择完毕
+          } else {//过滤评教点选按钮是完毕
             var code = parseInt(this.val1) + parseInt(this.val2) + parseInt(this.val3) + parseInt(this.val4) + parseInt(this.val5);
-            if (code >= 80) {//分数高于80分
+            //分数高于80分，直接拼接字符串信息，发送给后端
+            if (code >= 80) {
               //在nowIndex中提取数据
               var string='1.教师上课认真程度:'+this.val1+';'+
                 '2.教室课堂气氛:'+this.val2+';'+
@@ -169,7 +172,7 @@
               }).then(function (response) {
                 if (response.body.result == "1") {
                   this.$Message.success('评教提交成功！');
-                  this.clearFun();
+                  this.clearFun();//评教结束，调用还原界面的函数
                   this.modal2=false;
                   this.evalutions[this.nowIndex].result = "已评教";
                 } else {
@@ -184,7 +187,8 @@
               this.okValue=1;
             }
           }
-        }else if(this.okValue==1) {//分数低于80分
+          //分数低于80分，需要多填写一个文字信息，生成字符串发送给后端
+        }else if(this.okValue==1) {
           var t = document.getElementById("txt");
           var text= t.value;//输入空中数据
           var string='1.教师上课认真程度:'+this.val1+';'+
@@ -204,7 +208,7 @@
           }).then(function (response) {
             if (response.body.result == "1") {
               this.$Message.success('评教提交成功！');
-              this.clearFun();
+              this.clearFun();//评教结束，调用还原界面的函数
               this.modal2=false;
               this.evalutions[this.nowIndex].result = "已评教";
             } else {
@@ -216,7 +220,7 @@
           });
         }
       },
-      cancel2(){//弹窗取消按钮
+      cancel2(){//模态对话框取消按钮
         this.modal2=false;
         this.clearFun();
       },
@@ -228,7 +232,7 @@
           //nothing
         }
       },
-      first:function(){//获取选中radio
+      first:function(){//获取选中radio1
         var radio = document.getElementsByName("tr1");
         for (var i=0; i<radio.length; i++) {
           if (radio[i].checked) {
@@ -236,7 +240,7 @@
           }
         }
       },
-      second:function(){
+      second:function(){//获取选中radio2
         var radio = document.getElementsByName("tr2");
         for (var i=0; i<radio.length; i++) {
           if (radio[i].checked) {
@@ -244,7 +248,7 @@
           }
         }
       },
-      third:function(){
+      third:function(){//获取选中radio3
         var radio = document.getElementsByName("tr3");
         for (var i=0; i<radio.length; i++) {
           if (radio[i].checked) {
@@ -252,7 +256,7 @@
           }
         }
       },
-      fourth:function(){
+      fourth:function(){//获取选中radio4
         var radio = document.getElementsByName("tr4");
         for (var i=0; i<radio.length; i++) {
           if (radio[i].checked) {
@@ -260,7 +264,7 @@
           }
         }
       },
-      fifth:function(){
+      fifth:function(){//获取选中radio5
         var radio = document.getElementsByName("tr5");
         for (var i=0; i<radio.length; i++) {
           if (radio[i].checked) {
@@ -268,7 +272,7 @@
           }
         }
       },
-      clearFun:function(){
+      clearFun:function(){//清空函数
         var radio1 = document.getElementsByName("tr1");
         var radio2 = document.getElementsByName("tr2");
         var radio3 = document.getElementsByName("tr3");

@@ -11,7 +11,7 @@
       <!--学号，姓名输入框-->
       <span><button id="searchFor" class="am-btn am-btn-success am-radius buttonWM" @click="searchChangeInfo()">查询</button></span>
       <span><button id="leadOut" class="am-btn am-btn-success am-radius buttonWM" @click="leadOutInfo()">下载</button></span>
-      <span><a href="#/eduAdmin/person/manageClassPage/stdStatusChangeExam"><button id="checkOut" class="am-btn am-btn-success am-radius buttonWM">异动审核</button></a></span>
+      <span><a href="#/eduAdmin/person/eduAdminManageClass/stdStatusChangeExam"><button id="checkOut" class="am-btn am-btn-success am-radius buttonWM">异动审核</button></a></span>
       <!--查询,导出按钮-->
     </div>
     <div id="stdInfoTable" style="padding: 0.6rem 5rem;background-color: #f3f3f3">
@@ -29,7 +29,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="statechangeinfoStr in statechangeinfoStrList">
+        <tr v-for="(statechangeinfoStr,index) in statechangeinfoStrList">
           <td v-text="statechangeinfoStr.schoolYearType + '年制'"></td>
           <td v-text="statechangeinfoStr.specialityName"></td>
           <td v-text="statechangeinfoStr.className"></td>
@@ -67,9 +67,7 @@
                 studentName:''
               },
               statechangeinfoStrList:[
-                  {schoolYearType:'3',specialityName:'护理',className:'护理3班',studentId:'1530310503',studentName:'谢兴月',changeType:'1',changeReason:'请假一学期',changeDate:'2016.03.01'},
-                  {schoolYearType:'5',specialityName:'护理',className:'护理4班',studentId:'1530310501',studentName:'张安',changeType:'5',changeReason:'希望转专业',changeDate:'2016.03.02'},
-                  {schoolYearType:'3',specialityName:'护理',className:'护理1班',studentId:'1530310502',studentName:'吴晴',changeType:'3',changeReason:'挂科多门',changeDate:'2015.11.23'}
+                  {schoolYearType:'3',specialityName:'护理',className:'护理3班',studentId:'1530310503',studentName:'谢兴月',changeType:'1',changeReason:'请假一学期',changeDate:'2016.03.01'}
                 ]
             }
         },
@@ -78,7 +76,11 @@
           "Content-Type":"application/json"
         }).then(function (response) {
           console.log(response);
-          this.statechangeinfoStrList = response.body.statechangeinfoStrList;
+          var temp = response.body.statechangeinfoStrList;
+          this.statechangeinfoStrList.splice(0,this.statechangeinfoStrList.length);
+          for(var i=0;i<temp.length;i++){
+            this.statechangeinfoStrList.push(temp[temp.length-i-1]);
+          }
         },function(error){
           console.log("获取error");
         });
@@ -96,9 +98,13 @@
             console.log(response);
             var result = response.body.result;
             if(result === "0"){
-              alert("请输入正确的教师信息！");
+              this.$Message.error("请输入正确的教师信息！");
             }else{
-              this.statechangeinfoStrList = response.body.statechangeinfoStrList;
+              var temp = response.body.statechangeinfoStrList;
+              this.statechangeinfoStrList.splice(0,this.statechangeinfoStrList.length);
+              for(var i=0;i<temp.length;i++){
+                this.statechangeinfoStrList.push(temp[temp.length-i-1]);
+              }
             }
           },function(error){
             console.log("获取error");

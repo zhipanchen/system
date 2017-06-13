@@ -4,7 +4,7 @@
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
 		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span> -->
-		<span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">补考</a></span>
+		<!-- <span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">补考</a></span> -->
 		<span> > 补考成绩管理</span>
 	</div>
 	<div class="tableSelect">
@@ -51,7 +51,7 @@
 						<tbody>
 							<tr v-for="data in makeUpList">
 								<td v-text="data.gradeType"></td>
-								<td v-text="data.term"></td>
+								<td v-text="data.gradeId"></td>
 								<td v-text="data.specialityName"></td>
 								<td v-text="data.studentId"></td>
 								<td v-text="data.studentName"></td>
@@ -188,7 +188,7 @@ export default {
             console.log("获取申请error:");
             console.log(error);
         });
-        this.$http.post('./courseManage/getCourseAndClassInfo',{},{
+        this.$http.post('./courseManage/getCourseAndClassInfoN',{},{
             "Content-Type":"application/json"
         }).then(function(response){
             console.log("获取申请:");
@@ -204,7 +204,7 @@ export default {
   		// 选择年制后，班级列表对应更改
     	gradeChange: function () {
     		// alert("1")
-    		this.$http.post('./courseManage/getCourseAndClassInfo',{},{
+    		this.$http.post('./courseManage/getCourseAndClassInfoN',{},{
 	            "Content-Type":"application/json"
 	        }).then(function(response){
 	            console.log("获取申请:");

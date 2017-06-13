@@ -40,13 +40,13 @@
     methods: {
       hrefClick: function (num) {
         if (num == 1) {
-          location.href = "#/eduAdmin/baseSetting/person/eduResGroupMgmt"
+          location.href = "#/eduAdmin/person/eduResGroupMgmt"
         } else if (num == 2) {
-          location.href = "#/eduAdmin/baseSetting/person/eduAdminManageStd"
+          location.href = "#/eduAdmin/person/eduAdminManageStd"
         } else if (num == 3) {
-          location.href = "#/eduAdmin/baseSetting/person/eduAdminManageTch"
+          location.href = "#/eduAdmin/person/eduAdminManageTch"
         } else if (num == 4) {
-          location.href = "#/eduAdmin/baseSetting/person/eduAdminManageClass"
+          location.href = "#/eduAdmin/person/eduAdminManageClass"
         }
       }
 //      路由跳转

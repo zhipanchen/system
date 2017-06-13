@@ -38,20 +38,21 @@
 <script>
   var CryptoJS=require("crypto-js");
     export default {
-        name: 'studentChangPasswordContent',
+        name: 'studentChangPasswordContent',//模块名
         data () {
             return {
-              studentPageUrl:'#/login/main/studentHome',
-              nowPassword:'',
-              newPassword:'',
-              newPasswordAgain:'',
-              userId:'',
-              modal1:false,
-              modal2:false,
+              studentPageUrl:'#/login/main/studentHome',//学生首页url
+              nowPassword:'',//当前密码数据绑定
+              newPassword:'',//新密码数据绑定
+              newPasswordAgain:'',//重复输入密码数据绑定
+              userId:'',//用户id
+              modal1:false,//模态对话框1隐藏
+              modal2:false,//模态对话框2隐藏
               okValue:0,//值为0无法执行，为1可以执行
-              messageStr:''
+              messageStr:''//模态对话框文字内容
             }
         },
+      //页面初始化执行，获取登陆者的个人id
         beforeMount: function() {
         this.$http.post('./getCurrentUser',{},{
           "Content-Type":"application/json"
@@ -60,12 +61,13 @@
         });
         },
         methods:{
-          ok2 () {
-            if(this.okValue==0){
+          ok2 () {//模态对话框确定按钮
+            if(this.okValue==0){//模态对话框提示信息，确定按钮
               this.modal2 = false;
-            }else if(this.okValue==1) {
+            }else if(this.okValue==1) {//模态对画框确认修改密码，确认按钮
               this.modal2 = false;
 
+              //密码加密
               var a = CryptoJS.MD5(this.nowPassword + this.userId + "护士学校");//MD5加密
               var b = CryptoJS.MD5(this.newPassword + this.userId + "护士学校");//MD5加密
               a = a.toString().toUpperCase();//转16进制字符串,大写化
@@ -100,16 +102,18 @@
               });
             }
           },
-          cancel2(){
+          cancel2(){//模态对话框取消按钮
             this.modal2=false;
           },
-          confirmClick:function() {
+          confirmClick:function() {//保存按钮点击
+            //确认信息不为空
             if (this.nowPassword == '' || this.newPassword == '' || this.newPasswordAgain == '') {
               this.okValue=0;
               this.messageStr="输入不能为空！";
               this.modal2 = true;
             }
             else {
+              //确定新密码和确认密码保持一致
               if (this.newPassword != this.newPasswordAgain) {
                 this.okValue=0;
                 this.messageStr="新密码也确认密码不一致！";

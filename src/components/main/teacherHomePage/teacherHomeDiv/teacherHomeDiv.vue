@@ -1,4 +1,5 @@
 <template>
+  <!--该页面已弃用-->
   <div id="teacherHomeDiv">
     <div id="menuDiv"></div>
     <div id="pageDiv">

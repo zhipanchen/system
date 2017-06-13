@@ -10,7 +10,7 @@
 
 <script>
   export default{
-    name:'stdInquireGradeBar',
+    name:'stdInquireGradeBar',//模块名
     data(){
       return{
         msg:'',
@@ -19,12 +19,12 @@
     },
     mounted: function () {
       try{
-        var buttons = document.getElementById("stdInquireGradeBar").getElementByTagName("button");
-        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
-        for (var i = 0; i < buttons.length; i++) {
+        var buttons = document.getElementById("stdInquireGradeBar").getElementByTagName("button");//获取所有的button元素
+        this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));//把button元素放在list数组中
+        for (var i = 0; i < buttons.length; i++) {//把所有button变成不可见
           buttons[i].style.display = "none";
         }
-        for (var i = 0; i < this.authorityList.length; i++) {
+        for (var i = 0; i < this.authorityList.length; i++) {//根据权限控制导航栏可见，不可见
           if (this.authorityList[i] == "49") {
             buttons[0].style.display = "block";
           }else if(this.authorityList[i] == "60"){

@@ -34,10 +34,11 @@
     name: 'testInfo',
     data () {
       return {
-        studentPageUrl:'#/login/main/studentHome',
-        tests: [],
+        studentPageUrl:'#/login/main/studentHome',//学生首页url
+        tests: [],//考试表格数组
       }
     },
+    //初始化记载学生考试信息
     beforeMount:function(){
       this.$http.post('./studentManage/getExamArrangement').then(function(response) {
         this.tests=response.body.examArrangementList;

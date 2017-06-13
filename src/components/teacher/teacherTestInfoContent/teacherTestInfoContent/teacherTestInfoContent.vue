@@ -32,10 +32,11 @@
     name: 'testInfo',
     data () {
       return {
-        eduAdminPageUrl:'#/login/main/eduAdminHome',
-        tests: [],
+        eduAdminPageUrl:'#/login/main/eduAdminHome',//教师首页url
+        tests: [],//考试表格数据
       }
     },
+    //初始化加载考试表格数据
     beforeMount:function(){
       this.$http.post('./teacherManage/getExamArrangement').then(function(response) {
         this.tests=response.body.examArrangementList;

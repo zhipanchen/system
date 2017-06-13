@@ -249,10 +249,11 @@
     },
   methods:
   {
-    ok2 () {//模态对话框点击ok
+    ok2 () {//模态对话框点击确定
       if(this.okValue==0) {
-        this.modal2 = false;//普通模态对话框，提示功能，不
+        this.modal2 = false;//普通模态对话框，提示功能，不涉及功能
       }else if(this.okValue==1){
+        //功能模态对话框，确定保存考务信息数据，或者删除
         this.modal2 = false;
         var year=0;
         if(this.yearSelect=="三年制"){
@@ -276,24 +277,24 @@
               info[i]['testTeacherName']='';
               info[i]['testRoom']='';
             }
-            this.informations=info;//未完成表格
+            this.informations=info;//未完成表格数据赋值
 
             var finishInfo=response.body.alreadyGradeCourseDetail;
             for(var i=0;i<finishInfo.length;i++) {
               finishInfo[i]['remove'] = '删除';
               finishInfo[i]['id'] = i+1;
             }
-            this.informationsFinish=finishInfo;//完成表格
+            this.informationsFinish=finishInfo;//完成表格数据赋值
           }else if(data.result.result==0){
             this.$Message.error('删除失败！');
           }
         });
       }
     },
-    cancel2(){
+    cancel2(){//模态对话框取消操作
       this.modal2 = false;
     },
-    //重置考试信息
+    //重置考试信息按钮
     restartClick:function(){
       this.$http.post('./examManagementReset').then(function(response) {
         if(response.body.result.result==0){
@@ -349,6 +350,7 @@
     },
     //课程选择
     courseClick:function(){
+      //屏蔽未选年制的情况
 
       if(this.yearSelect=="选择年制（必选项）"){
         this.modal2=true;
@@ -357,6 +359,7 @@
         this.courseSelect='选择课程（必选项）';
         return;
       }
+      //屏蔽未选年级的情况
 
       if(this.gradeSelect=='选择年级（必选项）'){
         this.modal2=true;
@@ -410,7 +413,7 @@
           //nothing
         }
     },
-    //删除
+    //删除已安排考试信息
     removeClick:function(index){
       this.index=index;
       this.modal2=true;
@@ -426,6 +429,7 @@
           this.teacherSelects[2 * a]='监考老师1（必选项）';
           this.teacherSelects[2 * a + 1] = '监考老师2（必选项）';
         }
+        //完善页面机制，防止出错，在选择时间时就发送请求
         this.todos=[];
         this.teacherList=[];//用于判定教师是否安排冲突
         this.roomSelect = '选择教室（必选项）';
@@ -455,6 +459,7 @@
         this.teacherSelects[2 * a]='监考老师1（必选项）';
         this.teacherSelects[2 * a + 1] = '监考老师2（必选项）';
       }
+      //完善页面机制，防止出错，在选择场次时就发送请求
       this.todos=[];
       this.teacherList=[];//用于判定教师是否安排冲突
       this.roomSelect = '选择教室（必选项）';
@@ -531,7 +536,7 @@
     },//保存
     confirm:function() {
 
-      var tcInfo = [];
+      var tcInfo = [];//反馈给后端的数组
       for (var i = 0; i < this.todos.length; i++) {
         if(this.teacherSelects[2 * i + 1]=='监考老师2（必选项）') {
           tcInfo.push(this.todos[i] + this.teacherSelects[2 * i]);
@@ -540,21 +545,21 @@
         }
       }
       console.log(tcInfo);
-
+      //日期判定
       if (this.dateSelect == '选择日期（必选项）') {
         this.modal2 = true;
         this.messageStr = "未选择日期！";
         this.okValue = 0;
         return;
       }
-
+      //场次判定
       if (this.timesSelect == '选择场次（必选项）') {
         this.modal2 = true;
         this.messageStr = "未选择场次！";
         this.okValue = 0;
         return;
       }
-
+      //教师判定
       if (tcInfo.length == 0) {
         this.modal2 = true;
         this.messageStr = "未选择教室！";
@@ -568,7 +573,7 @@
             chooseTeacher=false;
           }
         }
-
+       //教师判定
         if(!chooseTeacher){//没选监考老师的情况
           this.modal2 = true;
           this.messageStr = "每个教室至少一个教师！";
@@ -645,12 +650,13 @@
       });
     },
     //取消
-    cancel:function(){
+    cancel:function(){//取消保存
       this.nowIndex=-1;
       for(var i=0;i<this.informations.length;i++) {
         this.informations[i].edit = '编辑';
       }
 
+      //还原设置
       this.setting=false;
       this.dateSelect='选择日期（必选项）';//日期默认值
       this.timesSelect='选择场次（必选项）';//场次默认值

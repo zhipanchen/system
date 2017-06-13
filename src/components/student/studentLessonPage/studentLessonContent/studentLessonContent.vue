@@ -101,14 +101,15 @@
         name: 'myLessonContent',
         data () {
             return {
-              modal1:false,
-              modal2:false,
+              modal1:false,//模态对话框1隐藏
+              modal2:false,//模态对话框2隐藏
               okValue:0,//值为0无法执行，为1可以执行
-              messageStr:'',
-              studentPageUrl:'#login/main/studentHome',
-              yearSelect:"选择学期",
-              weekSelect:'选择周数',
+              messageStr:'',//模态对话框文字信息
+              studentPageUrl:'#login/main/studentHome',//学生首页
+              yearSelect:"选择学期",//选择学期下拉框默认值
+              weekSelect:'选择周数',//选择周数下拉框默认值
               years:[
+                //选择学期数组
                 '2016-2017.1',
                 '2016-2017.2',
                 '2017-2018.1',
@@ -119,6 +120,7 @@
                 '2019-2020.2',
               ],
               weeks: [
+                //选择周数数组
                 '第一周',
                 '第二周',
                 '第三周',
@@ -144,6 +146,7 @@
               courses2:[]
             }
         },
+      //初始化请求一组默认的学期，周数
       beforeMount:function(){
         this.$http.post('./studentSeeCurriculum', {
           yearSemester: '',
@@ -155,24 +158,27 @@
       },
       methods:
       {
-        ok2 () {
+        ok2 () {//模态对话框点击
           if(this.okValue==0){
             this.modal2 = false;
           }
         },
-        cancel2(){
+        cancel2(){//模态对话框点击去取消
           this.modal2=false;
         },
-        searchClick:function(){
+        searchClick:function(){//查找按钮点击事件
+          //判断为选择学期情况
           if(this.yearSelect=="选择学期"){
             this.modal2=true;
             this.messageStr="未选择学期！";
             this.okValue=0;
+            //判断未选择手术情况
           }else if(this.weekSelect=='选择周数'){
             this.modal2=true;
             this.messageStr="未选择周数！";
             this.okValue=0;
           }else{
+            //发送请求给后端获取课表数据
             this.$http.post('./studentSeeCurriculum', {
               yearSemester: this.yearSelect,
               week: this.weekSelect
