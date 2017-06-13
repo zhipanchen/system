@@ -4,9 +4,9 @@
       <topTitle></topTitle>
       <topBar></topBar>
       <div class="positionBar">
-        <span>您的当前位置是：</span>
+        <span>您的当前位置：</span>
         <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-        <span> > <a href="#/login/main/eduAdminHome?manage" class="returnHome">教务管理</a> > 教务安排 > 教学进度 </span>
+        <span> > 培养方案管理 > 教学进度 </span>
       </div>
       <tchingProcess></tchingProcess>
     </div>

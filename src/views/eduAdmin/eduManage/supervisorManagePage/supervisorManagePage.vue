@@ -4,9 +4,9 @@
     <topTitle></topTitle>
     <topBar></topBar>
     <div class="positionBar">
-      <span>您的当前位置是：</span>
+      <span>您的当前位置：</span>
       <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-      <span> > <a href="#/login/main/eduAdminHome?manage" class="returnHome">教务管理</a> > 教务安排 > 教务管理督导 </span>
+      <span> > 教务督导管理 </span>
     </div>
     <noSupervisorTable></noSupervisorTable>
   </div>
