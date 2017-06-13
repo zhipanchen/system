@@ -27,12 +27,10 @@
           buttons[i].style.display = "none";
         }
         for (var i = 0; i < this.authorityList.length; i++) {
-          if (this.authorityList[i] == "59") {
+          if (this.authorityList[i] == "50") {
             buttons[0].style.display = "block";
-          } else if (this.authorityList[i] == "50") {
+          } else if (this.authorityList[i] == "59") {
             buttons[1].style.display = "block";
-          } else if (this.authorityList[i] == "61") {
-            buttons[2].style.display = "block";
           }
         }
       } catch (e) {

@@ -91,6 +91,7 @@ const makeupCouApplyPage = resolve => require(['../views/eduAdmin/smartArrangeCo
 const stdStatusChangeExamPage = resolve => require(['../views/eduAdmin/basicSettings/stdStatusChangeExamPage/stdStatusChangeExam.vue'], resolve);
 //李西炜（end）
 
+
 //易倩（start）
 /*import  teachingPlan from '../views/teacher/teachingPlanPage/teachingPlanPage.vue'
 import teachingEvaluate from'../views/teacher/teachingEvaluatePage/teachingEvaluatePage.vue'
@@ -255,79 +256,75 @@ export default new Router({   //将routes里的参数导出
     //*******************************************************************（陈志攀end）
       //*******************************************************************（吴坚start）
     {
-      //学生查询成绩界面
-      path: '/student/query/stInquireGrade',
-      name: 'stInquireGrade',
-      component: stInquireGrade
-    },
-    {
       //学生管理界面
-      path: '/eduAdmin/baseSetting/person/eduAdminManageStd',
+      path: '/eduAdmin/person/eduAdminManageStd',
       name: 'eduAdminManageStd',
       component: eduAdminManageStd
     },
     {
       //教师管理界面
-      path: '/eduAdmin/baseSetting/person/eduAdminManageTch',
+      path: '/eduAdmin/person/eduAdminManageTch',
       name: 'eduAdminManageTch',
       component: eduAdminManageTch
     },
     {
       //培养方案界面
-      path: '/eduAdmin/manage/plan/eduAdminEduPlan',
+      path: '/eduAdmin/plan/eduAdminEduPlan',
       name: 'eduAdminEduPlan',
       component: eduAdminEduPlan
     },
     {
       //教学进程界面
-      path: '/eduAdmin/manage/plan/eduAdminTeachProcess',
+      path: '/eduAdmin/plan/eduAdminTeachProcess',
       name: 'eduAdminTeachProcess',
       component: eduAdminTeachProcess
     },
     {
-      //教师授课计划界面
-      path: '/eduAdmin/manage/examination/eduAdminTchTeachingPlan',
+      //教师教学计划界面
+      path: '/eduAdmin/examination/eduAdminTchTeachingPlan',
       name: 'eduAdminTchTeachingPlan',
       component: eduAdminTchTeachingPlan
     },
     {
       //学生异动情况界面
-      path: '/eduAdmin/baseSetting/person/eduAdminManageClass',
+      path: '/eduAdmin/person/eduAdminManageClass',
       name: 'eduAdminManageClass',
       component: eduAdminManageClass
     },
     {
       //评教结果界面
-      path: '/eduAdmin/manage/examination/eduAdminEvaTeachingResult',
+      path: '/eduAdmin/examination/eduAdminEvaTeachingResult',
       name: 'eduAdminEvaTeachingResult',
       component: eduAdminEvaTeachingResult
     },
     {
       //教务管理督导界面
-      path: '/eduAdmin/manage/plan/eduAdminSupervisorManage',
+      path: '/eduAdmin/eduAdminSupervisorManage',
       name: 'eduAdminSupervisorManage',
       component: eduAdminSupervisorManage
     },
     {
-      //权限管理2界面
+      //权限设置界面
       path: '/eduAdmin/role/eduAdminAuthorityManage2',
       name: 'eduAdminAuthorityManage2',
       component: eduAdminAuthorityManage2
     },
     {
       //年级管理界面
-      path: '/eduAdmin/baseSetting/resource/eduAdminManageGrade',
+      path: '/eduAdmin/resource/eduAdminManageGrade',
       name: 'eduAdminManageGrade',
       component: eduAdminManageGrade
     },
-    /*
     {
-      //公告信息通知界面
-      path: '/Systeminfo/eduAdminNotifyInformation',
-      name: 'eduAdminNotifyInformation',
-      component: eduAdminNotifyInformation
+      path: '/checkTest',
+      name: 'checkTest',
+      component: checkTest
     },
-    */
+    {
+      path: '/',
+      name: 'startTest',
+      component: startTest
+    },
     //*******************************************************************（吴坚end）
     //*******************************************************************（李西炜start）
     {
@@ -440,18 +437,15 @@ export default new Router({   //将routes里的参数导出
       component: suspendCouApplyPage
       //  停课审批页面
     },
-<<<<<<< HEAD
     {
       path: '/eduAdmin/examination/makeupCouApply',
       name: '/eduAdmin/examination/makeupCouApply',
       component: makeupCouApplyPage
       //  补课审批页面
     },
-=======
->>>>>>> origin/master
     //*******************************************************************（李西炜end）
 
-    //*******************************************************************（易倩start）
+        //*******************************************************************（易倩start）
     {
       //管理教研组
       path: '/teacher/group/research',

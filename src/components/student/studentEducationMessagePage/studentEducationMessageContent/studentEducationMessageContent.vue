@@ -1,3 +1,4 @@
+<!--本页面后期作废-->
 <template>
   <div id="educationMessage">
     <div class="positionBar">
@@ -32,13 +33,14 @@
     </div>
   </div>
 </template>
+<!--本页面后期作废-->
 
 <script>
   export default {
-    name: 'educationMessage',
+    name: 'educationMessage',//模块名
     data () {
       return {
-        studentPageUrl:'#/login/main/studentHome',
+        studentPageUrl:'#/login/main/studentHome',//学生首页url
         selected:'选择状态',
         informations: [],
       }

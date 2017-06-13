@@ -53,16 +53,17 @@
 
 <script>
   export default {
-    name: 'stdInquireGradeTableSy',
+    name: 'stdInquireGradeTableSy',//模块名
     data () {
       return {
-        modal1:false,
-        modal2:false,
+        modal1:false,//模态对话框1隐藏
+        modal2:false,//模态对话框2隐藏
         nowIndex:0,//值为0无法执行，为1可以执行
-        messageStr:'是否确定提交补考申请？',
-        studentPageUrl:'#/login/main/studentHome',
-        termEle:'0',
+        messageStr:'是否确定提交补考申请？',//模态对话框文字内容
+        studentPageUrl:'#/login/main/studentHome',//学生首页url
+        termEle:'0',//选择学期默认值
         terms:[
+          //学期数组
           /*
           '2014-2015.1',
           '2014-2015.2',
@@ -71,6 +72,7 @@
           */
         ],
         studentScoreList:[
+          //成绩数组
           /*
           {yearTerm:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',endGrade:'80',makeUpGrade:'--',finalGrade:'80',apply:'提交申请'},
           {yearTerm:'2016-2017.2',courseId:'K2210710',courseName:'企业合作课程',courseType:'实践类核心课程',endGrade:'80',makeUpGrade:'--',finalGrade:'80',apply:'--'},
@@ -79,6 +81,7 @@
         ]
       }
     },
+    //页面初始化执行，请求初始表格数据
     beforeMount:function() {
       this.$http.post('./studentFindScore',{
         "yearTerm":""
@@ -87,6 +90,10 @@
       }).then(function (response) {
         var a= response.body.studentScoreList;
         for(var i=0;i<a.length;i++){
+          /*
+          判断每一门课程的状态，“--”为无法提交补课申请，没有提交则为“提交申请”，
+          提交后没有审核为“审核中”，通过了为“审核通过”，没通过为“审核未通过”
+          */
           if(a[i].endGrade<60) {
             if(a[i].makeupExamNum>1) {
               if(a[i].applyMakeup==0) {
@@ -110,6 +117,7 @@
         console.log("获取error");
       });
     },
+    //页面初始化执行，在beforeMount之后，初始化下拉框学期数组
     mounted:function(){
       this.$http.post('./getYearTermList',{
       },{
@@ -119,11 +127,11 @@
         for(var i=0;i<response.body.yearTerm.length;i++){
           a.push(response.body.yearTerm[i].startYearSemester);
         }
-        this.terms= a;
+        this.terms= a;//把后端反馈的学期信息灌注到学期数组
       });
     },
     methods:{
-      ok2 () {
+      ok2 () {//模态对话框点击确定后执行，提交申请给后端
         this.modal2=false;
         this.$http.post('./applyMakeUp',{
           "courseId":this.studentScoreList[this.nowIndex].courseId
@@ -140,10 +148,10 @@
           console.log("获取error");
         });
       },
-      cancel2(){
+      cancel2(){//模态对话框点击取消时执行，取消提交补考申请
         this.modal2=false;
       },
-      changeTerm: function(){
+      changeTerm: function(){//查询对应学期的成绩信息，并将后端信息转化为申请状态
         this.$http.post('./studentFindScore',{
           "yearTerm":this.termEle
         },{
@@ -174,7 +182,7 @@
           console.log("获取error");
         });
       },
-      allTerm: function(){
+      allTerm: function(){//查看所有学期成绩
         this.$http.post('./studentFindScore',{
           "yearTerm":""
         },{
@@ -205,7 +213,7 @@
           console.log("获取error");
         });
       },
-      applyClick:function(index){
+      applyClick:function(index){//提交申请，文本点击事件
         if(this.studentScoreList[index].apply=='提交申请') {
           this.modal2 = true;
           this.nowIndex = index;
