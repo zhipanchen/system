@@ -315,6 +315,7 @@ export default new Router({   //将routes里的参数导出
       name: 'eduAdminManageGrade',
       component: eduAdminManageGrade
     },
+
     //*******************************************************************（吴坚end）
     //*******************************************************************（李西炜start）
     {
@@ -414,6 +415,7 @@ export default new Router({   //将routes里的参数导出
       name: '/eduAdmin/person/eduResGroupMgmt',
       component: eduResGroupMgmtPage
       //  教研组管理页面
+
     },
     {
       path: '/eduAdmin/person/eduAdminManageClass/stdStatusChangeExam',
@@ -422,6 +424,7 @@ export default new Router({   //将routes里的参数导出
       //  异动审批页面
     },
     {
+
       path: '/eduAdmin/examination/suspendCouApply',
       name: '/eduAdmin/examination/suspendCouApply',
       component: suspendCouApplyPage
