@@ -99,7 +99,7 @@
         width="400"
         :mask-closable="false"
         id="modalBody"
-        :style="{top:'10rem'}">
+        :styles="{top:'10rem'}">
       <div style="font-size: 1.1rem;text-align: center;">
         <p>当前合课编辑未保存提交，是否重置？</p>
       </div>

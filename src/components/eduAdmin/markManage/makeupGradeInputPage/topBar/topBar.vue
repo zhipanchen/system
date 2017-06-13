@@ -1,6 +1,8 @@
 <template>
   <div id="makeupGradeInput_topBar" class="topBarDiv am-btn-group">
-    <a :href="makeupExamUrl"><button id="makeupExamBtn" class="topBarButton am-btn am-btn-success">{{ makeupExamBtn }}</button></a>
+    <a :href="gradeCountUrl"><button id="gradeCountBtn" class="topBarButton am-btn am-btn-success">{{ gradeCountBtn }}</button></a>
+    <a :href="gradeCheckUrl"><button id="gradeCheckBtn" class="topBarButton am-btn am-btn-success">{{ gradeCheckBtn }}</button></a>
+    <a :href="gradeCancelUrl"><button id="gradeCancelBtn" class="topBarButton am-btn am-btn-success">{{ gradeCancelBtn }}</button></a>
     <a :href="makeupInputUrl"><button id="makeupInputBtn" class="topBarButton am-btn am-btn-success btn-active">{{ makeupInputBtn }}</button></a>
   </div>
 </template>
@@ -10,10 +12,14 @@
     name: 'topBarDiv',
     data () {
       return {
-        makeupExamBtn: '补考成绩管理',
-        makeupInputBtn: '补考成绩录入',
-        makeupExamUrl: '#/eduAdmin/gradeManage/makeupExam/makeupExamAdmin',
-        makeupInputUrl: '#/eduAdmin/gradeManage/makeupExam/makeupGradeInput',
+        gradeCountBtn: '成绩统计',
+        gradeCheckBtn: '成绩查询',
+        gradeCancelBtn: '成绩撤销',
+        makeupInputBtn: '补考成绩输入',
+        gradeCountUrl: '#/eduAdmin/gradeManage/gradeStat',
+        gradeCheckUrl: '#/eduAdmin/gradeManage/gradeQuery',
+        gradeCancelUrl: '#/eduAdmin/gradeManage/adminCancelGrade',
+        makeupInputUrl: '#/eduAdmin/gradeManage/makeupGradeInput',
         authorityList: ''
       }
     },
@@ -25,10 +31,14 @@
           buttons[i].style.display = "none";
         }
         for (var i = 0; i < this.authorityList.length; i++) {
-          if (this.authorityList[i] == "30") {
+          if (this.authorityList[i] == "28") {
             buttons[0].style.display = "block";
-          }else if (this.authorityList[i] == "31") {
+          }else if (this.authorityList[i] == "29") {
             buttons[1].style.display = "block";
+          }else if (this.authorityList[i] == "32") {
+            buttons[2].style.display = "block";
+          }else if (this.authorityList[i] == "31") {
+            buttons[2].style.display = "block";
           }
         }
       }catch(e) {}
@@ -37,7 +47,7 @@
 </script>
 
 <style scoped>
-  #makeupExamBtn {
+  #gradeCountBtn {
     margin-left: 5rem;
   }
 </style>

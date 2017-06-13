@@ -491,9 +491,9 @@ export default {
             this.modal2 = false;
 	    	var transEediting = document.getElementById("transEediting"+this.index);
 	    	transEediting.innerHTML = "申请调课";
-            // this.$Message.error('取消修改并未保存！');
-            this.modalResult = true;
-            this.remindResult = '3';
+            this.$Message.error('保存失败！');
+            // this.modalResult = true;
+            // this.remindResult = '3';
             this.isShow = false;
         },
         cancel2 () {

@@ -51,7 +51,7 @@
               </select>
             </td>
           </tr>
-          <tr><td>*学习形式</td><td><input type="text" class="inputStyle" v-model="teacherMessage.studyMode"/></td><td>*备注</td><td><input type="text" class="inputStyle"/></td></tr>
+          <tr><td>*学制</td><td><input type="text" class="inputStyle" v-model="teacherMessage.studyMode"/></td><td>*备注</td><td><input type="text" class="inputStyle"/></td></tr>
         </table>
         <div class="updatePicture" align="center">
           <select class="selectStyle" v-model="selected" @change="selectChange">
@@ -89,28 +89,28 @@
 </template>
 
 <script>
-  import logo from './images/logo.png';
+  import logo from './images/logo.png';//引入图片
 
     export default {
-        name: 'studentInformationPage',
+        name: 'studentInformationPage',//模块名
         data () {
             return {
-              studentPageUrl:'#/login/main/studentHome',
-              buttonShow:false,
-              selected:'身份证照',
-              filePathRequest:'./studentManage/uploadStudentIDcardPhoto',
+              studentPageUrl:'#/login/main/studentHome',//学生首页
+              selected:'身份证照',//照片下拉框默认选项
+              filePathRequest:'./studentManage/uploadStudentIDcardPhoto',//图片文件请求路径
               path:'',//图片路径
-              teacherMessage: {
+              teacherMessage: {//个人信息下拉框默认先选
                 maritalStatus:"否",
                 literacyLevels:"小学",
                 politicalStatus:"群众"
               },
-              modal1:false,
-              modal2:false,
+              modal1:false,//模态对话框1隐藏
+              modal2:false,//模态对话框2隐藏
               okValue:0,//值为0无法执行，为1可以执行
-              messageStr:''
+              messageStr:''//模态对话框文字信息
             }
         },
+      //页面初始化加载，学生基本信息
       beforeMount:function() {
         this.$http.post('./studentManage/getStudentDetailInfo').then(function (response) {
           var data = response.body;
@@ -118,19 +118,20 @@
           this.path=this.teacherMessage.iDcardPhoto;
         });
       },
+      //页面初始化把上传按钮的样式改成需要的样式
       mounted:function(){
         var button  = document.getElementById("updateImage");
         button.className="am-btn am-btn-success am-radius";//修改上传按钮为需要样式。
       },
       methods:
       {
-        ok2 () {
+        ok2 () {//模态对画框单击确定
           this.modal2 = false;
         },
-        cancel2(){
+        cancel2(){//模态对话框点击取消
           this.modal2 = false;
         },
-        selectChange:function(){
+        selectChange:function(){//选择照片下拉框
           if(this.selected=="身份证照"){
             if(this.teacherMessage.iDcardPhoto!="") {
               this.path = this.teacherMessage.iDcardPhoto;
@@ -148,7 +149,7 @@
             this.filePathRequest='./studentManage/uploadStudentLivePhoto';
           }
         },
-        updateImageClick:function(){
+        updateImageClick:function(){//文件上传按钮，根据图片下拉框确定上传哪一种图片
           if(this.selected=="身份证照"){
             this.path=this.teacherMessage.iDcardPhoto;
             this.$Message.success('上传文件成功！');
@@ -160,13 +161,15 @@
             this.$Message.success('上传文件成功！');
           }
         },
-        updateInforClick:function(){
+        updateInforClick:function(){//上传个人信息按钮
 
+          //数据不合格校验
           this.numberCheck(this.teacherMessage.weight,"体重数据不合理");
           this.numberCheck(this.teacherMessage.height,"身高数据不合理");
           this.numberCheck(this.teacherMessage.phoneNumber,"手机号码数据不合理");
           this.numberCheck(this.teacherMessage.homeTelephone,"电话号码不合理");
 
+          //获取所有学生信息，发送到界面上
           this.$http.post('./studentManage/editStudentDetailInfo', {
             studentId:this.teacherMessage.studentId,
             studentIDcard:this.teacherMessage.studentIDcard,
@@ -257,7 +260,7 @@
             this.teacherMessage.livePhoto=this.path;
           }
         },
-        numberCheck:function(str,message){
+        numberCheck:function(str,message){//数字正则校验
           if(str==null){
             //nothing(未填写)
           }else {

@@ -37,10 +37,11 @@
         name: 'myTeacherPage',
         data () {
             return {
-              studentPageUrl:'#/login/main/studentHome',
-              teachers: [],
+              studentPageUrl:'#/login/main/studentHome',//学生首页url
+              teachers: [],//教师表格数组
             }
         },
+      //也买初始化加载数据
       beforeMount:function(){
           this.$http.post('./studentManage/getStudentCourseTeacher').then(function(response) {
           this.teachers=response.body.teachers;

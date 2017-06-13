@@ -44,7 +44,7 @@
             width="400"
             :mask-closable="false"
             id="modalBody"
-            :style="{top:'10rem'}">
+            :styles="{top:'10rem'}">
             <div style="font-size: 1.1rem;text-align: center;">
                 <p>您确定通过该申请吗?</p>
             </div>
