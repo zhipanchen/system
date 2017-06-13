@@ -11,7 +11,7 @@
 
 <script>
   import topTitle from './../../../../components/public/topTitle/topTitle.vue'
-  import topBar from '../../../../components/public/couStaffTopBar/couStaffTopBar.vue'
+  import topBar from '../../../../components/eduAdmin/smartArrangeCourse/suspendCouApplyPage/topBar/topBar.vue'
   import suspendCouApplyDiv from '../../../../components/eduAdmin/smartArrangeCourse/suspendCouApplyPage/suspendCouApplyDiv/suspendCouApplyDiv.vue'
   export default {
     name: 'suspendCouApply',

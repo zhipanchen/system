@@ -4,7 +4,7 @@
       <div class="positionBar">
         <span>您的当前位置：</span>
         <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-        <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 资源管理设置 > 课程类型管理</span>
+        <span> > 资源管理设置 > 课程类型管理</span>
       </div>
     </div>
     <div id="tableDiv">
@@ -206,6 +206,10 @@
 
         if(this.courseTypeList[index].courseTypeName == ""){
           this.errorMessage = "课程类型名称不能为空!";
+          this.modal4 = true;
+          this.modal2 = false;
+        }else if(this.courseTypeList[index].courseTypeName.length > 5){
+          this.errorMessage = "课程类型名称长度不能超过5位!";
           this.modal4 = true;
           this.modal2 = false;
         }else {

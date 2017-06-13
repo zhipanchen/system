@@ -19,7 +19,6 @@
       try{
         var buttons = document.getElementById("classroomManagement_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
-//        console.log(this.authorityList);
         for (var i = 0; i < buttons.length; i++) {
           buttons[i].style.display = "none";
         }
@@ -40,13 +39,13 @@
     methods: {
       hrefClick: function (num) {
         if (num == 1) {
-          location.href = "#/eduAdmin/baseSetting/resource/textbookMgmt"
+          location.href = "#/eduAdmin/resource/textbookMgmt"
         } else if (num == 2) {
-          location.href = "#/eduAdmin/baseSetting/resource/eduAdminManageGrade"
+          location.href = "#/eduAdmin/resource/eduAdminManageGrade"
         } else if (num == 3) {
-          location.href = "#/eduAdmin/baseSetting/resource/courseTypeMgmt"
+          location.href = "#/eduAdmin/resource/courseTypeMgmt"
         } else if (num == 4) {
-          location.href = "#/eduAdmin/baseSetting/resource/classroomMgmt"
+          location.href = "#/eduAdmin/resource/classroomMgmt"
         }
       }
 //      路由跳转
