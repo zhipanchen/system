@@ -42,11 +42,6 @@
         </span>
         <span class="pageSpan">
           <ul>
-            <a href="#/student/query/studentTeacher"><li>教师信息</li></a>
-          </ul>
-        </span>
-        <span class="pageSpan">
-          <ul>
             <a href="#/student/query/studentTestInfo"><li>考场查询</li></a>
           </ul>
         </span>
@@ -55,25 +50,30 @@
             <a href="#/student/query/stInquireGrade"><img src="./images/成绩查询.png" class="pageImg"><li>成绩查询</li></a>
           </ul>
         </span>
+        <span class="pageSpan">
+          <ul>
+            <a href="#/student/query/studentTeacher"><li>任课教师信息</li></a>
+          </ul>
+        </span>
       </div>
       信息设置
       <div id="secondDiv" class="pageDiv">
         <span class="pageSpan">
           <ul>
-            <a href="#/student/setting/changPassword"><li>修改密码</li></a>
-          </ul>
-        </span>
-        <span class="pageSpan">
-          <ul>
             <a href="#/student/setting/studentInformation"><img src="./images/个人信息维护.jpg" class="pageImg"><li>个人信息维护</li></a>
           </ul>
         </span>
+        <span class="pageSpan">
+          <ul>
+            <a href="#/student/setting/changPassword"><li>修改密码</li></a>
+          </ul>
+        </span>
       </div>
-      评教
+      学生评教
       <div id="thirdDiv" class="pageDiv">
         <span class="pageSpan">
           <ul>
-            <a href="#/student/setting/studentEvaluation"><img src="./images/学生评教.png" class="pageImg"><li>学生评教</li></a>
+            <a href="#/student/studentEvaluation"><img src="./images/学生评教.png" class="pageImg"><li>评教提交</li></a>
           </ul>
         </span>
       </div>

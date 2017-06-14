@@ -1,5 +1,8 @@
 <template>
   <div id="course_topBar" class="topBarDiv am-btn-group">
+    <a href="#/teacher/course/tchCheckTimetable">
+      <button  class="topBarButton am-btn am-btn-success " >课表查询</button>
+    </a>
     <a href="#/teacher/course/makeupClass">
       <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" @click="checkCouClick">补课申请</button>
     </a>
@@ -46,6 +49,8 @@
             buttons[2].style.display="block";
           }else if(this.authorityList[i]=="38"){
             buttons[3].style.display="block";
+          }else if(this.authorityList[i]=="39"){
+            buttons[4].style.display="block";
           }
         }
       }catch(e){}

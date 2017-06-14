@@ -152,13 +152,13 @@
         updateImageClick:function(){//文件上传按钮，根据图片下拉框确定上传哪一种图片
           if(this.selected=="身份证照"){
             this.path=this.teacherMessage.iDcardPhoto;
-            this.$Message.success('上传文件成功！');
+            //this.$Message.success('上传文件成功！');
           }else if(this.selected=="证件照"){
             this.path=this.teacherMessage.credentialsPhoto;
-            this.$Message.success('上传文件成功！');
+            //this.$Message.success('上传文件成功！');
           }else if(this.selected=="生活照"){
             this.path=this.teacherMessage.livePhoto;
-            this.$Message.success('上传文件成功！');
+            //this.$Message.success('上传文件成功！');
           }
         },
         updateInforClick:function(){//上传个人信息按钮
@@ -235,9 +235,9 @@
           this.loadingMsg = false;
         },
         handleProgress: function(){
-          this.$Loading.start();
-          this.$Message.loading('正在上传中……', 0);
-          this.loadingMsg = true;
+          //this.$Loading.start();
+          //this.$Message.loading('正在上传中……', 0);
+          //this.loadingMsg = true;
         },
         handleSuccess: function(res){
           this.$Loading.finish();

@@ -2,8 +2,8 @@
   <div id="courseList_topBar" class="topBarDiv am-btn-group">
     <a :href="signinUrl"><button id="signinBtn" class="topBarButton am-btn am-btn-success">{{ signinBtn }}</button></a>
     <a :href="teachPlanUrl"><button id="teachPlanBtn" class="topBarButton am-btn am-btn-success ">{{ teachPlanBtn }}</button></a>
-    <a :href="superviseUrl"><button id="superviseBtn" class="topBarButton am-btn am-btn-success">{{ superviseBtn }}</button></a>
-    <a :href="tchEvaluateUrl"><button id="tchEvaluateBtn" class="topBarButton am-btn am-btn-success btn-active">{{ tchEvaluateBtn }}</button></a>
+    <a :href="superviseUrl"><button id="superviseBtn" class="topBarButton am-btn am-btn-success btn-active">{{ superviseBtn }}</button></a>
+    <a :href="tchEvaluateUrl"><button id="tchEvaluateBtn" class="topBarButton am-btn am-btn-success ">{{ tchEvaluateBtn }}</button></a>
     <a :href="testInfoUrl"><button id="testInfoBtn" class="topBarButton am-btn am-btn-success">{{ testInfoBtn }}</button></a>
   </div>
 </template>
