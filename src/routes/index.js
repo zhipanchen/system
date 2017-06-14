@@ -17,6 +17,7 @@ const educationMessage = resolve => require(['../views/student/studentEducationM
 const studentInformation = resolve => require(['../views/student/studentInformationPage/studentInformationPage.vue'], resolve);
 const studentEvaluation = resolve => require(['../views/student/studentEvaluationPage/studentEvaluationPage.vue'], resolve);
 const studentTestInfo = resolve => require(['../views/student/studentTestInfoPage/studentTeacherPage.vue'], resolve);
+const studentGrade = resolve => require(['../views/student/inquireGradePage/inquireGradePage.vue'], resolve);
 //***********************************教师*************************************************
 //import teacherTestInfo from '../views/teacher/teacherTestInfoPage/teacherTestInfoPage.vue'
 const teacherTestInfo = resolve => require(['../views/teacher/teacherTestInfoPage/teacherTestInfoPage.vue'], resolve);
@@ -252,6 +253,12 @@ export default new Router({   //将routes里的参数导出
       path: '/eduAdmin/eduAdminManage',
       name: 'eduAdminManager',
       component: eduAdminManager
+    },
+    {
+      //学生成绩查询界面
+      path: '/student/query/stInquireGrade',
+      name: 'studentGrade',
+      component:studentGrade
     },
     //*******************************************************************（陈志攀end）
       //*******************************************************************（吴坚start）
