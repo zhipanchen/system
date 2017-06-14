@@ -1,14 +1,13 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span> -->
-		<!-- <span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">成绩</a></span> -->
 		<span> > 成绩查询</span>
 	</div>
+	<!-- 填选信息进行查询学生成绩 -->
 	<div class="tableSelect addTableSelect">
-		<!-- 填选信息进行查询学生成绩 -->
 		<select v-model="selGradeType" @change="gradeChange()">
 			<option disabled value="">选择年制</option>
 			<option v-for="gradeTypeOne in gradeType" :value="gradeTypeOne.value">{{gradeTypeOne.text}}</option>
@@ -109,7 +108,7 @@ export default {
 				// {stuNum: '20142201010', stuName: '何平', stuGrade: '大二', stuMajor: '护理学', stuSemester: '2016-2017第一学期', stuCourse: '护理学', stuScore: '80'}
 				// {},{},{}
 			],
-			modalResult: false,
+			modalResult: false,	// 提示弹窗隐藏
 			resultBool: ''
 		}
 	},
@@ -163,10 +162,12 @@ export default {
     	// 查询按钮
     	inquireBtn: function() {
     		if (this.selGradeType == "") {
+    			// 年制必选，若未选，弹窗提示
     			// this.selGradeType = '0';
     			this.modalResult = true;
     			this.resultBool = '3';
     		}else if (this.selYearTerm == "" || this.selCourseName == "" || this.selClassId == "") {
+    			// 学期、课程、班级必选，若未选，弹窗提示
     			this.modalResult = true;
     			this.resultBool = '4';
     		}else {
@@ -198,6 +199,7 @@ export default {
     	},
     	// 导出按钮
     	exportBtn: function() {
+    		// 判断所有下拉框是否已选，若已全选，下载查询到内容
     		if (this.selGradeType == "") {
     			this.modalResult = true;
     			this.resultBool = '3';

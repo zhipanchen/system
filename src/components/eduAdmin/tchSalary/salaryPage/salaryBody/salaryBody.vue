@@ -1,11 +1,12 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">课酬模块</a></span> -->
 		<span> > 薪酬单</span>
 	</div>
+	<!-- 选择教师查询，可导出所查询列表信息 -->
 	<div class="tableSelect">
       	<select v-model="selTeacher">
 			<option value="">选择教师</option>
@@ -18,6 +19,7 @@
     </div>
 
 	<div id="salaryBody">
+		<!-- 薪酬列表信息展示 -->
 		<div class="salaryContent">
 			<table class="normalTable">
 				<thead>

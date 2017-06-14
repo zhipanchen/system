@@ -1,9 +1,9 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">课酬模块</a></span> -->
 		<span> > 薪酬管理</span>
 	</div>
 	<div class="tableSelect">
@@ -13,11 +13,12 @@
 	<div id="setPriceBody">
 		<div class="setPriceContent">
 			<div>
-				<!-- 教师职务课酬设置 -->
 				<button class="amButtom">
 					<span class="subtitle">教学职称</span>
 				</button>
+				<!-- 教师职务课酬设置 -->
 				<img id="teacherArrow" class="iconImg" :src="icon2" @click="teacherClick()" style="position:absolute; left:6rem;">
+				<!-- 显示教师职称课酬信息元素 -->
 				<button class="amButtom" @click="teacherClick()" style="background-color:#1fa573; cursor:pointer;">
 					<span class="subtitle" style="left:2rem;">教师</span>
 				</button>
@@ -47,11 +48,12 @@
 			</div>
 
 			<div>
-				<!-- 医生职务课酬设置 -->
 				<button class="amButtom">
 					<span class="subtitle">工作职称</span>
 				</button>
+				<!-- 医生职务课酬设置 -->
 				<img id="doctorArrow" class="iconImg" :src="icon1" @click="doctorClick()" style="position:absolute; left:6rem;">
+				<!-- 隐藏医生职称课酬信息元素 -->
 				<button class="amButtom" @click="doctorClick()" style="background-color:#1fa573; cursor:pointer;">
 					<span class="subtitle" style="left:2rem;">医生</span>
 				</button>
@@ -81,6 +83,7 @@
 
 				<!-- 护士职务课酬设置 -->
 				<img id="nurseArrow" class="iconImg" :src="icon1" @click="nurseClick()" style="position:absolute; left:6rem;">
+				<!-- 隐藏护士职称课酬信息元素 -->
 				<button class="amButtom" @click="nurseClick()" style="background-color:#1fa573; cursor:pointer;">
 					<span class="subtitle" style="left:2rem;">护士</span>
 				</button>
