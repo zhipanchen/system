@@ -1,9 +1,9 @@
 <template>
   <div id="studentStatusChangeExamination_topBar" class="topBarDiv am-btn-group">
-    <button id="topBarButton" class="am-btn am-btn-success btn-active" @click="hrefClick(1)">教研组管理</button>
+    <button id="topBarButton" class="am-btn am-btn-success" @click="hrefClick(1)">教研组管理</button>
     <button class="am-btn am-btn-success" @click="hrefClick(2)">学生管理</button>
     <button class="am-btn am-btn-success" @click="hrefClick(3)">教师管理</button>
-    <button class="am-btn am-btn-success" @click="hrefClick(4)">异动管理</button>
+    <button class="am-btn am-btn-success btn-active" @click="hrefClick(4)">异动管理</button>
   </div>
 </template>
 

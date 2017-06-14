@@ -18,7 +18,6 @@
             try{
                 var buttons = document.getElementById("combineCourse_topBar").getElementsByTagName("button");
                 this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
-//        console.log(this.authorityList);
                 for (var i = 0; i < buttons.length; i++) {
                     buttons[i].style.display = "none";
                 }
