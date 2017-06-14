@@ -1,14 +1,13 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span> -->
-		<!-- <span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">成绩</a></span> -->
 		<span> > 成绩撤销</span>
 	</div>
+	<!-- 选择课程、教师，进行查询可撤销成绩列表 -->
 	<div class="tableSelect">
-		<!-- 选择课程、教师，进行查询可撤销成绩列表 -->
 	    <select v-model="course">
 			<option disabled value="">选择课程</option>
 			<option v-for="option1 in courseInfo" :value="option1.courseId">
@@ -118,7 +117,7 @@ export default {
   	methods: {
   		// 点击查询，回调表单************************************************
   		checkTableBtn: function () {
-  			// 判断是否选择
+  			// 判断是否选择，若未选择，则弹窗提示
   			if (this.course == "" || this.teacher == "") {
   				this.modalResult = true;
   				this.remindResult = '3';
@@ -162,6 +161,7 @@ export default {
                 console.log(response);
                 var data = response.body;
                 if(data.result == "1") {
+                	// 撤销请求成功，将删除该条信息
 					this.$Message.success("已撤回！");
 					this.scoreCommitList.splice(this.index,1);
                 }else{

@@ -4,7 +4,7 @@
     <topTitle></topTitle>
     <topBar></topBar>
       <div class="positionBar">
-        <span>您的当前位置是：</span>
+        <span>您的当前位置：</span>
         <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
         <span> > 权限设置 </span>
       </div>

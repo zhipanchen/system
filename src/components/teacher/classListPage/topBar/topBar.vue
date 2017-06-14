@@ -1,13 +1,7 @@
 <template>
   <div id="class_topBar" class="topBarDiv am-btn-group">
-    <a href="#/teacher/class/teachingEvaluate">
-      <button id="checkCouButton" class="topBarButton am-btn am-btn-success  " >评教结果</button>
-    </a>
-    <a href="#/teacher/class/tchGradesInput">
-      <button  class="topBarButton am-btn am-btn-success " >成绩录入</button>
-    </a>
     <a href="#/teacher/class/classList">
-      <button  class="topBarButton am-btn am-btn-success btn-active" >班级列表</button>
+      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" >班级列表</button>
     </a>
   </div>
 </template>
@@ -36,12 +30,8 @@
           buttons[i].style.display="none";
         }
         for(var i=0;i<this.authorityList.length;i++){
-          if(this.authorityList[i]=="63"){
+          if(this.authorityList[i]=="54"){
             buttons[0].style.display="block";
-          }else if(this.authorityList[i]=="33"){
-            buttons[1].style.display="block";
-          }else if(this.authorityList[i]=="54"){
-            buttons[2].style.display="block";
           }
         }
       }catch(e){}

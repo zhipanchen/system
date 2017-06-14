@@ -1,9 +1,9 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页、上一页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">班级管理</a></span> -->
 		<span> > <a href="#/teacher/class/tchGradesInput" class="returnHome">成绩录入</a></span>
 		<span> > 正考成绩录入</span>
 	</div>

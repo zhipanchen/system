@@ -30,7 +30,7 @@
         var buttons = document.getElementById("courseList_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
         for (var i = 0; i < buttons.length; i++) {
-          // buttons[i].style.display = "none";
+          buttons[i].style.display = "none";
         }
         for (var i = 0; i < this.authorityList.length; i++) {
           if (this.authorityList[i] == "37") {

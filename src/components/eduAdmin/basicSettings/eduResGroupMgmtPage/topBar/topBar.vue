@@ -19,7 +19,6 @@
       try{
         var buttons = document.getElementById("eduResearchGroupManagement_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
-//        console.log(this.authorityList);
         for (var i = 0; i < buttons.length; i++) {
           buttons[i].style.display = "none";
         }
@@ -40,13 +39,13 @@
     methods: {
       hrefClick: function (num) {
         if (num == 1) {
-          location.href = "#/eduAdmin/baseSetting/person/eduResGroupMgmt"
+          location.href = "#/eduAdmin/person/eduResGroupMgmt"
         } else if (num == 2) {
-          location.href = "#/eduAdmin/baseSetting/person/eduAdminManageStd"
+          location.href = "#/eduAdmin/person/eduAdminManageStd"
         } else if (num == 3) {
-          location.href = "#/eduAdmin/baseSetting/person/eduAdminManageTch"
+          location.href = "#/eduAdmin/person/eduAdminManageTch"
         } else if (num == 4) {
-          location.href = "#/eduAdmin/baseSetting/person/eduAdminManageClass"
+          location.href = "#/eduAdmin/person/eduAdminManageClass"
         }
       }
 //      路由跳转

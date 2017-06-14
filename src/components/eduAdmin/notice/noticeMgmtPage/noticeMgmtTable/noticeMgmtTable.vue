@@ -1,13 +1,14 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">教务公告</a></span> -->
 		<span> > 公告管理</span>
 	</div>
 	<div id="noticeMgmtBody">
 		<div class="noticeMgmtContent">
+			<!-- 所有公告信息列表 -->
 			<table class="noticeTable" width="100%" cellspacing="0">
 				<thead>
 					<tr>
@@ -27,11 +28,13 @@
 						<td>{{notice.announcementTime}}</td>
 						<td>{{notice.announcementUserName}}</td>
 						<td id="deleteImg">
+							<!-- 删除公共功能按钮 -->
 							<img width="25px" height="25px" class="deleteImg" src="../../../../../assets/images/delete.png" @click="deleteClick(index)">
 						</td>
 					</tr>
 					<tr id="addImg">
 						<td>
+							<!-- 添加公共功能按钮 -->
 							<img src="../../../../../assets/images/add.png" width="25px" height="25px" @click="addClick()">
 						</td>
 					</tr>

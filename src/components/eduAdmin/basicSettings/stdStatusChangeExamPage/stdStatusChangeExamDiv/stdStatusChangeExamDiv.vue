@@ -4,7 +4,7 @@
       <div class="positionBar">
         <span>您的当前位置：</span>
         <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-        <span> > 人员管理设置 > <a href="#/eduAdmin/baseSetting/person/eduAdminManageClass" class="returnHome">异动管理</a> > 异动审批</span>
+        <span> > 人员管理设置 > <a href="#/eduAdmin/person/eduAdminManageClass" class="returnHome">异动管理</a> > 异动审批</span>
       </div>
       <div id="selectDiv">
         <select v-model="applicationType" @change="typeChange()">
@@ -34,7 +34,7 @@
             <td>{{ application.studentName }}</td>
             <td>{{ application.studentId }}</td>
             <td>{{ application.schoolYearType }}</td>
-            <td>{{ application.speciality }}</td>
+            <td>{{ application.specialityName }}</td>
             <td>{{ application.className }}</td>
             <td>{{ application.changeReason }}</td>
             <td>{{ application.changeDate }}</td>
@@ -127,9 +127,9 @@
         applicationType: "2",
 //        申请类型
         applications: [
-          {
+          /*{
             "schoolYearType": "3",
-            "speciality": "123",
+            "specialityName": "123",
             "className": "123",
             "studentId": "123",
             "studentName": "123",
@@ -139,7 +139,7 @@
           },
           {
             "schoolYearType": "3",
-            "speciality": "123",
+            "specialityName": "123",
             "className": "123",
             "studentId": "456",
             "studentName": "456",
@@ -149,14 +149,14 @@
           },
           {
             "schoolYearType": "3",
-            "speciality": "123",
+            "specialityName": "123",
             "className": "123",
             "studentId": "789",
             "studentName": "789",
             "changeType": "4",
             "changeReason": "123",
             "changeDate": "123"
-          }
+          }*/
         ],
 //        申请信息
         gradeList:[
@@ -199,6 +199,21 @@
       },function(error){
         this.$Message.error('连接失败，请重试！');
       });
+    },//获取休学学生列表
+    watch: {
+      gradeId: function () {
+        this.$http.post('./stateManage/getClassList',{
+          "gradeId": this.gradeId
+        },{
+          "Content-Type":"application/json"
+        }).then(function(response){
+          console.log(response.body);
+          var data = response.body;
+          this.classList = data.classList;
+        },function(error){
+          this.$Message.error('连接失败，请重试！');
+        });
+      }//获取复学可选班级列表
     },
     methods: {
       typeChange: function () {
@@ -225,21 +240,29 @@
         },function(error){
           this.$Message.error('连接失败，请重试！');
         });
-      },
+      },//选择显示不同类型的异动申请
       operation: function(operationIndex,type){
 //                对话框参数传递，触发对应对话框
         this.operationIndex = operationIndex;
         if (type == "true") {
+//          触发申请通过
           if(this.applications[operationIndex].changeType == "4"){
+//            判断是否为复学申请
             this.$http.post('./stateManage/getGradeList',{
               "studentId":this.applications[operationIndex].studentId
             },{
               "Content-Type":"application/json"
             }).then(function(response){
-              this.gradeList = response.body.gradeList;
+              if(response.body.gradeList.length == 0){
+                this.errorMessage = "没有可选复学年级!";
+                this.modal3 = true;
+                this.modal4 = false;
+              }else {
+                this.gradeList = response.body.gradeList;
+              }
             },function(error){
               this.$Message.error('连接失败，请重试！');
-            });
+            });//获取复学可选年级
             this.modal4 = true;
           }else {
             this.modal1 = true;
@@ -263,6 +286,7 @@
             }, {
               "Content-Type": "application/json"
             }).then(function (response) {
+              this.modal4 = false;
               this.modal1 = false;
               console.log(response);
               var data = response.body;
@@ -304,7 +328,7 @@
             this.$Message.error('连接失败，请重试！');
           });
         }
-      },
+      },//异动申请通过
       setFalse: function(applications,index){
         var url = null;
         if(applications[index].changeType == "4"){
@@ -315,7 +339,7 @@
           }, {
             "Content-Type": "application/json"
           }).then(function (response) {
-            this.modal1 = false;
+            this.modal2 = false;
             console.log(response);
             var data = response.body;
             if (data.result == "1") {
@@ -326,7 +350,7 @@
               this.modal3 = true;
             }
           }, function (error) {
-            this.modal1 = false;
+            this.modal2 = false;
             this.$Message.error('连接失败，请重试！');
           });
         }else {
@@ -341,21 +365,21 @@
           }, {
             "Content-Type": "application/json"
           }).then(function (response) {
-            this.modal1 = false;
+            this.modal2 = false;
             console.log(response);
             var data = response.body;
-            if (data.result == "0") {
+            if (data.result == "1") {
               applications.splice(index, 1);
             } else {
               this.errorMessage = "操作失败,请重试!";
               this.modal3 = true;
             }
           }, function (error) {
-            this.modal1 = false;
+            this.modal2 = false;
             this.$Message.error('连接失败，请重试！');
           });
         }
-      }
+      }//异动申请不通过
     }
   }
 </script>
@@ -377,6 +401,7 @@
     padding-bottom: 0.8rem;
   }
   #tableDiv{
+    /*申请表格区域*/
     margin: 0 5rem;
     padding-top: 0.5rem;
   }
@@ -394,14 +419,5 @@
     background-color: red;
     color: white;
     border: red;
-  }
-  .top{
-    background: rgba(0, 153, 229, .7);
-    color: #fff;
-    text-align: center;
-  }
-  @media screen and (max-width:1025px) {
-    html {
-    }
   }
 </style>

@@ -1,13 +1,7 @@
 <template>
   <div class="topBarDiv am-btn-group">
-    <a href="#/teacher/teach/courseList">
-      <button id="checkCouButton" class="topBarButton am-btn am-btn-success " >教学计划</button>
-    </a>
-    <a href="#/teacher/teach/director">
-      <button  class="topBarButton am-btn am-btn-success btn-active" >督导反馈</button>
-    </a>
-    <a href="#/teacher/teach/normalSchedule">
-      <button  class="topBarButton am-btn am-btn-success " >教师签到</button>
+    <a href="#/teacher/director">
+      <button id="checkCouButton" class="topBarButton am-btn am-btn-success btn-active" >督导反馈</button>
     </a>
   </div>
 </template>

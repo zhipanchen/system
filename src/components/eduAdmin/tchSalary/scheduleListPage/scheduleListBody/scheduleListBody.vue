@@ -1,11 +1,12 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">课酬模块</a></span> -->
 		<span> > 查看签到</span>
 	</div>
+	<!-- 选择教师，查询对应教师的上课列表 -->
 	<div class="tableSelect">
       	<select v-model="selTeacher">
 			<option disabled value="">选择教师</option>
@@ -16,6 +17,7 @@
 
 	<div id="scheduleListBody">
 		<div class="scheduleContent">
+			<!-- 展示所查询教师的上课列表 -->
 			<table class="operationTable">
 				<thead>
 					<tr>

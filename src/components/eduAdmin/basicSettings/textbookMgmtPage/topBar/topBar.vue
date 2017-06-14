@@ -10,7 +10,7 @@
       <div class="positionBar">
         <span>您的当前位置：</span>
         <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-        <span> > <a href="#/login/main/eduAdminHome?baseSetting" class="returnHome">基本设置</a> > 资源管理设置 > 教材管理</span>
+        <span> > 资源管理设置 > 教材管理</span>
       </div>
       <div id="buttonDiv">
         <span class="operationSpan"><form action="./textbookManage/exportTextbookInfoTemplet" method="get"><button class="am-btn am-btn-success am-radius" type="submit">下载模版</button></form></span>
@@ -86,7 +86,6 @@
       try{
         var buttons = document.getElementById("textbookManagement_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
-//        console.log(this.authorityList);
         for (var i = 0; i < 4; i++) {
           buttons[i].style.display = "none";
         }
@@ -107,13 +106,13 @@
     methods:{
       hrefClick: function (num) {
         if (num == 1) {
-          location.href = "#/eduAdmin/baseSetting/resource/textbookMgmt"
+          location.href = "#/eduAdmin/resource/textbookMgmt"
         } else if (num == 2) {
-          location.href = "#/eduAdmin/baseSetting/resource/eduAdminManageGrade"
+          location.href = "#/eduAdmin/resource/eduAdminManageGrade"
         } else if (num == 3) {
-          location.href = "#/eduAdmin/baseSetting/resource/courseTypeMgmt"
+          location.href = "#/eduAdmin/resource/courseTypeMgmt"
         } else if (num == 4) {
-          location.href = "#/eduAdmin/baseSetting/resource/classroomMgmt"
+          location.href = "#/eduAdmin/resource/classroomMgmt"
         }
       },
 //      路由跳转

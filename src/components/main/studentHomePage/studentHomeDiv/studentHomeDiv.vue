@@ -42,11 +42,6 @@
         </span>
         <span class="pageSpan">
           <ul>
-            <a href="#/student/query/studentTeacher"><li>教师信息</li></a>
-          </ul>
-        </span>
-        <span class="pageSpan">
-          <ul>
             <a href="#/student/query/studentTestInfo"><li>考场查询</li></a>
           </ul>
         </span>
@@ -55,14 +50,14 @@
             <a href="#/student/query/stInquireGrade"><img src="./images/成绩查询.png" class="pageImg"><li>成绩查询</li></a>
           </ul>
         </span>
+        <span class="pageSpan">
+          <ul>
+            <a href="#/student/query/studentTeacher"><li>任课教师信息</li></a>
+          </ul>
+        </span>
       </div>
       信息设置
       <div id="secondDiv" class="pageDiv">
-        <span class="pageSpan">
-          <ul>
-            <a href="#/student/setting/changPassword"><li>修改密码</li></a>
-          </ul>
-        </span>
         <span class="pageSpan">
           <ul>
             <a href="#/student/setting/studentInformation"><img src="./images/个人信息维护.jpg" class="pageImg"><li>个人信息维护</li></a>
@@ -70,7 +65,15 @@
         </span>
         <span class="pageSpan">
           <ul>
-            <a href="#/student/setting/studentEvaluation"><img src="./images/学生评教.png" class="pageImg"><li>学生评教</li></a>
+            <a href="#/student/setting/changPassword"><li>修改密码</li></a>
+          </ul>
+        </span>
+      </div>
+      学生评教
+      <div id="thirdDiv" class="pageDiv">
+        <span class="pageSpan">
+          <ul>
+            <a href="#/student/studentEvaluation"><img src="./images/学生评教.png" class="pageImg"><li>评教提交</li></a>
           </ul>
         </span>
       </div>
@@ -225,6 +228,8 @@
            }*/
         ],
 //        公告信息
+        quitSchoolList:[],
+//        休学学生信息
         isSuspend: false,
 //        是否处于休学状态
         modal: false,
@@ -281,18 +286,38 @@
         "Content-Type":"application/json"
       }).then(function(response){
         var isSuspend = false;
-        for (var i = 0; i < response.body.quitSchoolList.length; i++) {
-          if(response.body.quitSchoolList[i].studentId == JSON.parse(sessionStorage.getItem("userInfo")).currentUserId){
-            isSuspend = true;
-            break;
+        this.quitSchoolList = response.body.quitSchoolList;
+        if(sessionStorage.getItem("userInfo") == null){
+          this.$http.post('./getCurrentUser',{},{
+            "Content-Type":"application/json"
+          }).then(function(response){
+            for (var i = 0; i < this.quitSchoolList.length; i++) {
+              if (this.quitSchoolList[i].studentId == response.body.currentUserId) {
+                isSuspend = true;
+                break;
+              }
+            }
+            if (isSuspend) {
+              this.isSuspend = true;
+            } else {
+              this.isSuspend = false;
+            }
+          },function(error){
+          });
+        }else {
+          for (var i = 0; i < response.body.quitSchoolList.length; i++) {
+            if (response.body.quitSchoolList[i].studentId == JSON.parse(sessionStorage.getItem("userInfo")).currentUserId) {
+              isSuspend = true;
+              break;
+            }
+          }
+          if (isSuspend) {
+            this.isSuspend = true;
+          } else {
+            this.isSuspend = false;
           }
         }
-        if(isSuspend){
-          this.isSuspend = true;
-        }else{
-          this.isSuspend = false;
-        }
-      },function(error){});
+      },function(error){});//
     },
     methods: {
       announcementClick: function (id) {
@@ -302,6 +327,7 @@
         }
       },
       back: function () {
+//        复学申请
         this.$http.post('./stateManage/applyReinstating',{
           "studentId":JSON.parse(sessionStorage.getItem("userInfo")).currentUserId
         },{
@@ -325,6 +351,7 @@
 
 <style scoped>
   #studentHomeDiv {
+    /*页面*/
     background-color: white;
     display: flex;
     border: thin solid whitesmoke;
@@ -350,7 +377,7 @@
     /*功能块区域*/
     display: flex;
     justify-content: space-around;
-    margin: 3rem 0;
+    margin: 1rem 0;
   }
   .pageSpan{
     /*功能块*/
@@ -414,10 +441,12 @@
     cursor: pointer;
   }
   #backButton{
+    /*复学申请按钮*/
     margin-left: 30%;
     margin-top: 0.5rem;
   }
   .pageImg{
+    /*功能模块*/
     font-weight: 400;
     font-size: 0.7rem;
     height: 5rem;

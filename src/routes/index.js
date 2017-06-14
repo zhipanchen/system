@@ -17,6 +17,7 @@ const educationMessage = resolve => require(['../views/student/studentEducationM
 const studentInformation = resolve => require(['../views/student/studentInformationPage/studentInformationPage.vue'], resolve);
 const studentEvaluation = resolve => require(['../views/student/studentEvaluationPage/studentEvaluationPage.vue'], resolve);
 const studentTestInfo = resolve => require(['../views/student/studentTestInfoPage/studentTeacherPage.vue'], resolve);
+const studentGrade = resolve => require(['../views/student/inquireGradePage/inquireGradePage.vue'], resolve);
 //***********************************教师*************************************************
 //import teacherTestInfo from '../views/teacher/teacherTestInfoPage/teacherTestInfoPage.vue'
 const teacherTestInfo = resolve => require(['../views/teacher/teacherTestInfoPage/teacherTestInfoPage.vue'], resolve);
@@ -253,6 +254,12 @@ export default new Router({   //将routes里的参数导出
       name: 'eduAdminManager',
       component: eduAdminManager
     },
+    {
+      //学生成绩查询界面
+      path: '/student/query/stInquireGrade',
+      name: 'studentGrade',
+      component:studentGrade
+    },
     //*******************************************************************（陈志攀end）
       //*******************************************************************（吴坚start）
     {
@@ -315,16 +322,7 @@ export default new Router({   //将routes里的参数导出
       name: 'eduAdminManageGrade',
       component: eduAdminManageGrade
     },
-    {
-      path: '/checkTest',
-      name: 'checkTest',
-      component: checkTest
-    },
-    {
-      path: '/',
-      name: 'startTest',
-      component: startTest
-    },
+
     //*******************************************************************（吴坚end）
     //*******************************************************************（李西炜start）
     {
@@ -424,14 +422,16 @@ export default new Router({   //将routes里的参数导出
       name: '/eduAdmin/person/eduResGroupMgmt',
       component: eduResGroupMgmtPage
       //  教研组管理页面
+
     },
     {
-      path: '/eduAdmin/person/manageClassPage/stdStatusChangeExam',
-      name: '/eduAdmin/person/manageClassPage/stdStatusChangeExam',
+      path: '/eduAdmin/person/eduAdminManageClass/stdStatusChangeExam',
+      name: '/eduAdmin/person/eduAdminManageClass/stdStatusChangeExam',
       component: stdStatusChangeExamPage
       //  异动审批页面
     },
     {
+
       path: '/eduAdmin/examination/suspendCouApply',
       name: '/eduAdmin/examination/suspendCouApply',
       component: suspendCouApplyPage
@@ -476,7 +476,7 @@ export default new Router({   //将routes里的参数导出
       path: '/teacher/teach/teachingEvaluate',
       component: teachingEvaluate
     },
-	  {
+	{
 	    //教师查看学生评教留言
       path: '/teacher/studentMessage',
       component:studentMessage
