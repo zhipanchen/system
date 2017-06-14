@@ -100,7 +100,7 @@
             <Badge :count="authorityModel.msgNum">
               <img class="modelImg" src="" :alt="authorityModel.name"><div>{{ authorityModel.name }}</div>
             </Badge>
-            <div slot="content">
+            <div slot="content" style="color: black">
               <p v-html="authorityModel.msgNumTips"></p>
             </div>
           </Tooltip>
@@ -412,7 +412,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"教务审批", msgNum:"0", index:1 });
+                this.authorityModels.push({ name:"教务审批", msgNum:"0", disabled:true, index:1 });
               }
             }else if(this.authorityList[i] == "14" || this.authorityList[i] == "9" || this.authorityList[i] == "7") {
               var isExist = false;
@@ -422,7 +422,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"智能排课", msgNum:"0", index:2 });
+                this.authorityModels.push({ name:"智能排课", msgNum:"0", disabled:true, index:2 });
               }
             }else if(this.authorityList[i] == "19") {
               var isExist = false;
@@ -432,7 +432,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"教务公告", msgNum:"0", index:3 });
+                this.authorityModels.push({ name:"教务公告", msgNum:"0", disabled:true, index:3 });
               }
             }else if(this.authorityList[i] == "28" || this.authorityList[i] == "29" || this.authorityList[i] == "31" || this.authorityList[i] == "32") {
               var isExist = false;
@@ -442,12 +442,12 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"成绩管理", msgNum:"0", index:4 });
+                this.authorityModels.push({ name:"成绩管理", msgNum:"0", disabled:true, index:4 });
               }
             }else if(this.authorityList[i] == "34") {
-              this.authorityModels.push({ name:"教务督导管理", msgNum:"0", index:5 });
+              this.authorityModels.push({ name:"教务督导管理", msgNum:"0", disabled:true, index:5 });
             }else if(this.authorityList[i] == "10") {
-              this.authorityModels.push({ name:"考务管理", msgNum:"0", index:6 });
+              this.authorityModels.push({ name:"考务管理", msgNum:"0", disabled:true, index:6 });
             }else if(this.authorityList[i] == "5" || this.authorityList[i] == "66" || this.authorityList[i] == "22") {
               var isExist = false;
               for (var a = 0; a < this.authorityModels.length; a++) {
@@ -456,7 +456,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"课酬管理", msgNum:"0", index:7 });
+                this.authorityModels.push({ name:"课酬管理", msgNum:"0", disabled:true, index:7 });
               }
             }else if(this.authorityList[i] == "15" || this.authorityList[i] == "16") {
               var isExist = false;
@@ -466,7 +466,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"培养方案管理", msgNum:"0", index:8 });
+                this.authorityModels.push({ name:"培养方案管理", msgNum:"0", disabled:true, index:8 });
               }
             }else if(this.authorityList[i] == "24" || this.authorityList[i] == "23" || this.authorityList[i] == "26" || this.authorityList[i] == "64") {
               var isExist = false;
@@ -476,7 +476,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"人员管理设置", msgNum:"0", index:9 });
+                this.authorityModels.push({ name:"人员管理设置", msgNum:"0", disabled:true, index:9 });
               }
             }else if(this.authorityList[i] == "27" || this.authorityList[i] == "21" || this.authorityList[i] == "65" || this.authorityList[i] == "20") {
               var isExist = false;
@@ -486,10 +486,10 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"资源管理设置", msgNum:"0", index:10 });
+                this.authorityModels.push({ name:"资源管理设置", msgNum:"0", disabled:true, index:10 });
               }
             }else if(this.authorityList[i] == "6") {
-              this.authorityModels.push({ name:"课表查询", msgNum:"0", index:11 });
+              this.authorityModels.push({ name:"课表查询", msgNum:"0", disabled:true, index:11 });
             }else if(this.authorityList[i] == "1" || this.authorityList[i] == "2") {
               var isExist = false;
               for (var a = 0; a < this.authorityModels.length; a++) {
@@ -498,7 +498,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"权限管理", msgNum:"0", index:12 });
+                this.authorityModels.push({ name:"权限管理", msgNum:"0", disabled:true, index:12 });
               }
             }else if(this.authorityList[i] == "39" || this.authorityList[i] == "42" || this.authorityList[i] == "41" || this.authorityList[i] == "40" || this.authorityList[i] == "38") {
               var isExist = false;
@@ -508,7 +508,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"我的课程", msgNum:"0", index:13 });
+                this.authorityModels.push({ name:"我的课程", msgNum:"0", disabled:true, index:13 });
               }
             }else if(this.authorityList[i] == "37" || this.authorityList[i] == "36" || this.authorityList[i] == "67" || this.authorityList[i] == "63" || this.authorityList[i] == "25") {
               var isExist = false;
@@ -518,18 +518,18 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"教学活动", msgNum:"0", index:14 });
+                this.authorityModels.push({ name:"教学活动", msgNum:"0", disabled:true, index:14 });
               }
             }else if(this.authorityList[i] == "33") {
-              this.authorityModels.push({ name:"成绩管理", msgNum:"0", index:15 });
+              this.authorityModels.push({ name:"成绩管理", msgNum:"0", disabled:true, index:15 });
             }else if(this.authorityList[i] == "35") {
-              this.authorityModels.push({ name:"课酬管理", msgNum:"0", index:16 });
+              this.authorityModels.push({ name:"课酬管理", msgNum:"0", disabled:true, index:16 });
             }else if(this.authorityList[i] == "43") {
-              this.authorityModels.push({ name:"个人信息", msgNum:"0", index:17 });
+              this.authorityModels.push({ name:"个人信息", msgNum:"0", disabled:true, index:17 });
             }else if(this.authorityList[i] == "52") {
-              this.authorityModels.push({ name:"督导反馈", msgNum:"0", index:18 });
+              this.authorityModels.push({ name:"督导反馈", msgNum:"0", disabled:true, index:18 });
             }else if(this.authorityList[i] == "54") {
-              this.authorityModels.push({ name:"班级管理", msgNum:"0", index:19 });
+              this.authorityModels.push({ name:"班级管理", msgNum:"0", disabled:true, index:19 });
             }else if(this.authorityList[i] == "56" || this.authorityList[i] == "55") {
               var isExist = false;
               for (var a = 0; a < this.authorityModels.length; a++) {
@@ -538,7 +538,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"组别管理", msgNum:"0", index:20 });
+                this.authorityModels.push({ name:"组别管理", msgNum:"0", disabled:true, index:20 });
               }
             }
           }
@@ -613,6 +613,7 @@
           });
         },function(error){
           /*this.authorityList = [];
+          this.authorityModels = [];
           for (var i = 0; i < 70; i++) {
             this.authorityList.push(i);
           }*/
@@ -1088,7 +1089,6 @@
     height: 100%;
     padding: 1rem;
     display: flex;
-    /*flex-direction: column;*/
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
@@ -1142,10 +1142,6 @@
   a:hover{
     cursor: pointer;
     color: red;
-  }
-  .top{
-    /*信息数量提示气泡*/
-    background-color: white;
   }
   .announcementName{
     /*公告*/
