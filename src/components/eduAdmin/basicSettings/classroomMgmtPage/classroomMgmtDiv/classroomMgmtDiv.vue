@@ -19,7 +19,7 @@
             <td>操作</td>
           </tr>
           <tr v-for="(classroom,index) in classrooms" :id="'classroomInputTr'+index" :key="classroom.name">
-            <!--循环生成教室信息，index作为教室数组的下标索引，将index用作id的一部分，便于准确定位操作DOM，key用于绑定教室信息，保证索引不随着数组元素增删自动发生变化-->
+            <!--循环生成教室信息，index作为教室数组的下标索引，将index用作图标id的一部分，便于准确定位操作DOM，key用于绑定教室信息，保证索引不随着数组元素增删自动发生变化-->
             <td><input id="classroomInput" type="text" v-model="classroom.id" readonly="true"></td>
             <td><input id="classroomInput1" type="text" v-model="classroom.name" readonly="true"></td>
             <td><input id="classroomInput2" type="text" v-model="classroom.number" readonly="true"></td>
@@ -36,7 +36,7 @@
           </tr>
           <tr>
             <td><img src="../../../../../assets/images/add.png" @click="addClick(classrooms,'classroom')" title="添加"></td>
-            <!--增加功能，通过vue增加循环数组元素，但input DOM不会即时创建，所以暂时无法增加的同时处于编辑状态-->
+            <!--增加功能，通过vue增加循环数组元素，但input DOM不会即时创建，所以需要视图更新回调函数触发编辑状态-->
             <td></td>
             <td></td>
             <td></td>
@@ -115,6 +115,7 @@
         <button id="modalBtn" @click="modal3 = false">取消</button>
       </div>
     </Modal>
+    <!--可重复使用的无操作信息提示框-->
     <Modal
         v-model="modal4"
         width="400"
@@ -147,32 +148,9 @@
 //        普通教室下拉内容，初始为下拉显示
         engineRoomTable: false,
 //        机房下拉内容，初始为下拉隐藏
-        classrooms: [
-          /*{ id:"1-101", name:"第一教学楼101", number:"60" },
-          { id:"1-102", name:"第一教学楼102", number:"60" },
-          { id:"1-103", name:"第一教学楼104", number:"130" },
-          { id:"1-202", name:"第一教学楼202", number:"60" },
-          { id:"1-203", name:"第一教学楼203", number:"60" },
-          { id:"1-206", name:"第一教学楼206", number:"60" },
-          { id:"1-207", name:"第一教学楼207", number:"60" },
-          { id:"1-209", name:"第一教学楼209", number:"60" },
-          { id:"1-211", name:"第一教学楼211", number:"60" },
-          { id:"2-202", name:"第二教学楼202", number:"70" },
-          { id:"2-203", name:"第二教学楼203", number:"70" },
-          { id:"2-302", name:"第二教学楼302", number:"70" },
-          { id:"2-303", name:"第二教学楼303", number:"70" },
-          { id:"2-304", name:"第二教学楼304", number:"140" },
-          { id:"2-305", name:"第二教学楼305", number:"140" },
-          { id:"2-306", name:"第二教学楼306", number:"60" },
-          { id:"2-404", name:"第二教学楼404", number:"140" },
-          { id:"2-405", name:"第二教学楼405", number:"140" },
-          { id:"2-406", name:"第二教学楼406", number:"60" },*/
-        ],
+        classrooms: [],
 //        普通教室信息
-        engineRooms: [
-          /*{ id:"", name:"第二教学楼402", number:"70" },
-          { id:"", name:"第二教学楼403", number:"70" },*/
-        ],
+        engineRooms: [],
 //        机房信息
         buffer_classrooms: [],
 //        用于缓存编辑前的数据，便于重置
@@ -190,14 +168,12 @@
       }
     },
     beforeMount: function() {
-//      this.$http.post('../testPhp/classroomMgmt.php',{},{
       this.$http.post('./classroomManage/getClassroomInfo',{},{
         "Content-Type":"application/json"
       }).then(function(response){
-        console.log("获取教室:");
-        console.log(response.body);
         var data = response.body;
         for(var i = 0;i < data.Classroom.length;i++){
+//          按教室类别分类保存数据
           if(data.Classroom[i].classType == "机房"){
             this.engineRooms.push({ id:data.Classroom[i].classroomId, name:"第"+data.Classroom[i].classroomId.split("-")[0]+"教学楼"+data.Classroom[i].classroomId.split("-")[1], number:data.Classroom[i].classroomSize });
           }else{
@@ -207,44 +183,43 @@
         for(var i = 0;i < this.classrooms.length;i++){
           this.buffer_classrooms.push({ id:"", name:"", number:"" });
         }
+//        创建对应的缓存数据数组
         for(var i = 0;i < this.engineRooms.length;i++){
           this.buffer_engineRooms.push({ id:"", name:"", number:"" });
         }
       },function(error){
         this.$Message.error('连接失败，请重试！');
       });
-    },
-//    页面dom加载前获取后端数据，修饰教室位置，缓存数据
+    }, //页面dom加载前获取后端数据，修饰教室位置，缓存数据
     methods: {
       operationClick: function(obj,operationIndex,operation){
         this.operationObj = obj;
         this.operationIndex = operationIndex;
         if(operation == "restore"){
+//          根据操作触发不同对话框
           this.modal1 = true;
         }else if(operation == "delete"){
           this.modal2 = true;
         }else if(operation == "save"){
           this.modal3 = true;
         }
-      },
-//      模拟对话框的参数传递，触发不同对话框
+      }, //模拟对话框的参数传递，触发不同对话框
       classroomClick: function(){
-//        点击显示或隐藏下拉普通教室信息
         var classroomArrow = document.getElementById("classroomArrow");
         if(!this.classroomArrow){
 //              显示下拉教室信息
           this.classroomArrow = true;
           this.classroomTable = true;
           classroomArrow.src = this.icon2;
+//          更换箭头图片
         }else{
 //              隐藏下拉教室信息
           this.classroomArrow = false;
           this.classroomTable = false;
           classroomArrow.src = this.icon1;
         }
-      },
+      }, //点击显示或隐藏下拉普通教室信息
       engineRoomClick: function(){
-//        点击显示或隐藏下拉机房信息
         var engineRoomArrow = document.getElementById("engineRoomArrow");
         if(!this.engineRoomArrow){
           this.engineRoomArrow = true;
@@ -255,41 +230,39 @@
           this.engineRoomTable = false;
           engineRoomArrow.src = this.icon1;
         }
-      },
+      }, //点击显示或隐藏下拉机房信息
       editClick: function(type,index){
-//        编辑功能
         var inputTr = document.getElementById(type+"InputTr"+index);
         var input = inputTr.getElementsByTagName("input");
         var editImg = document.getElementById(type+"EditImg"+index);
         var saveImg = document.getElementById(type+"SaveImg"+index);
         var restoreImg = document.getElementById(type+"RestoreImg"+index);
         var deleteImg = document.getElementById(type+"DeleteImg"+index);
-        var i = null;
-//        for(i = 0;i<input.length;i++){
-//          使教室信息的输入标签变为可输入，显示边框
-//          if(i != 1) {
+
         input[2].readOnly = false;
         input[2].style.border = "0.1rem solid #d4d4d9";
-//          }
-//        }
         if(input[0].value == "请编辑后保存"){
+//        判断是否为新增未保存的教室，使ID可编辑
           input[0].readOnly = false;
           input[0].style.border = "0.1rem solid #d4d4d9";
         }
-//        判断是否为新增未保存的教室，使ID可编辑
+
         if(type == "classroom"){
           this.buffer_classrooms.splice(index, 1, JSON.parse(JSON.stringify(this.classrooms[index])));
         }
+//        更新缓存数据，以便重置
         if(type == "engine"){
           this.buffer_engineRooms.splice(index, 1, JSON.parse(JSON.stringify(this.engineRooms[index])));
         }
-//        更新缓存数据，以便重置
+
         editImg.style.display = "none";
         deleteImg.style.display = "none";
         saveImg.style.display = "inline";
         restoreImg.style.display = "inline";
-//        进入编辑状态
+//        显示保存和取消图标，隐藏编辑和删除图标
+
         if(type == "classroom"){
+          //如果为未保存的新增教室，清空提示
           if(this.classrooms[index].id == "请编辑后保存" || this.classrooms[index].number == "请编辑后保存"){
             this.classrooms[index].id = "";
             this.classrooms[index].number = "";
@@ -298,6 +271,7 @@
           }
         }
         if(type == "engine"){
+          //如果为未保存的新增教室，清空提示
           if(this.engineRooms[index].id == "请编辑后保存" || this.engineRooms[index].number == "请编辑后保存"){
             this.engineRooms[index].id = "";
             this.engineRooms[index].number = "";
@@ -305,10 +279,8 @@
             input[2].value = "";
           }
         }
-//        如果为未保存的新增教室，清空提示
-      },
+      },//编辑功能
       restoreClick: function(type,index){
-//        取消修改,重置数据,退出编辑
         var inputTr = document.getElementById(type+"InputTr"+index);
         var input = inputTr.getElementsByTagName("input");
         var editImg = document.getElementById(type+"EditImg"+index);
@@ -318,7 +290,9 @@
         var i = null;
         if (type == "classroom") {
           this.classrooms.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_classrooms[index])));
+//        从缓存数据中重置数据
           if(this.classrooms[index].name == "") {
+//            如果为新增未保存数据，直接删除
             this.classrooms.splice(index, 1);
             this.buffer_classrooms.splice(index, 1);
           }else {
@@ -331,10 +305,13 @@
             deleteImg.style.display = "inline";
             saveImg.style.display = "none";
             restoreImg.style.display = "none";
+//            显示编辑和删除，隐藏保存和取消
           }
         }else if (type == "engine") {
           this.engineRooms.splice(index, 1, JSON.parse(JSON.stringify(this.buffer_engineRooms[index])));
+//        从缓存数据中重置数据
           if(this.engineRooms[index].name == "") {
+//            如果为新增未保存数据，直接删除
             this.engineRooms.splice(index, 1);
             this.buffer_engineRooms.splice(index, 1);
           }else {
@@ -347,17 +324,18 @@
             deleteImg.style.display = "inline";
             saveImg.style.display = "none";
             restoreImg.style.display = "none";
+//            显示编辑和删除，隐藏保存和取消
           }
         }
-//        从缓存数据中重置数据
         this.modal1 = false;
-      },
+//        关闭对话框
+      }, //取消修改,重置数据,退出编辑
       deleteClick: function(type,index){
-//        删除教室
         var classroom = null;
         if (type == "classroom") {
           classroom = this.classrooms;
         }
+//        判断操作的教室类型数据数组
         if (type == "engine") {
           classroom = this.engineRooms;
         }
@@ -373,19 +351,20 @@
           }
           this.$Message.success('删除成功！');
           this.modal2 = false;
+//        关闭对话框
         }else {
-//        this.$http.post('../testPhp/classroomMgmtSave.php',{
           this.$http.post('./classroomManage/deleteClassroom', {
             "classroomId": classroom[index].id
           }, {
             "Content-Type": "application/json"
           }).then(function (response) {
             this.modal2 = false;
+//        关闭对话框
             console.log("删除教室:");
             console.log(response.body);
             var data = response.body;
             if (data.result == "1") {
-              //          从data中的教室信息数组中删除
+              //          从本地data的教室信息数组中删除数据
               if (type == "classroom") {
                 this.classrooms.splice(index, 1);
                 this.buffer_classrooms.splice(index, 1);
@@ -396,18 +375,18 @@
               }
               this.$Message.success('删除成功！');
             } else {
-//              this.$Message.error("操作失败,请重试!");
               this.errorMessage = "操作失败,请重试!";
               this.modal4 = true;
+//              显示信息提示对话框
             }
           }, function (error) {
             this.modal2 = false;
+//            关闭对话框
             this.$Message.error("连接失败,请重试!");
           });
         }
-      },
+      }, //删除教室
       saveClick: function(type,index){
-//        保存功能
         var inputTr = document.getElementById(type+"InputTr"+index);
         var input = inputTr.getElementsByTagName("input");
         var editImg = document.getElementById(type+"EditImg"+index);
@@ -417,6 +396,7 @@
         var i = null;
         var classType = null;
         if(type == "classroom"){
+//          判断教室类型
           classType = "普通教室";
         }else if(type == "engine"){
           classType = "机房";
@@ -424,12 +404,13 @@
         if(input[0].readOnly = false){
 //          如果为未保存的新增教室，保存触发新增接口
           if(isNaN(Number(input[2].value)) || input[2].value == ""){
-//            this.$Message.warning("请确认教室容纳人数为合理数字！");
+//            校验数据格式
             this.modal3 = false;
+//            关闭原对话框
             this.errorMessage = "请确认教室容纳人数为合理数字！";
             this.modal4 = true;
+//            显示信息提示对话框
           }else{
-//              this.$http.post('../testPhp/classroomMgmtSave.php', {
           this.$http.post('./classroomManage/addClassroom', {
               "classroomId": input[0].value,
               "classType": classType,
@@ -438,10 +419,11 @@
               "Content-Type": "application/json"
             }).then(function (response) {
               this.modal3 = false;
-              console.log("添加教室:");
-              console.log(response.body);
+//            关闭原对话框
               var data = response.body;
               if (data.result == "1") {
+                this.$Message.success('保存成功！');
+//                本地数据保存，根据教室id显示具体位置
                 if (type == "classroom") {
                   var name = "第" + this.classrooms[index].id.split("-")[0] + "教学楼" + this.classrooms[index].id.split("-")[1];
                   this.classrooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
@@ -451,6 +433,7 @@
                   this.engineRooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
                 }
                 for (i = 0; i < input.length; i++) {
+//                  将输入框变为不可输入
                   if (i != 1) {
                     input[i].readOnly = true;
                     input[i].style.border = "none";
@@ -460,32 +443,37 @@
                 deleteImg.style.display = "inline";
                 saveImg.style.display = "none";
                 restoreImg.style.display = "none";
-//                退出编辑状态
               }
             }, function (error) {
             this.modal3 = false;
+//            关闭原对话框
             this.$Message.error("连接失败,请重试!");
             });
           }
         }else{
 //          如果为已保存在数据库的教室信息，触发修改接口
           if(input[0].value.indexOf("-") < 0){
-//            this.$Message.error("教室ID输入格式有误！（正确如：1-101）");
+//            校验数据格式
             this.modal3 = false;
+//            关闭原对话框
             this.errorMessage = "教室ID输入格式有误！（正确如：1-101）";
             this.modal4 = true;
+//            显示信息提示对话框
           }else if(isNaN(Number(input[0].value.split("-")[0])) || isNaN(Number(input[0].value.split("-")[1]))){
-//            this.$Message.error("教室ID输入格式有误！（正确如：1-101）");
+//            校验数据格式
             this.modal3 = false;
+//            关闭原对话框
             this.errorMessage = "教室ID输入格式有误！（正确如：1-101）";
             this.modal4 = true;
+//            显示信息提示对话框
           }else if(isNaN(Number(input[2].value)) || input[2].value == ""){
-//            this.$Message.warning("请确认教室容纳人数为合理数字！");
+//            校验数据格式
             this.modal3 = false;
+//            关闭原对话框
             this.errorMessage = "请确认教室容纳人数为合理数字！";
             this.modal4 = true;
+//            显示信息提示对话框
           }else{
-//              this.$http.post('../testPhp/classroomMgmtSave.php', {
           this.$http.post('./classroomManage/editClassroom', {
               "classroomId": input[0].value,
               "classType": classType,
@@ -494,11 +482,11 @@
               "Content-Type": "application/json"
             }).then(function (response) {
               this.modal3 = false;
-              console.log("保存教室:");
-              console.log(response.body);
+//            关闭原对话框
               var data = response.body;
               if (data.result == "1") {
                 this.$Message.success('保存成功！');
+//                本地数据保存，根据教室id显示具体位置
                 if (type == "classroom") {
                   var name = "第" + this.classrooms[index].id.split("-")[0] + "教学楼" + this.classrooms[index].id.split("-")[1];
                   this.classrooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
@@ -507,8 +495,8 @@
                   var name = "第" + this.engineRooms[index].id.split("-")[0] + "教学楼" + this.engineRooms[index].id.split("-")[1];
                   this.engineRooms.splice(index, 1, {"id":input[0].value,"name":name,"number":input[2].value});
                 }
-//          预留功能,将data提交到后端,实现保存数据,处理回调
                 for (i = 0; i < input.length; i++) {
+//                  将输入框变为不可输入
                   if (i != 1) {
                     input[i].readOnly = true;
                     input[i].style.border = "none";
@@ -518,45 +506,44 @@
                 deleteImg.style.display = "inline";
                 saveImg.style.display = "none";
                 restoreImg.style.display = "none";
-//                退出编辑状态
               }
             }, function (error) {
               this.modal3 = false;
+//            关闭原对话框
               this.$Message.error("连接失败,请重试!");
             });
           }
         }
-      },
+      },//保存数据
       addClick: function (classroom,type){
-//        新增未保存的教室，新增对应缓存数据
-//        if(classroom[classroom.length - 1].id != "请编辑后保存"){
           classroom.push(
               { id:"请编辑后保存", name:"", number:"请编辑后保存" }
           );
           this.$nextTick(function () {
+//            在教室添加成功后触发vue数据视图更新回调函数
             var editImg = null;
             if (type == "classroom") {
               editImg = document.getElementById("classroomEditImg" + (classroom.length - 1));
             }
+//            获取新增数据的编辑图标DOM
             if (type == "engine") {
               editImg = document.getElementById("engineEditImg" + (classroom.length - 1));
             }
             editImg.click();
+//            触发编辑
           });
           if (type == "classroom") {
             this.buffer_classrooms.push(
                 { id:"请编辑后保存", name:"", number:"请编辑后保存" }
             );
           }
+//        新增缓存数据
           if (type == "engine") {
             this.buffer_engineRooms.push(
                 { id:"请编辑后保存", name:"", number:"请编辑后保存" }
             );
           }
-//        }else{
-//          this.$Message.warning("请勿重复添加未编辑保存教室信息！");
-//        }
-      }
+      }//新增未保存的教室，进入编辑状态；新增对应缓存数据
     }
   }
 </script>
@@ -576,21 +563,6 @@
     /*折叠按钮*/
     cursor: pointer;
   }
-  /*.classroomButton{
-    !*下拉显示或隐藏的按钮标题栏*!
-    width: 100%;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    outline: none;
-    background-color: #37937A;
-    border: thin solid #37937A;
-    margin: 0.1rem;
-    color: white;
-  }
-  .classroomButton:hover{
-    cursor: pointer;
-  }*/
   img{
     /*操作图标*/
     position: relative;
@@ -599,7 +571,7 @@
     height: 1.5rem;
   }
   table{
-    /*教研组信息*/
+    /*教室信息*/
     width: 100%;
     margin: 0 auto;
     border-collapse: collapse;

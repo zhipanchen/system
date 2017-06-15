@@ -79,7 +79,7 @@
               </td>
             </tr>
             <tr>
-              <!--增加功能，通过vue增加循环数组元素，但input DOM不会即时创建，所以暂时无法增加的同时处于编辑状态-->
+              <!--增加功能，通过vue增加循环数组元素，但input DOM不会即时创建，所以需要视图更新回调函数触发编辑状态-->
               <td><img src="../../../../../assets/images/add.png" @click="addClick(fiveCourses,'five')" title="添加"></td>
               <td></td>
               <td></td>

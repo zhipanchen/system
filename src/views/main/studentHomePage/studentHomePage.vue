@@ -1,6 +1,8 @@
 <template>
   <div id="studentHome">
+    <!--导航栏组件-->
     <topTitle></topTitle>
+    <!--主组件-->
     <studentHomeDiv></studentHomeDiv>
   </div>
 </template>

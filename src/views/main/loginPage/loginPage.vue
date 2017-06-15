@@ -1,7 +1,7 @@
 <template>
   <!--登录页面-->
   <div id="login" :style="{ backgroundImage: 'url(' + img1 + ')' }">
-    <!--背景图片不能在css中设置，否则可能导致打包图片失败-->
+    <!--背景图片地址不能在css中设置，否则可能导致打包图片失败，这是因为vue会解析图片路径，在加载的时候使用解析过的路径，如果设置在css中,路径并不会被解析。在data中定义地址是最稳妥的。-->
     <div id="loginDiv" :style="{ backgroundImage: 'url(' + img2 + ')' }">
       <a href="http://www.samsph.com/hsxx/1092/1/"><img id="schoolImg" src="../../../assets/images/title.png" :alt="imgAlt" ></a>
       <p id="hospitalMottoP">厚德 至善 求精 图强</p>
@@ -14,6 +14,7 @@
       <div id="passwordDiv" class="inputDiv">
         <span class="inputSpan">密码</span><br/>
         <input id="passwordInput" class="loginInput" type="password" v-model="passwordValue" @keyup.enter="loginClick()">
+        <!--回车监听，触发登录按钮-->
       </div>
       <p></p>
       <p></p>
@@ -48,8 +49,7 @@
         <p>找回功能必须预先设置邮箱。</p>
       </div>
       <div slot="footer" style="text-align: center">
-        <button id="modalBtn" @click="ok1">确定</button>
-        <button id="modalBtn" @click="cancel1">取消</button>
+        <button id="modalBtn" @click="modal1 = false">确定</button>
       </div>
     </Modal>
   </div>
@@ -57,6 +57,7 @@
 
 <script>
     var CryptoJS = require("crypto-js");
+//    相当于import加密js库
     export default {
         name: 'login',
         data () {
@@ -77,50 +78,46 @@
           }else if(sessionStorage.getItem("userType") != null){
             location.href = '#/login/main/eduAdminHome';
           }
-        },
+        },//简单判断是否已经处于登录状态
         mounted: function() {
           var dom = document.getElementById("login");
           dom.style.height = window.innerHeight + "px";
-        },
+        }, //dom加载后调整页面高度
         methods: {
-          ok1: function(){
-            this.modal1 = false;
-          },
-          cancel1: function(){
-            this.modal1 = false;
-          },
           loginClick: function(){
-//            登录验证
             if(this.userNumValue == "" || this.passwordValue == "" ) {
-//              this.$Message.warning("帐号或密码不能为空！");
+//              验证输入是否为空
               this.errorMessage = "帐号或密码不能为空!";
               this.modal = true;
             }else{
               var a = CryptoJS.MD5(this.passwordValue + this.userId + "护士学校");
+//              MD5加密前加盐
               a = a.toString().toUpperCase();
+//              MD5加密，字母大写化
               function encrypt(data) {
                 var key  = CryptoJS.enc.Latin1.parse('uestc2017nurse01');
                 var iv   = CryptoJS.enc.Latin1.parse('10esrun7102ctseu');
                 return CryptoJS.AES.encrypt(data, key, {iv:iv,mode:CryptoJS.mode.CBC,padding:CryptoJS.pad.ZeroPadding}).toString();
-              }
-//              this.$http.post('../testPhp/loginCheck.php', {
+              }//AES加密函数
               this.$http.post('./login', {
                 "userId": this.userId,
                 "loginPwd": JSON.stringify(encrypt(a))
               }, {
                 "Content-Type": "application/json"
               }).then(function (response) {
-                console.log(response.body);
                 if(response.body.result == "1"){
                   sessionStorage.setItem("userType", response.body.userType);
+//                  登录成功，获取用户类型
                   sessionStorage.removeItem("lastClickRole");
+//                  移除之前登录的帐号的首页角色最后一次选择记录
                   if(response.body.userType == "1"){
+//                    根据用户类型跳转首页
                     location.href = '#/login/main/studentHome';
                   }else{
                     location.href = '#/login/main/eduAdminHome';
                   }
                 }else{
-//                  this.$Message.error("帐号或密码有误，请确认重试！");
+//                  登录失败
                   this.errorMessage = "帐号或密码有误，请确认重试！";
                   this.modal = true;
                 }
@@ -128,11 +125,10 @@
                 this.$Message.error('连接失败，请重试！',3);
               });
             }
-          },
+          }, //登录验证
           forgetPwClick: function(){
-//            忘记密码
             location.href='#/login/operation/forgetPassword';
-          }
+          }//忘记密码,跳转到找回密码页面
         }
     }
 </script>

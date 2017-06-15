@@ -3,7 +3,7 @@
     <div id="checkCourse">
       <topTitle></topTitle>
       <!--导航栏组件-->
-      <topBar activeVue="#/eduAdmin/course/courseInfo/checkCourse"></topBar>
+      <topBar></topBar>
       <!--查看课表页面主组件-->
       <checkCourseDiv></checkCourseDiv>
     </div>

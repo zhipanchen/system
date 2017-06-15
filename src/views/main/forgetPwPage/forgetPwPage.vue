@@ -1,5 +1,6 @@
 <template>
   <div id="forgetPassword" :style="{ backgroundImage: 'url(' + img1 + ')' }">
+    <!--背景图片地址不能在css中设置，否则可能导致打包图片失败，这是因为vue会解析图片路径，在加载的时候使用解析过的路径，如果设置在css中,路径并不会被解析。在data中定义地址是最稳妥的。-->
     <div id="main">
       <div id="titleDiv">
         <a :href="imgHref"><img id="schoolImg" src="../../../assets/images/title.png" alt="四川省医科科学院·四川省人民医院·护士学校" ></a>
@@ -8,6 +9,7 @@
         </div>
       </div>
       <div id="stepDiv">
+        <!--步骤条-->
         <Steps :current="current">
           <Step :title="step1" content="输入帐号与验证邮箱"></Step>
           <Step :title="step2" content="发送验证邮件"></Step>
@@ -27,6 +29,7 @@
           <button id="nextButton" class="am-btn am-btn-success am-radius" @click="nextClick">下一步</button>
         </p>
         <p id="emailP" style="display: none;font-size: 1.2rem"></p>
+        <!--邮件发送成功提示-->
       </div>
     </div>
     <Modal
@@ -64,13 +67,14 @@
         email: "",
 //        验证邮箱
         sending: false,
-//        邮件发送状态
+//        邮件发送状态，用于防止连续点击下一步
         modal: false,
 //        对话框显隐
         errorMessage: ""
       }
     },
     mounted: function() {
+//      dom加载后调整页面高度
       var dom = document.getElementById("forgetPassword");
       dom.style.height = window.innerHeight + "px";
     },
@@ -96,19 +100,21 @@
         }
       },
       nextClick: function(){
-//        发送验证邮件
         if(!this.sending) {
+//          判断是否处于邮件发送状态
           if(this.userId == ""){
+//            验证账号格式
             this.errorMessage = "帐号不能为空,请确认重试！";
             this.modal = true;
           }else if(this.email.indexOf("@") < 0){
-            this.errorMessage = "邮件输入格式有误,请确认重试！";
+//            验证邮箱地址格式
+            this.errorMessage = "邮箱地址输入格式有误,请确认重试！";
             this.modal = true;
           }else {
             this.sending = true;
             this.$Message.loading('正在验证并发送邮件，请等待……', 0);
             this.$Loading.start();
-//        this.$http.post('../testPhp/loginCheck.php', {
+//            启动进度条
             this.$http.post('./findbackPwd', {
               "userId": this.userId,
               "email": this.email
@@ -116,39 +122,46 @@
               "Content-Type": "application/json"
             }).then(function (response) {
               this.removeLoading();
+//              移除进度提示
               console.log(response.body);
               if (response.body.result == "1") {
                 this.$Loading.finish();
+//                移除进度条
                 this.current = 1;
                 this.step1 = "已完成";
                 this.step2 = "进行中";
                 var operationP = document.getElementsByClassName("operationP");
                 for (var i = 0; i < operationP.length; i++) {
+//                  隐藏输入框和按钮
                   operationP[i].style.display = "none";
                 }
                 var emailP = document.getElementById("emailP");
                 emailP.style.display = "block";
+//                显示提示
                 emailP.innerHTML = "验证邮件已发送到" + this.email + ",请在有效期内点击打开邮件内链接完成验证。";
               } else {
                 this.$Loading.error();
-//              this.$Message.error("帐号或邮件地址有误,请确认重试！");
+//                移除进度条
                 this.errorMessage = "帐号或邮件地址有误,请确认重试！";
                 this.modal = true;
               }
             }, function (error) {
               this.$Message.error('连接失败，请重试！', 3);
               this.$Loading.error();
+//                移除进度条
               this.removeLoading();
+//                移除进度提示
             });
           }
         }
-      }
+      }//发送验证邮件
     }
   }
 </script>
 
 <style scoped>
   #forgetPassword{
+    /*页面*/
     min-height: 35rem;
     display: flex;
     align-items: center;

@@ -3,7 +3,7 @@
   <div id="adjustCouApply">
     <topTitle></topTitle>
     <!--导航栏组件-->
-    <topBar activeVue="#/eduAdmin/course/courseInfo/adjustCouApply"></topBar>
+    <topBar></topBar>
     <!--查看调课申请页面主组件-->
     <adjustCouApplyDiv></adjustCouApplyDiv>
   </div>

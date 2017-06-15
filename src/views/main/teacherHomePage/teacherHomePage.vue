@@ -1,4 +1,5 @@
 <template>
+  <!--该页面弃用-->
   <div id="teacherHome">
     <topTitle></topTitle>
     <teacherHomeDiv></teacherHomeDiv>

@@ -1,6 +1,8 @@
 <template>
   <div id="eduAdminHome">
+    <!--导航栏组件-->
     <topTitle></topTitle>
+    <!--主组件-->
     <eduAdminHomeDiv></eduAdminHomeDiv>
   </div>
 </template>

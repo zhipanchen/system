@@ -4,6 +4,7 @@
     <topTitle></topTitle>
     <!--导航栏组件-->
     <topBar></topBar>
+    <!--主组件-->
     <courseArrangeTableDiv></courseArrangeTableDiv>
   </div>
 </template>

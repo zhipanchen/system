@@ -120,7 +120,7 @@
         selected1:'选择天数',
         options1: [{},{}],
         change:'',
-        modal1:false,
+        modal1:true,
         oselected1:'',
         omessage2:''
       }
@@ -323,10 +323,15 @@
     border: 0.1rem solid #d4d4d9;
   }
   button{
-   width:5.6rem;
+    width:5.6rem;
     position: relative;
     top:1rem;
     margin:0.7rem;
+  }
+  #modalBtn{
+    position: relative;
+    top:0;
+    margin:0 0.7rem;
   }
   select{
     border: 0.1rem solid #d4d4d9;

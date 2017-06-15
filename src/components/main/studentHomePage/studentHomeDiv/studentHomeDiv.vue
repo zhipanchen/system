@@ -9,8 +9,6 @@
             <span class="announcementName">{{ announcement.announcementName }}</span><span>[{{ announcement.announcementTime }}]</span>
           </li>
         </ul>
-        <!--公告-->
-        <!--<p id="detail"><a href="#/eduAdmin/information/noticeManage">详情</a></p>-->
       </div>
 
       <button class="am-btn am-btn-success am-radius" id="backButton" @click="modal1 = true" v-if="isSuspend">申请复学</button>
@@ -99,134 +97,7 @@
     name: 'studentHomeDiv',
     data () {
       return {
-        announcementList: [
-          /*{
-           "announcementId": 1,
-           "announcementName": " 关于xxx 的公告11111111111111111111111111111111",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-19",
-           "announcementType": "部门分布"
-           },
-           {
-           "announcementId": 2,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-18",
-           "announcementType": "部门分布"
-           },
-           {
-           "announcementId": 3,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-16",
-           "announcementType": "学院公告"
-           },
-           {
-           "announcementId": 4,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-20",
-           "announcementType": "学院公告"
-           },
-           {
-           "announcementId": 5,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-4",
-           "announcementType": "校务公布"
-           },
-           {
-           "announcementId": 6,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-3",
-           "announcementType": "校务公布"
-           },
-           {
-           "announcementId": 7,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-4-29",
-           "announcementType": "教务文件"
-           },
-           {
-           "announcementId": 8,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-4-19",
-           "announcementType": "教务文件"
-           },
-           {
-           "announcementId": 9,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-12",
-           "announcementType": "对外播报"
-           },
-           {
-           "announcementId": 10,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-12",
-           "announcementType": "科研动态"
-           },
-           {
-           "announcementId": 11,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-19",
-           "announcementType": "对外播报"
-           },
-           {
-           "announcementId": 11,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-19",
-           "announcementType": "对外播报"
-           },
-           {
-           "announcementId": 12,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-19",
-           "announcementType": "对外播报"
-           },
-           {
-           "announcementId": 13,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-19",
-           "announcementType": "对外播报"
-           },
-           {
-           "announcementId": 14,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-19",
-           "announcementType": "对外播报"
-           },
-           {
-           "announcementId": 15,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-19",
-           "announcementType": "对外播报"
-           },
-           {
-           "announcementId": 16,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-19",
-           "announcementType": "对外播报"
-           },
-           {
-           "announcementId": 17,
-           "announcementName": " 关于xxx 的公告",
-           "announcementContent": "sss",
-           "announcementTime": "2015-5-19",
-           "announcementType": "对外播报"
-           }*/
-        ],
+        announcementList: [],
 //        公告信息
         quitSchoolList:[],
 //        休学学生信息
@@ -241,12 +112,14 @@
     },
     beforeMount: function () {
       this.$http.post('./announcementManage/getAllAnnouncement',{},{
-//      this.$http.post('../testPhp/getAllAnnouncement.php',{},{
         "Content-Type":"application/json"
       }).then(function(response){
+//        获取公告信息
         this.announcementList = response.body.announcementList;
         this.announcementList = this.announcementList.reverse();
+//        公告颠倒顺序，使最新的公告显示在前面
         if(this.announcementList.length == 0){
+//          如果没有公告，填充一条空公告，减少公告区域布局变形
           this.announcementList.push({
             "announcementId": "null",
             "announcementName": "……",
@@ -258,6 +131,7 @@
       },function(error){
         this.$Message.error('连接失败，请重试！');
         if(this.announcementList.length == 0){
+//          如果没有公告，填充一条空公告，减少公告区域布局变形
           this.announcementList.push({
             "announcementId": "null",
             "announcementName": "……",
@@ -287,47 +161,53 @@
       }).then(function(response){
         var isSuspend = false;
         this.quitSchoolList = response.body.quitSchoolList;
+//        获取休学学生列表
         if(sessionStorage.getItem("userInfo") == null){
+//          如果没有用户信息，向后端获取用户信息
           this.$http.post('./getCurrentUser',{},{
             "Content-Type":"application/json"
           }).then(function(response){
             for (var i = 0; i < this.quitSchoolList.length; i++) {
               if (this.quitSchoolList[i].studentId == response.body.currentUserId) {
+//                判断当前用户是否休学
                 isSuspend = true;
                 break;
               }
             }
             if (isSuspend) {
               this.isSuspend = true;
+//              显示复学申请按钮
             } else {
               this.isSuspend = false;
+//              隐藏复学申请按钮
             }
           },function(error){
           });
         }else {
           for (var i = 0; i < response.body.quitSchoolList.length; i++) {
             if (response.body.quitSchoolList[i].studentId == JSON.parse(sessionStorage.getItem("userInfo")).currentUserId) {
+//                判断当前用户是否休学
               isSuspend = true;
               break;
             }
           }
           if (isSuspend) {
             this.isSuspend = true;
+//              显示复学申请按钮
           } else {
             this.isSuspend = false;
+//              隐藏复学申请按钮
           }
         }
       },function(error){});//
     },
     methods: {
       announcementClick: function (id) {
-  //        公告点击跳转详情
         if(id != "null") {
           location.href = "#/eduAdmin/information/notifyInformation?" + id;
         }
-      },
+      },//公告点击跳转详情
       back: function () {
-//        复学申请
         this.$http.post('./stateManage/applyReinstating',{
           "studentId":JSON.parse(sessionStorage.getItem("userInfo")).currentUserId
         },{
@@ -337,6 +217,7 @@
             this.errorMessage = "申请成功，请耐心等候教务审批，通过后将分配新的班级，请密切留意个人信息的变化！";
             this.isSuspend = false;
             this.modal1 = false;
+//            隐藏原有对话框，显示操作提示对话框
             this.modal = true;
           }else{
             this.errorMessage = "申请失败，请重试！";
@@ -344,7 +225,7 @@
           }
         },function(error){
         });
-      },
+      },//复学申请
     }
   }
 </script>

@@ -13,7 +13,7 @@
             <p v-for="(group,index) in groups" class="groupP">
               <span class="operationSpan">
                 <input class="groupInput" v-model="group.name" type="text" readonly="true" @click="operationClick(index,'click',1)">
-                <span class="delSpan" @click="operationClick(index,'delete',1)">×</span>
+                <span class="delSpan" @click="operationClick(index,'delete',1)" title="删除">×</span>
               </span>
             </p>
           </div>
