@@ -4,7 +4,7 @@
       <div class="positionBar">
         <span>您的当前位置：</span>
         <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-        <span> > 人员管理设置 > <a href="#/eduAdmin/person/eduAdminManageClass" class="returnHome">异动管理</a> > 异动审批</span>
+        <span> > 人员管理设置 > <a href="#/eduAdmin/person/eduAdminManageClass" class="returnHome">学生异动管理</a> > 异动审批</span>
       </div>
       <div id="selectDiv">
         <select v-model="applicationType" @change="typeChange()">

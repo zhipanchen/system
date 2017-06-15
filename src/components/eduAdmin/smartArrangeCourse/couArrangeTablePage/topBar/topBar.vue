@@ -11,17 +11,20 @@
     name: 'couArrangeTable_topBar',
     data () {
       return {
-        msg: ''
+        authorityList: ''
       }
     },
     mounted: function() {
       try{
         var buttons = document.getElementById("couArrangeTable_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+//        获取权限列表
         for (var i = 0; i < buttons.length; i++) {
+//          隐藏导航按钮
           buttons[i].style.display = "none";
         }
         for (var i = 0; i < this.authorityList.length; i++) {
+//          根据权限显示导航栏按钮
           if(this.authorityList[i] == "14"){
             buttons[0].style.display = "block";
           }else if(this.authorityList[i] == "9"){
@@ -50,9 +53,6 @@
 
 <style scoped>
   html {
-  }
-  #couArrangeTable_topBar{
-
   }
   #topBarButton{
     margin-left: 5rem;

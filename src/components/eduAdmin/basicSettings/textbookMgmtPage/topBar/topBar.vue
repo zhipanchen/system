@@ -83,13 +83,17 @@
 //      dom加载后改变上传插件默认的按钮样式
       var importButton = document.getElementById("importButton");
       importButton.className = "am-btn am-btn-success am-radius";
+
       try{
         var buttons = document.getElementById("textbookManagement_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+//        获取权限列表
         for (var i = 0; i < 4; i++) {
+//          隐藏导航按钮
           buttons[i].style.display = "none";
         }
         for (var i = 0; i < this.authorityList.length; i++) {
+//          根据权限显示导航栏按钮
           if(this.authorityList[i] == "27"){
             buttons[0].style.display = "block";
           }else if(this.authorityList[i] == "21"){
@@ -121,13 +125,11 @@
       },
 //      下载教材信息
       handleFormatError: function(){
-//        this.$Message.error('文件格式错误！限制格式为'+this.$refs.uploadForTextbook.format,3);
         this.errorMessage = "文件格式错误！限制格式为"+this.$refs.uploadForTextbook.format;
         this.modal1 = true;
       },
 //      上传格式错误回调
       handleSize: function(){
-//        this.$Message.error('文件大小超出范围！限制最大（KB）为'+this.$refs.uploadForTextbook.maxSize,3);
         this.errorMessage = "文件大小超出范围！限制最大（KB）为"+this.$refs.uploadForTextbook.maxSize;
         this.modal1 = true;
       },
@@ -135,17 +137,16 @@
       handleError: function(res){
         var msg = document.getElementsByClassName("ivu-message-notice");
         if(this.loadingMsg){
-//            结束进度条
           this.$Loading.error();
-//            移除“正在上传……”的msg
+//            结束进度条
           if(!!window.ActiveXObject || "ActiveXObject" in window){
             msg[0].parentNode.innerHTML = "";
 //                IE浏览器对removeChild实现有问题
           }else{
             msg[0].parentNode.removeChild(msg[0]);
           }
+//            移除“正在上传……”的msg
         }
-//        this.$Message.error('文件上传失败！'+res,3);
         this.errorMessage = "文件上传失败！"+res;
         this.modal1 = true;
         this.loadingMsg = false;
@@ -161,24 +162,30 @@
         console.log(res);
         if (res.result == 1) {
           this.$Loading.finish();
+//            结束进度条
           var msg = document.getElementsByClassName("ivu-message-notice");
           if (!!window.ActiveXObject || "ActiveXObject" in window) {
             msg[0].parentNode.innerHTML = "";
+//                IE浏览器对removeChild实现有问题
           } else {
             msg[0].parentNode.removeChild(msg[0]);
           }
+//            移除“正在上传……”的msg
           this.$Message.success('上传成功！3s后自动刷新页面！', 3);
           console.log(res);
           this.loadingMsg = false;
-          setTimeout("location.reload()", 4000);
+          setTimeout("location.reload()", 3500);
         }else{
           this.$Loading.error();
+//            结束进度条
           var msg = document.getElementsByClassName("ivu-message-notice");
           if (!!window.ActiveXObject || "ActiveXObject" in window) {
             msg[0].parentNode.innerHTML = "";
+//                IE浏览器对removeChild实现有问题
           } else {
             msg[0].parentNode.removeChild(msg[0]);
           }
+//            移除“正在上传……”的msg
           this.loadingMsg = false;
           this.errorInfo = res.result;
           this.modal = true;

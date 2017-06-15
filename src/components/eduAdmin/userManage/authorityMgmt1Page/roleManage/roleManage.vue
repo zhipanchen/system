@@ -1,9 +1,9 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">权限管理</a></span> -->
 		<span> > 角色管理</span>
 	</div>
 	<div id="authorityMgmt">
@@ -53,6 +53,7 @@
 			</div>
 			<!-- 弹窗操作 -->
 			<div class="changedBtn">
+				<!-- 保存弹窗操作 -->
 				<button class="am-btn am-btn-success am-radius" @click="modal1 = true">保存</button>
 				<Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
 					<p style="text-align:center; font-size:1.1rem;">您确定修改并保存吗？</p>
@@ -61,6 +62,7 @@
 						<Button id="modalBtn" @click="cancel1()">取消</Button>
 					</div>
 				</Modal>
+				<!-- 取消弹窗操作 -->
 				<button class="am-btn am-btn-success am-radius" @click="modal2 = true">取消</button>
 				<Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
 					<p style="text-align:center; font-size:1.1rem;">您确定不保存吗？</p>

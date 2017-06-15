@@ -15,17 +15,20 @@
     name: 'banCouApply_topBar',
     data () {
       return {
-        msg: ''
+        authorityList: ''
       }
     },
     mounted: function() {
       try{
         var buttons = document.getElementById("banCouApply_topBar").getElementsByTagName("button");
         this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+//        获取权限列表
         for (var i = 0; i < buttons.length; i++) {
+//          隐藏导航按钮
           buttons[i].style.display = "none";
         }
         for (var i = 0; i < this.authorityList.length; i++) {
+//          根据权限显示导航栏按钮
           if(this.authorityList[i] == "17"){
             buttons[0].style.display = "block";
           }else if(this.authorityList[i] == "12"){
@@ -76,16 +79,19 @@
     margin-left: 5rem;
   }
   @media screen and (max-width: 1000px) {
+    /*由于导航栏按钮过多，需要媒体查询修改导航栏宽度*/
     .am-btn-group button{
       width: 10rem;
     }
   }
   @media screen and (min-width: 1000px) and (max-width: 1025px) {
+    /*由于默认媒体查询会在1024缩放56%，所以需要再次增大宽度*/
     .am-btn-group button{
       width: 13rem;
     }
   }
   @media screen and (min-width: 1025px) and (max-width: 1152px) {
+    /*一般情况下屏幕越小，按钮宽度越小*/
     .am-btn-group button{
       width: 7.7rem;
     }

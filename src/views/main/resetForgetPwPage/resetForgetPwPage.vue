@@ -1,5 +1,6 @@
 <template>
   <div id="resetForgetPassword" :style="{ backgroundImage: 'url(' + img1 + ')' }">
+    <!--背景图片地址不能在css中设置，否则可能导致打包图片失败，这是因为vue会解析图片路径，在加载的时候使用解析过的路径，如果设置在css中,路径并不会被解析。在data中定义地址是最稳妥的。-->
     <div id="main">
       <div id="titleDiv">
         <a :href="imgHref"><img id="schoolImg" src="../../../assets/images/title.png" alt="四川省医科科学院·四川省人民医院·护士学校" ></a>
@@ -8,6 +9,7 @@
         </div>
       </div>
       <div id="stepDiv">
+        <!--进度条-->
         <Steps :current="2">
           <Step title="已完成" content="输入帐号与验证邮箱"></Step>
           <Step title="已完成" content="发送验证邮件"></Step>
@@ -28,6 +30,7 @@
           <button id="nextButton" class="am-btn am-btn-success am-radius" @click="nextClick">确定</button>
         </p>
         <p id="tipP">加载中……</p>
+        <!--操作情况提示-->
       </div>
     </div>
     <Modal
@@ -48,6 +51,7 @@
 
 <script>
   var CryptoJS = require("crypto-js");
+  //    相当于import加密js库
   export default {
     name: "resetForgetPassword",
     data () {
@@ -68,36 +72,45 @@
 //      dom加载后获取后端的邮箱验证结果
       var dom = document.getElementById("resetForgetPassword");
       dom.style.height = window.innerHeight + "px";
+
       var thisURL = document.URL;
+//      获取网页地址url
       try{
         var param =thisURL.split("?")[1];
+//        获取？号后的字符串
         var paramA= param.split("&")[0];
         var paramB= param.split("&")[1];
+//        根据&分割出两个变量
         var sid = null;
         if(paramA.split("=")[0] == "sid"){
+//          判断哪个变量为sid
           sid = paramA.split("=")[1];
+//          获取变量名为sid的值
           this.userId = paramB.split("=")[1];
+//          获取另一个变量的值为用户id
         }else{
           this.userId = paramA.split("=")[1];
           sid = paramB.split("=")[1];
         }
       }catch (e){}
-//      this.$http.post('../testPhp/loginCheck.php', {
+//      异常捕获,防止?号后变量不存在报错导致后续js执行中断
       this.$http.post('./checkLink', {
           "sid": sid,
           "userId": this.userId
       }, {
         "Content-Type": "application/json"
       }).then(function (response) {
-        console.log(response.body);
         var operationP = document.getElementsByClassName("operationP");
         var tipP = document.getElementById("tipP");
         try{
           if(response.body.result == "1"){
+//            判断该验证链接是否正常
             for(var i = 0;i < operationP.length;i++){
+//              显示新密码输入框和操作按钮
               operationP[i].style.display = "block";
             }
             tipP.style.display = "none";
+//            隐藏操作提示
           }else if(response.body.result == "2"){
             tipP.innerHTML = "验证链接超时失效，请重试！"
           }else{
@@ -114,47 +127,51 @@
       newPwd: function () {
         var pwIsNormalP = document.getElementById("pwIsNormalP");
         if(this.newPwd.match(/^[a-zA-Z0-9]{6,10}$/)){
+//          新密码格式正则验证,6-15位数字或字母的组合
           this.isNormal = true;
           pwIsNormalP.style.display = "none";
         }else{
           this.isNormal = false;
           pwIsNormalP.style.display = "block";
+//          密码格式不正确提示显示
         }
-      }
-    },
+      }//监听新密码输入变化
+    },//data的属性变量监听
     methods: {
       nextClick: function(){
 //        修改密码
         if(this.newPwd == ""){
+//          验证密码是否为空
           this.errorMessage = "密码不能为空,请确认重试！";
           this.modal = true;
         }else if(!this.isNormal){
+//          验证密码格式是否正确
           this.errorMessage = "密码要求为6-15位的数字或字母组成！";
           this.modal = true;
         }else if(this.newPwd != this.confirmPwd){
+//          验证新密码确认是否相同
           this.errorMessage = "两次输入的新密码不相同！";
           this.modal = true;
         }else{
           var a = CryptoJS.MD5(this.newPwd + this.userId + "护士学校");
+//              MD5加密前加盐
           a = a.toString().toUpperCase();
+//              MD5加密，字母大写化
           function encrypt(data) {
             var key  = CryptoJS.enc.Latin1.parse('uestc2017nurse01');
             var iv   = CryptoJS.enc.Latin1.parse('10esrun7102ctseu');
             return CryptoJS.AES.encrypt(data, key, {iv:iv,mode:CryptoJS.mode.CBC,padding:CryptoJS.pad.ZeroPadding}).toString();
-          }
-//          this.$http.post('../testPhp/loginCheck.php', {
+          }//AES加密函数
           this.$http.post('./setNewPwd', {
             "userId": this.userId,
             "newPwd": JSON.stringify(encrypt(a))
           }, {
             "Content-Type": "application/json"
           }).then(function (response) {
-            console.log(response.body);
             if(response.body.result == "1"){
               this.$Message.success("修改成功，请牢记新密码！5s后跳转到登录页面……");
               setTimeout("location.href = '#/login'", 5000);
             }else{
-//              this.$Message.error("修改失败，请确认新密码是否符合要求或验证是否仍有效！")
               this.errorMessage = "修改失败，请确认新密码是否符合要求或验证是否仍有效！";
               this.modal = true;
             }
@@ -169,6 +186,7 @@
 
 <style scoped>
   #resetForgetPassword{
+    /*页面*/
     min-height: 35rem;
     display: flex;
     align-items: center;
