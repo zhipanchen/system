@@ -1,6 +1,6 @@
 <template>
     <div id="eduResearchGroupPerson">
-      {{ person }}<button @click="remove">×</button>
+      {{ person }}<button @click="remove" title="删除">×</button>
     </div>
   <!--组员组件-->
 </template>

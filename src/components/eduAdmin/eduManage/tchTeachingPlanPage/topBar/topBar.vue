@@ -16,17 +16,17 @@
         name: 'tchTeachingPlanPageTopBar',
         data () {
             return {
-                msg: ''
+                authorityList: ''
             }
         },
       mounted: function(){
         try{
           var buttons = document.getElementById("tchTeachingPlanPageTopBar").getElementsByTagName("button");
-          var authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
+          this.authorityList = JSON.parse(sessionStorage.getItem("authorityList"));
           for(var i=0;i<buttons.length;i++){
             buttons[i].style.display="none";
           }
-          for(var j=0;j<authorityList.length;j++){
+          for(var j=0;j<this.authorityList.length;j++){
             if(this.authorityList[j] == "17"){
               buttons[0].style.display = "inline";
             }else if(this.authorityList[j] == "12"){

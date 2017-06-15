@@ -44,7 +44,7 @@
     data () {
       return {
         imgHref: 'http://www.samsph.com/hsxx/1092/1/',//医院官网
-        userHref: '',//点击用户名跳转
+        userHref: '',//点击用户欢迎信息跳转
         userName: '',//显示用户名
         imgAlt: '四川省医科科学院·四川省人民医院',
         exitAlt: '退出图标',
@@ -55,51 +55,46 @@
       }
     },
     beforeMount: function() {
-      if(sessionStorage.getItem("needReload") == 1){
-        sessionStorage.removeItem("needReload");
-        location.reload();
-      }
-//      this.$http.post('',{},{
       this.$http.post('./getCurrentUser',{},{
         "Content-Type":"application/json"
       }).then(function(response){
-        console.log(response);
         if (sessionStorage.getItem("userType") == "1") {
+//          根据用户类型，设置用户欢迎信息点击跳转
           this.userHref = "#/student/setting/studentInformation";
         } else {
           this.userHref = "#/teacher/personInfo/basicMessage";
         }
         if (response.body.emailStatus == 0) {
+//          邮箱未填写安全提示
           this.emailStatus = "您的邮箱未填写，无法使用密码找回功能，为了您的帐号安全，请尽快填写邮箱地址！";
         }
         this.userName = response.body.currentUserName + "(" + response.body.currentUserId + ") ";
+//        显示用户名信息
         sessionStorage.setItem("userInfo", JSON.stringify(response.body));
+//        保存用户信息
       },function(error){
-//        this.$Message.error('连接失败，请重试！',3);
       });
     },
     methods: {
       exitAlert: function () {
-//        注销登录
         this.$http.post('./logout',{},{
           "Content-Type":"application/json"
         }).then(function(response){
+//          注销成功，移除用户类型纪录，移除用户角色最后一次点击选择纪录，移除用户具体信息纪录
           sessionStorage.removeItem("userType");
           sessionStorage.removeItem("lastClickRole");
           sessionStorage.removeItem("userInfo");
           location.href = "#/login";
+//          跳转到登录页面
         },function(error){
           this.$Message.error('连接失败，请重试！',3);
         });
-      }
+      }//注销登录
     }
   }
 </script>
 
 <style scoped>
-  html{
-    font-size: 100%;
-  }
   a{
     text-decoration: none;
   }
@@ -126,12 +121,6 @@
     color: black;
     text-decoration: none;
     font-size: 1rem;
-  }
-  #msgImg{
-    /*信息图标*/
-    width: 2rem;
-    height: 2rem;
-    cursor: pointer;
   }
   #exitImg{
     /*退出图标*/

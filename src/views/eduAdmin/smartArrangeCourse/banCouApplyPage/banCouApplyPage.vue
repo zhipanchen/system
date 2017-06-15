@@ -3,7 +3,7 @@
   <div id="banCouApply">
     <topTitle></topTitle>
     <!--导航栏组件-->
-    <topBar activeVue="#/eduAdmin/banCouApply"></topBar>
+    <topBar></topBar>
     <!--禁止排课申请页面主组件-->
     <banCouApplyDiv></banCouApplyDiv>
   </div>

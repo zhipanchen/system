@@ -1,6 +1,7 @@
 <template>
   <div id="eduAdminHomeDiv">
     <div id="menuDiv">
+      <!--角色类型列表，显示当前用户拥有所有角色-->
       <Menu
           ref="roleMenu"
           id="menu"
@@ -13,6 +14,7 @@
           </Menu-item>
         </Menu-group>
       </Menu>
+      <!--iview的菜单组件-->
 
       <button class="am-btn am-btn-success am-radius" id="termStartButton" @click="modal1 = true" v-if="isEduAdmin">设置学期开始时间</button>
       <button class="am-btn am-btn-success am-radius" id="evaluationStartButton" @click="modal2 = true" v-if="isEduAdmin">设置评教起止时间</button>
@@ -92,7 +94,6 @@
         </div>
       </Modal>
     </div>
-    <!--iview的菜单组件-->
     <div id="pageDiv">
       <div id="topFuncDiv">
         <span class="pageSpan" v-for="(authorityModel,index) in authorityModels" @click="inFuncClick(index)">
@@ -104,6 +105,7 @@
               <p v-html="authorityModel.msgNumTips"></p>
             </div>
           </Tooltip>
+          <!--tooltip为气泡提示，badge为徽标提示，用于未处理信息提示。-->
         </span>
       </div>
       <!--功能块-->
@@ -156,7 +158,6 @@
         courseMgmtImg: require("./images/课程管理.png"),
         personInfoImg: require("./images/个人信息.jpg"),
 //        功能块图标地址
-        inFunction: true,
         roleList: [
           /*{roleId: 3,roleName:"教务"},
           {roleId: 2,roleName:"教师"}*/
@@ -167,7 +168,7 @@
         authorityModels: [],
 //        一级功能列表
         activeName: "",
-//        选中角色绑定
+//        当前选中角色
         announcementList: [
           /*{
             "announcementId": 1,
@@ -328,9 +329,12 @@
 //      this.$http.post('../testPhp/getAllAnnouncement.php',{},{
         "Content-Type":"application/json"
       }).then(function(response){
+//        获取公告信息
         this.announcementList = response.body.announcementList;
         this.announcementList = this.announcementList.reverse();
+//        公告颠倒顺序，使最新的公告显示在前面
         if(this.announcementList.length == 0){
+//          如果没有公告，填充一条空公告，减少公告区域布局变形
           this.announcementList.push({
             "announcementId": "null",
             "announcementName": "……",
@@ -342,6 +346,7 @@
       },function(error){
         this.$Message.error('连接失败，请重试！');
         if(this.announcementList.length == 0){
+//          如果没有公告，填充一条空公告，减少公告区域布局变形
           this.announcementList.push({
             "announcementId": "null",
             "announcementName": "……",
@@ -371,15 +376,21 @@
       }).then(function(response){
         for (var i = 0; i < response.body.currentRoleList.length; i++) {
           if(response.body.currentRoleList[i].roleId == 1){
+//            如果用户角色为学生，跳转到学生首页
             location.href = '#/login/main/studentHome';
           }
         }
         this.roleList = response.body.currentRoleList;
+//        获取角色列表
         this.$nextTick(function () {
+//          vue视图更细回调，确保角色列表更新完成
           try {
             if(sessionStorage.getItem("lastClickRole") != null){
+//              判断是否有用户最后一次角色选中纪录
               this.roleChange(parseInt(sessionStorage.getItem("lastClickRole")));
+//              触发角色切换
             }else{
+//              没有用户最后一次角色选中纪录。默认选中第一个角色
               this.roleChange(this.roleList[0].roleId);
             }
           }catch (e){}
@@ -390,22 +401,26 @@
       activeName: function () {
 //        监听角色选择绑定的变化，生成一级功能块
         if(this.activeName == 3){
+//          判断是否为教务角色，是则显示三个时间设置按钮
           this.isEduAdmin = true;
         }else{
+//          判断是否为教务角色，不是则隐藏三个时间设置按钮
           this.isEduAdmin = false;
         }
         this.$http.post('./getRoleAuthority',{
           "roleId": this.activeName
         },{
-//      this.$http.post('../testPhp/getRoleAuthority.php',{},{
           "Content-Type":"application/json"
         }).then(function(response){
+//          获取相中角色的权限
           this.authorityList = response.body.getRoleAuthorityList.authorityIdList;
           this.authorityModels = [];
+//          根据权限显示功能模块，msgNum为未处理信息数量，disabled为数量信息提示是否禁用，index为功能显示优先级
           for (var i = 0; i < this.authorityList.length; i++) {
 //            生成功能块列表
             if(this.authorityList[i] == "17" || this.authorityList[i] == "12" || this.authorityList[i] == "13" || this.authorityList[i] == "11" || this.authorityList[i] == "8" || this.authorityList[i] == "62" || this.authorityList[i] == "30") {
               var isExist = false;
+//              判断是否重复生成
               for (var a = 0; a < this.authorityModels.length; a++) {
                 if (this.authorityModels[a].name == "教务审批") {
                   isExist = true;
@@ -545,9 +560,11 @@
           var sortA = [];
           var sortB = [];
           for (var i = 0; i < this.authorityModels.length; i++) {
+//            获取功能显示优先级
             sortA.push(this.authorityModels[i].index);
           }
           sortA = sortA .sort (function(a,b){return a-b});
+//          根据优先级先后重新进行排序
           for (var i = 0; i < sortA.length; i++) {
             for (var j = 0; j < this.authorityModels.length; j++) {
               if(this.authorityModels[j].index == sortA[i]){
@@ -555,10 +572,13 @@
               }
             }
           }
+//            根据排好的顺序重新显示功能模块
           this.authorityModels = JSON.parse(JSON.stringify(sortB));
           this.$nextTick(function(){
+//            功能模块视图更新回调，触发图片对应显示和未处理数量提示
             var img = document.getElementById("topFuncDiv").getElementsByTagName("img");
             for (var i = 0; i < img.length; i++) {
+//              根据功能模块匹配图标
               if (img[i].alt == "人员管理设置" || img[i].alt == "资源管理设置") {
                 img[i].src = this.baseSettingImg;
               } else if (img[i].alt == "成绩管理") {
@@ -592,6 +612,7 @@
             this.$http.post('./getTipsNum',{},{
               "Content-Type":"application/json"
             }).then(function(response){
+//              获取未处理信息数量，启用对应信息提示
               for (var i = 0; i < this.authorityModels.length; i++) {
                 if(this.authorityModels[i].name == "人员管理设置"){
                   this.authorityModels[i].msgNum = response.body.applyQuitStudentNum + response.body.applyDropStudentNum + response.body.applyReinstatingStudentNum;
@@ -603,6 +624,7 @@
                   this.authorityModels[i].disabled = false;
                 }else if(this.authorityModels[i].name == "督导反馈"){
                   this.authorityModels[i].msgNum = response.body.noCheckSupNum;
+                  this.authorityModels[i].msgNumTips = "未确认的任务："+ response.body.noCheckSupNum;
                   this.authorityModels[i].disabled = false;
                 }else{
                   this.authorityModels[i].disabled = true;
@@ -612,6 +634,7 @@
             });
           });
         },function(error){
+//          测试代码
           /*this.authorityList = [];
           this.authorityModels = [];
           for (var i = 0; i < 70; i++) {
@@ -620,12 +643,14 @@
         });
         sessionStorage.setItem("lastClickRole", this.activeName);
 //        记录最后一次点击角色
-      },
+      },//监听角色选中变化
       modal2: function () {
         if(this.modal2){
+//          判断对话框是否开启
           this.$http.post('./getEvaTime',{},{
             "Content-Type":"application/json"
           }).then(function(response){
+//            获取最近评教时间进行显示
             if(response.body.result == "1") {
               this.latelyEvaTime = "最近的评教时间为：" + response.body.evaTime.startEvaTeachTime + "到" + response.body.evaTime.endEvaTeachTime;
             }else if(response.body.result == "0") {
@@ -634,12 +659,14 @@
           },function(error){
           });
         }
-      },
+      },//监听评教时间设置对话框是否开启
       modal3: function () {
         if(this.modal3){
+//          判断对话框是否开启
           this.$http.post('./getScoreInputTime',{},{
             "Content-Type":"application/json"
           }).then(function(response){
+//            获取最近成绩录入时间进行显示
             if(response.body.result == "1") {
               this.latelyGradeTime = "最近的成绩录入时间为：" + response.body.scoreInputTime.startScoreInputTime + "到" + response.body.scoreInputTime.endScoreInputTime;
             }else if(response.body.result == "0") {
@@ -648,24 +675,30 @@
           },function(error){
           });
         }
-      },
-    },
+      },//监听成绩录入时间设置对话框是否开启
+    },//data属性变量变化监听
     methods:{
       termStart: function () {
         var firstDate = new Date(this.firstDate);
         var secondDate = new Date(this.secondDate);
+//        将用户选择的学期开始时间转化为时间变量格式
         if(this.firstDate == "" || this.secondDate == ""){
+//          验证时间选择是否为空
           this.errorMessage = "时间不能为空,请重试!";
           this.modal = true;
         }else if(firstDate >= secondDate){
+//          验证第一学期开始时间必须早于第二学期
           this.errorMessage = "第一学期开始时间必须早于第二学期，请重试！";
           this.modal = true;
         }else if((secondDate - firstDate) / (1000 * 3600 * 24) < 120){
+//          验证学期间隔时间
           this.errorMessage = "学期间隔时间太短，请重试！";
           this.modal = true;
         }else {
           this.dateError = "";
+//          错误提示信息初始化
           var firstYear = firstDate.getFullYear() + "-" + (firstDate.getFullYear() + 1) + ".1";
+//          第一学期信息处理
           this.$http.post('./setSchoolStartTime', {
             "startYearSemester": firstYear,
             "startTime": firstDate
@@ -673,10 +706,12 @@
             "Content-Type": "application/json"
           }).then(function (res) {
             this.modal1 = false;
+//            隐藏原对话框
             if (res.body.result == "1") {
               this.$Message.success('学期开始时间设置成功！');
             } else {
               this.dateError += res.body.result + "，请重试！";
+//              设置错误回调信息，对话框进行提示
               this.errorMessage = this.dateError;
               this.modal = true;
             }
@@ -685,6 +720,7 @@
           });
 
           var secondYear = (secondDate.getFullYear() - 1) + "-" + secondDate.getFullYear() + ".2";
+//          第二学期信息处理
           this.$http.post('./setSchoolStartTime', {
             "startYearSemester": secondYear,
             "startTime": secondDate
@@ -692,10 +728,12 @@
             "Content-Type": "application/json"
           }).then(function (res) {
             this.modal1 = false;
+//            隐藏原对话框
             if (res.body.result == "1") {
               this.$Message.success('学期开始时间设置成功！');
             } else {
               this.dateError += res.body.result + "，请重试！";
+//              设置错误回调信息，对话框进行提示
               this.errorMessage = this.dateError;
               this.modal = true;
             }
@@ -705,8 +743,8 @@
         }
       },//学期开始时间设置
       evaluationStart: function () {
-        console.log(this.evaluationDate);
         if(this.evaluationDate[0] == "" || this.evaluationDate[1] == ""){
+//          验证时间选择是否为空
           this.errorMessage = "时间区间不能为空,请重试!";
           this.modal = true;
         }else {
@@ -717,18 +755,21 @@
             "Content-Type": "application/json"
           }).then(function (res) {
             this.modal2 = false;
+//            隐藏原对话框
             if (res.body.result == "1") {
               this.$Message.success('评教时间设置成功！');
             }else{
               this.errorMessage = res.body.result;
+//              设置错误回调信息，对话框进行提示
               this.modal = true;
             }
           }, function (error) {
             this.modal2 = false;
+//            隐藏原对话框
             this.$Message.error('连接失败，请重试！');
           });
         }
-      },//评教起止时间
+      },//评教起止时间设置
       gradeStart: function () {
         if(this.gradeDate[0] == "" || this.gradeDate[1] == ""){
           this.errorMessage = "时间区间不能为空,请重试!";
@@ -751,17 +792,16 @@
             this.$Message.error('连接失败，请重试！');
           });
         }
-      },//成绩录入起止时间
+      },//成绩录入起止时间设置
       roleChange: function (name) {
-//        角色选择触发绑定变化，触发中间功能块显隐
-        this.inFunction = true;
         this.activeName = name;
         this.$nextTick(function () {
           this.$refs.roleMenu.updateActiveName();
+//          更新角色选中效果
         });
-      },
+      },//角色选择触发函数
       inFuncClick: function (index) {
-//        点击功能模块进行跳转
+//        判断点击的功能模块内的页面的权限进行跳转
         if(this.authorityModels[index].name == "教务审批"){
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == "17"){
@@ -1032,13 +1072,12 @@
             }
           }
         }
-      },
+      }, //点击功能模块进行跳转
       announcementClick: function (id) {
-//        公告点击跳转详情
         if(id != "null") {
           location.href = "#/eduAdmin/information/notifyInformation?" + id;
         }
-      }
+      }//公告点击跳转详情
     }
 
   }
@@ -1046,6 +1085,7 @@
 
 <style scoped>
   #eduAdminHomeDiv {
+    /*页面*/
     background-color: white;
     display: flex;
     border: thin solid whitesmoke;
