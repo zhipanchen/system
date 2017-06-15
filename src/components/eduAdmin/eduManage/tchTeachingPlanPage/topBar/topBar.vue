@@ -28,19 +28,19 @@
           }
           for(var j=0;j<authorityList.length;j++){
             if(this.authorityList[j] == "17"){
-              buttons[0].style.display = "block";
+              buttons[0].style.display = "inline";
             }else if(this.authorityList[j] == "12"){
-              buttons[1].style.display = "block";
+              buttons[1].style.display = "inline";
             }else if(this.authorityList[j] == "13"){
-              buttons[2].style.display = "block";
+              buttons[2].style.display = "inline";
             }else if(this.authorityList[j] == "11"){
-              buttons[3].style.display = "block";
+              buttons[3].style.display = "inline";
             }else if(this.authorityList[j] == "8"){
-              buttons[4].style.display = "block";
+              buttons[4].style.display = "inline";
             }else if(this.authorityList[j] == "62"){
-              buttons[5].style.display = "block";
+              buttons[5].style.display = "inline";
             }else if(this.authorityList[j] == "30"){
-              buttons[6].style.display = "block";
+              buttons[6].style.display = "inline";
             }
           }
         }catch(e){}
