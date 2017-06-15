@@ -38,7 +38,7 @@
   html {
     font-size: 16px;
   }
-  #changePasswordButton {
+  #studentEvaluationButton {
     margin-left: 5rem;
   }
   @media screen and (max-width:1023px) {

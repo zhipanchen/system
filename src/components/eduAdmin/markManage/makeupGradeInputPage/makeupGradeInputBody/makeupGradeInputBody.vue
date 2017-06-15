@@ -1,5 +1,6 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
@@ -7,8 +8,8 @@
 		<!-- <span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">补考</a></span> -->
 		<span> > 补考成绩录入</span>
 	</div>
+	<!-- 填选信息进行查询学生补考成绩输入 -->
 	<div class="tableSelect">
-		<!-- 填选信息进行查询学生补考成绩输入 -->
 		<select v-model="selGradeType">
 			<option disabled value="">选择年制</option>
 			<option v-for="gradeTypeOne in gradeType" :value="gradeTypeOne.value">{{gradeTypeOne.text}}</option>
@@ -22,6 +23,7 @@
 			<option v-for="courseNameOne in courseInfo" :value="courseNameOne.courseId">{{courseNameOne.courseName}}</option>
 		</select>
 		<button class="am-btn am-btn-success am-radius" v-on:click="findBtn()">查询</button>
+		<!-- 在未查询之前，编辑、保存、提交按钮隐藏 -->
 		<button class="am-btn am-btn-success am-radius rightBtn" v-show="submitShow" @click="submitBtn()">提交</button>
 		<button class="am-btn am-btn-success am-radius rightBtn" v-show="buttonShow" @click="saveAllBtn()">保存</button>
 		<button class="am-btn am-btn-success am-radius rightBtn" v-show="buttonShow" @click="compileBtn()">编辑</button>
@@ -111,8 +113,8 @@ export default {
 			remindResult: ''
 		}
 	},
-	// 页面初始化，获取学期、课程下拉数据
 	beforeMount: function() {
+		// 页面初始化，获取学期下拉数据
         this.$http.post('./getYearTermList',{},{
             "Content-Type":"application/json"
         }).then(function(response){
@@ -124,6 +126,7 @@ export default {
             console.log("获取申请error:");
             console.log(error);
         });
+        // 页面初始化，获取课程下拉数据
         this.$http.post('./courseManage/getCourseAndClassInfo',{},{
             "Content-Type":"application/json"
         }).then(function(response){
@@ -139,6 +142,7 @@ export default {
     methods: {
     	// 查询按钮************************************************************************
     	findBtn: function () {
+  			// 判断所有下拉框是否已全选，若未选择，则弹窗提示
     		if (this.selGradeType == "") {
     			// this.selGradeType = '0';
     			this.modalResult = true;
@@ -159,7 +163,7 @@ export default {
 		            var data = response.body;
 		            // if(data.result == "1") {
 	                    this.makeUpGradeInputList = data.makeUpGradeInputList;
-	                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩
+	                    // 如果返回数据不为空，即可进行编辑修改学生补考成绩，编辑、保存、提交按钮显示
 	                    if (this.makeUpGradeInputList.length != 0) {
 	                    	this.buttonShow = true;
 	                    	this.submitShow = true;

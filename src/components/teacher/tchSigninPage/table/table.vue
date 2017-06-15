@@ -1,9 +1,9 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页、上一页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">教学管理</a></span> -->
 		<span> > <a href="#/teacher/teach/normalSchedule" class="returnHome">教师签到</a></span>
 		<span> > 签到列表</span>
 	</div>

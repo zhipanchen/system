@@ -96,9 +96,14 @@
     <div id="pageDiv">
       <div id="topFuncDiv">
         <span class="pageSpan" v-for="(authorityModel,index) in authorityModels" @click="inFuncClick(index)">
-          <Badge :count="authorityModel.msgNum">
-            <img class="modelImg" src="" :alt="authorityModel.name"><div>{{ authorityModel.name }}</div>
-          </Badge>
+          <Tooltip placement="top" :disabled="authorityModel.disabled">
+            <Badge :count="authorityModel.msgNum">
+              <img class="modelImg" src="" :alt="authorityModel.name"><div>{{ authorityModel.name }}</div>
+            </Badge>
+            <div slot="content" style="color: black">
+              <p v-html="authorityModel.msgNumTips"></p>
+            </div>
+          </Tooltip>
         </span>
       </div>
       <!--功能块-->
@@ -407,7 +412,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"教务审批", msgNum:"0", index:1 });
+                this.authorityModels.push({ name:"教务审批", msgNum:"0", disabled:true, index:1 });
               }
             }else if(this.authorityList[i] == "14" || this.authorityList[i] == "9" || this.authorityList[i] == "7") {
               var isExist = false;
@@ -417,7 +422,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"智能排课", msgNum:"0", index:2 });
+                this.authorityModels.push({ name:"智能排课", msgNum:"0", disabled:true, index:2 });
               }
             }else if(this.authorityList[i] == "19") {
               var isExist = false;
@@ -427,7 +432,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"教务公告", msgNum:"0", index:3 });
+                this.authorityModels.push({ name:"教务公告", msgNum:"0", disabled:true, index:3 });
               }
             }else if(this.authorityList[i] == "28" || this.authorityList[i] == "29" || this.authorityList[i] == "31" || this.authorityList[i] == "32") {
               var isExist = false;
@@ -437,12 +442,12 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"成绩管理", msgNum:"0", index:4 });
+                this.authorityModels.push({ name:"成绩管理", msgNum:"0", disabled:true, index:4 });
               }
             }else if(this.authorityList[i] == "34") {
-              this.authorityModels.push({ name:"教务督导管理", msgNum:"0", index:5 });
+              this.authorityModels.push({ name:"教务督导管理", msgNum:"0", disabled:true, index:5 });
             }else if(this.authorityList[i] == "10") {
-              this.authorityModels.push({ name:"考务管理", msgNum:"0", index:6 });
+              this.authorityModels.push({ name:"考务管理", msgNum:"0", disabled:true, index:6 });
             }else if(this.authorityList[i] == "5" || this.authorityList[i] == "66" || this.authorityList[i] == "22") {
               var isExist = false;
               for (var a = 0; a < this.authorityModels.length; a++) {
@@ -451,7 +456,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"课酬管理", msgNum:"0", index:7 });
+                this.authorityModels.push({ name:"课酬管理", msgNum:"0", disabled:true, index:7 });
               }
             }else if(this.authorityList[i] == "15" || this.authorityList[i] == "16") {
               var isExist = false;
@@ -461,7 +466,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"培养方案管理", msgNum:"0", index:8 });
+                this.authorityModels.push({ name:"培养方案管理", msgNum:"0", disabled:true, index:8 });
               }
             }else if(this.authorityList[i] == "24" || this.authorityList[i] == "23" || this.authorityList[i] == "26" || this.authorityList[i] == "64") {
               var isExist = false;
@@ -471,7 +476,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"人员管理设置", msgNum:"0", index:9 });
+                this.authorityModels.push({ name:"人员管理设置", msgNum:"0", disabled:true, index:9 });
               }
             }else if(this.authorityList[i] == "27" || this.authorityList[i] == "21" || this.authorityList[i] == "65" || this.authorityList[i] == "20") {
               var isExist = false;
@@ -481,10 +486,10 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"资源管理设置", msgNum:"0", index:10 });
+                this.authorityModels.push({ name:"资源管理设置", msgNum:"0", disabled:true, index:10 });
               }
             }else if(this.authorityList[i] == "6") {
-              this.authorityModels.push({ name:"课表查询", msgNum:"0", index:11 });
+              this.authorityModels.push({ name:"课表查询", msgNum:"0", disabled:true, index:11 });
             }else if(this.authorityList[i] == "1" || this.authorityList[i] == "2") {
               var isExist = false;
               for (var a = 0; a < this.authorityModels.length; a++) {
@@ -493,7 +498,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"权限管理", msgNum:"0", index:12 });
+                this.authorityModels.push({ name:"权限管理", msgNum:"0", disabled:true, index:12 });
               }
             }else if(this.authorityList[i] == "39" || this.authorityList[i] == "42" || this.authorityList[i] == "41" || this.authorityList[i] == "40" || this.authorityList[i] == "38") {
               var isExist = false;
@@ -503,7 +508,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"我的课程", msgNum:"0", index:13 });
+                this.authorityModels.push({ name:"我的课程", msgNum:"0", disabled:true, index:13 });
               }
             }else if(this.authorityList[i] == "37" || this.authorityList[i] == "36" || this.authorityList[i] == "67" || this.authorityList[i] == "63" || this.authorityList[i] == "25") {
               var isExist = false;
@@ -513,18 +518,18 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"教学活动", msgNum:"0", index:14 });
+                this.authorityModels.push({ name:"教学活动", msgNum:"0", disabled:true, index:14 });
               }
             }else if(this.authorityList[i] == "33") {
-              this.authorityModels.push({ name:"成绩管理", msgNum:"0", index:15 });
+              this.authorityModels.push({ name:"成绩管理", msgNum:"0", disabled:true, index:15 });
             }else if(this.authorityList[i] == "35") {
-              this.authorityModels.push({ name:"课酬管理", msgNum:"0", index:16 });
+              this.authorityModels.push({ name:"课酬管理", msgNum:"0", disabled:true, index:16 });
             }else if(this.authorityList[i] == "43") {
-              this.authorityModels.push({ name:"个人信息", msgNum:"0", index:17 });
+              this.authorityModels.push({ name:"个人信息", msgNum:"0", disabled:true, index:17 });
             }else if(this.authorityList[i] == "52") {
-              this.authorityModels.push({ name:"督导反馈", msgNum:"0", index:18 });
+              this.authorityModels.push({ name:"督导反馈", msgNum:"0", disabled:true, index:18 });
             }else if(this.authorityList[i] == "54") {
-              this.authorityModels.push({ name:"班级管理", msgNum:"0", index:19 });
+              this.authorityModels.push({ name:"班级管理", msgNum:"0", disabled:true, index:19 });
             }else if(this.authorityList[i] == "56" || this.authorityList[i] == "55") {
               var isExist = false;
               for (var a = 0; a < this.authorityModels.length; a++) {
@@ -533,7 +538,7 @@
                 }
               }
               if (!isExist) {
-                this.authorityModels.push({ name:"组别管理", msgNum:"0", index:20 });
+                this.authorityModels.push({ name:"组别管理", msgNum:"0", disabled:true, index:20 });
               }
             }
           }
@@ -590,10 +595,17 @@
               for (var i = 0; i < this.authorityModels.length; i++) {
                 if(this.authorityModels[i].name == "人员管理设置"){
                   this.authorityModels[i].msgNum = response.body.applyQuitStudentNum + response.body.applyDropStudentNum + response.body.applyReinstatingStudentNum;
+                  this.authorityModels[i].msgNumTips = "休学申请："+ response.body.applyQuitStudentNum +"<br>退学申请："+ response.body.applyDropStudentNum +"<br>复学申请："+ response.body.applyReinstatingStudentNum;
+                  this.authorityModels[i].disabled = false;
                 }else if(this.authorityModels[i].name == "教务审批"){
                   this.authorityModels[i].msgNum = response.body.makeUpAskNum + response.body.teacherApplyNumber;
+                  this.authorityModels[i].msgNumTips = "补课申请："+ response.body.makeUpAskNum +"<br>禁排申请："+ response.body.teacherApplyNumber;
+                  this.authorityModels[i].disabled = false;
                 }else if(this.authorityModels[i].name == "督导反馈"){
                   this.authorityModels[i].msgNum = response.body.noCheckSupNum;
+                  this.authorityModels[i].disabled = false;
+                }else{
+                  this.authorityModels[i].disabled = true;
                 }
               }
             },function(error){
@@ -601,197 +613,10 @@
           });
         },function(error){
           /*this.authorityList = [];
+          this.authorityModels = [];
           for (var i = 0; i < 70; i++) {
             this.authorityList.push(i);
-          }
-          for (var i = 0; i < this.authorityList.length; i++) {
-//            生成功能块列表
-            if(this.authorityList[i] == "17" || this.authorityList[i] == "12" || this.authorityList[i] == "13" || this.authorityList[i] == "11" || this.authorityList[i] == "8" || this.authorityList[i] == "62" || this.authorityList[i] == "30") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "教务审批") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"教务审批", msgNum:"0", index:1 });
-              }
-            }else if(this.authorityList[i] == "14" || this.authorityList[i] == "9" || this.authorityList[i] == "7") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "智能排课") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"智能排课", msgNum:"0", index:2 });
-              }
-            }else if(this.authorityList[i] == "19") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "教务公告") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"教务公告", msgNum:"0", index:3 });
-              }
-            }else if(this.authorityList[i] == "28" || this.authorityList[i] == "29" || this.authorityList[i] == "31" || this.authorityList[i] == "32") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "成绩管理") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"成绩管理", msgNum:"0", index:4 });
-              }
-            }else if(this.authorityList[i] == "34") {
-              this.authorityModels.push({ name:"教务督导管理", msgNum:"0", index:5 });
-            }else if(this.authorityList[i] == "10") {
-              this.authorityModels.push({ name:"考务管理", msgNum:"0", index:6 });
-            }else if(this.authorityList[i] == "5" || this.authorityList[i] == "66" || this.authorityList[i] == "22") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "课酬管理") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"课酬管理", msgNum:"0", index:7 });
-              }
-            }else if(this.authorityList[i] == "15" || this.authorityList[i] == "16") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "培养方案管理") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"培养方案管理", msgNum:"0", index:8 });
-              }
-            }else if(this.authorityList[i] == "24" || this.authorityList[i] == "23" || this.authorityList[i] == "26" || this.authorityList[i] == "64") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "人员管理设置") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"人员管理设置", msgNum:"0", index:9 });
-              }
-            }else if(this.authorityList[i] == "27" || this.authorityList[i] == "21" || this.authorityList[i] == "65" || this.authorityList[i] == "20") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "资源管理设置") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"资源管理设置", msgNum:"0", index:10 });
-              }
-            }else if(this.authorityList[i] == "6") {
-              this.authorityModels.push({ name:"课表查询", msgNum:"0", index:11 });
-            }else if(this.authorityList[i] == "1" || this.authorityList[i] == "2") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "权限管理") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"权限管理", msgNum:"0", index:12 });
-              }
-            }else if(this.authorityList[i] == "39" || this.authorityList[i] == "42" || this.authorityList[i] == "41" || this.authorityList[i] == "40" || this.authorityList[i] == "38") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "我的课程") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"我的课程", msgNum:"0", index:13 });
-              }
-            }else if(this.authorityList[i] == "37" || this.authorityList[i] == "36" || this.authorityList[i] == "67" || this.authorityList[i] == "63" || this.authorityList[i] == "25") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "教学活动") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"教学活动", msgNum:"0", index:14 });
-              }
-            }else if(this.authorityList[i] == "33") {
-              this.authorityModels.push({ name:"成绩管理", msgNum:"0", index:15 });
-            }else if(this.authorityList[i] == "35") {
-              this.authorityModels.push({ name:"课酬管理", msgNum:"0", index:16 });
-            }else if(this.authorityList[i] == "43") {
-              this.authorityModels.push({ name:"个人信息", msgNum:"0", index:17 });
-            }else if(this.authorityList[i] == "52") {
-              this.authorityModels.push({ name:"督导反馈", msgNum:"0", index:18 });
-            }else if(this.authorityList[i] == "54") {
-              this.authorityModels.push({ name:"班级管理", msgNum:"0", index:19 });
-            }else if(this.authorityList[i] == "56" || this.authorityList[i] == "55") {
-              var isExist = false;
-              for (var a = 0; a < this.authorityModels.length; a++) {
-                if (this.authorityModels[a].name == "组别管理") {
-                  isExist = true;
-                }
-              }
-              if (!isExist) {
-                this.authorityModels.push({ name:"组别管理", msgNum:"0", index:20 });
-              }
-            }
-          }
-          var sortA = [];
-          var sortB = [];
-          for (var i = 0; i < this.authorityModels.length; i++) {
-            sortA.push(this.authorityModels[i].index);
-          }
-          sortA = sortA .sort (function(a,b){return a-b});
-          for (var i = 0; i < sortA.length; i++) {
-            for (var j = 0; j < this.authorityModels.length; j++) {
-              if(this.authorityModels[j].index == sortA[i]){
-                sortB.push(JSON.parse(JSON.stringify(this.authorityModels[j])));
-              }
-            }
-          }
-          this.authorityModels = JSON.parse(JSON.stringify(sortB));
-          this.$nextTick(function(){
-            var img = document.getElementById("topFuncDiv").getElementsByTagName("img");
-            for (var i = 0; i < img.length; i++) {
-              if (img[i].alt == "人员管理设置" || img[i].alt == "资源管理设置") {
-                img[i].src = this.baseSettingImg;
-              } else if (img[i].alt == "成绩管理") {
-                img[i].src = this.gradeManageImg;
-              } else if (img[i].alt == "教务审批") {
-                img[i].src = this.manageImg;
-              } else if (img[i].alt == "考务管理") {
-                img[i].src = this.eduAdminManageImg;
-              } else if (img[i].alt == "课酬管理") {
-                img[i].src = this.emolumentImg;
-              } else if (img[i].alt == "教务公告") {
-                img[i].src = this.informationImg;
-              } else if (img[i].alt == "智能排课") {
-                img[i].src = this.courseImg;
-              } else if (img[i].alt == "权限管理") {
-                img[i].src = this.roleImg;
-              } else if (img[i].alt == "课表查询") {
-                img[i].src = this.courseInfoImg;
-              } else if (img[i].alt == "班级管理") {
-                img[i].src = this.baseSettingImg;
-              } else if (img[i].alt == "教务督导管理") {
-                img[i].src = this.directionImg;
-              } else if (img[i].alt == "课程管理") {
-                img[i].src = this.courseMgmtImg;
-              } else if (img[i].alt == "个人信息") {
-                img[i].src = this.personInfoImg;
-              } else{
-//                img[i].src = this.baseSettingImg;
-              }
-            }
-          });*/
+          }*/
         });
         sessionStorage.setItem("lastClickRole", this.activeName);
 //        记录最后一次点击角色
@@ -995,7 +820,7 @@
           }
         }else if(this.authorityModels[index].name == "教务公告"){
           location.href = "#/eduAdmin/information/noticeManage";
-        }else if(this.authorityModels[index].name == "成绩管理"){
+        }else if(this.authorityModels[index].name == "成绩管理" && this.authorityModels[index].index == 4){
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == "28"){
               location.href = "#/eduAdmin/gradeManage/gradeStat";
@@ -1023,8 +848,8 @@
         }else if(this.authorityModels[index].name == "教务督导管理"){
           location.href = "#/eduAdmin/eduAdminSupervisorManage";
         }else if(this.authorityModels[index].name == "考务管理"){
-          location.href = "#/eduAdmin/eduAdmin/eduAdminManage";
-        }else if(this.authorityModels[index].name == "课酬管理"){
+          location.href = "#/eduAdmin/eduAdminManage";
+        }else if(this.authorityModels[index].name == "课酬管理" && this.authorityModels[index].index == 7){
           for (var i = 0; i < this.authorityList.length; i++) {
             if(this.authorityList[i] == "5"){
               location.href = "#/eduAdmin/emolument/salary";
@@ -1183,9 +1008,9 @@
               return;
             }
           }
-        }else if(this.authorityModels[index].name == "成绩管理"){
+        }else if(this.authorityModels[index].name == "成绩管理" && this.authorityModels[index].index == 15){
           location.href = "#/teacher/class/tchGradesInput";
-        }else if(this.authorityModels[index].name == "课酬管理"){
+        }else if(this.authorityModels[index].name == "课酬管理" && this.authorityModels[index].index == 16){
           location.href = "#/teacher/classInfo/tchCheckSalary";
         }else if(this.authorityModels[index].name == "个人信息"){
           location.href = "#/teacher/personInfo/basicMessage";
@@ -1264,7 +1089,6 @@
     height: 100%;
     padding: 1rem;
     display: flex;
-    /*flex-direction: column;*/
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
@@ -1318,37 +1142,6 @@
   a:hover{
     cursor: pointer;
     color: red;
-  }
-  #functionDiv ul{
-    /*三级功能列表*/
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-  }#functionDiv li{
-     /*三级功能列表*/
-     margin-left: 2rem;
-   }
-  #functionDiv div{
-    /*二级功能块区域*/
-    display: flex;
-  }
-  #functionDiv div div{
-    /*二级功能块*/
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  #functionDiv div:hover{
-    color: red;
-  }
-  #functionDiv img{
-    height: 5rem;
-  }
-  #backButtonDiv{
-    /*返回一级功能块的按钮区域*/
-    width:100%;
-    text-align: center;
-    margin-top: 2rem
   }
   .announcementName{
     /*公告*/

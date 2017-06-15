@@ -1,14 +1,13 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?eduAdmin" class="returnHome">成绩管理</a></span> -->
-		<!-- <span> > <a href="#/login/main/eduAdminHome?gradeManage" class="returnHome">补考</a></span> -->
 		<span> > 补考成绩管理</span>
 	</div>
+	<!-- 填选信息进行查询学生成绩 -->
 	<div class="tableSelect">
-		<!-- 填选信息进行查询学生成绩 -->
         <select v-model="selGradeType" @change="gradeChange()">
 			<option disabled value="">选择年制</option>
 			<option v-for="gradeTypeOne in gradeType" :value="gradeTypeOne.value">{{gradeTypeOne.text}}</option>
@@ -100,7 +99,9 @@
             <!-- 同意申请 -->
             <Modal v-model="modal1" id="modalBody" :styles="{top:'10rem'}">
 				<div style="text-align:center; font-size:1.1rem;">
+					<!-- 单个学生申请批准 -->
 					<p v-if="yesOk === '1'">您确定同意该学生的补考申请吗？</p>
+					<!-- 所有学生申请批准 -->
 					<p v-else-if="yesOk === '2'">您确定要提交查看所有信息吗？</p>
 				</div>
 				<div slot="footer" style="text-align:center;">
@@ -112,7 +113,9 @@
 			<!-- 撤销申请 -->
             <Modal v-model="modal2" id="modalBody" :styles="{top:'10rem'}">
 				<div style="text-align:center; font-size:1.1rem;">
+					<!-- 单个学生申请拒绝 -->
 					<p v-if="noCancel === '1'">您确定要撤销该学生的补考申请吗？</p>
+					<!-- 所有学生申请拒绝 -->
 					<p v-else-if="noCancel === '2'">您确定要撤销所有信息吗？</p>
 				</div>
 				<div slot="footer" style="text-align:center;">
@@ -175,8 +178,8 @@ export default {
 			index: ''
 		}
 	},
-	// 页面初始化，获取学期、课程下拉数据
 	beforeMount: function() {
+		// 页面初始化，获取学期下拉数据
         this.$http.post('./getYearTermList',{},{
             "Content-Type":"application/json"
         }).then(function(response){
@@ -188,6 +191,7 @@ export default {
             console.log("获取申请error:");
             console.log(error);
         });
+        // 页面初始化，获取课程下拉数据
         this.$http.post('./courseManage/getCourseAndClassInfoN',{},{
             "Content-Type":"application/json"
         }).then(function(response){
@@ -223,6 +227,7 @@ export default {
     	},
   		// 查找名单***********************************************************************************
   		findBtn: function () {
+  			// 判断所有下拉框是否已全选，若未选择，则弹窗提示
     		if (this.selGradeType == "") {
     			// this.selGradeType = '0';
     			this.modalResult = true;
@@ -284,6 +289,7 @@ export default {
 	    },
 	    // 下载按钮********************************************************************
 	    exportBtn: function () {
+  			// 判断所有下拉框是否已全选，若未选择，则弹窗提示，若已全选，则可下载所查询内容
     		if (this.selGradeType == "") {
     			// this.selGradeType = '0';
     			this.modalResult = true;
@@ -381,6 +387,7 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
+		            // 请求成功，则清空补考申请名单
 		            if (data.result == "1") {
 		            	this.makeUpAskList = [];
 		            	this.$Message.success('所有学生补考申请成功！');
@@ -410,6 +417,7 @@ export default {
 		            console.log("获取申请:");
 		            console.log(response.body);
 		            var data = response.body;
+		            // 请求成功，则清空补考申请名单
 				    if (data.result == "1") {
 			            this.$Message.success('撤销所有学生补考申请！');
 		            	this.makeUpAskList = [];

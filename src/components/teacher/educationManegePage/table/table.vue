@@ -23,15 +23,15 @@
         <table>
           <tr>
             <td>毕业院校：</td>
-            <td><input type="text" onkeyup="this.value=this.value.replace(/\s+/g,'')" v-model="graduateSchool" /></td>
+            <td><input type="text"  v-model="graduateSchool" /></td>
           </tr>
           <tr>
             <td>毕业专业：</td>
-            <td><input type="text"onkeyup="this.value=this.value.replace(/\s+/g,'')" v-model="secialty" /></td>
+            <td><input type="text"  v-model="secialty" /></td>
           </tr>
           <tr>
             <td>学制：</td>
-            <td><input type="number" onkeyup="this.value=this.value.replace(/\D/g,'')" name="points" min="1" max="10"  v-model="schoolSystem" /></td>
+            <td><input type="number"  name="points" min="1" max="10"  v-model="schoolSystem" /></td>
           </tr>
           <tr>
             <td>最高学历：</td>
@@ -149,6 +149,9 @@
         this.modal1 = false;
         console.log(highestEDU);
         console.log(highestDegree);
+        graduateSchool=graduateSchool.replace(/\s+/g,'');
+        secialty=secialty.replace(/\s+/g,'');
+        schoolSystem=schoolSystem.replace(/\D/g,'');
 //        this.$http.post('../jsonphp/education.php',{
         this.$http.post('./teacherManage/editTeacherEduInfo',{
          "graduateSchool":graduateSchool,

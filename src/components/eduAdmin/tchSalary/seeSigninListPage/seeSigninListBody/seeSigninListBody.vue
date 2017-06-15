@@ -1,9 +1,9 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页、上一页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">教学管理</a></span> -->
 		<span> > <a href="#/eduAdmin/emolument/scheduleList" class="returnHome">查看签到</a></span>
 		<span> > 上课签到</span>
 	</div>
@@ -42,18 +42,22 @@
 						<td>{{data.classroomId}}</td>
 						<td>{{data.signInTime}}</td>
 						<td class="textBtn" :value="data.attendanceInfo">
+							<!-- 0未签到状态，1已签到状态 -->
 							<a @click="attend(index)" v-if="data.signInStatus==0">考勤</a>
 							<a @click="seeAttend(index)" v-else-if="data.signInStatus==1">查看考勤</a>
 						</td>
 						<td class="textBtn" :value="data.teachJournalInFo">
+							<!-- 0未签到状态，1已签到状态 -->
 							<a @click="journal(index)" v-if="data.signInStatus==0">上课日志</a>
 							<a @click="seeJournal(index)" v-else-if="data.signInStatus==1">查看日志</a>
 						</td>
 						<td :value="data.signInStatus">
+							<!-- 0未签到状态，1已签到状态 -->
 							<span v-if="data.signInStatus==0">未确认</span>
 							<span v-else-if="data.signInStatus==1">已确认</span>
 						</td>
 						<td class="textBtn">
+							<!-- 0未签到状态，1已签到状态 -->
 							<button :id="'signinBtn'+index" @click="signInBtn(index)" v-if="data.signInStatus==0">确认</button>
 							<button disabled="true" v-else-if="data.signInStatus==1" style="cursor:default;">确认</button>
 						</td>
@@ -258,6 +262,7 @@ export default {
             	var detail = response.body.teachJournalDetail;
             	this.modalSubmit = false;
             	if (data.result == 1) {
+            		// 签到成功，刷新页面，重新获取上课签到列表信息
             		this.$Message.success('签到成功！');
             		window.location.reload();
             		signinBtn.disabled = true;

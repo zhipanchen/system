@@ -101,16 +101,29 @@
         </div>
       </Modal>
       <Modal
-        v-model="modal4"
+      v-model="modal4"
+      width="400"
+      :mask-closable="false"
+      id="modalBody"
+      :styles="{top:'10rem'}">
+      <div style="font-size: 1.1rem;text-align: center;">
+        <p>请输入完整信息！</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <button id="modalBtn" @click="modal4 = false">确定</button>
+      </div>
+    </Modal>
+      <Modal
+        v-model="modal5"
         width="400"
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
         <div style="font-size: 1.1rem;text-align: center;">
-          <p>请输入完整信息！</p>
+          <p>请重新确认工作时间段！</p>
         </div>
         <div slot="footer" style="text-align: center">
-          <button id="modalBtn" @click="modal4 = false">确定</button>
+          <button id="modalBtn" @click="modal5 = false">确定</button>
         </div>
       </Modal>
     </div>
@@ -139,6 +152,7 @@
           modal2: false,
           modal3: false,
           modal4: false,
+          modal5: false,
           operationIndex: 0
         }
       },
@@ -177,12 +191,13 @@
         },
         //保存
         save: function (index) {
-          this.modal3 = false;
+          if(this.tableList[index].startTime<=this.tableList[index].endTime) {
+            this.modal3 = false;
 //          var unit = document.getElementById("clinicWorkUnit" + index);
 //          if (unit.value != "") {
 //            this.$http.post('../jsonphp/experience.php', {
 //          alert( this.tableList[index].startTime);
-          this.$http.post('./teacherManage/editTeacherWorkInfo',{
+            this.$http.post('./teacherManage/editTeacherWorkInfo', {
               "clinicWorkUnit": this.tableList[index].clinicWorkUnit,
               "workPost": this.tableList[index].workPost,
               "startTime": this.tableList[index].startTime,
@@ -191,7 +206,7 @@
             }, {"Content-Type": "application/json"}).then(function (response) {
               if (response.body.result == '1') {
                 this.$Message.success('操作成功！');
-                var t=setTimeout(" location.reload();",2000)
+                var t = setTimeout(" location.reload();", 2000)
               }
             }, function (error) {
               console.log("传递error:");
@@ -220,6 +235,10 @@
 //          else {
 //            alert('请输入临床工作单位！');
 //          }
+          }else{
+            this.modal3 = false;
+            this.modal5 = true;
+          }
         },
         //取消保存
         edit: function (index) {

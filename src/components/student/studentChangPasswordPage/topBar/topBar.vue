@@ -1,10 +1,10 @@
 <template>
   <div id="stdInquireGradeBar" class="topBarDiv am-btn-group">
     <a :href="selfInfUrl">
-      <button id="selfInfoButton" class="topBarButton am-btn am-btn-success">个人信息维护</button>
+      <button id="changePasswordButton" class="topBarButton am-btn am-btn-success">个人信息维护</button>
     </a>
     <a :href="changePasswordUrl">
-      <button id="changePasswordButton" class="topBarButton am-btn am-btn-success btn-active">学生修改密码</button>
+      <button  class="topBarButton am-btn am-btn-success btn-active">学生修改密码</button>
     </a>
   </div>
 </template>

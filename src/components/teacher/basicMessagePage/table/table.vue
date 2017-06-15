@@ -35,7 +35,7 @@
                     </tr>
                     <tr>
                         <td>性别：</td>
-                        <td><input type="text" onkeyup="this.value=this.value.replace(/\s+/g,'')"  v-model="teacherGender"/></td>
+                        <td><input type="text"  v-model="teacherGender"/></td>
                     </tr>
                     <tr>
                         <td>出生年月：</td>
@@ -43,7 +43,7 @@
                     </tr>
                     <tr>
                         <td>身份证号;</td>
-                        <td><input onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" v-model="teacherIDcard" /></td>
+                        <td><input  type="text" v-model="teacherIDcard" /></td>
                     </tr>
                     <tr>
                         <td>参加工作时间：</td>
@@ -51,7 +51,7 @@
                     </tr>
                     <tr>
                         <td>当前工作单位：</td>
-                        <td><input onkeyup="this.value=this.value.replace(/\s+/g,'')" type="text" v-model="currentWorkUnit" /></td>
+                        <td><input  type="text" v-model="currentWorkUnit" /></td>
                     </tr>
 
 
@@ -70,27 +70,27 @@
                     </tr>
                     <tr>
                         <td>联系电话;</td>
-                        <td><input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')"  v-model="phoneNumber" /></td>
+                        <td><input type="text"   v-model="phoneNumber" /></td>
                     </tr>
                     <tr>
                         <td>Email：</td>
-                        <td><input onkeyup="this.value=this.value.replace(/\s+/g,'')" type="text" v-model="emailAddress" /></td>
+                        <td><input type="text" v-model="emailAddress" /></td>
                     </tr>
                     <tr>
                         <td>QQ：</td>
-                        <td><input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" v-model="qqNumber" /></td>
+                        <td><input type="text"  v-model="qqNumber" /></td>
                     </tr>
                   <tr>
                     <td>临床工作年限：</td>
-                    <td><input type="text" onkeyup="this.value=this.value.replace(/\s+/g,'')" v-model="clinicWorkYear" /></td>
+                    <td><input type="text"  v-model="clinicWorkYear" /></td>
                   </tr>
                   <tr>
                     <td>当前工作职务：</td>
-                    <td><input type="text" onkeyup="this.value=this.value.replace(/\s+/g,'')" v-model="currentWorkDuty"  readonly/></td>
+                    <td><input type="text" v-model="currentWorkDuty"  readonly/></td>
                   </tr>
                   <tr>
                     <td>当前工作职称：</td>
-                    <td><input type="text" onkeyup="this.value=this.value.replace(/\s+/g,'')" v-model="currentWorkTitle"  readonly/></td>
+                    <td><input type="text"  v-model="currentWorkTitle"  readonly/></td>
                   </tr>
                 </table>
                 </div>
@@ -242,6 +242,14 @@
           this.modal1 = false;
 //          console.log(qqNumber);
 //          this.$http.post('../jsonphp/basic.php',{
+          teacherGender=teacherGender.replace(/\s+/g,'');
+          teacherIDcard=teacherIDcard.replace(/\D/g,'');
+          currentWorkUnit=currentWorkUnit.replace(/\s+/g,'');
+          phoneNumber=phoneNumber.replace(/\D/g,'');
+          emailAddress=emailAddress.replace(/\s+/g,'');
+          qqNumber=qqNumber.replace(/\D/g,'');
+          clinicWorkYear=clinicWorkYear.replace(/\s+/g,'');
+//          alert(clinicWorkYear);
           this.$http.post('./teacherManage/editTeacherBasicInfo',{
             "teacherId":teacherId,
             "targroupName":targroupName,

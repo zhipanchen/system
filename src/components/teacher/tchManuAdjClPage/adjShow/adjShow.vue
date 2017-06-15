@@ -1,9 +1,9 @@
 <template>
 <div>
+	<!-- 导航栏路径跳转返回首页 -->
 	<div class="positionBar">
 		<span>您的当前位置：</span>
 		<span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-		<!-- <span> > <a href="#/login/main/eduAdminHome?teacher" class="returnHome">课程管理</a></span> -->
 		<span> > 调课申请</span>
 	</div>
 	<div class="curSettings">
@@ -68,6 +68,7 @@
 						<td class="choice" width="17%">
 							<select v-model="selCourseDay">
 								<option disabled value="">选择时间</option>
+								<!-- 获取二维数组的每一列，分别放在星期、节的位置 -->
 								<option v-for="(preDay, index) in weekdayandlessonnum" :value="preDay">星期{{ preDay[0] }}第{{preDay[1] }}节</option>
 							</select>
 						</td>
