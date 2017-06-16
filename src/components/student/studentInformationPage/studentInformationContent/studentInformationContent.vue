@@ -235,9 +235,9 @@
           this.loadingMsg = false;
         },
         handleProgress: function(){
-          //this.$Loading.start();
-          //this.$Message.loading('正在上传中……', 0);
-          //this.loadingMsg = true;
+          this.$Loading.start();
+          this.$Message.loading('正在上传中……', 0);
+          this.loadingMsg = true;
         },
         handleSuccess: function(res){
           this.$Loading.finish();

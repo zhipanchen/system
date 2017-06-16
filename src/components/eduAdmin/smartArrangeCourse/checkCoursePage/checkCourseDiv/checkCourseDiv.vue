@@ -63,26 +63,26 @@
                 weekExport: "",
 //                查找结果课表
                 weeks:[
-                    { "name":"第一周", "value":"1" },
-                    { "name":"第二周", "value":"2" },
-                    { "name":"第三周", "value":"3" },
-                    { "name":"第四周", "value":"4" },
-                    { "name":"第五周", "value":"5" },
-                    { "name":"第六周", "value":"6" },
-                    { "name":"第七周", "value":"7" },
-                    { "name":"第八周", "value":"8" },
-                    { "name":"第九周", "value":"9" },
-//                    { "name":"第十周", "value":"10" },
-                    { "name":"第十一周", "value":"11" },
-                    { "name":"第十二周", "value":"12" },
-                    { "name":"第十三周", "value":"13" },
-                    { "name":"第十四周", "value":"14" },
-                    { "name":"第十五周", "value":"15" },
-                    { "name":"第十六周", "value":"16" },
-                    { "name":"第十七周", "value":"17" },
-                    { "name":"第十八周", "value":"18" },
-                    { "name":"第十九周", "value":"19" }
-//                    { "name":"第二十周", "value":"20" }
+                    { "name":"第1周", "value":"1" },
+                    { "name":"第2周", "value":"2" },
+                    { "name":"第3周", "value":"3" },
+                    { "name":"第4周", "value":"4" },
+                    { "name":"第5周", "value":"5" },
+                    { "name":"第6周", "value":"6" },
+                    { "name":"第7周", "value":"7" },
+                    { "name":"第8周", "value":"8" },
+                    { "name":"第9周", "value":"9" },
+                    { "name":"第10周", "value":"10" },
+                    { "name":"第11周", "value":"11" },
+                    { "name":"第12周", "value":"12" },
+                    { "name":"第13周", "value":"13" },
+                    { "name":"第14周", "value":"14" },
+                    { "name":"第15周", "value":"15" },
+                    { "name":"第16周", "value":"16" },
+                    { "name":"第17周", "value":"17" },
+                    { "name":"第18周", "value":"18" },
+                    { "name":"第19周", "value":"19" },
+                    { "name":"第20周", "value":"20" }
                 ],
 //                周数选择
                 terms:[
@@ -114,10 +114,11 @@
                 console.log("获取课表:");
                 console.log(response.body);
                 this.queryCourse = response.body.acdeminCurriculum;
-                this.terms = [];
+                this.terms = response.body.yearSemester;
+                /*this.terms = [];
                 for (var i = 0; i < response.body.yearSemester.length; i++) {
                     this.terms.push({"name":response.body.yearSemester[i].split(".")[0] + " 第" + response.body.yearSemester[i].split(".")[1] + "学期", "value":response.body.yearSemester[i]});
-                }
+                }*/
             },function(error){
                 this.$Message.error('连接失败，请重试！');
             });

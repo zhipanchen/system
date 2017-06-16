@@ -191,9 +191,11 @@
         ],
         informations: [
           //未完成课表
+          /*
 
           { courseAssociationId:'0',edit:'编辑',id:'1',courseName:'护理管理学',className: '护理二班', teacherName:'何平', classPersonNumber: '135', testTime: '2016.10.9{19:00-21:00}', testTeacherName:'李晓红',testRoom:'教学楼408,409'},
           { courseAssociationId:'1',edit:'编辑',id:'2',courseName:'护理管理学',className: '护理一班', teacherName:'何平', classPersonNumber: '135', testTime: '2016.10.9{19:00-21:00}', testTeacherName:'肖老师',testRoom:'教学楼408,409'},
+          */
 
         ],
         informationsFinish: [
@@ -228,18 +230,22 @@
         ],
         teachers:[
           //教师select
+          /*
 
           '老师1',
           '老师2',
           '老师3',
+          */
 
         ],
         rooms:[
           //教师select
+          /*
 
           '教室1',
           '教室2',
           '教室3',
+          */
 
         ],
         todos:[
