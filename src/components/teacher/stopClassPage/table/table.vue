@@ -12,7 +12,7 @@
         <span>请提前2天申请，若当前时间是17：00后，则顺延一天</span>
       </div>
       <div id="adjTop2">
-        <span>何老师，您在【{{presentYear}}】共上【{{presentClass}}】个班的课，在调课补课时您所选上课时已过冲突筛选请留意。</span>
+        <span>{{teacher}}老师，您在【{{presentYear}}】共上【{{presentClass}}】个班的课，在调课补课时您所选上课时已过冲突筛选请留意。</span>
       </div>
       <div class="adjShowDiv">
         <table class="table table-hover table-bordered" cellspacing="1">
@@ -87,6 +87,34 @@
       <button   class="am-btn am-btn-success am-radius"  @click="saveDia(selected1,message2)">保存</button>
       <button class="am-btn am-btn-success am-radius" @click="cancel">取消</button></div>
     </div>
+    <div class="adjShowDiv">
+      <table class="table table-hover table-bordered" cellspacing="1">
+        <thead >
+        <tr>
+          <th>课程编号</th>
+          <th>课程名称</th>
+          <th>申请教师</th>
+          <th>班级名称</th>
+          <th>课程详情</th>
+          <th>申请教室</th>
+          <th>具体理由</th>
+          <th>状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="app in applicationList">
+          <td  v-text="app.courseId"></td>
+          <td  v-text="app.courseName"></td>
+          <td  v-text="app.teacherName"></td>
+          <td  v-text="app.className"></td>
+          <td  v-text="app.lessonChangeInfo"></td>
+          <td  v-text="app.useClassroom"></td>
+          <td  v-text="app.mediationReason"></td>
+          <td  v-text="app.auditType"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     <Modal
       v-model="modal1"
       width="400"
@@ -111,6 +139,8 @@
     name: 'nameUp',
     data () {
       return {
+        applicationList:'',
+        teacher:'',
         presentYear:'2016-2017年第一学期',
         presentWeek:'21',
         presentClass:'3',
@@ -120,7 +150,7 @@
         selected1:'选择天数',
         options1: [{},{}],
         change:'',
-        modal1:true,
+        modal1:false,
         oselected1:'',
         omessage2:''
       }
@@ -130,6 +160,9 @@
 //        this.$http.post('../jsonphp/stopClass.php',{},
         {"Content-Type":"application/json"}).then(function (response) {
           console.log(response);
+          try{
+            this.teacher = JSON.parse(sessionStorage.getItem("userInfo")).currentUserName;
+          }catch (e){}
           this.presentYear = response.body.presentYear;
           this.presentWeek = response.body.presentWeek;
           this.presentClass = response.body.presentClass;
@@ -140,6 +173,21 @@
           console.log("获取error:");
           console.log(error);
         });
+
+      this.$http.post('./makeUpLessionApplication.action',{},
+          {"Content-Type":"application/json"}).then(function (response) {
+            this.applicationList = response.body.applicationList;
+            for(var i=0;i<response.body.applicationList.length;i++){
+              if(response.body.applicationList[i].auditType=="2"){
+                this.applicationList[i].auditType="审核中";
+              }else if(response.body.applicationList[i].auditType=="1"){
+                this.applicationList[i].auditType="审核通过";
+              }else{
+                this.applicationList[i].auditType="审核不通过";
+              }
+            }
+          },
+          function(error){});
     },
     methods:{
       saveDia:function(selected1,message2){
@@ -292,7 +340,7 @@
 
   }    /*表格菜单*/
   .table td {
-    font-size: 0.5rem;
+    font-size: 0.9rem;
     background-color: white;
     height: 2rem;
     border:thin solid lightgrey;
@@ -341,12 +389,4 @@
     margin: 0.1rem;
     font-size: 0.8rem;
   }
-  @media screen and (max-width:1023px) {
-    html {
-      font-size: 9px;
-    }
-  }
-
-
-
 </style>

@@ -3,8 +3,8 @@
     <div  class="positionBar">
       <span>您当前的位置：</span>
       <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-      <span>><a href="#/teacher/teach/director" class="returnHome">督导反馈</a></span>
-      <span>>督导结果</span>
+      <span> > <a href="#/teacher/teach/director" class="returnHome">督导反馈</a></span>
+      <span> > 督导结果</span>
     </div>
     <div id="table">
 

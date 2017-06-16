@@ -3,16 +3,16 @@
     <div  class="positionBar">
       <span>您当前的位置：</span>
       <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-      <span>>个人信息</span>
+      <span> > 个人信息</span>
     </div>
   <div id="selfMessage-teacher-tableDiv">
     <div id="tableLeft">
       <span id="subtitle1">{{subtitle1}}</span>
       <ul>
         <li id="li"><a href="#/teacher/personInfo/basicMessage">基本信息</a></li>
-        <li><a href="#/teacher/info/educationManege">教育管理</a></li>
-        <li><a href="#/teacher/info/certificateManege">证书管理</a></li>
-        <li><a href="#/teacher/info/experience">一线工作经历</a></li>
+        <li><a href="#/teacher/info/educationManege">教育经历</a></li>
+        <li><a href="#/teacher/info/certificateManege">资格证书</a></li>
+        <li><a href="#/teacher/info/experience">临床经历</a></li>
         <!--<li><a href="#">教学进修</a></li>-->
         <li><a href="#/teacher/info/passwdChange">密码修改</a></li>
       </ul>
@@ -97,7 +97,7 @@
     data () {
       return {
         subtitle1:'个人信息',
-        subtitle2:'教育管理',
+        subtitle2:'教育经历',
         EDUs:['中专','高中','专科','本科','硕士研究生','博士研究生'],
         degrees:['学士','硕士','博士'],
         graduateSchool:'',
@@ -149,9 +149,15 @@
         this.modal1 = false;
         console.log(highestEDU);
         console.log(highestDegree);
-        graduateSchool=graduateSchool.replace(/\s+/g,'');
-        secialty=secialty.replace(/\s+/g,'');
-        schoolSystem=schoolSystem.replace(/\D/g,'');
+        if(graduateSchool != null){
+          graduateSchool=graduateSchool.replace(/\s+/g,'');
+        }
+        if(secialty != null){
+          secialty=secialty.replace(/\s+/g,'');
+        }
+        if(schoolSystem != null){
+          schoolSystem=schoolSystem.replace(/\D/g,'');
+        }
 //        this.$http.post('../jsonphp/education.php',{
         this.$http.post('./teacherManage/editTeacherEduInfo',{
          "graduateSchool":graduateSchool,

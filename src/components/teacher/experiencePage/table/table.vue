@@ -3,16 +3,16 @@
     <div  class="positionBar">
       <span>您当前的位置：</span>
       <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-      <span>>个人信息</span>
+      <span> > 个人信息</span>
     </div>
     <div id="table">
       <div id="tableLeft">
         <span id="subtitle1">{{subtitle1}}</span>
         <ul>
           <li id="li"><a href="#/teacher/personInfo/basicMessage">基本信息</a></li>
-          <li><a href="#/teacher/info/educationManege">教育管理</a></li>
-          <li><a href="#/teacher/info/certificateManege">证书管理</a></li>
-          <li><a href="#/teacher/info/experience">一线工作经历</a></li>
+          <li><a href="#/teacher/info/educationManege">教育经历</a></li>
+          <li><a href="#/teacher/info/certificateManege">资格证书</a></li>
+          <li><a href="#/teacher/info/experience">临床经历</a></li>
           <!--<li><a href="#">教学进修</a></li>-->
           <li><a href="#/teacher/info/passwdChange">密码修改</a></li>
         </ul>
@@ -146,7 +146,7 @@
           imgSrc4: icon4,
           imgSrc5: icon5,
           subtitle1: '个人信息',
-          subtitle2: '一线工作经历',
+          subtitle2: '临床经历',
           tableList: [],
           modal1: false,
           modal2: false,
