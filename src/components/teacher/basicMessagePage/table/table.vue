@@ -3,16 +3,16 @@
     <div  class="positionBar">
       <span>您当前的位置：</span>
       <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-      <span>>个人信息</span>
+      <span> > 个人信息</span>
     </div>
     <div id="selfMessage-teacher-tableDiv">
             <div id="tableLeft">
                 <span id="subtitle1">{{subtitle1}}</span>
            <ul>
                <li id="li"><a href="#/teacher/personInfo/basicMessage">基本信息</a></li>
-               <li><a href="#/teacher/info/educationManege">教育管理</a></li>
-               <li><a href="#/teacher/info/certificateManege">证书管理</a></li>
-               <li><a href="#/teacher/info/experience">一线工作经历</a></li>
+               <li><a href="#/teacher/info/educationManege">教育经历</a></li>
+               <li><a href="#/teacher/info/certificateManege">资格证书</a></li>
+               <li><a href="#/teacher/info/experience">临床经历</a></li>
                <!--<li><a href="#">教学进修</a></li>-->
                <li><a href="#/teacher/info/passwdChange">密码修改</a></li>
            </ul>
@@ -242,13 +242,27 @@
           this.modal1 = false;
 //          console.log(qqNumber);
 //          this.$http.post('../jsonphp/basic.php',{
-          teacherGender=teacherGender.replace(/\s+/g,'');
-          teacherIDcard=teacherIDcard.replace(/\D/g,'');
-          currentWorkUnit=currentWorkUnit.replace(/\s+/g,'');
-          phoneNumber=phoneNumber.replace(/\D/g,'');
-          emailAddress=emailAddress.replace(/\s+/g,'');
-          qqNumber=qqNumber.replace(/\D/g,'');
-          clinicWorkYear=clinicWorkYear.replace(/\s+/g,'');
+          if(teacherGender != null){
+            teacherGender=teacherGender.replace(/\s+/g,'');
+          }
+          if(teacherIDcard != null){
+            teacherIDcard=teacherIDcard.replace(/\D/g,'');
+          }
+          if(currentWorkUnit != null){
+            currentWorkUnit=currentWorkUnit.replace(/\s+/g,'');
+          }
+          if(phoneNumber != null){
+            phoneNumber=phoneNumber.replace(/\D/g,'');
+          }
+          if(emailAddress != null){
+            emailAddress=emailAddress.replace(/\s+/g,'');
+          }
+          if(qqNumber != null){
+            qqNumber=qqNumber.replace(/\D/g,'');
+          }
+          if(qqNumber != null){
+            clinicWorkYear=clinicWorkYear.replace(/\s+/g,'');
+          }
 //          alert(clinicWorkYear);
           this.$http.post('./teacherManage/editTeacherBasicInfo',{
             "teacherId":teacherId,

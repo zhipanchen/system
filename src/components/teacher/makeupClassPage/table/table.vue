@@ -16,7 +16,7 @@
         <span>请提前2天申请，若当前时间是17：00后，则顺延一天</span>
       </div>
       <div id="adjTop2">
-        <span>何老师，您在【{{year}}年第{{semester}}学期】共上【{{stopLessonNum}}】个班的课，在调课补课时您所选上课时已过冲突筛选请留意。</span>
+        <span>{{teacher}}老师，您在【{{year}}年第{{semester}}学期】共上【{{stopLessonNum}}】个班的课，在调课补课时您所选上课时已过冲突筛选请留意。</span>
       </div>
       <div class="adjShowDiv">
         <table class="table table-hover table-bordered" cellspacing="1">
@@ -156,6 +156,7 @@ export default {
 	name: 'nameUp',
 	data () {
 		return {
+      teacher:'',
 			year:'',
       semester:'',
 			week:'',
@@ -185,6 +186,7 @@ export default {
 //      this.$http.post('../jsonphp/makeup.php',{},
       {"Content-Type":"application/json"}).then(function (response) {
         console.log(response);
+        this.teacher = response.body.teacher;
         this.year = response.body.year;
         this.semester = response.body.semester;
         this.week = response.body.week;
@@ -393,7 +395,7 @@ table{
 	border:thin solid lightgrey;
 }    /*表格菜单*/
 .table td {
-	font-size: 0.5rem;
+	font-size: 0.9rem;
 	background-color: white;
 	height: 2rem;
 	border:thin solid lightgrey;
@@ -435,12 +437,5 @@ select{
 	        margin: 0.1rem;
 	        font-size: 0.8rem;
         }
-@media screen and (max-width:1023px) {
-	html {
-		font-size: 9px;
-	}
-}
-
-
 
 </style>

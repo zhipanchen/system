@@ -3,9 +3,9 @@
     <div  class="positionBar">
     <span>您当前的位置：</span>
     <span><a href="#/login/main/eduAdminHome" class="returnHome">首页</a></span>
-    <span>>教学活动</span>
-    <span>><a href="#/teacher/teach/teacherDirector" class="returnHome">听课反馈</a></span>
-    <span>>反馈结果</span>
+    <span> > 教学活动</span>
+    <span> > <a href="#/teacher/teach/teacherDirector" class="returnHome">听课反馈</a></span>
+    <span> > 反馈结果</span>
   </div>
     <div id="back" style="text-align: center;padding-top: 2rem;" >
       <table  v-for="(data,index) in tableList" :key="data.SuperviseTime">
@@ -59,6 +59,16 @@
         {"Content-Type":"application/json"}).then(function (response) {
           console.log(response);
           this.tableList = response.body.result;
+          try{
+            if(response.body.result.length == 0){
+              this.$Message.warning('暂无督导反馈',3);
+            }
+          }catch (e){}
+          this.$nextTick(function(){
+            try{
+              this.unfoldAlert1(0);
+            }catch (e){}
+          });
         },
         function(error){
           console.log("获取error:");

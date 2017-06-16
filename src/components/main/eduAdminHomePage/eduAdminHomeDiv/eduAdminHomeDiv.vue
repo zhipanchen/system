@@ -169,134 +169,7 @@
 //        一级功能列表
         activeName: "",
 //        当前选中角色
-        announcementList: [
-          /*{
-            "announcementId": 1,
-            "announcementName": " 关于xxx 的公告11111111111111111111111111111111",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-19",
-            "announcementType": "部门分布"
-          },
-          {
-            "announcementId": 2,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-18",
-            "announcementType": "部门分布"
-          },
-          {
-            "announcementId": 3,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-16",
-            "announcementType": "学院公告"
-          },
-          {
-            "announcementId": 4,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-20",
-            "announcementType": "学院公告"
-          },
-          {
-            "announcementId": 5,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-4",
-            "announcementType": "校务公布"
-          },
-          {
-            "announcementId": 6,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-3",
-            "announcementType": "校务公布"
-          },
-          {
-            "announcementId": 7,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-4-29",
-            "announcementType": "教务文件"
-          },
-          {
-            "announcementId": 8,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-4-19",
-            "announcementType": "教务文件"
-          },
-          {
-            "announcementId": 9,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-12",
-            "announcementType": "对外播报"
-          },
-          {
-            "announcementId": 10,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-12",
-            "announcementType": "科研动态"
-          },
-          {
-            "announcementId": 11,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-19",
-            "announcementType": "对外播报"
-          },
-          {
-            "announcementId": 11,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-19",
-            "announcementType": "对外播报"
-          },
-          {
-            "announcementId": 12,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-19",
-            "announcementType": "对外播报"
-          },
-          {
-            "announcementId": 13,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-19",
-            "announcementType": "对外播报"
-          },
-          {
-            "announcementId": 14,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-19",
-            "announcementType": "对外播报"
-          },
-          {
-            "announcementId": 15,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-19",
-            "announcementType": "对外播报"
-          },
-          {
-            "announcementId": 16,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-19",
-            "announcementType": "对外播报"
-          },
-          {
-            "announcementId": 17,
-            "announcementName": " 关于xxx 的公告",
-            "announcementContent": "sss",
-            "announcementTime": "2015-5-19",
-            "announcementType": "对外播报"
-          }*/
-        ],
+        announcementList: [],
 //        公告信息
         isEduAdmin: false,
 //        时间设置功能按钮显隐
@@ -326,7 +199,6 @@
     beforeMount: function() {
 //    页面dom加载前获取后端数据
       this.$http.post('./announcementManage/getAllAnnouncement',{},{
-//      this.$http.post('../testPhp/getAllAnnouncement.php',{},{
         "Content-Type":"application/json"
       }).then(function(response){
 //        获取公告信息
@@ -357,7 +229,6 @@
         }
       });
       this.$http.post('./getPermissionByUser',{},{
-//      this.$http.post('../testPhp/getPermissionByUser.php',{},{
         "Content-Type":"application/json"
       }).then(function(response){
         sessionStorage.setItem("authorityList", JSON.stringify(response.body.currentPermissionList));

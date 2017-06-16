@@ -54,7 +54,7 @@
       //跳转传值
       directorResult:function(index){
         var id=this.tableList[index].courseAssociationId;
-        location.href='#/teacher/studentMessage?'+id;
+        location.href='#/teacher/teach/directorResult?'+id;
       }
     }
   }

@@ -506,6 +506,19 @@
                 deleteImg.style.display = "inline";
                 saveImg.style.display = "none";
                 restoreImg.style.display = "none";
+                for (var i = 0; i < this.classrooms.length; i++) {
+                  if(i != index && this.classrooms[i].id == this.classrooms[index].id){
+                    setTimeout("location.reload()",2000);
+                    return;
+                  }
+                }
+//                判断教室是否已经存在，刷新页面保证数据变化正常
+                for (var i = 0; i < this.engineRooms.length; i++) {
+                  if(i != index && this.engineRooms[i].id == this.engineRooms[index].id){
+                    setTimeout("location.reload()",2000);
+                    return;
+                  }
+                }
               }
             }, function (error) {
               this.modal3 = false;
