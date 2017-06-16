@@ -408,18 +408,20 @@
         watch: {
             queryCourse: function () {
                 this.items = this.queryCourse;
-                for (var i = 0; i < this.items.length; i++) {
-                    for ( var key in this.items[i]){
-                        if(this.items[i][key].indexOf("br") > 0){
-                            console.log(this.items[i][key]);
-                            var first = this.items[i][key].split("<br>");
-                            this.items[i][key] = first[0];
-                            for (var j = 0; j < first.length - 1; j++) {
-                                this.items[i][key] += "<br>"+first[j+1];
+                try{
+                    for (var i = 0; i < this.items.length; i++) {
+                        for ( var key in this.items[i]){
+                            if(this.items[i][key].indexOf("br") > 0){
+                                console.log(this.items[i][key]);
+                                var first = this.items[i][key].split("<br>");
+                                this.items[i][key] = first[0];
+                                for (var j = 0; j < first.length - 1; j++) {
+                                    this.items[i][key] += "<br>"+first[j+1];
+                                }
                             }
                         }
                     }
-                }
+                }catch (e){}
 //                查找课表替换
             }
         },

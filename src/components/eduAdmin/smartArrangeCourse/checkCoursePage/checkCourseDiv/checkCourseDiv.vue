@@ -105,7 +105,6 @@
         },
         beforeMount: function() {
             this.$http.post('./acdeminSeeCurriculum',{
-//            this.$http.post('../testPhp/checkCourse.php',{
                 "yearSemester": "",
                 "week": ""
             },{
@@ -114,11 +113,13 @@
                 console.log("获取课表:");
                 console.log(response.body);
                 this.queryCourse = response.body.acdeminCurriculum;
-                this.terms = response.body.yearSemester;
-                /*this.terms = [];
-                for (var i = 0; i < response.body.yearSemester.length; i++) {
+                this.terms = [];
+                /*for (var i = 0; i < response.body.yearSemester.length; i++) {
                     this.terms.push({"name":response.body.yearSemester[i].split(".")[0] + " 第" + response.body.yearSemester[i].split(".")[1] + "学期", "value":response.body.yearSemester[i]});
                 }*/
+                for (var i = 0; i < response.body.yearSemester.length; i++) {
+                    this.terms.push({"name":response.body.yearSemester[i], "value":response.body.yearSemester[i]});
+                }
             },function(error){
                 this.$Message.error('连接失败，请重试！');
             });
@@ -145,7 +146,6 @@
                     this.modal = true;
                 }else {
                     this.$http.post('./acdeminSeeCurriculum', {
-//                this.$http.post('../testPhp/checkCourseQuery.php',{
                         "yearSemester": this.termSelect,
                         "week": this.weekSelect
                     }, {
