@@ -23,15 +23,15 @@
                 <table>
                     <tr>
                         <td>工号：</td>
-                        <td><input type="text" v-model="teacherId"  readonly/></td>
+                        <td><input type="text" v-model="teacherId"  readonly style="border: none"/></td>
                     </tr>
                     <tr>
                         <td>所属教研组：</td>
-                        <td><input type="text" v-model="targroupName" readonly/></td>
+                        <td><input type="text" v-model="targroupName" readonly style="border: none"/></td>
                     </tr>
                     <tr>
                         <td>姓名：</td>
-                        <td><input type="text" v-model="teacherName"  readonly/></td>
+                        <td><input type="text" v-model="teacherName"  readonly style="border: none"/></td>
                     </tr>
                     <tr>
                         <td>性别：</td>
@@ -62,11 +62,11 @@
 
                     <tr>
                         <td>是否双师型：</td>
-                        <td><input type="text" v-model="isDoubleTeacher"  readonly/></td>
+                        <td><input type="text" v-model="isDoubleTeacher"  readonly style="border: none"/></td>
                     </tr>
                     <tr>
                         <td>聘用校区：</td>
-                        <td><input type="text" v-model="hireCampus"  readonly/></td>
+                        <td><input type="text" v-model="hireCampus"  readonly style="border: none"/></td>
                     </tr>
                     <tr>
                         <td>联系电话;</td>
@@ -86,11 +86,11 @@
                   </tr>
                   <tr>
                     <td>当前工作职务：</td>
-                    <td><input type="text" v-model="currentWorkDuty"  readonly/></td>
+                    <td><input type="text" v-model="currentWorkDuty"  readonly style="border: none"/></td>
                   </tr>
                   <tr>
                     <td>当前工作职称：</td>
-                    <td><input type="text"  v-model="currentWorkTitle"  readonly/></td>
+                    <td><input type="text"  v-model="currentWorkTitle"  readonly style="border: none"/></td>
                   </tr>
                 </table>
                 </div>

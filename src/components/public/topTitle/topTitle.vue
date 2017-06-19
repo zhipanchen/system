@@ -9,7 +9,9 @@
           v-model="modal"
           width="400"
           :mask-closable="false"
-          id="modalBody">
+          id="modalBody"
+          :styles="{top:'10rem'}">
+        <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
         <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
           <span>注销登录</span>
         </div>
@@ -27,6 +29,7 @@
           :mask-closable="false"
           id="modalBody"
           :styles="{top:'10rem'}">
+        <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
         <div style="font-size: 1.1rem;text-align: center;">
           <p>{{ errorMessage }}</p>
         </div>

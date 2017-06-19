@@ -4,6 +4,7 @@
       <div id="selectDiv">
         <button id="queryButton" @click="modal = true"  class="am-btn am-btn-success am-radius">智能排课</button>
         <form action="./autoArrangeSeeCurriculumExcel" method="get">
+          <!--使用form表单进行文件下载-->
           <button id="exportButton" class="am-btn am-btn-success am-radius" type="submit" style="margin-left: 1.4rem">导出</button>
         </form>
       </div>
@@ -26,6 +27,7 @@
         id="modalBody"
         :closable="closable"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>{{ modalMessage }}</p>
       </div>
@@ -36,7 +38,6 @@
     </Modal>
   </div>
 </template>
-<!--待完善查询课表的数据交互，需要确认后端的查询方式；待完善下拉搜索功能，需要确认后端提供数据库搜索支持还是前端通过js搜索处理-->
 <script>
   import tableDiv from '../tableDiv/tableDiv.vue'
   export default {
@@ -57,48 +58,39 @@
     components: {
       tableDiv
     },
-    /*beforeMount: function() {
-      this.$http.post('./alternateLessionHandle.action',{},{
-//            this.$http.post('../testPhp/adjustCouApply.php',{},{
-        "Content-Type":"application/json"
-      }).then(function(response){
-        console.log(response.body);
-        var data = response.body;
-        this.applications = data.applicationsList;
-      },function(error){
-        this.$Message.error("连接失败，请重试！");
-      });
-    },*/
     methods: {
       restartArrangeClick: function(){
-//        重新智能排课
         this.modalMessage = '正在智能排课中……';
         this.loading = true;
+//        开启等待动态效果
         this.isClose = false;
+//        不允许关闭对话框,防止误操作
         this.$http.post('./acdeminArrangeCurriculum',{},{
-//        this.$http.post('../testPhp/adjustCouApplySetTrue.php',{},{
           "Content-Type":"application/json"
         }).then(function(response){
           location.reload();
+//          排课成功刷新页面
           this.modal = false;
           this.isClose = true;
           this.loading = false;
           this.modalMessage =  "您确定进行智能排课吗?";
-          console.log(response.body);
         },function(error){
           this.modalMessage =  "排课失败，请重试！";
           this.isClose = true;
+//        允许关闭对话框
           this.$Message.error("连接失败，请重试！");
         });
-      },
+      }, //重新智能排课
       closeModal: function () {
-//        关闭对话框
         if(this.isClose){
+//          判断是否运行关闭对话框
           this.modal = false;
           this.loading = false;
+//          关闭等待动态效果
           this.modalMessage =  "您确定进行智能排课吗?";
+//          恢复对话框内容
         }
-      }
+      }//关闭对话框
     }
   }
 </script>
@@ -117,10 +109,12 @@
     margin-right: 1.4rem;
   }
   #operationDiv{
+    /*操作区域外层*/
     background-color: white;
     margin: 0 0 0.6rem;
   }
   #selectDiv{
+    /*操作区域*/
     padding: 0.6rem 5rem;
     display: flex;
   }
