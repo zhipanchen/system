@@ -11,12 +11,12 @@
     <div id="adjShow">
 
       <div id="adjTop1">
-        <span>当前学年学期：{{year}}年第{{semester}}学期</span>
+        <span>当前学年学期：{{year}}学年第{{semester}}学期</span>
         <span>当前周数：{{week}}</span>
         <span>请提前2天申请，若当前时间是17：00后，则顺延一天</span>
       </div>
       <div id="adjTop2">
-        <span>{{teacher}}老师，您在【{{year}}年第{{semester}}学期】共上【{{stopLessonNum}}】个班的课，在调课补课时您所选上课时已过冲突筛选请留意。</span>
+        <span>{{teacher}}老师，您在【{{year}}学年第{{semester}}学期】共上【{{stopLessonNum}}】个班的课，在调课补课时您所选上课时已过冲突筛选请留意。</span>
       </div>
       <div class="adjShowDiv">
         <table class="table table-hover table-bordered" cellspacing="1">

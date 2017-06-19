@@ -1,6 +1,5 @@
 <template>
     <div id="checkCourse_tableDiv">
-        <!--<button id="exchangeButton" @click="exchangeClick" class="am-btn am-btn-success am-radius">确认调课</button>-->
         <table id="checkCourseTable">
             <tr class="headTr">
                 <td id="headTdTime">时间</td>
@@ -108,6 +107,7 @@
         data () {
             return {
                 checked: 0,
+//                选中课程数量
                 items:[
                     /*{   "className": '高职2013级1班（45人）', "firstCourse":'语文<br>教师姓名<br>（教室）<br>（时间）',
                         "secondCourse": "数学",
@@ -421,62 +421,18 @@
                             }
                         }
                     }
-                }catch (e){}
-//                查找课表替换
-            }
+                }catch (e){
+                    this.items = JSON.parse(JSON.stringify(this.queryCourse));
+                }
+//                该异常捕获尝试根据后端返回数据中的<br>进行换行显示，可能由于编码或者其它原因，v-html不能完成保证自动解析<br>等html标签
+            }//查找课表内容替换
         },
-        /*methods: {
-            exchangeClick: function(){
-                var td = document.getElementsByTagName("td");
-                var td1 = null;
-                var td2 = null;
-                var tdNum = 0;
-                var buffer = null;
-                for(var i = 0;i < td.length;i++){
-                    if(td[i].style.background == "lightskyblue" && tdNum == 0){
-                        td1 = td[i];
-                        tdNum = 1;
-                    }else if(td[i].style.background == "lightskyblue" && tdNum == 1){
-                        td2 = td[i];
-                        tdNum = 2;
-                    }
-                }
-                buffer = td1.innerHTML;
-                td1.innerHTML = td2.innerHTML;
-                td2.innerHTML = buffer;
-                for(var i = 0;i < td.length;i++){
-                    td[i].style.background = "white";
-                }
-                this.checked = 0;
-            },
-            courseClick: function(name,index){
-                console.log(this.queryCourse);
-                var td = document.getElementById(name+index);
-                if (td.style.background == "lightskyblue") {
-                    td.style.background = "white";
-                    this.checked--;
-                } else {
-                    if(this.checked < 2) {
-                        td.style.background = "lightskyblue";
-                        this.checked++;
-                    }else{
-                        alert("已选择了需要调换的两门课程！");
-                    }
-                }
-            },
-        }*/
     }
 </script>
 
 <style scoped>
     #checkCourse_tableDiv{
         position: relative;
-    }
-    #exchangeButton{
-        position: absolute;
-        top: -3rem;
-        right: 1.5rem;
-        display: none;
     }
     #checkCourseTable{
         /*课表*/

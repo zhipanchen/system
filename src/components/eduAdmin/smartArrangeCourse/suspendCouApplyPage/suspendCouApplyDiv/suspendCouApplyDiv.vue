@@ -45,6 +45,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>您确定通过该申请吗?</p>
       </div>
@@ -59,6 +60,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>您确定拒绝该申请吗?</p>
       </div>
@@ -73,6 +75,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>{{ errorMessage }}</p>
       </div>
@@ -88,101 +91,93 @@
     name: 'suspendCouApplyDiv',
     data () {
       return {
-        applications: [
-          /*{ lessonsChangeId:'1', teacherName: '张三', courseName: '护理学基础', className: '普高2016护理1班', courseTime: '周一上午1、2节', appTime: '2016.08.01',reason:'??' },
-          { lessonsChangeId:'2', teacherName: '李四', courseName: '内科护理', className: '普高2017护理2班', courseTime: '周一上午3、4节', appTime: '2016.08.02',reason:'??' },
-          { lessonsChangeId:'3', teacherName: '王五', courseName: '护理管理学', className: '普高2015护理1班', courseTime: '周二上午1、2节', appTime: '2016.08.02',reason:'??' },
-          { lessonsChangeId:'4', teacherName: '李小红', courseName: '内科护理', className: '普高2016护理3班', courseTime: '周五上午7节', appTime: '2016.08.02',reason:'??' }*/
-        ],
-//                申请信息
+        applications: [],
+//        申请信息
         operationIndex: null,
         operationId: null,
 //        对话框参数传递
         modal1: false,
 //        对话框显隐
         modal2: false,
+//        对话框显隐
         modal3: false,
+//        对话框显隐
         errorMessage: ""
+//        复用对话框内容
       }
     },
     beforeMount: function() {
-//    页面dom加载前获取后端数据
       this.$http.post('./closedCourseApplyShow',{
-//      this.$http.post('../testPhp/suspendCouApply.php',{
       },{
         "Content-Type":"application/json"
       }).then(function(response){
-        console.log("获取申请:");
-        console.log(response.body);
         var data = response.body;
         this.applications = data;
       },function(error){
         this.$Message.error('连接失败，请重试！');
       });
     },
+//页面dom加载前获取后端数据
     methods: {
       operation: function(operationId,type,operationIndex){
-//                对话框参数传递，触发对应对话框
         this.operationId = operationId;
         this.operationIndex = operationIndex;
-        console.log(type);
+//        保存操作的数据的索引和id
         if(type == "true"){
           this.modal1 = true;
+//          打开通过申请对话框
         }else{
           this.modal2 = true;
+//          打开不通过申请对话框
         }
-      },
+      }, //对话框参数传递，触发对应对话框
       setTrue: function(applications,id,index){
-        //预留功能，需要后端返回处理确认
-//        if(confirm("您确定通过该申请吗？")){
-          this.$http.post('./closedCourseApplyHandle',{
-//          this.$http.post('../testPhp/adjustCouApplySetTrue.php',{
-            "lessonsChangeId": id,
-            "operation": 1
-          },{
-            "Content-Type":"application/json"
-          }).then(function(response){
-            console.log("通过申请:");
-            console.log(response.body);
-            var  data = response.body;
-            if(data.result == 1) {
-              applications.splice(index, 1);
-            }else{
-//              this.$Message.error("操作失败,请重试!");
-              this.errorMessage = "操作失败,请重试!";
-              this.modal3 = true;
-            }
-          },function(error){
-            this.$Message.error('连接失败，请重试！');
-          });
-//        }
-      this.modal1 = false;
+        this.$http.post('./closedCourseApplyHandle',{
+          "lessonsChangeId": id,
+          "operation": 1
+        },{
+          "Content-Type":"application/json"
+        }).then(function(response){
+          this.modal1 = false;
+//          关闭对话框
+          var  data = response.body;
+          if(data.result == 1) {
+            applications.splice(index, 1);
+//            移除申请
+          }else{
+            this.errorMessage = "操作失败,请重试!";
+            this.modal3 = true;
+//            打开错误提示
+          }
+        },function(error){
+          this.modal1 = false;
+//          关闭对话框
+          this.$Message.error('连接失败，请重试！');
+        });
       },
       setFalse: function(applications,id,index){
-        //预留功能，需要后端返回处理确认
-//        if(confirm("您确定拒绝该申请吗？")){
-          this.$http.post('./closedCourseApplyHandle',{
-//          this.$http.post('../testPhp/adjustCouApplySetFalse.php',{
-            "lessonsChangeId": id,
-            "operation": 0
-          },{
-            "Content-Type":"application/json"
-          }).then(function(response){
-            console.log("拒绝申请:");
-            console.log(response.body);
-            var data = response.body;
-            if(data.result == 1) {
-              applications.splice(index, 1);
-            }else{
-//              this.$Message.error("操作失败,请重试!");
-              this.errorMessage = "操作失败,请重试!";
-              this.modal3 = true;
-            }
-          },function(error){
-            this.$Message.error('连接失败，请重试！');
-          });
-//        }
-        this.modal2 = false;
+        this.$http.post('./closedCourseApplyHandle',{
+          "lessonsChangeId": id,
+          "operation": 0
+        },{
+          "Content-Type":"application/json"
+        }).then(function(response){
+          this.modal2 = false;
+//          关闭对话框
+          var data = response.body;
+          if(data.result == 1) {
+            applications.splice(index, 1);
+//            移除申请
+          }else{
+            this.errorMessage = "操作失败,请重试!";
+            this.modal3 = true;
+//            打开错误提示
+          }
+        },function(error){
+          this.modal2 = false;
+//          关闭对话框
+          this.$Message.error('连接失败，请重试！');
+        });
       }
     }
   }

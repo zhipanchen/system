@@ -22,14 +22,17 @@
             <p id="tableTipP">
                 支持分别以学期和周数为条件，对全校的课程表进行查询；支持调换选定的两门课程。
                 <form action="./acdeminSeeCurriculumExcel" method="get">
+                <!--使用form表单进行文件下载-->
                     <input type="text" v-model="termExport" name="yearSemester" style="display: none">
                     <input type="text" v-model="weekExport" name="week" style="display:none;">
+                    <!--通过隐藏的input进行form表单参数传递-->
                     <div class="am-btn am-btn-success am-radius" style="position: absolute;right: 7rem;z-index: 10" @click="exportClick()">导出</div>
+                    <!--函数方法预处理数据后再触发submit-->
                     <button id="exportButton" style="display: none" type="submit"></button>
                 </form>
             </p>
             <p id="tableInfoP">当前课表：{{ term }} {{ week }} </p>
-            <tableDiv :queryCourse="queryCourse"></tableDiv><!--表格组件-->
+            <tableDiv :queryCourse="queryCourse"></tableDiv><!--表格组件，传递表格内容-->
         </div>
         <Modal
             v-model="modal"
@@ -37,6 +40,7 @@
             :mask-closable="false"
             id="modalBody"
             :styles="{top:'10rem'}">
+            <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
             <div style="font-size: 1.1rem;text-align: center;">
                 <p>{{ errorMessage }}</p>
             </div>
@@ -46,22 +50,24 @@
         </Modal>
     </div>
 </template>
-<!--待完善查询课表的数据交互，需要确认后端的查询方式；待完善下拉搜索功能，需要确认后端提供数据库搜索支持还是前端通过js搜索处理-->
 <script>
     import tableDiv from '../tableDiv/tableDiv.vue'
     export default {
         name: 'checkCourseDiv',
         data () {
             return {
-                term: '',//显示搜索后的课表信息标题
+                term: '',
+//                显示搜索后的课表学期
                 week: '',
+//                显示搜索后的课表周数
                 termSelect: '请选择学期',
                 weekSelect: '请选择周数',
 //                选择值绑定
                 queryCourse: [],
+//                课表内容
                 termExport: "",
                 weekExport: "",
-//                查找结果课表
+//                导出课表的学期和周数
                 weeks:[
                     { "name":"第1周", "value":"1" },
                     { "name":"第2周", "value":"2" },
@@ -85,19 +91,12 @@
                     { "name":"第20周", "value":"20" }
                 ],
 //                周数选择
-                terms:[
-                    /*{ "name":"2015-2016 第1学期", "value":"2015-2016.1" },
-                    { "name":"2015-2016 第2学期", "value":"2015-2016.2" },
-                    { "name":"2016-2017 第1学期", "value":"2016-2017.1" },
-                    { "name":"2016-2017 第2学期", "value":"2016-2017.2" },
-                    { "name":"2017-2018 第1学期", "value":"2017-2018.1" },
-                    { "name":"2017-2018 第2学期", "value":"2017-2018.2" }*/
-                ],
+                terms:[],
 //                学期选择
                 modal: false,
 //                对话框显隐
                 errorMessage: "",
-//                对话框内容
+//                复用对话框内容
             }
         },
         components: {
@@ -110,9 +109,8 @@
             },{
                 "Content-Type":"application/json"
             }).then(function(response){
-                console.log("获取课表:");
-                console.log(response.body);
                 this.queryCourse = response.body.acdeminCurriculum;
+//                获取当前学期周数课表
                 this.terms = [];
                 /*for (var i = 0; i < response.body.yearSemester.length; i++) {
                     this.terms.push({"name":response.body.yearSemester[i].split(".")[0] + " 第" + response.body.yearSemester[i].split(".")[1] + "学期", "value":response.body.yearSemester[i]});
@@ -120,14 +118,33 @@
                 for (var i = 0; i < response.body.yearSemester.length; i++) {
                     this.terms.push({"name":response.body.yearSemester[i], "value":response.body.yearSemester[i]});
                 }
+//                按照选择框结构重组后端学期数据
             },function(error){
                 this.$Message.error('连接失败，请重试！');
             });
-        },
-//    页面dom加载前获取后端数据
+
+            this.$http.post('./teacherCloseCourseApplyShow',{}, {
+                "Content-Type":"application/json"
+            }).then(function (response) {
+//                获取当前学期周数，切割后显示
+                try{
+                    if(response.body.presentYear.split("第")[1].split("学")[0] == "1"){
+                        this.term = response.body.presentYear.split("年")[0] + "-" + (parseInt(response.body.presentYear.split("年")[0]) + 1) + "年，第" + response.body.presentYear.split("第")[1] + "学期";
+                    }else if(response.body.presentYear.split("第")[1].split("学")[0] == "2"){
+                        this.term = (parseInt(response.body.presentYear.split("年")[0]) - 1) + "-" + response.body.presentYear.split("年")[0] + "年，第" + response.body.presentYear.split("第")[1] + "学期";
+                    }else {
+                        this.term = response.body.presentYear.split("年")[0] + "年第" + response.body.presentYear.split("第")[1] + "学期";
+                    }
+                }catch (e){
+                    this.term = response.body.presentYear;
+                }
+                this.week = "第" + response.body.presentWeek + "周";
+            },
+            function(error){});
+        }, //页面dom加载前获取后端数据
         methods: {
             exportClick: function(){
-                if(this.termSelect == "请选择学期"){
+                /*if(this.termSelect == "请选择学期"){
                     this.termExport = "";
                 }else{
                     this.termExport = this.termSelect;
@@ -136,14 +153,15 @@
                     this.weekExport = "";
                 }else{
                     this.weekExport = this.weekSelect;
-                }
+                }*/
                 document.getElementById("exportButton").click();
-            },
+            }, //导出当前显示的课表
             queryCourseClick: function(){
-//                查找课表
                 if(this.termSelect == "请选择学期" || this.weekSelect == "请选择周数"){
+//                    验证选择
                     this.errorMessage = "学期和周数都是必选的，请确认重试！";
                     this.modal = true;
+//                    打开错误提示
                 }else {
                     this.$http.post('./acdeminSeeCurriculum', {
                         "yearSemester": this.termSelect,
@@ -151,16 +169,19 @@
                     }, {
                         "Content-Type": "application/json"
                     }).then(function (response) {
-                        console.log("查找课表:");
-                        console.log(response.body);
+                        this.termExport = this.termSelect;
+                        this.weekExport = this.weekSelect;
+//                        设置默认导出课表
                         this.queryCourse = response.body.acdeminCurriculum;
+//                        显示查询课表内容
                         this.term = this.termSelect.split(".")[0] + "年第" + this.termSelect.split(".")[1] + "学期";
                         this.week = "第" + this.weekSelect + "周";
+//                        显示课表信息
                     }, function (error) {
                         this.$Message.error('连接失败，请重试！');
                     });
                 }
-            }
+            }//查找课表
         }
     }
 </script>
