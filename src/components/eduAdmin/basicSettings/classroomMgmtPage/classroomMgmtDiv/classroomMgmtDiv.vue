@@ -79,6 +79,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量modal1，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>您确定取消编辑并重置该教室信息吗？</p>
       </div>
@@ -93,6 +94,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>您确定删除该教室吗？</p>
       </div>
@@ -107,6 +109,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>您确定提交保存该教室信息吗？</p>
       </div>
@@ -122,6 +125,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>{{ errorMessage }}</p>
       </div>

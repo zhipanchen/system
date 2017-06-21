@@ -1,6 +1,7 @@
 <template>
     <div id="couArrangeTable_tableDiv">
         <!--<button id="exchangeButton" @click="modal1 = true" class="am-btn am-btn-success am-radius">确认调课</button>-->
+        <!--调课预留功能，由于需求问题暂时搁置-->
         <table id="checkCourseTable">
             <tr class="headTr">
                 <td id="headTdTime">时间</td>
@@ -97,6 +98,7 @@
             :mask-closable="false"
             id="modalBody"
             :styles="{top:'10rem'}">
+            <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
             <div style="font-size: 1.1rem;text-align: center;">
                 <p>您确定调换该两门课程吗?</p>
             </div>
@@ -111,6 +113,7 @@
             :mask-closable="false"
             id="modalBody"
             :styles="{top:'10rem'}">
+            <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
             <div style="font-size: 1.1rem;text-align: center;">
                 <p>{{ errorMessage }}</p>
             </div>
@@ -133,6 +136,7 @@
 //                对话框显隐
                 modal2: false,
                 errorMessage: "",
+//                复用对话框内容
                 items:[
                     /*{   "className": '高职2013级1班（45人）', "firstCourse":'语文+教师姓名+（教室）+（时间）',
                         "secondCourse": "数学",
@@ -429,31 +433,30 @@
             }
         },
         beforeMount: function() {
-//    页面dom加载前获取后端数据
             this.$http.post('./autoArrangeSeeCurriculum',{
-//            this.$http.post('../testPhp/checkCourse.php',{
                 "yearSemester": "",
                 "week": ""
             },{
                 "Content-Type":"application/json"
             }).then(function(response){
-                console.log("获取课表:");
-                console.log(response.body);
                 this.items = response.body;
+//                获取课表
             },function(error){
                 this.$Message.error("连接失败，请重试！");
             });
-        },
+        }, //页面dom加载前获取后端数据
         methods: {
+//        调课预留功能，由于需求问题暂时搁置，以下为纯前端交换代码无后端交互
             exchangeClick: function(){
-//                调课
                 var td = document.getElementsByTagName("td");
                 var td1 = null;
                 var td2 = null;
                 var tdNum = 0;
+//                纪录选中课程数量
                 var buffer = null;
                 for(var i = 0;i < td.length;i++){
                     if((td[i].style.backgroundColor == "lightskyblue" || td[i].style.backgroundColor == "rgb(135, 206, 250)") && tdNum == 0){
+//                    根据背景色获取选中课程
                         td1 = td[i];
                         tdNum = 1;
                     }else if((td[i].style.backgroundColor == "lightskyblue" || td[i].style.backgroundColor == "rgb(135, 206, 250)") && tdNum == 1){
@@ -462,39 +465,47 @@
                     }
                 }
                 if(tdNum < 2 ){
-//                    this.$Message.warning("请选择需要调换的两门课程！",2);
+//                    验证选中课程数量
                     this.modal1 = false;
+//                    关闭原有对话框
                     this.errorMessage = "请选择需要调换的两门课程！";
                     this.modal2 = true;
+//                    打开错误提示
                 }else {
                     buffer = td1.innerHTML;
                     td1.innerHTML = td2.innerHTML;
                     td2.innerHTML = buffer;
+//                    交换课程
                     for (var i = 0; i < td.length; i++) {
                         td[i].style.background = "white";
                     }
+//                    恢复背景色
                     this.checked = 0;
+//                    选中课程数量归零
                     this.$Message.success("调换成功！",2);
                     this.modal1 = false;
+//                    关闭原有对话框
                 }
-            },
+            }, //提交调课
             courseClick: function(name,index){
-//                选择需要调换的课程
                 /*var td = document.getElementById(name+index);
                 console.log(td.style.backgroundColor);
                 if (td.style.backgroundColor == "lightskyblue" || td.style.backgroundColor == "rgb(135, 206, 250)") {
+//                取消选中课程，恢复背景色，选中课程数量减一
                     td.style.backgroundColor = "white";
                     this.checked--;
                 } else {
                     if(this.checked < 2) {
+//                    选中课程，改变背景色，选中课程数量加一
                         td.style.backgroundColor = "lightskyblue";
                         this.checked++;
                     }else{
                         this.errorMessage = "已选择了需要调换的两门课程！";
                         this.modal2 = true;
+//                        打开错误提示
                     }
                 }*/
-            }
+            }//选择需要调换的课程
         }
     }
 </script>
@@ -510,6 +521,7 @@
         right: 1.5rem;
     }
     #checkCourseTable{
+        /*课表*/
         position: relative;
         margin: 0.5rem auto;
         width: 97%;
@@ -522,9 +534,11 @@
         /*max-width: 3rem;*/
     }
     .headTr td{
+        /*表头*/
         height: 1rem;
     }
     #checkCourseTable td input{
+        /*课表内容*/
         outline: none;
         border: none;
         width: 100%;
@@ -537,14 +551,17 @@
         cursor: pointer;
     }
     #headTdTime{
+        /*表头"表头"*/
         text-align: right;
         border: none !important;
         width: 8.3rem;
     }
     #headTdCourse{
+        /*表头"课程"*/
         border: none !important;
     }
     #headTdClass{
+        /*表头"班级"*/
         padding-left: 0.5rem;
         text-align: left;
         border: none !important;

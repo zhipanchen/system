@@ -25,10 +25,13 @@
           :mask-closable="false"
           id="modalBody"
           :styles="{top:'10rem'}">
+        <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
         <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
+          <!--对话框页头标题栏-->
           <span>设置学期开始时间</span>
         </div>
         <div style="font-size: 0.9rem;">
+          <!--对话框主体-->
           <div style="display: flex;align-items: center;justify-content: center">第一学期：
             <Row>
               <Col span="12">
@@ -45,6 +48,7 @@
           </div>
         </div>
         <div slot="footer" style="text-align: center">
+          <!--对话框页脚按钮区域-->
           <button id="modalBtn" @click="termStart()">确定</button>
           <button id="modalBtn" @click="modal1 = false">取消</button>
         </div>
@@ -55,10 +59,13 @@
           :mask-closable="false"
           id="modalBody"
           :styles="{top:'10rem'}">
+        <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
         <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
+          <!--对话框页头标题栏-->
           <span>设置评教起止时间</span>
         </div>
         <div style="font-size: 0.9rem;display: flex;flex-direction: column;align-items: center">
+          <!--对话框主体-->
           <span style="margin-bottom: 0.5rem" v-text="latelyEvaTime"></span>
           <Row>
             <Col span="12">
@@ -67,6 +74,7 @@
           </Row>
         </div>
         <div slot="footer" style="text-align: center">
+          <!--对话框页脚按钮区域-->
           <button id="modalBtn" @click="evaluationStart()">确定</button>
           <button id="modalBtn" @click="modal2 = false">取消</button>
         </div>
@@ -77,10 +85,13 @@
           :mask-closable="false"
           id="modalBody"
           :styles="{top:'10rem'}">
+        <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
         <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
+          <!--对话框页头标题栏-->
           <span>设置成绩录入时间</span>
         </div>
         <div style="font-size: 0.9rem;display: flex;flex-direction: column;align-items: center">
+          <!--对话框主体-->
           <span style="margin-bottom: 0.5rem" v-text="latelyGradeTime"></span>
           <Row>
             <Col span="12">
@@ -89,6 +100,7 @@
           </Row>
         </div>
         <div slot="footer" style="text-align: center">
+          <!--对话框页脚按钮区域-->
           <button id="modalBtn" @click="gradeStart()">确定</button>
           <button id="modalBtn" @click="modal3 = false">取消</button>
         </div>
@@ -130,6 +142,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>{{ errorMessage }}</p>
       </div>
@@ -145,18 +158,21 @@
     name: 'eduAdminHomeDiv',
     data () {
       return {
-        baseSettingImg: require("./images/基本设置.png"),
-        gradeManageImg: require("./images/成绩管理.png"),
+        baseImg: require("./images/基本设置.png"),
         manageImg: require("./images/教务审批.png"),
+        courseImg: require("./images/智能排课.png"),
+        informationImg: require("./images/教务公告.png"),
+        gradeManageImg: require("./images/成绩管理.png"),
+        directionImg: require("./images/教务督导管理.png"),
         eduAdminManageImg: require("./images/考务管理.png"),
         emolumentImg: require("./images/课酬管理.png"),
-        informationImg: require("./images/教务公告.png"),
-        courseImg: require("./images/智能排课.png"),
+        personImg: require("./images/培养方案管理.png"),
+        resourceImg: require("./images/人员管理设置.png"),
+        checkCourseImg: require("./images/课表查询.png"),
         roleImg: require("./images/权限管理.png"),
-        courseInfoImg: require("./images/课程信息.jpg"),
-        directionImg: require("./images/督导管理.png"),
-        courseMgmtImg: require("./images/课程管理.png"),
-        personInfoImg: require("./images/个人信息.jpg"),
+        myCourseImg: require("./images/我的课程.jpg"),
+        teachImg: require("./images/教学活动.png"),
+        personInfoImg: require("./images/个人信息维护.jpg"),
 //        功能块图标地址
         roleList: [
           /*{roleId: 3,roleName:"教务"},
@@ -197,7 +213,6 @@
       }
     },
     beforeMount: function() {
-//    页面dom加载前获取后端数据
       this.$http.post('./announcementManage/getAllAnnouncement',{},{
         "Content-Type":"application/json"
       }).then(function(response){
@@ -216,7 +231,6 @@
           })
         }
       },function(error){
-        this.$Message.error('连接失败，请重试！');
         if(this.announcementList.length == 0){
 //          如果没有公告，填充一条空公告，减少公告区域布局变形
           this.announcementList.push({
@@ -232,11 +246,11 @@
         "Content-Type":"application/json"
       }).then(function(response){
         sessionStorage.setItem("authorityList", JSON.stringify(response.body.currentPermissionList));
+//        保存用户权限列表
       },function(error){
         this.$Message.error('连接失败，请重试！');
       });
-    },
-
+    }, //页面dom加载前获取后端数据
     mounted: function() {
 //      dom加载后调整页面高度
       var dom = document.getElementById("eduAdminHomeDiv");
@@ -450,30 +464,34 @@
             var img = document.getElementById("topFuncDiv").getElementsByTagName("img");
             for (var i = 0; i < img.length; i++) {
 //              根据功能模块匹配图标
-              if (img[i].alt == "人员管理设置" || img[i].alt == "资源管理设置") {
-                img[i].src = this.baseSettingImg;
+              if (img[i].alt == "教务审批") {
+                img[i].src = this.manageImg;
+              } else if (img[i].alt == "智能排课") {
+                img[i].src = this.courseImg;
+              } else if (img[i].alt == "教务公告") {
+                img[i].src = this.informationImg;
               } else if (img[i].alt == "成绩管理") {
                 img[i].src = this.gradeManageImg;
-              } else if (img[i].alt == "教务审批") {
-                img[i].src = this.manageImg;
+              } else if (img[i].alt == "教务督导管理") {
+                img[i].src = this.directionImg;
               } else if (img[i].alt == "考务管理") {
                 img[i].src = this.eduAdminManageImg;
               } else if (img[i].alt == "课酬管理") {
                 img[i].src = this.emolumentImg;
-              } else if (img[i].alt == "教务公告") {
-                img[i].src = this.informationImg;
-              } else if (img[i].alt == "智能排课") {
-                img[i].src = this.courseImg;
+              } else if (img[i].alt == "培养方案管理") {
+                img[i].src = this.personImg;
+              } else if (img[i].alt == "人员管理设置") {
+                img[i].src = this.resourceImg;
+              } else if (img[i].alt == "资源管理设置") {
+                img[i].src = this.baseImg;
+              } else if (img[i].alt == "课表查询") {
+                img[i].src = this.checkCourseImg;
               } else if (img[i].alt == "权限管理") {
                 img[i].src = this.roleImg;
-              } else if (img[i].alt == "课表查询") {
-                img[i].src = this.courseInfoImg;
-              } else if (img[i].alt == "班级管理") {
-                img[i].src = this.baseSettingImg;
-              } else if (img[i].alt == "教务督导管理") {
-                img[i].src = this.directionImg;
-              } else if (img[i].alt == "课程管理") {
-                img[i].src = this.courseMgmtImg;
+              } else if (img[i].alt == "我的课程") {
+                img[i].src = this.myCourseImg;
+              } else if (img[i].alt == "教学活动") {
+                img[i].src = this.teachImg;
               } else if (img[i].alt == "个人信息") {
                 img[i].src = this.personInfoImg;
               } else{

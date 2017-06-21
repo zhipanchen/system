@@ -55,10 +55,13 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div slot="header" style="font-size: 1rem;text-align: center;padding: 0.5rem 0;" id="modalHeader">
+        <!--对话框页头标题栏-->
         <span>分配复学新班级</span>
       </div>
       <div style="font-size: 1.1rem;text-align: center;">
+        <!--对话框主体-->
         请选择年级：
         <select v-model="gradeId">
           <option v-for="grade in gradeList" :value="grade.gradeId">{{ grade.gradeName }}</option>
@@ -71,6 +74,7 @@
         </div>
       </div>
       <div slot="footer" style="text-align: center">
+        <!--对话框页脚按钮区域-->
         <button id="modalBtn" @click="modal1 = true">确定</button>
         <button id="modalBtn" @click="modal4 = false">取消</button>
       </div>
@@ -81,6 +85,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>您确定通过该申请吗?</p>
       </div>
@@ -95,6 +100,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>您确定拒绝该申请吗?</p>
       </div>
@@ -109,6 +115,7 @@
         :mask-closable="false"
         id="modalBody"
         :styles="{top:'10rem'}">
+      <!--对话框宽400px，显示隐藏绑定属性变量，不允许点击遮罩层关闭对话框，对话框距离页面顶端10rem-->
       <div style="font-size: 1.1rem;text-align: center;">
         <p>{{ errorMessage }}</p>
       </div>
