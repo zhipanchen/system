@@ -172,6 +172,7 @@
         roleImg: require("./images/权限管理.png"),
         myCourseImg: require("./images/我的课程.jpg"),
         teachImg: require("./images/教学活动.png"),
+        personInfoImg: require("./images/个人信息维护.jpg"),
         groupImg: require("./images/组别管理.png"),
         classImg: require("./images/班级管理.png"),
         directionResultImg: require("./images/督导反馈.png"),
