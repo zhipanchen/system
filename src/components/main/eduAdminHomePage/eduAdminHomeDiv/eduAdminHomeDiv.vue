@@ -173,6 +173,9 @@
         myCourseImg: require("./images/我的课程.jpg"),
         teachImg: require("./images/教学活动.png"),
         personInfoImg: require("./images/个人信息维护.jpg"),
+        groupImg: require("./images/组别管理.png"),
+        classImg: require("./images/班级管理.png"),
+        directionResultImg: require("./images/督导反馈.png"),
 //        功能块图标地址
         roleList: [
           /*{roleId: 3,roleName:"教务"},
@@ -494,8 +497,14 @@
                 img[i].src = this.teachImg;
               } else if (img[i].alt == "个人信息") {
                 img[i].src = this.personInfoImg;
+              } else if (img[i].alt == "班级管理") {
+                img[i].src = this.classImg;
+              } else if (img[i].alt == "组别管理") {
+                img[i].src = this.groupImg;
+              } else if (img[i].alt == "督导反馈") {
+                img[i].src = this.directionResultImg;
               } else{
-//                img[i].src = this.baseSettingImg;
+                img[i].src = this.baseImg;
               }
             }
             this.$http.post('./getTipsNum',{},{

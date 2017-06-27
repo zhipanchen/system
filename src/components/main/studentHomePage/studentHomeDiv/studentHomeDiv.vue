@@ -42,7 +42,7 @@
         </span>
         <span class="pageSpan">
           <ul>
-            <a href="#/student/query/studentTestInfo"><li>考场查询</li></a>
+            <a href="#/student/query/studentTestInfo"><img src="./images/考场查询.png" class="pageImg"><li>考场查询</li></a>
           </ul>
         </span>
         <span class="pageSpan">
@@ -52,7 +52,7 @@
         </span>
         <span class="pageSpan">
           <ul>
-            <a href="#/student/query/studentTeacher"><li>任课教师信息</li></a>
+            <a href="#/student/query/studentTeacher"><img src="./images/任课教师信息.jpg" class="pageImg"><li>任课教师信息</li></a>
           </ul>
         </span>
       </div>
@@ -65,7 +65,7 @@
         </span>
         <span class="pageSpan">
           <ul>
-            <a href="#/student/setting/changPassword"><li>修改密码</li></a>
+            <a href="#/student/setting/changPassword"><img src="./images/修改密码.jpg" class="pageImg"><li>修改密码</li></a>
           </ul>
         </span>
       </div>
